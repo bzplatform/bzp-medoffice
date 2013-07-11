@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{providerInsuranceList}" var="providerInsurance" rendered="#{not empty providerInsuranceList}">
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="ID"/>
+                  </f:facet>
+                  <h:outputText value="#{providerInsurance.insurance.id}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Name"/>
+                  </f:facet>
+                  <h:outputText value="#{providerInsurance.insurance.name}"/>                  
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="PIN"/>
+                  </f:facet>
+                  #{providerInsurance.pin}
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Office"/>
+                  </f:facet>
+                  <h:outputText value="#{providerInsurance.officeCode}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Notes"/>
+                  </f:facet>
+                  #{providerInsurance.notes}
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Action" styleClass="nosort"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.ProviderInsurance.form.providerInsurance._(providerInsurance))._do(var.ProviderInsurance.form.providerInsuranceList._(providerInsuranceList))._do(var.ProviderInsurance.form.officeProvider._(officeProvider))._to('ProviderInsurance/edit').go}"
+                                   styleClass="intable-action"
+                                   value="Edit..." style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"/>
+                  <h:commandButton action="#{jsf._delete(providerInsurance).
+                                             _do(var.OfficeProvider.ProviderInsuranceListSearch._(null)).stay}"
+                                   styleClass="intable-action"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"
+                                   rendered="#{access.isUriPermitted('ProviderInsurance/remove')}"
+                                   onclick="if (confirm('Delete #{providerInsurance.insurance.name}?')) return true; else return false;"
+                                   value="Remove">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

@@ -1,0 +1,269 @@
+<table>
+   <tr>
+      <th style="width: 20%;">Constitutional</th>
+      <td>
+         <div class="pntl-section" data-section="examOsConstitutional">
+            <span>
+               <input type="checkbox" data-name="appearanceWnlYes" class="radio-group-exam-appearanceWnl" onchange="radioGroup(this, 'exam-appearanceWnl'); return false;"/>
+               <label data-text-if="appearanceWnlYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="appearanceWnlNo" class="radio-group-exam-appearanceWnl" onchange="radioGroup(this, 'exam-appearanceWnl'); return false;"/>
+               <label data-text-if="appearanceWnlNo">N<span class="none">o</span></label>
+               <label data-text-if="appearanceWnlYes || appearanceWnlNo">appearance wnl<span class="none">.</span></label>
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Eyes</th>
+      <td>
+         <div class="pntl-section" data-section="examOsEyes">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Ears/Nose/Mouth/Throat</th>
+      <td>
+         <div class="pntl-section" data-section="examOsEarsNoseMouthThroat">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Neck</th>
+      <td>
+         <div class="pntl-section" data-section="examBaNeck">
+            <span data-text-if="noTenderness">
+               <input type="checkbox" data-name="noTenderness"/>
+               <label>no tenderness<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="noThyromegaly">
+               <input type="checkbox" data-name="noThyromegaly"/>
+               <label>no thyromegaly<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="noJugularVeinsDistension">
+               <input type="checkbox" data-name="noJugularVeinsDistension"/>
+               <label>no Jugular veins distension<span class="none">;</span></label>
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Respiratory</th>
+      <td>
+         <div class="pntl-section" data-section="examOsRespiratory">
+            <span data-text-if="normalRespiratoryEffort">
+               <input type="checkbox" data-name="normalRespiratoryEffort"/>
+               <label>normal respiratory effort<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="clearToAuscultationBilaterally">
+               <input type="checkbox" data-name="clearToAuscultationBilaterally"/>
+               <label>clear to auscultation bilaterally<span class="none">;</span></label>               
+            </span>
+            <div data-text-if="other" >
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Cardiovascular</th>
+      <td>
+         <div class="pntl-section" data-section="examOsCardiovascular">
+            <label data-text-if="normalSize || normalSounds || regularRateRhythm || pmiAt5th || icsAtMcl || 
+                   s1 || s2 || s3 || s4 || noCarotidBruit || noExtremityEdema || murmur || gallops">Heart:</label>
+            <span data-text-if="normalSize">
+               <input type="checkbox" data-name="normalSize"/>
+               <label>normal size<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="normalSounds">
+               <input type="checkbox" data-name="normalSounds"/>
+               <label>normal sounds<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="regularRateRhythm">
+               <input type="checkbox" data-name="regularRateRhythm"/>
+               <label>regular rate/rhythm<span class="none">;</span></label>               
+            </span>
+            <br/>
+            <span data-text-if="pmiAt5th" style="margin-left: 3.3em;">
+               <input type="checkbox" data-name="pmiAt5th"/>
+               <label>PMI at 5th<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="icsAtMcl">
+               <input type="checkbox" data-name="icsAtMcl"/>
+               <label>ICS at MCL<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="s1">
+               <input type="checkbox" data-name="s1"/>
+               <label>S1<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="s2">
+               <input type="checkbox" data-name="s2"/>
+               <label>S2<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="s3">
+               <input type="checkbox" data-name="s3"/>
+               <label>S3<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="s4">
+               <input type="checkbox" data-name="s4"/>
+               <label>S4<span class="none">;</span></label>               
+            </span>
+            <br/>
+            <span data-text-if="noCarotidBruit" style="margin-left: 3.3em;">
+               <input type="checkbox" data-name="noCarotidBruit"/>
+               <label>no carotid bruit<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="noExtremityEdema">
+               <input type="checkbox" data-name="noExtremityEdema"/>
+               <label>no extremity edema<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="murmur">
+               <input type="checkbox" data-name="murmur"/>
+               <label>murmur<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="gallops">
+               <input type="checkbox" data-name="gallops"/>
+               <label>gallops<span class="none">;</span></label>               
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>   
+   <tr>
+      <th>Gastrointestinal (Abdomen)</th>
+      <td>
+         <div class="pntl-section" data-section="examOsGastrointestinal">
+            <span data-text-if="noMasses">
+               <input type="checkbox" data-name="noMasses"/>
+               <label>no masses<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="nonTender">
+               <input type="checkbox" data-name="nonTender"/>
+               <label>non-tender<span class="none">;</span></label>               
+            </span>            
+            <span data-text-if="liverSpleenWnl">
+               <input type="checkbox" data-name="liverSpleenWnl"/>
+               <label>liver, spleen wnl<span class="none">;</span></label>               
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Musculoskeletal</th>
+      <td>
+         <div class="pntl-section" data-section="examOsMusculoskeletal">
+            <span data-text-if="noScoliosisKyphosis">
+               <input type="checkbox" data-name="noScoliosisKyphosis"/>
+               <label>no scoliosis/kyphosis<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="nlGait">
+               <input type="checkbox" data-name="nlGait"/>
+               <label>nl gait<span class="none">;</span></label>               
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Extremities</th>
+      <td>
+         <div class="pntl-section" data-section="examBaEachExtremity">
+            <span data-text-if="noClubbing">
+               <input type="checkbox" data-name="noClubbing"/>
+               <label>no clubbing<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="noCyanosis">
+               <input type="checkbox" data-name="noCyanosis"/>
+               <label>no cyanosis<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="normalPulses">
+               <input type="checkbox" data-name="normalPulses"/>
+               <label>normal pulses<span class="none">;</span></label>               
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>   
+   <tr>
+      <th>Skin</th>
+      <td>
+         <div class="pntl-section" data-section="examOsSkin">
+            <span data-text-if="noObservedLesionsUlcersRashes">
+               <input type="checkbox" data-name="noObservedLesionsUlcersRashes"/>
+               <label>no observed lesions, ulcers, rashes<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="noNodulesIndurations">
+               <input type="checkbox" data-name="noNodulesIndurations"/>
+               <label>no nodules, indurations<span class="none">;</span></label>               
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Psychiatric</th>
+      <td>
+         <div class="pntl-section" data-section="examOsPsychiatric">
+            <label data-text-if="x2 || x3">Oriented:</label>
+            <span data-text-if="x2">
+               <input type="checkbox" data-name="x2" class="radio-group-exam-oriented" onchange="radioGroup(this, 'exam-oriented'); return false;"/>
+               <label>X2<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="x3">
+               <input type="checkbox" data-name="x3" class="radio-group-exam-oriented" onchange="radioGroup(this, 'exam-oriented'); return false;"/>
+               <label>X3<span class="none">;</span></label>               
+            </span>
+            <label data-text-if="normal || angry || anxious || depressed || happy || nad">Mood:</label>
+            <span data-text-if="normal">
+               <input type="checkbox" data-name="normal"/>
+               <label>normal<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="angry">
+               <input type="checkbox" data-name="angry"/>
+               <label>angry<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="anxious">
+               <input type="checkbox" data-name="anxious"/>
+               <label>anxious<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="depressed">
+               <input type="checkbox" data-name="depressed"/>
+               <label>depressed<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="happy">
+               <input type="checkbox" data-name="happy"/>
+               <label>happy<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="nad">
+               <input type="checkbox" data-name="nad"/>
+               <label>NAD<span class="none">;</span></label>               
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+</table>

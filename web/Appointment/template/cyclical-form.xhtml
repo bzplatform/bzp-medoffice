@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! empty var.Appointment.cyclical}">
+            <style>
+               .weekdays input {
+                  display: inline-block !important;
+                  padding: 0 !important;
+                  margin: 0 !important;
+               }
+               .weekdays label {
+                  display: inline-block !important;
+                  padding: 0 !important;
+                  margin-right: 1em !important;              
+               }
+            </style>
+            <li class="weekdays" style="width: 48em; height: 1.5em; padding: 0.5em 0 0 0.5em;">
+               <span style="background: RGBA(255,255,255,0.8); padding: 0.2em;">
+                  <h:selectBooleanCheckbox value="#{var.Appointment.cyclical.weekDays.close()[biz.parseInt(7)]}"/>
+                  <label>Sun</label>
+                  <h:selectBooleanCheckbox value="#{var.Appointment.cyclical.weekDays.close()[biz.parseInt(1)]}"/>
+                  <label>Mon</label>
+                  <h:selectBooleanCheckbox value="#{var.Appointment.cyclical.weekDays.close()[biz.parseInt(2)]}"/>
+                  <label>Tue</label>
+                  <h:selectBooleanCheckbox value="#{var.Appointment.cyclical.weekDays.close()[biz.parseInt(3)]}"/>
+                  <label>Wed</label>
+                  <h:selectBooleanCheckbox value="#{var.Appointment.cyclical.weekDays.close()[biz.parseInt(4)]}"/>
+                  <label>Thu</label>
+                  <h:selectBooleanCheckbox value="#{var.Appointment.cyclical.weekDays.close()[biz.parseInt(5)]}"/>
+                  <label>Fri</label>
+                  <h:selectBooleanCheckbox value="#{var.Appointment.cyclical.weekDays.close()[biz.parseInt(6)]}" disabled="true"/>
+                  <label style="margin-right: 0 !important;">Sat</label>
+               </span>
+               #{var.Appointment.cyclical.forceTime._ == null ? var.Appointment.cyclical.forceTime._(false) : null}
+               <h:selectBooleanCheckbox value="#{var.Appointment.cyclical.forceTime._}" style="margin-left: 4.5em !important;"/>
+               <label>Force Time</label>            
+            </li>
+            <li class="em13">
+               #{var.Appointment.cyclical.startDate._ == null ? var.Appointment.cyclical.startDate._(jsf.newDate) : null}
+               <label>Start Date:</label>
+               <h:inputText id="startDate" value="#{var.Appointment.cyclical.startDate._}" styleClass="djsf_DateTextBox">
+                  <f:convertDateTime dateStyle="short" locale="en"/>
+               </h:inputText>
+            </li>
+            <li class="em8">
+               #{var.Appointment.cyclical.from._ == null ? var.Appointment.cyclical.from._(biz.parseTime('9:00 AM')) : null}
+               <label>From:</label>
+               <h:inputText value="#{var.Appointment.cyclical.from._}" styleClass="ptTimeSelect">
+                  <f:convertDateTime pattern="h:mm a"/>
+               </h:inputText>
+            </li>
+            <li class="em8">
+               #{var.Appointment.cyclical.to._ == null ? var.Appointment.cyclical.to._(biz.parseTime('5:00 PM')) : null}
+               <label>To:</label>
+               <h:inputText value="#{var.Appointment.cyclical.to._}" styleClass="ptTimeSelect">
+                  <f:convertDateTime pattern="h:mm a"/>
+               </h:inputText>
+            </li>
+            <li class="em4">
+               <label>Qty:</label>
+               <h:inputText value="#{var.Appointment.cyclical.qty._}">
+                  <f:converter converterId="IntegerConverter"/>
+               </h:inputText>
+            </li>
+            #{empty var.Appointment.cyclical.referringProviderList._ ? var.Appointment.cyclical.referringProviderList._(jsf.hintedSearch('ReferringProvider', 'r.lastName', jsf.newMap(), '_MEDBASE')) : null}
+            <li class="em16">
+               <label>Referring Provider:</label>
+               <h:selectOneMenu value="#{var.Appointment.cyclical.referringProvider._}">
+                  <f:selectItem itemValue="#{null}" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.Appointment.cyclical.referringProviderList._}" var="referringProvider" itemLabel="#{referringProvider.lastName}, #{referringProvider.firstName}"/>
+                  <f:converter converterId="EntityConverter"/>              
+               </h:selectOneMenu>
+            </li>
+            <ui:fragment rendered="#{! empty var.Appointment.cyclical.appointmentList._}">
+               #{jsf._do(var.Appointment.cyclical.scheduledAppointmentList.search.clear()).                
+                 _do(var.Appointment.cyclical.scheduledAppointmentList.search.put('patient', patientList.get(0))).
+                 _do(var.Appointment.cyclical.scheduledAppointmentList.search.put('stateID', 1)).
+                 _do(var.Appointment.cyclical.scheduledAppointmentList._(jsf.search('Appointment', 'a.date, a.time', var.Appointment.cyclical.scheduledAppointmentList.search))).                    
+                 stay()}
+               <li style="height: auto; margin-top: 1.5em; margin-right: -1em; font-size: 1.1em;">
+                  <ui:include src="cyclical-table.xhtml">
+                     <ui:param name="appointmentList" value="#{var.Appointment.cyclical.appointmentList._}"/>
+                     <ui:param name="scheduledAppointmentList" value="#{var.Appointment.cyclical.scheduledAppointmentList._}"/>
+                     <ui:param name="confirmationMap" value="#{var.Appointment.cyclical.confirmationMap}"/>
+                  </ui:include>
+               </li>
+            </ui:fragment>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

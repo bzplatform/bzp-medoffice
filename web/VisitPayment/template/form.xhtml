@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! empty var.VisitPayment.form}">
+            #{empty var.VisitPayment.form.paymentTypeList._ ? var.VisitPayment.form.paymentTypeList._(jsf.hintedSearch('PaymentType', 'p.name', jsf.newMap(), '_MEDBASE')) : null}
+            <li class="em12">
+               <h:panelGroup styleClass="errors" rendered="#{var.VisitPayment.form.visitPaymentValidationMap._.paymentType}">
+                  <b>Payment Type</b> is required
+               </h:panelGroup>
+               <label>Payment Type:</label>
+               <h:selectOneMenu value="#{var.VisitPayment.form.paymentType._}">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.VisitPayment.form.paymentTypeList._}" var="paymentType" itemLabel="#{paymentType.name}"/>
+                  <f:converter converterId="EntityConverter"/>              
+               </h:selectOneMenu>
+            </li>
+            #{empty var.VisitPayment.form.paymentMethodList._ ? var.VisitPayment.form.paymentMethodList._(jsf.hintedSearch('PaymentMethod', 'p.name', jsf.newMap(), '_MEDBASE')) : null}
+            <li class="em12">
+               <h:panelGroup styleClass="errors" rendered="#{var.VisitPayment.form.visitPaymentValidationMap._.paymentMethod}">
+                  <b>Payment Method</b> is required
+               </h:panelGroup>
+               <label>Payment Method:</label>
+               <h:selectOneMenu value="#{var.VisitPayment.form.paymentMethod._}">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.VisitPayment.form.paymentMethodList._}" var="paymentMethod" itemLabel="#{paymentMethod.name}"/>
+                  <f:converter converterId="EntityConverter"/>              
+               </h:selectOneMenu>
+            </li>
+            <li class="em8">
+               <h:panelGroup styleClass="errors" rendered="#{var.VisitPayment.form.visitPaymentValidationMap._.amount}">
+                  <b>Amount</b> is required
+               </h:panelGroup>
+               <label>Amount:</label>
+               <h:inputText value="#{var.VisitPayment.form.amount._}">
+                  <f:convertNumber maxFractionDigits="2"/>
+               </h:inputText>
+            </li>
+            <li class="em12">
+               <h:panelGroup styleClass="errors" rendered="#{var.VisitPayment.form.visitPaymentValidationMap._ != null and var.VisitPayment.form.visitPaymentValidationMap._.checkNumber}">
+                  <b>Check Number</b> is required for the method Check
+               </h:panelGroup>
+               <label>Check Number:</label>
+               <h:inputText value="#{var.VisitPayment.form.checkNumber._}">
+                  <f:converter converterId="IntegerConverter"/>
+               </h:inputText>
+            </li>
+            <li class="em4" style="height: 1em;">
+               <h:commandButton action="#{jsf._do(var.VisitPayment.form.visitPaymentValidationMap._(biz.visitPaymentValidationMap(var.VisitPayment.form.paymentType._, var.VisitPayment.form.paymentMethod._, var.VisitPayment.form.amount._, var.VisitPayment.form.checkNumber._)))._do(empty var.VisitPayment.form.visitPaymentValidationMap._ ? biz.addVisitPayment(var.VisitPayment.form.visit._, var.VisitPayment.form.paymentType._, var.VisitPayment.form.paymentMethod._, var.VisitPayment.form.amount._, var.VisitPayment.form.checkNumber._) : null).stay}"
+                                value="Add" style="width:4em;">
+                  <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+               </h:commandButton>
+            </li>
+            <ui:fragment rendered="#{! empty var.VisitPayment.form.visit._.paymentList}">            
+               <li style="height: auto; margin-top: 0.5em; margin-bottom: -0.5em; font-size: 1.1em;" class="em40">
+                  <ui:include src="table.xhtml">
+                     <ui:param name="paymentList" value="#{var.VisitPayment.form.visit._.paymentList}"/>
+                  </ui:include>
+               </li>
+            </ui:fragment>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

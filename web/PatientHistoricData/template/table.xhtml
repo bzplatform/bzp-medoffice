@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div style="margin-left: 0.5em;">
+            <h:dataTable value="#{patientHistoricDataList}" var="patientHistoricData" rendered="#{not empty patientHistoricDataList}">
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Field"/>
+                  </f:facet>
+                  <h:outputText value="#{patientHistoricData.field}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Value"/>
+                  </f:facet>
+                  <h:outputText value="#{patientHistoricData.value}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Filled"/>
+                  </f:facet>
+                     <h:outputText value="#{patientHistoricData.date}" style="white-space: nowrap;">
+                        <f:convertDateTime pattern="MM/dd/yy hh:mm a"/>
+                     </h:outputText>
+                     <h:outputText value=" by #{access.getUserName(patientHistoricData.userId)}"/>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

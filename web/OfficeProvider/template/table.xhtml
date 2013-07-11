@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>        
+         <ui:include src="../../template/sorter.xhtml">
+            <ui:param name="listId" value="#{listId}"/>
+            <ui:param name="object" value="officeProvider"/>
+         </ui:include>
+         <div class="tablecounter">#{officeProviderList.size()}</div>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{officeProviderList}" var="officeProvider" rendered="#{not empty officeProviderList}" styleClass="tablesorter #{listId}Table">
+               <h:column rendered="#{selectionMap != null}">
+                  <f:facet name="header">
+                     <h:outputText value="" styleClass="nosort"/>
+                  </f:facet>
+                  <h:selectBooleanCheckbox value="#{selectionMap[officeProvider]}" style="margin:0;"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="ID"/>
+                  </f:facet>
+                  <h:outputText value="#{officeProvider.id}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.role._}">
+                  <f:facet name="header">
+                     <h:outputText value="Role"/>
+                  </f:facet>
+                  <h:outputText value="#{officeProvider.role}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.name._}">
+                  <f:facet name="header">
+                     <h:outputText value="Name"/>
+                  </f:facet>
+                  <h:commandLink action="#{jsf._do(globalOfficeProviderList.clear())._do(globalOfficeProviderList.add(officeProvider))._do(jsf.global('officeProvider', 'view').put('panel:Search', false)).stay}" style="color: black;">
+                     <h:outputText value="#{officeProvider.alias}"/>
+                  </h:commandLink>
+               </h:column>
+               <h:column rendered="#{tableConfig.alias._}">
+                  <f:facet name="header">
+                     <h:outputText value="Alias"/>
+                  </f:facet>                  
+                  <h:outputText value="#{officeProvider.alias}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.npi._}">
+                  <f:facet name="header">
+                     <h:outputText value="NPI"/>
+                  </f:facet>
+                  <h:outputText value="#{officeProvider.associatedProvider == null ? null : officeProvider.associatedProvider.npi}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.offices._}">
+                  <f:facet name="header">
+                     <h:outputText value="Offices"/>
+                  </f:facet>
+                  <ui:repeat value="#{officeProvider.myOfficeList}" var="myOffice">
+                     <h:outputText value="#{myOffice.code.toUpperCase()}" style="margin-right: 0.5em;"/>
+                  </ui:repeat>
+               </h:column> 
+               <h:column rendered="#{tableConfig.action._}">
+                  <f:facet name="header">
+                     <h:outputText value="Action" styleClass="nosort"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.OfficeProvider.form.officeProvider._(officeProvider)).
+                                             _do(var.OfficeProvider.form.officeProviderList._(officeProviderList)).
+                                             _to('OfficeProvider/edit').go}"
+                                   style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                   value="Edit..."/>
+                  <h:commandButton action="#{jsf._do(jsf.removeObj(sourceOfficeProviderList, officeProvider))._do(biz.removeOfficeProvider(officeProvider)).stay}"
+                                   styleClass="intable-action"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"
+                                   rendered="#{access.isUriPermitted('OfficeProvider/remove')}"
+                                   onclick="if (confirm('Remove #{officeProvider.alias}?')) return true; else return false;"
+                                   value="Remove">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>                  
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

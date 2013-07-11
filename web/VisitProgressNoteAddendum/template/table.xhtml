@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{addendumList}" var="addendum" rendered="#{not empty addendumList}">
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Created"/>
+                  </f:facet>
+                  <ui:fragment>
+                     <h:outputText value="#{addendum.datetime}" style="white-space: nowrap;">
+                        <f:convertDateTime pattern="MM/dd/yy"/>
+                     </h:outputText>
+                     <br/>
+                     <h:outputText value="by #{access.getUserName(addendum.userId)}"/>
+                  </ui:fragment>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Addendum"/>
+                  </f:facet>
+                  <h:outputText value="#{addendum.text}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Action"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(jsf.removeObj(addendumList, addendum))._save(addendum.progressNote).stay}" style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;" value="Remove">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

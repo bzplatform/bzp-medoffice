@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>Laboratory Label</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 0;
+               margin-left: 1em;
+            }
+            .action {
+               display: block !important;
+               text-align: left;
+               margin-left: 1em;
+               margin-top: 1em;
+            }            
+         }
+         @media all {
+            body {
+               font-family:Arial, sans-serif;
+               margin: 0em;
+               text-align: left;
+               font-size: 0.9em;
+               line-height: 1.2;
+            }
+            .page {
+               width: 3.1in;
+               height: 0.9in;
+               display: block;
+               padding: 0 0 0 0.3em;
+            }
+            .line {
+               margin-top: 0.5em; 
+               margin-bottom: 0.5em;
+               margin-left: 0;
+               padding-left: 0;
+               white-space: nowrap;
+               overflow: hidden;
+            }
+         }
+         @media print {            
+            .page {
+               margin: 0 0 0 0;
+            }
+            .action {
+               display: none;
+            }            
+         }
+      </style>
+      <script type="text/javascript" src="/#{access.application}/script/jquery/jquery-1.9.0.min.js"></script>
+      <script type="text/javascript" src="/#{access.application}/script/printer.js"></script>
+   </head>
+   <body>
+      <h:form prependId="false">
+         <div class="action"><a href="#" id="print-link" onclick="return print('Landscape')">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         <div class="page">
+            <div class="line">
+               <div style="font-weight: bold; width: 15em; display:inline-block;">#{var.Patient.label.patient._.lastName}</div>
+               <div style="display:inline-block;">DOB:</div>               
+            </div>
+            <div class="line">
+               <div style="font-weight: bold; width: 15em; display:inline-block;">#{var.Patient.label.patient._.firstName}</div>
+               <div style="display:inline-block;">
+                  <h:outputText value="#{var.Patient.label.patient._.birthDate}">
+                     <f:convertDateTime pattern="MM/dd/yyyy" />
+                  </h:outputText>
+               </div>
+            </div>
+            <div class="line">
+               <span style="margin-right: 0.5em;">Collected:</span>
+               <h:outputText value="#{jsf.newDate}" style="font-weight: bold;">
+                  <f:convertDateTime pattern="MM/dd/yy" />
+               </h:outputText>
+            </div>
+         </div>
+      </h:form>
+   </body>
+</html>

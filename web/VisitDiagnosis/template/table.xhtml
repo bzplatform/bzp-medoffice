@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="tablecounter">#{visitDiagnosisList.size()}</div>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{visitDiagnosisList}" var="visitDiagnosis" rendered="#{not empty visitDiagnosisList}">
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="#"/>
+                  </f:facet>
+                  <h:outputText value="#{visitDiagnosisList.indexOf(visitDiagnosis) + 1}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="ICD"/>
+                  </f:facet>
+                  <h:outputText value="#{visitDiagnosis.diagnosis.code}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Description"/>
+                  </f:facet>
+                  <h:outputText value="#{visitDiagnosis.diagnosis.description}" style="font-size: 0.8em;"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Chronisity"/>
+                  </f:facet>
+                  <h:outputText value="#{visitDiagnosis.chronicity}" rendered="#{var.VisitDiagnosis._ != visitDiagnosis}"/>
+                  <h:selectOneMenu value="#{visitDiagnosis.chronicity}" rendered="#{var.VisitDiagnosis._ == visitDiagnosis}" styleClass="em5">
+                     <f:selectItem itemValue="" itemLabel="--"/>
+                     <f:selectItem itemValue="Acute" itemLabel="Acute"/>
+                     <f:selectItem itemValue="Chronic" itemLabel="Chronic"/>                    
+                  </h:selectOneMenu>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Onset"/>
+                  </f:facet>
+                  <h:outputText value="#{visitDiagnosis.onset}" rendered="#{var.VisitDiagnosis._ != visitDiagnosis}"/>
+                  <h:inputText value="#{visitDiagnosis.onset}" rendered="#{var.VisitDiagnosis._ == visitDiagnosis}" styleClass="em8"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Status"/>
+                  </f:facet>
+                  <h:outputText value="#{visitDiagnosis.status.name}" rendered="#{var.VisitDiagnosis._ != visitDiagnosis and visitDiagnosis.status != null}"/>
+                  <ui:fragment rendered="#{var.VisitDiagnosis._ == visitDiagnosis}">
+                     #{var.VisitDiagnosis.table.statusList._ == null ? jsf._do(var.VisitDiagnosis.table.statusList._(jsf.hintedSearch('VisitDiagnosisStatus', null, jsf.newMap(), '_MEDBASE'))).stay() : null}
+                     <h:selectOneMenu value="#{visitDiagnosis.statusId}" styleClass="em6">
+                        <f:selectItem itemValue="" itemLabel="--"/>
+                        <f:selectItems value="#{var.VisitDiagnosis.table.statusList._}" itemValue="#{status.id}" var="status" itemLabel="#{status.name}"/>
+                        <f:ajax render="resolution_date_holder"/>
+                        <f:converter converterId="IntegerConverter"/>
+                     </h:selectOneMenu>
+                  </ui:fragment>
+                  <h:outputText value="#{visitDiagnosis.resolutionDate}" rendered="#{var.VisitDiagnosis._ != visitDiagnosis}" style="margin-left: 0.5em;">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+                  <h:panelGroup id="resolution_date_holder">
+                     <h:inputText id="resolution_date" value="#{visitDiagnosis.resolutionDate}" rendered="#{visitDiagnosis.statusId == 4 and var.VisitDiagnosis._ == visitDiagnosis}" styleClass="djsf_DateTextBox em4">
+                        <f:convertDateTime dateStyle="short" locale="en"/>
+                     </h:inputText>
+                  </h:panelGroup>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Note"/>
+                  </f:facet>
+                  <h:outputText value="#{visitDiagnosis.note}" rendered="#{var.VisitDiagnosis._ != visitDiagnosis}"/>
+                  <h:inputTextarea value="#{visitDiagnosis.note}" rendered="#{var.VisitDiagnosis._ == visitDiagnosis}" styleClass="em8"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Action"/>
+                  </f:facet>
+                  <h:commandButton style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                   action="#{jsf._do(var.VisitDiagnosis._(visitDiagnosis)).stay}" value="Edit" rendered="#{var.VisitDiagnosis._ != visitDiagnosis}">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                   action="#{jsf._save(visitDiagnosis)._do(var.VisitDiagnosis._(null)).stay}" value="Save" rendered="#{var.VisitDiagnosis._ == visitDiagnosis}">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                   action="#{jsf._do(var.VisitDiagnosis._(null)).stay}" value="Cancel" rendered="#{var.VisitDiagnosis._ == visitDiagnosis}">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                   rendered="#{var.VisitDiagnosis._ != visitDiagnosis}"
+                                   onclick="if(confirm('Remove #{visitDiagnosis.diagnosis.code}?')) return true; else return false;"
+                                   action="#{jsf._delete(visitDiagnosis).stay}" value="Remove">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

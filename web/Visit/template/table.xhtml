@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:include src="../../template/sorter.xhtml">
+            <ui:param name="listId" value="#{listId}"/>
+            <ui:param name="object" value="visit"/>
+         </ui:include>
+         <ui:fragment rendered="#{! noCounter}"><div class="tablecounter">#{visitList.size()}</div></ui:fragment>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{visitList}" var="visit" rendered="#{not empty visitList}" styleClass="tablesorter #{listId}Table">
+               <h:column rendered="#{tableConfig.id._}">
+                  <f:facet name="header">
+                     <h:outputText value="ID" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{visit.id}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.date._}">
+                  <f:facet name="header">
+                     <h:outputText value="Date"/>
+                  </f:facet>
+                  <h:outputText value="#{visit.date}">
+                     <f:convertDateTime pattern="MM/dd/yyyy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{tableConfig.time._}">
+                  <f:facet name="header">
+                     <h:outputText value="Time"/>
+                  </f:facet>
+                  <h:outputText value="#{visit.time}">
+                     <f:convertDateTime pattern="hh:mm a"/>
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Cat."/>
+                  </f:facet>
+                  <h:outputText value="#{visit.category.shortName}" style="padding: 0.1em; border-radius: 2px;#{visit.category.css}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.patient._}">
+                  <f:facet name="header">
+                     <h:outputText value="Patient"/>
+                  </f:facet>
+                  <ui:fragment rendered="#{!(! empty patientList and patientList.size() == 1 and visit.patient.id == patientList[0].id)}">
+                     <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(visit.patient))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" title="Select Patient &amp; Navigate to Patient tab" style="color: black;">
+                        <h:outputText value="#{visit.patient.lastName}#{visit.patient.firstName.trim() != '' ? ', ' : ''}#{visit.patient.firstName}"/>
+                     </h:commandLink>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! empty patientList and patientList.size() == 1 and visit.patient.id == patientList[0].id}">
+                     <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(visit.patient))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" title="Navigate to Patient tab" style="color: black;">
+                        <h:outputText style="font-weight: bold;" value="#{visit.patient.lastName}#{visit.patient.firstName.trim() != '' ? ', ' : ''}#{visit.patient.firstName}"/>
+                     </h:commandLink>  
+                  </ui:fragment>
+               </h:column>
+               <h:column rendered="#{tableConfig.patient._}">
+                  <f:facet name="header">
+                     <h:outputText value="MRN" styleClass="nosort"/>
+                  </f:facet>
+                  <ui:fragment rendered="#{!(! empty patientList and patientList.size() == 1 and visit.patient.id == patientList[0].id)}">
+                     <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(visit.patient)).stay}" title="Select Patient" value="#{visit.patient.id}" style="color: black;">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandLink>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! empty patientList and patientList.size() == 1 and visit.patient.id == patientList[0].id}">                    
+                     <h:outputText style="font-weight: bold;" value="#{visit.patient.id}"/>
+                  </ui:fragment>
+               </h:column>
+               <h:column rendered="#{tableConfig.insurance._}">
+                  <f:facet name="header">
+                     <h:outputText value="Insurance(s)"/>
+                  </f:facet>
+                  <table style="font-size: 1em;">
+                     <ui:repeat value="#{visit.patient.insuranceList}" var="patientInsurance" varStatus="patientInsuranceStatus">
+                        <tr>
+                           <td>
+                              #{patientInsurance.insurance.name}
+                              <ui:fragment rendered="#{patientInsurance.insurance.planType == 'HM'}">
+                                 <br/><b>PCP:</b>
+                                 <h:outputText value=" #{biz.referringProvider(patientInsurance.primaryCarePhysicianId).lastName}, #{biz.referringProvider(patientInsurance.primaryCarePhysicianId).firstName}" rendered="#{patientInsurance.primaryCarePhysicianId != null and patientInsurance.primaryCarePhysicianId != 0}"/>
+                                 <h:graphicImage value="/theme/#{cookie.theme.value}/image/error.png" style="position: relative; top:2px; left:2px;"
+                                                 rendered="#{patientInsurance.primaryCarePhysicianId == null or patientInsurance.primaryCarePhysicianId == 0}" title="Not assigned PCP!"/>
+                              </ui:fragment>
+                           </td>
+                        </tr>
+                     </ui:repeat>
+                  </table>
+               </h:column>
+               <h:column rendered="#{tableConfig.provider._}">
+                  <f:facet name="header">
+                     <h:outputText value="Provider"/>
+                  </f:facet>
+                  <h:outputText value="#{visit.provider.alias}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.procedures._}">
+                  <f:facet name="header">
+                     <h:outputText value="Procedures"/>
+                  </f:facet>
+                  <ui:repeat value="#{visit.procedureList}" var="visitProcedure">
+                     <li style="font-size: 0.8em ;margin-left: 1em;">
+                        <h:outputText value="#{visitProcedure.code}" style="font-weight: bold; margin-right: 0.5em;"/>
+                        <h:outputText value="#{visitProcedure.procedure.description}"/>
+                     </li>
+                  </ui:repeat>
+               </h:column>
+               <h:column rendered="#{tableConfig.authorizationNumber._}">
+                  <f:facet name="header">
+                     <h:outputText value="Auth.&nbsp;#" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{visit.authorizationNumber}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.progressNotePlenum._}">
+                  <f:facet name="header">
+                     <h:outputText value="PN" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{visit.progressNote.plenum()}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.action._}">
+                  <f:facet name="header">
+                     <h:outputText value="Action" styleClass="nosort"/>                     
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.Visit.form.visit._(visit))._to('Visit/edit').go}"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"
+                                   value="Edit..."/>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.diagnosisFilter._(null)).
+                                             _do(var.VisitProgressNote.diagnosisAdd._(null)).
+                                             _do(var.VisitProgressNote.diagnosisList._(null)).
+                                             _do(var.VisitProgressNote.procedureFilter._(null)).
+                                             _do(var.VisitProgressNote.procedureAdd._(null)).
+                                             _do(var.VisitProgressNote.procedureList._(null)).
+                                             _do(var.VisitProgressNote.visit._(visit))._do(autoCloseView._(null)).stay}"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"
+                                   rendered="#{tableConfig.select._ and officeProviderList[0].id == visit.provider.id}"
+                                   disabled="#{var.VisitProgressNote.visit._ == visit}"
+                                   onclick="#{var.VisitProgressNote.editSection._ != null ? 'alertFinishEditing();return false;' : ''}"
+                                   value="Select">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <input type="button" value="More ▼" class="context-menu-button" style="margin: 0; font-size: 0.8em;"/>
+                  <div style="display: none;">                     
+                     <h:commandLink action="#{jsf._do(edi.initLaboratoryOrderTransaction(visit))._to('LaboratoryOrderTransaction/profile').go}"
+                                    value="Create Lab. Order" style="margin-right: 1em;"/>
+                     <h:commandLink action="#{jsf._do(var.Referral.form.put('referral', biz.newReferralFromVisit(visit)))._to('Referral/new').go}"
+                                    value="Create Referral" style="margin-right: 1em;"/>
+                     <h:commandLink action="#{jsf._do(var.Visit.superbill.put('visit', visit))._to('Visit/superbill').go}"
+                                    target="_blank"
+                                    value="Print Superbill" style="margin-right: 1em;"/>
+                     <h:commandLink action="#{jsf._do(var.Visit.blankSuperbill.put('visit', visit))._to('Visit/blank-superbill').go}"
+                                    target="_blank"
+                                    value="Blank Superbill" style="margin-right: 1em;"/>
+                     <h:commandLink action="#{jsf._do(var.VisitPayment.form.visit._(visit))._to('VisitPayment/edit').go}"
+                                    value="Edit Payments" style="margin-right: 1em;"/>
+                     <h:commandLink action="#{jsf._do(var.Visit.paymentBill.visit._(visit))._to('Visit/payment-bill').go}"
+                                    target="_blank"
+                                    value="Payment Bill" style="margin-right: 1em;"/>
+                     <h:commandLink action="#{jsf._do(var.VisitVitals.form.visitVitals._(visit.vitals))._to('VisitVitals/edit').go}"
+                                    value="Vitals" style="margin-right: 1em;"/>
+                     <h:commandLink action="#{jsf._do(var.VisitProgressNote.report.visit._(visit))._to('VisitProgressNote/progress-note').go}"
+                                    rendered="#{visit.progressNote.persisted}"
+                                 value="Progress Note Report" style="margin: 0; border: none;" target="_blank"/>
+                     <ui:repeat value="#{EM.emrList}" var="emr">
+                        <ui:fragment rendered="#{emr.specialtyId == visit.specialtyID and EM.findEmrRecord(visit, emr, myOfficeCode) != null}">
+                           <h:commandLink action="#{jsf._do(var.Emr.form.mode._('Edit'))._do(var.Emr.form.emr._(emr))._do(var.Patient.Emr.search._(null))._do(var.OfficeProvider.Emr.search._(null))._do(var.Emr.form.emrRecord._(EM.emrRecord(visit, emr, myOfficeCode)))._to('EM/edit').go}"
+                                          value="#{emr.shortName}" style="margin-right: 1em;"/>
+                        </ui:fragment>
+                     </ui:repeat>
+                     <div class="separator"/>
+                     <h:commandLink action="#{jsf._do(biz.removeVisit(visit.id, access.user.id)).
+                                              _delete(visit).
+                                              _do(jsf.global('patient', 'event').put('refresh', true)).
+                                              _do(jsf.global('officeProvider', 'event').put('refresh', true)).
+                                              _do(var.Patient.timePeriodManagerList._(null)).
+                                              stay}"
+                                    rendered="#{access.isUriPermitted('Visit/delete')}"
+                                    onclick="if (confirm('Remove Visit of #{visit.patient.lastName.replace('\'', '`')}, #{visit.patient.firstName.replace('\'', '`')}?')) return true; else return false;"
+                                    style="margin-right: 1em;"
+                                    value="Remove Visit/Restore Appt."/>
+                  </div>
+                     <h:outputText value="no vitals" style="font-weight: bold; font-size: 0.8em; color: gray;" title="No Vital Signs" rendered="#{visit.vitalsEmpty}"/>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

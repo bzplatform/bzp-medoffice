@@ -1,0 +1,248 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! empty var.ProviderSchedule.form}">
+            <style>
+               .period input {
+                  display: inline-block !important;
+                  padding: 0 !important;
+                  margin: 0 !important;
+               }
+               .period label {
+                  display: inline-block !important;
+                  padding: 0 !important;
+                  margin-right: 0.3em !important;              
+               }
+               .period {
+                  padding-left: 0.6em;
+                  padding-top: 0.5em;
+                  height: 1.5em !important;
+                  margin-top: 0.5em !important;
+               }
+               .radio label {
+                  font-size: 1.3em !important;
+                  display: inline !important;
+                  padding: 0 !important;
+                  margin-right: 1em !important;
+                  margin-left: 0 !important;
+               }
+               .radio input {
+                  margin: 0 !important;
+               }
+               .radio, .radio tr, .radio td  {
+                  border: none;
+                  background: none;
+               }
+               .radio td {
+                  white-space: nowrap;
+                  padding: 0;
+               }             
+            </style>
+            <li class="em10">         
+               <label>Category:</label>
+               <h:selectOneMenu value="#{var.ProviderSchedule.form.providerSchedule._.classifierCode}" title="Category">
+                  <f:selectItems value="#{var.ProviderSchedule.form.providerSchedule._.classifierMap.keySet().toArray()}" var="classifierCode" itemLabel="#{var.ProviderSchedule.form.providerSchedule._.classifierMap[classifierCode]}" itemValue="#{classifierCode}"/>
+                  <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler"/>
+               </h:selectOneMenu>            
+            </li>
+            <li class="em7">
+               <h:panelGroup styleClass="errors" rendered="#{var.ProviderSchedule.form.providerScheduleValidationMap._ != null and var.ProviderSchedule.form.providerScheduleValidationMap._.startDate}">
+                  <b>Start Date</b> is required
+               </h:panelGroup>
+               <label>Start Date:</label>
+               <h:inputText id="startDate" value="#{var.ProviderSchedule.form.providerSchedule._.startDate}" title="Start Date" styleClass="djsf_DateTextBox w6">
+                  <f:convertDateTime dateStyle="short" locale="en"/>
+               </h:inputText>
+            </li>
+            <li class="em7">
+               <h:panelGroup styleClass="errors" rendered="#{var.ProviderSchedule.form.providerScheduleValidationMap._ != null and var.ProviderSchedule.form.providerScheduleValidationMap._.endDate}" style="width: auto;">
+                  <nobr><b>End Date</b> is required for the One Time Period</nobr>
+               </h:panelGroup>
+               <label>End Date:</label>
+               <h:inputText id="endDate" value="#{var.ProviderSchedule.form.providerSchedule._.endDate}" title="End Date" styleClass="djsf_DateTextBox w6">
+                  <f:convertDateTime dateStyle="short" locale="en"/>
+               </h:inputText>
+            </li>
+            <li style="height: 1.5em; padding: 0.5em 0 0 0.5em; width: 16em;">
+               <h:selectBooleanCheckbox value="#{var.ProviderSchedule.form.providerSchedule._.exceptOfficeHolidays}"/>
+               <label style="display: inline; margin-left: -1em;">Except Office Holidays</label>            
+            </li>
+            #{var.ProviderSchedule.form.clearLevel._ != null ? jsf._do(var.ProviderSchedule.form.providerSchedule._.clearLevel(var.ProviderSchedule.form.clearLevel._))._do(var.ProviderSchedule.form.clearLevel._(null)).stay() : null}
+            #{var.ProviderSchedule.form.providerSchedule._.period1Code == null ? jsf._do(var.ProviderSchedule.form.providerSchedule._.setPeriod1EveryValue(0)).stay() : null}
+            <br/>
+            <li class="period">
+               <ui:fragment rendered="#{var.ProviderSchedule.form.providerSchedule._.period1Code != null}">
+                  <label>Every:</label>
+                  <h:inputText id="period1EveryValue" value="#{var.ProviderSchedule.form.providerSchedule._.period1EveryValue}" style="width: 2em;">
+                     <f:converter converterId="IntegerConverter"/>
+                     <f:ajax execute="@this" render="@this" event="blur" listener="#{jsf._do(var.ProviderSchedule.form.providerSchedule._.period1EveryValue &lt;= 0 ? var.ProviderSchedule.form.providerSchedule._.setPeriod1EveryValue(1) : null).listen}"/>
+                  </h:inputText>
+                  <h:commandButton style="width: 2em; font-size: 0.8em;" value="&lt;" action="#{jsf._do(var.ProviderSchedule.form.providerSchedule._.decPeriod1EveryValue()).stay}">
+                     <f:ajax render="period1EveryValue"/>
+                  </h:commandButton>
+                  <h:commandButton style="width: 2em; font-size: 0.8em; margin-right: 1em;" value="&gt;" action="#{jsf._do(var.ProviderSchedule.form.providerSchedule._.incPeriod1EveryValue()).stay}">
+                     <f:ajax render="period1EveryValue"/>
+                  </h:commandButton>
+               </ui:fragment>
+               <h:selectOneMenu value="#{var.ProviderSchedule.form.providerSchedule._.period1Code}" style="#{var.ProviderSchedule.form.providerSchedule._.period1Code != null ? 'width: 5em;' : 'width: 7em; margin-left: 0em;' }">
+                  <f:selectItem itemValue="" itemLabel="One Time"/>
+                  <f:selectItems value="#{var.ProviderSchedule.form.providerSchedule._.periodMap.keySet().toArray()}" var="periodCode" itemLabel="#{var.ProviderSchedule.form.providerSchedule._.periodMap[periodCode]}" itemValue="#{periodCode}"/>
+                  <f:ajax execute="@form" render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.ProviderSchedule.form.clearLevel._(1)).listen}"/>
+               </h:selectOneMenu>            
+            </li>
+            <ui:fragment rendered="#{var.ProviderSchedule.form.providerSchedule._.period1Code != null}">
+               <ui:fragment rendered="#{var.ProviderSchedule.form.providerSchedule._.period1Code != 'W' and ! empty var.ProviderSchedule.form.providerSchedule._.subordinatePeriodCodeList(var.ProviderSchedule.form.providerSchedule._.period1Code)}">
+                  <li class="period">         
+                     <h:inputText id="period2Index" value="#{var.ProviderSchedule.form.providerSchedule._.period2Index}" style="width: 2em;">
+                        <f:converter converterId="IntegerConverter"/>
+                     </h:inputText>
+                     <h:commandButton style="width: 2em; font-size: 0.8em;" value="&lt;" action="#{jsf._do(var.ProviderSchedule.form.providerSchedule._.decPeriod2Index()).stay}">
+                        <f:ajax render="period2Index"/>
+                     </h:commandButton>
+                     <h:commandButton style="width: 2em; font-size: 0.8em; margin-right: 1em;" value="&gt;" action="#{jsf._do(var.ProviderSchedule.form.providerSchedule._.incPeriod2Index()).stay}">
+                        <f:ajax render="period2Index"/>
+                     </h:commandButton>
+                     <h:selectOneMenu value="#{var.ProviderSchedule.form.providerSchedule._.period2Code}" style="width: 5em;">
+                        <f:selectItem itemValue="" itemLabel="NONE"/>
+                        <f:selectItems value="#{var.ProviderSchedule.form.providerSchedule._.subordinatePeriodCodeList(var.ProviderSchedule.form.providerSchedule._.period1Code)}" var="periodCode" itemLabel="#{var.ProviderSchedule.form.providerSchedule._.periodMap[periodCode]}" itemValue="#{periodCode}"/>
+                        <f:ajax execute="@form" render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.ProviderSchedule.form.clearLevel._(2)).listen}"/>
+                     </h:selectOneMenu>            
+                  </li>
+               </ui:fragment>
+               <ui:fragment rendered="#{var.ProviderSchedule.form.providerSchedule._.period1Code == 'W'}">
+                  <br/>
+                  <li class="weekdays" style="width: 30em; height: 2em; padding: 1em 0 0 0.5em;">
+                     <h:selectOneRadio value="#{var.ProviderSchedule.form.providerSchedule._.period2Index}" styleClass="radio">
+                        <f:selectItem itemValue="7" itemLabel="Sun"/>
+                        <f:selectItem itemValue="1" itemLabel="Mon"/>
+                        <f:selectItem itemValue="2" itemLabel="Tue"/>
+                        <f:selectItem itemValue="3" itemLabel="Wed"/>
+                        <f:selectItem itemValue="4" itemLabel="Thu"/>
+                        <f:selectItem itemValue="5" itemLabel="Fri"/>
+                        <f:selectItem itemValue="6" itemLabel="Sat"/>
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectOneRadio>           
+                  </li>
+               </ui:fragment>
+               <ui:fragment rendered="#{var.ProviderSchedule.form.providerSchedule._.period2Code != 'W' and ! empty var.ProviderSchedule.form.providerSchedule._.subordinatePeriodCodeList(var.ProviderSchedule.form.providerSchedule._.period2Code)}">
+                  <li class="period">         
+                     <h:inputText id="period3Index" value="#{var.ProviderSchedule.form.providerSchedule._.period3Index}" style="width: 2em;">
+                        <f:converter converterId="IntegerConverter"/>
+                     </h:inputText>
+                     <h:commandButton style="width: 2em; font-size: 0.8em;" value="&lt;" action="#{jsf._do(var.ProviderSchedule.form.providerSchedule._.decPeriod3Index()).stay}">
+                        <f:ajax render="period3Index"/>
+                     </h:commandButton>
+                     <h:commandButton style="width: 2em; font-size: 0.8em; margin-right: 1em;" value="&gt;" action="#{jsf._do(var.ProviderSchedule.form.providerSchedule._.incPeriod3Index()).stay}">
+                        <f:ajax render="period3Index"/>
+                     </h:commandButton>
+                     <h:selectOneMenu value="#{var.ProviderSchedule.form.providerSchedule._.period3Code}" style="width: 5em;">
+                        <f:selectItem itemValue="" itemLabel="NONE"/>
+                        <f:selectItems value="#{var.ProviderSchedule.form.providerSchedule._.subordinatePeriodCodeList(var.ProviderSchedule.form.providerSchedule._.period2Code)}" var="periodCode" itemLabel="#{var.ProviderSchedule.form.providerSchedule._.periodMap[periodCode]}" itemValue="#{periodCode}"/>
+                        <f:ajax execute="@form" render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.ProviderSchedule.form.clearLevel._(3)).listen}"/>
+                     </h:selectOneMenu>            
+                  </li>
+               </ui:fragment>
+               <ui:fragment rendered="#{var.ProviderSchedule.form.providerSchedule._.period2Code == 'W'}">
+                  <br/>
+                  <li class="weekdays" style="width: 30em; height: 2em; padding: 1em 0 0 0.5em;">
+                     <h:selectOneRadio value="#{var.ProviderSchedule.form.providerSchedule._.period3Index}" styleClass="radio">
+                        <f:selectItem itemValue="7" itemLabel="Sun"/>
+                        <f:selectItem itemValue="1" itemLabel="Mon"/>
+                        <f:selectItem itemValue="2" itemLabel="Tue"/>
+                        <f:selectItem itemValue="3" itemLabel="Wed"/>
+                        <f:selectItem itemValue="4" itemLabel="Thu"/>
+                        <f:selectItem itemValue="5" itemLabel="Fri"/>
+                        <f:selectItem itemValue="6" itemLabel="Sat"/>
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectOneRadio>           
+                  </li>
+               </ui:fragment>
+               <ui:fragment rendered="#{var.ProviderSchedule.form.providerSchedule._.period3Code != 'W' and ! empty var.ProviderSchedule.form.providerSchedule._.subordinatePeriodCodeList(var.ProviderSchedule.form.providerSchedule._.period3Code)}">
+                  <li class="period">         
+                     <h:inputText id="period4Index" value="#{var.ProviderSchedule.form.providerSchedule._.period4Index}" style="width: 2em;">
+                        <f:converter converterId="IntegerConverter"/>
+                     </h:inputText>
+                     <h:commandButton style="width: 2em; font-size: 0.8em;" value="&lt;" action="#{jsf._do(var.ProviderSchedule.form.providerSchedule._.decPeriod4Index()).stay}">
+                        <f:ajax render="period4Index"/>
+                     </h:commandButton>
+                     <h:commandButton style="width: 2em; font-size: 0.8em; margin-right: 1em;" value="&gt;" action="#{jsf._do(var.ProviderSchedule.form.providerSchedule._.incPeriod4Index()).stay}">
+                        <f:ajax render="period4Index"/>
+                     </h:commandButton>
+                     <h:selectOneMenu value="#{var.ProviderSchedule.form.providerSchedule._.period4Code}" style="width: 5em;">
+                        <f:selectItem itemValue="" itemLabel="NONE"/>
+                        <f:selectItems value="#{var.ProviderSchedule.form.providerSchedule._.subordinatePeriodCodeList(var.ProviderSchedule.form.providerSchedule._.period3Code)}" var="periodCode" itemLabel="#{var.ProviderSchedule.form.providerSchedule._.periodMap[periodCode]}" itemValue="#{periodCode}"/>
+                        <f:ajax execute="@form" render="@form" event="change" onevent="ajaxEventHandler"/>
+                     </h:selectOneMenu>            
+                  </li>
+               </ui:fragment>
+               <ui:fragment rendered="#{var.ProviderSchedule.form.providerSchedule._.period3Code == 'W'}">
+                  <br/>
+                  <li class="weekdays" style="width: 30em; height: 2em; padding: 1em 0 0 0.5em;">
+                     <h:selectOneRadio value="#{var.ProviderSchedule.form.providerSchedule._.period4Index}" styleClass="radio">
+                        <f:selectItem itemValue="7" itemLabel="Sun"/>
+                        <f:selectItem itemValue="1" itemLabel="Mon"/>
+                        <f:selectItem itemValue="2" itemLabel="Tue"/>
+                        <f:selectItem itemValue="3" itemLabel="Wed"/>
+                        <f:selectItem itemValue="4" itemLabel="Thu"/>
+                        <f:selectItem itemValue="5" itemLabel="Fri"/>
+                        <f:selectItem itemValue="6" itemLabel="Sat"/>
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectOneRadio>           
+                  </li>
+               </ui:fragment>
+            </ui:fragment>
+            <br/>
+            <li class="em8">
+               #{var.ProviderSchedule.form.startTime._ == null ? var.ProviderSchedule.form.startTime._(biz.parseTime('9:00 AM')) : null}
+               <label>Start Time:</label>
+               <h:inputText value="#{var.ProviderSchedule.form.startTime._}" styleClass="ptTimeSelect">
+                  <f:convertDateTime pattern="h:mm a"/>
+               </h:inputText>
+            </li>
+            <li class="em8">
+               #{var.ProviderSchedule.form.endTime._ == null ? var.ProviderSchedule.form.endTime._(biz.parseTime('5:00 PM')) : null}
+               <label>End Time:</label>
+               <h:inputText value="#{var.ProviderSchedule.form.endTime._}" styleClass="ptTimeSelect">
+                  <f:convertDateTime pattern="h:mm a"/>
+               </h:inputText>
+            </li>
+            <li class="em8" style="height:1em;">
+               <h:commandButton style="width: 9em; font-size: 0.8em;" value="Add Time Period" action="#{jsf._do(var.ProviderSchedule.form.providerSchedule._.addScheduleTime(var.ProviderSchedule.form.startTime._, var.ProviderSchedule.form.endTime._)).stay}">
+                  <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+               </h:commandButton>
+            </li>
+            <li class="em8">
+               <h:panelGroup styleClass="errors" rendered="#{var.ProviderSchedule.form.providerScheduleValidationMap._ != null and var.ProviderSchedule.form.providerScheduleValidationMap._.emptyTimePeriod}">
+                  At least one Time Period is required for Service
+               </h:panelGroup>
+            </li>
+            <ui:repeat value="#{var.ProviderSchedule.form.providerSchedule._.providerScheduleTimeList}" var="scheduleTime">
+               <br/>
+               <li style="margin-left: 0.5em; height: 1.5em; margin-top: 0.5em;" title="Click to Remove">
+                  <h:commandLink  onclick="if(confirm('Remove Time Period?')) return true; else return false;" action="#{jsf._do(jsf.removeObj(var.ProviderSchedule.form.providerSchedule._.providerScheduleTimeList, scheduleTime)).stay}" styleClass="colored">
+                     <h:outputText value="#{scheduleTime.startTime}">
+                        <f:convertDateTime pattern="h:mm a" locale="en"/>
+                     </h:outputText>
+                     <h:outputText value=" — "/>
+                     <h:outputText value="#{scheduleTime.endTime}">
+                        <f:convertDateTime pattern="h:mm a" locale="en"/>
+                     </h:outputText>
+                  </h:commandLink>
+               </li>
+            </ui:repeat>
+            <li class="em48">
+               <label>Note:</label>
+               <h:inputText value="#{var.ProviderSchedule.form.providerSchedule._.note}"/>
+            </li>
+            <li class="em48" style="height: 1.5em; padding: 0.5em 0 0 0.5em; ">
+               <label>One Time Period has the highest priority. Day Off/Vacation has higher priority than Service.</label>
+            </li>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

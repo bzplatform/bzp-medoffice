@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:include src="../../template/sorter.xhtml">
+            <ui:param name="listId" value="#{listId}"/>
+            <ui:param name="object" value="patientAuthorization"/>
+         </ui:include>
+         <div class="tablecounter">#{patientAuthorizationList.size()}</div>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{patientAuthorizationList}" var="patientAuthorization" rendered="#{not empty patientAuthorizationList}" styleClass="tablesorter #{listId}Table">
+               <h:column rendered="#{selectionMap != null}">
+                  <f:facet name="header">
+                     <h:outputText value="" styleClass="nosort"/>
+                  </f:facet>
+                  <h:selectBooleanCheckbox value="#{selectionMap[patientAuthorization]}" style="margin:0;"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.id._}">
+                  <f:facet name="header">
+                     <h:outputText value="ID"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.id}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.created._}">
+                  <f:facet name="header">
+                     <h:outputText value="Created"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.created}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{tableConfig.startDate._}">
+                  <f:facet name="header">
+                     <h:outputText value="Start Date"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.startDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{tableConfig.expirationDate._}">
+                  <f:facet name="header">
+                     <h:outputText value="Exp. Date"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.expirationDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>               
+               <h:column rendered="#{tableConfig.patient._}">
+                  <f:facet name="header">
+                     <h:outputText value="Patient"/>
+                  </f:facet>
+                  <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(edi.patient(patientAuthorization.patientId)))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" style="color: black;">
+                     <h:outputText value="#{edi.patient(patientAuthorization.patientId).lastName}, #{edi.patient(patientAuthorization.patientId).firstName}"/>
+                  </h:commandLink>
+               </h:column>
+               <h:column rendered="#{tableConfig.patient._}">
+                  <f:facet name="header">
+                     <h:outputText value="MRN" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.patientId}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.specialty._}">
+                  <f:facet name="header">
+                     <h:outputText value="Specialty"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.specialty.name}" rendered="#{patientAuthorization.specialty != null}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.insurance._}">
+                  <f:facet name="header">
+                     <h:outputText value="Insurance"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.insurance.name}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.provider._}">
+                  <f:facet name="header">
+                     <h:outputText value="Provider"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.provider.lastName}, #{patientAuthorization.provider.firstName}" rendered="#{patientAuthorization.provider != null}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.number._}">
+                  <f:facet name="header">
+                     <h:outputText value="Auth. Number"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.number}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.count._}">
+                  <f:facet name="header">
+                     <h:outputText value="Count"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.count}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.usedCount._}">
+                  <f:facet name="header">
+                     <h:outputText value="Used"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.usedCount}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.note._}">
+                  <f:facet name="header">
+                     <h:outputText value="Note" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.note}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.status._}">
+                  <f:facet name="header">
+                     <h:outputText value="Status"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAuthorization.status}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.action._}">
+                  <f:facet name="header">
+                     <h:outputText value="Action" styleClass="nosort"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.PatientAuthorization.form.put('patientAuthorization', patientAuthorization)).
+                                           _to('PatientAuthorization/edit').go}"
+                                 style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"
+                                 value="Edit..."/>
+                  <h:commandButton action="#{jsf._delete(patientAuthorization).
+                                             _do(var.Patient.PatientAuthorization.search._(null)).stay}"
+                                   styleClass="intable-action"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"
+                                   rendered="#{access.isUriPermitted('PatientAuthorization/remove')}"
+                                   onclick="if (confirm('Delete Authorization?')) return true; else return false;"
+                                   value="Remove">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>                  
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

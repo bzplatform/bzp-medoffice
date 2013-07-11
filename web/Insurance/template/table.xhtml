@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:include src="../../template/sorter.xhtml">
+            <ui:param name="listId" value="#{listId}"/>
+            <ui:param name="object" value="insurance"/>
+         </ui:include>
+         <div class="tablecounter">#{insuranceList.size()}</div>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{insuranceList}" var="insurance" rendered="#{not empty insuranceList}" styleClass="tablesorter #{listId}Table">
+               <h:column rendered="#{selectionMap != null}">
+                  <f:facet name="header">
+                     <h:outputText value="" styleClass="nosort"/>
+                  </f:facet>
+                  <h:selectBooleanCheckbox value="#{selectionMap[insurance]}" style="margin:0;"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.id._}">
+                  <f:facet name="header">
+                     <h:outputText value="ID"/>
+                  </f:facet>
+                  <h:outputText value="#{insurance.id}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Name"/>
+                  </f:facet>
+                  <h:outputText value="#{insurance.name}"/>
+               </h:column>            
+               <h:column rendered="#{tableConfig.action._}">
+                  <f:facet name="header">
+                     <h:outputText value="Action" styleClass="nosort"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.Insurance.form.insurance._(insurance)).
+                                             _do(var.Insurance.form.insuranceList._(insuranceList)).
+                                           _to('Insurance/edit').go}"
+                                 style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                 value="Edit..."/>
+                  <h:commandButton action="#{jsf._do(jsf.removeObj(insuranceList, insurance))._delete(insurance).stay}"
+                                   styleClass="intable-action"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"
+                                   rendered="#{access.isUriPermitted('Insurance/remove')}"
+                                   onclick="if (confirm('Remove #{insurance.name}?')) return true; else return false;"
+                                   value="Remove">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>                  
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

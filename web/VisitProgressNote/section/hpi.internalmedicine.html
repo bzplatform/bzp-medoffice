@@ -1,0 +1,49 @@
+<table>
+   <tr>
+      <th style="width: 20%;">Location</th>
+      <td>
+         <div class="pntl-section" data-section="hpiLocation">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 12em;"/>
+            </div>
+         </div>
+      </td>
+      <th style="width: 10%;">Duration</th>
+      <td>
+         <div class="pntl-section" data-section="hpiDuration">
+            <input type="text" data-name="duration" style="width: 3em; margin-right: 0.5em;"/>
+            <select data-text-if="duration" data-name="unit" style="width: 5em;">
+               <option value="hours">hours</option>
+               <option value="days">days</option>
+               <option value="weeks">weeks</option>
+               <option value="months">months</option>
+            </select> 
+         </div>
+      </td>
+      <th style="width: 15%;">Severity (1-10)</th>
+      <td>
+         <div class="pntl-section" data-section="hpiSeverity">
+            <input type="text" data-name="severity" style="width: 4em;"/>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>AS&amp;S</th>
+      <td colspan="5">
+         <div class="pntl-section" data-section="hpiAssociatedSignsAndSymptoms">            
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 42em;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td colspan="6">
+         <div class="pntl-section" data-section="hpiFreeFormText">
+            <div data-text-if="other">
+               <textarea data-name="other" style="width: 98%; height: 4em;"/>
+               </textarea>
+            </div>
+      </td>
+   </tr>
+</table>

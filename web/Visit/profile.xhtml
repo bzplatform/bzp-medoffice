@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition template="../template/base.xhtml">
+
+         <ui:define name="title">
+            Medical Care: Superbill Form
+         </ui:define>
+
+         <ui:define name="navigation">
+            <ui:include src="../template/tab-navigation.xhtml"/>
+         </ui:define>
+
+         <ui:define name="form">
+            <div class="column">
+               <div class="menu form">
+                  <div class="header">
+                     <h3 class="center">Superbill Form for Visit of #{var.Visit.specialty.visit.patient.lastName}, #{var.Visit.specialty.visit.patient.firstName}</h3>
+                  </div>
+                  <div class="body">
+                     <div style="width:44.5em; margin-bottom: 2em;">
+                        <ui:include src="template/profile-form.xhtml"/>
+                     </div>
+                  </div>
+                  <div class="footer" style="position:fixed; bottom: 0; height: 40px; width:45.5em; border: solid 1px; margin-left: -1px;">
+                     <h:commandButton action="#{jsf._do(biz.adaptVisit(var.Visit.specialty.visit, var.Visit.specialty.procedure,var.Visit.specialty.diagnosis, var.Visit.specialty.laboratoryDiagnosis, var.Visit.provider.procedure)).
+                                                _do(var.Visit.specialty.save._ ? jsf._save(var.Visit.specialty.visit).stay() : null).
+                                                _do(var.Visit.specialty.$)._do(var.Visit.provider.$).back}"
+                                      style="display: none;"
+                                      styleClass="ok-button-post" value="OK"/>
+                     <h:commandButton action="#{jsf._do(var.Visit.specialty.view._('default'))._do(var.Visit.specialty.action._('ok')).stay}" styleClass="ok-button" value="OK"/>
+                     <ui:fragment rendered="#{var.Visit.specialty.action._ == 'ok'}">
+                        <script>
+                           okPost();
+                        </script>
+                     </ui:fragment>
+                     <h:commandButton action="#{jsf._do(var.Visit.specialty.$)._do(var.Visit.provider.$).back}" value="Cancel" immediate="true" styleClass="cancel-button"/>
+                  </div>
+               </div>
+            </div>
+         </ui:define>
+
+      </ui:composition>
+
+   </body>
+</html>

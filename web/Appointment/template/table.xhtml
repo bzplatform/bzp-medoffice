@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <!--<ui:include src="../../template/sorter.xhtml">
+             <ui:param name="listId" value="#{listId}"/>
+             <ui:param name="object" value="appointment"/>
+         </ui:include>-->
+         <div class="tablecounter">#{appointmentList.size()}</div>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{appointmentList}" var="appointment" rendered="#{not empty appointmentList}" styleClass="tablesorter #{listId}Table">
+               <h:column rendered="#{selectionMap != null}">
+                  <f:facet name="header">
+                     <h:outputText value="" styleClass="nosort"/>
+                  </f:facet>
+                  <h:selectBooleanCheckbox value="#{selectionMap[appointment]}" style="margin:0;"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.id._}">
+                  <f:facet name="header">
+                     <h:outputText value="ID"/>
+                  </f:facet>
+                  <h:outputText value="#{appointment.id}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.date._}">
+                  <f:facet name="header">
+                     <h:outputText value="Date"/>
+                  </f:facet>
+                  <h:outputText value="#{appointment.date}">
+                     <f:convertDateTime pattern="MM/dd/yyyy, EEE"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{tableConfig.time._}">
+                  <f:facet name="header">
+                     <h:outputText value="Time" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{appointment.time}">
+                     <f:convertDateTime pattern="h:mm a"/>
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Cat." styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{appointment.category.shortName}" style="padding: 0.1em; border-radius: 2px;#{appointment.category.css}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.duration._}">
+                  <f:facet name="header">
+                     <h:outputText value="Min" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{appointment.duration}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.patient._}">
+                  <f:facet name="header">
+                     <h:outputText value="Patient"/>
+                  </f:facet>
+                  <ui:fragment rendered="#{!(! empty patientList and patientList.size() == 1 and appointment.patient.id == patientList[0].id)}">
+                     <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(appointment.patient))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" title="Select Patient &amp; Navigate to Patient tab" style="color: black;">
+                        <h:outputText value="#{appointment.patient.lastName}#{appointment.patient.firstName.trim() != '' ? ', ' : ''}#{appointment.patient.firstName}"/>
+                     </h:commandLink>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! empty patientList and patientList.size() == 1 and appointment.patient.id == patientList[0].id}">
+                     <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(appointment.patient))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" title="Navigate to Patient tab" style="color: black;">
+                        <h:outputText style="font-weight: bold;" value="#{appointment.patient.lastName}#{appointment.patient.firstName.trim() != '' ? ', ' : ''}#{appointment.patient.firstName}"/>
+                     </h:commandLink>  
+                  </ui:fragment>
+               </h:column>
+               <h:column rendered="#{tableConfig.patient._}">
+                  <f:facet name="header">
+                     <h:outputText value="MRN" styleClass="nosort"/>
+                  </f:facet>
+                  <ui:fragment rendered="#{!(! empty patientList and patientList.size() == 1 and appointment.patient.id == patientList[0].id)}">
+                     <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(appointment.patient)).stay}" title="Select Patient" value="#{appointment.patient.id}" style="color: black;">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandLink>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! empty patientList and patientList.size() == 1 and appointment.patient.id == patientList[0].id}">                    
+                     <h:outputText style="font-weight: bold;" value="#{appointment.patient.id}"/>
+                  </ui:fragment>
+               </h:column>
+               <h:column rendered="#{tableConfig.insurance._}">
+                  <f:facet name="header">
+                     <h:outputText value="Insurance(s)"/>
+                  </f:facet>
+                  <table style="font-size: 1em;">
+                     <ui:repeat value="#{appointment.patient.insuranceList}" var="patientInsurance" varStatus="patientInsuranceStatus">
+                        <tr>
+                           <td>
+                              #{patientInsurance.insurance.name}
+                              <ui:fragment rendered="#{patientInsurance.insurance.planType == 'HM'}">
+                                 <br/><b>PCP:</b>
+                                 <h:outputText value=" #{biz.referringProvider(patientInsurance.primaryCarePhysicianId).lastName}, #{biz.referringProvider(patientInsurance.primaryCarePhysicianId).firstName}" rendered="#{patientInsurance.primaryCarePhysicianId != null and patientInsurance.primaryCarePhysicianId != 0}"/>
+                                 <h:graphicImage value="/theme/#{cookie.theme.value}/image/error.png" style="position: relative; top:2px; left:2px;"
+                                                 rendered="#{patientInsurance.primaryCarePhysicianId == null or patientInsurance.primaryCarePhysicianId == 0}" title="Not assigned PCP!"/>
+                              </ui:fragment>
+                           </td>
+                        </tr>
+                     </ui:repeat>
+                  </table>
+               </h:column>
+               <h:column rendered="#{tableConfig.provider._}">
+                  <f:facet name="header">
+                     <h:outputText value="Provider"/>
+                  </f:facet>
+                  <h:outputText value="#{appointment.provider.alias}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.referringProvider._}">
+                  <f:facet name="header">
+                     <h:outputText value="Ref. Provider"/>
+                  </f:facet>
+                  <ui:fragment rendered="#{biz.referringProvider(appointment.referringDoctorID) != null }">
+                     <h:outputText value="#{biz.referringProvider(appointment.referringDoctorID).lastName}, #{biz.referringProvider(appointment.referringDoctorID).firstName}"/>
+                  </ui:fragment>
+               </h:column>
+               <h:column rendered="#{tableConfig.authorizationNumber._}">
+                  <f:facet name="header">
+                     <h:outputText value="Auth.&nbsp;#" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{appointment.authorizationNumber}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.chartVolume._}">
+                  <f:facet name="header">
+                     <h:outputText value="Chart"/>
+                  </f:facet>
+                  #{var.Appointment.table.maxChartVolumeNumber.containsKey(appointment.patient.id) ? null : var.Appointment.table.maxChartVolumeNumber.put(appointment.patient.id, biz.maxChartVolumeNumber(appointment.patient.id))}
+                  <h:outputText value="Vol. #{var.Appointment.table.maxChartVolumeNumber[appointment.patient.id]}" rendered="#{! empty var.Appointment.table.maxChartVolumeNumber.containsKey[appointment.patient.id] and var.Appointment.table.maxChartVolumeNumber[appointment.patient.id] &gt; 0}"/>
+                  <h:graphicImage value="/theme/#{cookie.theme.value}/image/error.png" style="position: relative; top:2px; left:2px;"
+                                  rendered="#{var.Appointment.table.maxChartVolumeNumber[appointment.patient.id] == null}" title="No Chart"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.chartLocation._}">
+                  <f:facet name="header">
+                     <h:outputText value="Chart&nbsp;Location"/>
+                  </f:facet>                       
+                  <h:outputText value="#{patientChartActivityMap[appointment.patient.id].location.name}" rendered="#{patientChartActivityMap != null and patientChartActivityMap.containsKey(appointment.patient.id)}" style="max-width: 20em;"/>                   
+               </h:column>
+               <h:column rendered="#{tableConfig.action._}">
+                  <f:facet name="header">
+                     <h:outputText value="Action"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.Appointment.reschedule._(null)).stay}"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto; color: red;"
+                                   rendered="#{var.Appointment.reschedule._ == appointment}"
+                                   value="Cancel Reschedule Appointment"/>
+                  <ui:fragment rendered="#{var.Appointment.reschedule._ != appointment}">
+                     <h:commandButton action="#{jsf.go(biz.policyIdIssue(appointment.patient.id) ? jsf._do(var.alert._('Insurance Member ID is undefined. Enter Member ID and Make Visit'))._to('alert').go() : jsf._do(biz.appointmentToVisit(appointment.id))._do(jsf.global('officeProvider', 'event').put('refresh', true)).stay())}" 
+                                      value="Create Visit" style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"
+                                      disabled="#{! biz.todayOrBefore(appointment.date)}"/>
+                     <input type="button" value="More ▼" class="context-menu-button" style="margin: 0; font-size: 0.8em; width: auto;"/>
+                     <div style="display: none;">                    
+                        <h:commandLink action="#{jsf._do(var.Appointment.form.appointment._(appointment))._to('Appointment/edit').go}"
+                                       style="margin-right: 1em;"
+                                       value="Edit Appointment"/>
+                        <h:commandLink action="#{jsf._do(var.Appointment.form.appointment._(appointment))._do(jsf.global('officeProvider', 'event').put('refresh', true))._do(var.Patient.timePeriodManagerList._(null))._do(var.OfficeProvider.timePeriodManagerList._(null))._to('Appointment/cancel').go}"
+                                       style="margin-right: 1em;"
+                                       value="Cancel Appointment"/>
+                        <h:commandLink action="#{jsf._do(var.Appointment.reschedule._(appointment)).stay}"
+                                       style="margin-right: 0;"
+                                       value="Reschedule Appointment"/>
+                     </div>
+                  </ui:fragment>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

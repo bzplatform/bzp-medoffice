@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="toolbar">
+             <h:panelGroup rendered="#{searchRendered != null}">
+               <h:selectBooleanCheckbox value="#{searchRendered}" onchange="document.forms[0].submit()"/>
+               <label>Show Search</label>
+            </h:panelGroup>
+         </div>
+         <h:panelGroup rendered="#{searchRendered != null and searchRendered}">
+            <div class="menu form">
+               <div class="header">
+                  <h3 class="center">Search</h3>
+               </div>
+               <div class="body">
+                  <ul class="vertical form-area grid g32">
+                      <li class="em6">
+                        <label for="id" class="vlabel">ID:</label>
+                        <h:inputText id="id" value="#{search['id']}" title="ID">
+                           <f:converter converterId="IntegerConverter"/>
+                        </h:inputText>
+                        <h:message for="startDate" errorClass="error"/>
+                     </li>
+                     <li class="em13">
+                        <label for="startDate" class="vlabel">Start Date:</label>
+                        <h:inputText id="startDate" value="#{search['start_date']}" title="Start Date" styleClass="djsf_DateTextBox">
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                        </h:inputText>
+                        <h:message for="startDate" errorClass="error"/>
+                     </li>
+                     <li class="em13">
+                        <label for="endDate" class="vlabel">End Date:</label>
+                        <h:inputText id="endDate" value="#{search['end_date']}" title="End Date" styleClass="djsf_DateTextBox">
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                        </h:inputText>
+                        <h:message for="endDate" errorClass="error"/>
+                     </li>
+                     <li class="em16">
+                        <label for="specialty" class="vlabel">Specialty:</label>
+                        <h:selectOneMenu id="specialty" value="#{search['specialtyID']}" title="Specialty" onchange="document.forms[0].submit()">
+                           <f:selectItem itemValue="#{null}" itemLabel="ALL"/>
+                           <f:selectItems value="#{jsf.findByNamedQuery('Specialty.findAll', jsf.newMap())}" itemValue="#{specialty.specialtyID}" var="specialty" itemLabel="#{specialty.name}"/>
+                           <f:converter converterId="IntegerConverter"/>
+                        </h:selectOneMenu>
+                        <h:message for="specialty" errorClass="error"/>
+                     </li>
+                     <li class="em16">
+                        <label for="provider" class="vlabel">Provider:</label>
+                        <h:selectOneMenu id="provider" value="#{search['provider']}" title="Provider" >
+                           <f:selectItem itemValue="#{null}" itemLabel="ALL"/>
+                           <f:selectItems value="#{search['specialtyID'] == null ? jsf.findByNamedQuery('Provider.findAll', jsf.newMap()) : jsf.findByNamedQuery('Provider.findBySpecialtyId', jsf.newMap().add('specialtyId', search['specialtyID']))}" var="provider" itemLabel="#{provider.lastName}"/>
+                           <f:converter converterId="EntityConverter"/>
+                        </h:selectOneMenu>
+                        <h:message for="provider" errorClass="error"/>
+                     </li>                   
+                  </ul>
+               </div>
+               <div class="footer">
+                  <h:commandButton action="#{jsf._runSearch('Visit').stay}" value="Search" styleClass="cancel-button"/>
+               </div>
+            </div>
+         </h:panelGroup>
+      </ui:composition>
+   </body>
+</html>

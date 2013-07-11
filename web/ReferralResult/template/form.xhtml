@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! empty var.ReferralResult.form}">
+            #{var.ReferralResult.categoryList._ == null ? var.ReferralResult.categoryList._(jsf.search('ReferralResultCategory', 'r.name', jsf.newMap())) : null}
+            <li class="em12">
+               <h:panelGroup styleClass="errors" rendered="#{var.ReferralResult.form.referralResult.category == null}">
+                  <b>Category</b> is required
+               </h:panelGroup>
+               <label>Category:</label>
+               <h:selectOneMenu value="#{var.ReferralResult.form.referralResult.category}" title="Category">
+                  <f:selectItem itemValue="#{null}" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.ReferralResult.categoryList._}" var="category" itemLabel="#{category.name}"/>
+                  <f:converter converterId="EntityConverter"/>
+                  <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler"/>
+               </h:selectOneMenu>
+            </li>
+            #{var.ReferralResult.form.facilityList._ == null ? var.ReferralResult.form.facilityList._(jsf.search('ReferralFacility', 'r.category, r.name', jsf.newMap())) : null}
+            <li class="em12">
+               <label>Medical Facility:</label>
+               <h:selectOneMenu value="#{var.ReferralResult.form.referralResult.facility}" title="Medical Facility">
+                  <f:selectItem itemValue="#{null}" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.ReferralResult.form.facilityList._}"
+                                 var="facility" itemLabel="#{facility.name}"/>
+                  <f:converter converterId="EntityConverter"/>
+               </h:selectOneMenu>
+            </li>
+            #{empty var.ReferralResult.form.providerList ? jsf._do(var.ReferralResult.form.put('providerList', jsf.search('Provider', 'p.lastName', jsf.newMap()))).stay() : null}
+            <li class="em12">
+               <h:panelGroup styleClass="errors" rendered="#{var.ReferralResult.form.referralResult.provider == null}">
+                  <b>Referring Provider</b> is required
+               </h:panelGroup>
+               <label>Referring Provider:</label>
+               <h:selectOneMenu value="#{var.ReferralResult.form.referralResult.provider}" title="Provider">
+                  <f:selectItem itemValue="#{null}" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.ReferralResult.form.providerList}" var="provider" itemLabel="#{provider.lastName}, #{provider.firstName}"/>
+                  <f:converter converterId="EntityConverter"/>
+                  <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.ReferralResult.form.referralResult.setOfficeProvider(biz.officeProviderByReferringProvider(var.ReferralResult.form.referralResult.provider, myOfficeCode))).listen}"/>
+               </h:selectOneMenu>
+            </li>
+            #{empty var.ReferralResult.form.specialtyList ? jsf._do(var.ReferralResult.form.put('specialtyList', jsf.search('Specialty', 's.name', jsf.newMap()))).stay() : null}
+            <li class="em12">
+               <label>Specialty:</label>
+               <h:selectOneMenu value="#{var.ReferralResult.form.referralResult.specialty}" title="Specialty">
+                  <f:selectItem itemValue="#{null}" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.ReferralResult.form.specialtyList}" var="specialty" itemLabel="#{specialty.name}"/>
+                  <f:converter converterId="EntityConverter"/>
+               </h:selectOneMenu>
+            </li>
+            <li style="margin-bottom: 1em;">
+               <h:panelGroup styleClass="errors" rendered="#{var.ReferralResult.form.referralResult.procedure == null and (var.ReferralResult.form.referralResult.category.name != 'Consultation' and var.ReferralResult.form.referralResult.category.name != 'Hospital Admission')}">
+                  <b>Procedure</b> is required for this category
+               </h:panelGroup>
+               <label>
+                  Procedure:
+                  <h:outputText value="NONE" style="margin-left: 0.5em; font-style: italic;" rendered="#{var.ReferralResult.form.referralResult.procedure == null}"/>
+                  <h:commandLink onclick="if(confirm('Clear Procedure?')) return true; else return false;" rendered="#{var.ReferralResult.form.referralResult.procedure != null}" action="#{jsf._do(var.ReferralResult.form.referralResult.setProcedure(null)).stay}" styleClass="colored">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                     <h:outputText title="#{var.ReferralResult.form.referralResult.procedure.name}" value="#{var.ReferralResult.form.referralResult.procedure.name}" style="margin-left: 0.5em;"/> 
+                  </h:commandLink>                               
+               </label>
+               #{empty var.ReferralResult.form.procedureCategoryList ? jsf._do(var.ReferralResult.form.put('procedureCategoryList', jsf.search('ReferralProcedureCategory', 'r.name', jsf.newMap()))).stay() : null}
+               <div style="border: solid 1px black; padding: 0.3em 0; width:48em; margin-bottom: 2em;">
+                  <label style="display:inline; padding-right: 0 !important;">By:</label>
+                  #{var.ReferralResult.form.procedureSelectBy._ == null ? var.ReferralResult.form.procedureSelectBy._('CATEGORY') : null}
+                  <h:selectOneMenu id="procedureSelectBy" value="#{var.ReferralResult.form.procedureSelectBy._}" style="width:7em;">
+                     <f:selectItem itemValue="CATEGORY" itemLabel="Category"/>
+                     <f:selectItem itemValue="SEARCH" itemLabel="Search"/>
+                     <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.ReferralResult.form.procedure.search.clear())._do(var.ReferralResult.form.procedureCategoryId._(null))._do(var.ReferralResult.form.procedureSearchText._(null)).listen}"/>
+                  </h:selectOneMenu>
+                  <ui:fragment rendered="#{var.ReferralResult.form.procedureSelectBy._ == 'CATEGORY'}">
+                     <label style="display:inline; padding-right: 0 !important;">Category:</label>
+                     <h:selectOneMenu id="procedureCategory" value="#{var.ReferralResult.form.procedureCategoryId._}" title="Category" style="width:8em;">
+                        <f:selectItem itemValue="_NONE" itemLabel="NONE"/>
+                        <f:selectItems value="#{var.ReferralResult.form.procedureCategoryList}"
+                                       var="procedureCategory" itemLabel="#{procedureCategory.name}" itemValue="#{procedureCategory.id}"/>
+                        <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.ReferralResult.form.procedure.search.put('_r.categoryId LIKE :categoryId', var.ReferralResult.form.procedureCategoryId._)).
+                                                                                                                     _do(var.ReferralResult.form.procedureCategoryId._ == '_NONE' ? var.ReferralResult.form.procedure.list._(null) : var.ReferralResult.form.procedure.list._(jsf.search('ReferralProcedure', 'r.name', var.ReferralResult.form.procedure.search.map())))._do(var.ReferralResult.form.procedure.add._(null)).listen}"/>
+                     </h:selectOneMenu>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{var.ReferralResult.form.procedureSelectBy._ == 'SEARCH'}">
+                     <h:inputText value="#{var.ReferralResult.form.procedureSearchText._}" title="Search" style="width:8em;">
+                        <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.ReferralResult.form.procedure.search.put('_r.name LIKE :name', (empty var.ReferralResult.form.procedureSearchText._ ? null : '%'.concat(var.ReferralResult.form.procedureSearchText._).concat('%')))).listen}"/>
+                     </h:inputText>
+                     <h:commandButton action="#{jsf._do(empty var.ReferralResult.form.procedureSearchText._ ? var.ReferralResult.form.procedure.list._(null) : var.ReferralResult.form.procedure.list._(jsf.search('ReferralProcedure', 'r.name', var.ReferralResult.form.procedure.search.map())))._do(var.ReferralResult.form.procedure.add._(null)).stay}"
+                                      value="Search" style="width:4.5em;">
+                        <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton> 
+                  </ui:fragment>
+                  <h:selectOneMenu id="procedure" value="#{var.ReferralResult.form.procedure.add._}" title="Procedure" style="width:15em;">
+                     <f:selectItems value="#{var.ReferralResult.form.procedure.list._}"
+                                    var="procedure" itemLabel="#{procedure.name}"/>
+                     <f:converter converterId="EntityConverter"/>
+                  </h:selectOneMenu>
+                  <h:commandButton action="#{jsf._do(var.ReferralResult.form.referralResult.setProcedure(var.ReferralResult.form.procedure.add._)).stay}"
+                                   value="Assign" style="width:4.5em;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>                  
+               </div>
+            </li>
+            <li class="em13">
+               <label for="serviceDate">Service Date:</label>
+               <h:inputText id="serviceDate" value="#{var.ReferralResult.form.referralResult.serviceDate}" title="Service Date" styleClass="djsf_DateTextBox">
+                  <f:convertDateTime pattern="MM/dd/yy"/>
+               </h:inputText>
+            </li>
+            <li class="em35">
+               <label>Note:</label>
+               <h:inputText value="#{var.ReferralResult.form.referralResult.note}" title="Note"/>
+            </li>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="menu form">
+            <div class="header">
+               <h3 class="center">Search for a source patient to merge</h3>
+            </div>
+            #{jsf._do(var.Patient.MergeSearch.close()).stay()}
+            <div class="body">
+               <ul class="vertical form-area grid g32">
+                  <li class="em6">
+                     <label class="vlabel">MRN:</label>
+                     <h:inputText value="#{var.Patient.MergeSearch['id']}" title="ID" onkeypress="return searchEnterKeyHandler(event)"/>
+                   </li>
+                  <li class="em13">
+                     <label class="vlabel">Last Name:</label>
+                     <h:inputText value="#{var.Patient.MergeSearch['lastName']}" title="Last Name"/>
+                  </li>
+                  <li class="em13">
+                     <label class="vlabel">First Name:</label>
+                     <h:inputText value="#{var.Patient.MergeSearch['firstName']}" title="First Name"/>
+                  </li>
+                  <li class="em13">
+                     <label class="vlabel">Birth Date:</label>
+                     <h:inputText value="#{var.Patient.MergeSearch['birthDate']}" title="Birth Date" styleClass="mask-date">
+                        <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+                     </h:inputText>
+                  </li>
+                  <li class="em10">
+                     <label class="vlabel">Home Phone:</label>
+                     <h:inputText value="#{var.Patient.MergeSearch['homePhone']}" title="Home Phone" styleClass="mask-phone"/>
+                  </li>
+                  <li class="em9">
+                     <label class="vlabel">SSN:</label>
+                     <h:inputText value="#{var.Patient.MergeSearch['ssn']}" title="SSN" styleClass="mask-ssn"/>
+                  </li>
+               </ul>
+            </div>
+            <div class="footer">           
+               <h:commandButton action="#{jsf._do(var.Patient.MergeSearch.put('birthDate', biz.secureDate(var.Patient.MergeSearch['birthDate']))).
+                                          _do(var.Patient.MergeSearch.put('id', biz.secureId(var.Patient.MergeSearch['id']))).
+                                          _do(var.Patient.Merge.list._(jsf.search('Patient', 'p.lastName, p.firstName', var.Patient.MergeSearch))).stay}"
+                                value="Search" styleClass="ok-button"/>
+               <h:commandButton action="#{jsf._do(var.Patient.MergeSearch.clear()).stay}" value="Reset" styleClass="cancel-button"/>
+            </div>
+         </div>
+      </ui:composition>
+   </body>
+</html>

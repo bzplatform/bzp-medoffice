@@ -1,0 +1,1188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition template="../template/base.xhtml">
+         <ui:define name="title">
+            Medical Care: Visit
+         </ui:define>
+         <ui:define name="navigation">
+            <ui:include src="../template/tab-navigation.xhtml">
+               <ui:param name="page" value="VisitProgressNote/main"/>
+            </ui:include>
+         </ui:define>
+         <ui:define name="form">
+            <div class="float-right column focus-line" style="margin-bottom: 0; margin-right: 0.3em;">
+               <ui:include src="template/visit-options.xhtml"/>
+            </div>
+            <div class="float-left" jsfc="h:panelGroup" rendered="#{officeProviderList != null and officeProviderList.size() == 1}">
+               <h3 class="context-label">#{officeProviderList.get(0).alias}</h3>
+              <!-- <ui:fragment rendered="#{var.VisitProgressNote.visit._ != null}">                  
+                  <h:commandLink action="#{jsf._do(var.VisitProgressNote.report.visit._(var.VisitProgressNote.visit._))._to('VisitProgressNote/progress-note').go}"
+                                 value="Progress Note" style="margin: 0; margin-left: 1em; font-size: 0.9em;" target="_blank"/>
+               </ui:fragment> -->
+            </div>
+            <ui:fragment rendered="#{var.VisitProgressNote.visit._ != null}">
+               #{! empty officeProviderList and officeProviderList.size() == 1 and var.VisitProgressNote.visit._.provider.id != officeProviderList[0].id ? var.VisitProgressNote.visit._(null) : var.VisitProgressNote.visit._(biz.refreshedVisit(var.VisitProgressNote.visit._))}
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.visit._ != null}">
+               #{var.VisitProgressNote.visit._(biz.refreshedVisit(var.VisitProgressNote.visit._))}
+               <div class="float-left column">
+                  #{jsf._do(var.VisitProgressNote.singleVisitList.tableConfig.date._ == null ? var.VisitProgressNote.singleVisitList.tableConfig.date._(true) : null).
+                    _do(var.VisitProgressNote.singleVisitList.tableConfig.time._ == null ? var.VisitProgressNote.singleVisitList.tableConfig.time._(true) : null).
+                    _do(var.VisitProgressNote.singleVisitList.tableConfig.patient._ == null ? var.VisitProgressNote.singleVisitList.tableConfig.patient._(true) : null).
+                    _do(var.VisitProgressNote.singleVisitList.tableConfig.action._ == null ? var.VisitProgressNote.singleVisitList.tableConfig.action._(true) : null).
+                    stay()}
+                  #{var.VisitProgressNote.singleVisitList._(jsf.list(var.VisitProgressNote.visit._))}
+                  <ui:include src="../Visit/template/table.xhtml">
+                     <ui:param name="visitList" value="#{var.VisitProgressNote.singleVisitList._}"/>
+                     <ui:param name="tableConfig" value="#{var.VisitProgressNote.singleVisitList.tableConfig}"/>
+                     <ui:param name="noCounter" value="#{true}"/>
+                  </ui:include>
+               </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.provider._}">
+               #{var.VisitProgressNote.providerVisitDate._ == null ? var.VisitProgressNote.providerVisitDate._(biz.trimDate(jsf.newDate)) : null}
+               #{jsf._do(var.VisitProgressNote.providerVisitSearch.clear()).
+                 _do(var.VisitProgressNote.providerVisitSearch.put('start_date', var.VisitProgressNote.providerVisitDate._)).
+                 _do(var.VisitProgressNote.providerVisitSearch.put('end_date', var.VisitProgressNote.providerVisitDate._)).
+                 stay()}
+               #{! empty officeProviderList and officeProviderList.size() == 1 and var.VisitProgressNote.providerVisitSearch._ != var.VisitProgressNote.providerVisitSearch.toString() ?
+                 jsf._do(var.VisitProgressNote.providerVisitSearch.put('provider_dot_id', officeProviderList.get(0).id)).
+                 _do(var.VisitProgressNote.providerVisitList._(jsf.search('Visit', 'v.date DESC, v.time DESC', var.VisitProgressNote.providerVisitSearch, 100))).
+                 _do(var.VisitProgressNote.providerVisitSearch._(var.VisitProgressNote.providerVisitSearch.toString())).
+                 stay() : null}
+               #{empty officeProviderList or officeProviderList.size() &gt; 1 ? jsf._do(var.VisitProgressNote.providerVisitList._(null))._do(var.VisitProgressNote.providerVisitSearch._(null)).stay() : null}
+               #{jsf._do(var.VisitProgressNote.providerVisit.tableConfig.date._ == null ? var.VisitProgressNote.providerVisit.tableConfig.date._(true) : null).
+                 _do(var.VisitProgressNote.providerVisit.tableConfig.time._ == null ? var.VisitProgressNote.providerVisit.tableConfig.time._(true) : null).
+                 _do(var.VisitProgressNote.providerVisit.tableConfig.patient._ == null ? var.VisitProgressNote.providerVisit.tableConfig.patient._(true) : null).
+                 _do(var.VisitProgressNote.providerVisit.tableConfig.action._ == null ? var.VisitProgressNote.providerVisit.tableConfig.action._(true) : null).
+                 _do(var.VisitProgressNote.providerVisit.tableConfig.select._ == null ? var.VisitProgressNote.providerVisit.tableConfig.select._(true) : null).
+                 _do(var.VisitProgressNote.providerVisit.tableConfig.progressNotePlenum._ == null ? var.VisitProgressNote.providerVisit.tableConfig.progressNotePlenum._(true) : null).
+                 stay()}
+               <div class="float-left column">
+                  <h3 class="table-label" style="display:inline-block;">
+                     Visits By Provider
+                     <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                     <span style="display: none;">
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.providerVisit.tableConfig.id._}"/>
+                        <label>ID</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.providerVisit.tableConfig.action._}"/>
+                        <label>Action</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.providerVisit.tableConfig.insurance._}"/>
+                        <label>Insurance</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.providerVisit.tableConfig.procedures._}"/>
+                        <label>Procedures</label>
+                        <div class="separator"/>
+                        <h:commandLink action="#{jsf.stay}" value="Apply">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandLink>
+                     </span>
+                  </h3>
+                  #{var.VisitProgressNote.specialtyList._ == null ? jsf._do(var.VisitProgressNote.specialtyList._(jsf.search('Specialty', 's.name', jsf.newMap()))).stay() : null}
+                  #{jsf._do(var.VisitProgressNote.officeProviderSearch.put('_EXISTS (SELECT mop FROM MyOfficeProvider mop WHERE mop.myOfficeCode = :myOfficeCode AND mop.officeProviderId = o.id)', myOfficeCode)).stay()}
+                  #{jsf._do(var.VisitProgressNote.officeProviderSearch.put('active', true)).stay()}
+                  #{! empty officeProviderList and officeProviderList.size() == 1 and (var.VisitProgressNote.specialtyId._ != officeProviderList[0].specialtyId or var.VisitProgressNote.officeProvider._ != officeProviderList[0]) ? jsf._do(var.VisitProgressNote.specialtyId._(officeProviderList[0].specialtyId))._do(var.VisitProgressNote.officeProvider._(officeProviderList[0])).stay() : null}                                                    
+                  #{var.VisitProgressNote.specialtyId._ == null ? var.VisitProgressNote.specialtyId._(biz.parseInt('1')) : null }
+                  <ui:fragment  rendered="#{access.isUriPermitted('MyOffice/navigation')}">
+                     <label class="vlabel">Specialty:</label>
+                     <h:selectOneMenu value="#{var.VisitProgressNote.specialtyId._}" style="width: 14em;">
+                        <f:selectItems value="#{var.VisitProgressNote.specialtyList._}" itemValue="#{specialty.id}" var="specialty" itemLabel="#{specialty.name}"/>
+                        <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.VisitProgressNote.officeProviderList._(null))._do(var.VisitProgressNote.officeProvider._(null)).
+                                                                                      _do(var.VisitProgressNote.officeProviderSearch.put('specialtyId', biz.parseInt(var.VisitProgressNote.specialtyId._)))._do(var.VisitProgressNote.officeProviderList._(jsf.search('OfficeProvider', 'o.alias', var.VisitProgressNote.officeProviderSearch))).
+                                                                                      _do(! empty var.VisitProgressNote.officeProviderList._ ? var.VisitProgressNote.officeProvider._(var.VisitProgressNote.officeProviderList._[0]) : null)._do(sessionScope.put('officeProviderList', jsf.newObject('java.util.ArrayList')))._do(officeProviderList.add(var.VisitProgressNote.officeProvider._)).listen}"/>
+                        <f:converter converterId="IntegerConverter"/>
+                     </h:selectOneMenu>
+                  </ui:fragment>
+                  #{var.VisitProgressNote.officeProviderList._ == null ? jsf._do(var.VisitProgressNote.officeProviderSearch.put('specialtyId', var.VisitProgressNote.specialtyId._))._do(var.VisitProgressNote.officeProviderList._(jsf.search('OfficeProvider', 'o.alias', var.VisitProgressNote.officeProviderSearch))).stay() : null}
+                  <ui:fragment  rendered="#{access.isUriPermitted('MyOffice/navigation')}">
+                     <label class="vlabel">Provider:</label>
+                     <h:selectOneMenu value="#{var.VisitProgressNote.officeProvider._}" style="width: 16em;">
+                        <f:selectItem itemValue="" itemLabel="NONE"/>
+                        <f:selectItems value="#{var.VisitProgressNote.officeProviderList._}" var="officeProvider" itemLabel="#{officeProvider.alias}"/>
+                        <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(sessionScope.put('officeProviderList', jsf.newObject('java.util.ArrayList')))._do(var.VisitProgressNote.officeProvider._ != null ? officeProviderList.add(var.VisitProgressNote.officeProvider._) : null).listen}"/>
+                        <f:converter converterId="EntityConverter"/>
+                     </h:selectOneMenu>
+                  </ui:fragment>
+                  <br/>
+                  <label for="visit_date" class="vlabel" style="margin-left: 0.6em;">Date:</label>
+                  <h:inputText id="visit_date" value="#{var.VisitProgressNote.providerVisitDate._}" styleClass="djsf_DateTextBox w6">
+                     <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.VisitProgressNote.providerVisitSearch._(null)).listen}"/>
+                     <f:convertDateTime dateStyle="short" locale="en"/>
+                  </h:inputText>
+                  <h:commandButton style="width: 2em; font-size: 0.7em;" value="&lt;" action="#{jsf._do(var.VisitProgressNote.providerVisitDate._(jsf.addDays(var.VisitProgressNote.providerVisitDate._, -1))).stay}">
+                     <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.VisitProgressNote.providerVisitSearch._(null)).listen}"/>
+                  </h:commandButton>
+                  <h:commandButton style="width: 2em; font-size: 0.7em; margin-right: 1em;" value="&gt;" action="#{jsf._do(var.VisitProgressNote.providerVisitDate._(jsf.addDays(var.VisitProgressNote.providerVisitDate._, 1))).stay}">
+                     <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.VisitProgressNote.providerVisitSearch._(null)).listen}"/>
+                  </h:commandButton>                  
+                  <h:commandButton value="Refresh" style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;" action="#{jsf._do(var.VisitProgressNote.providerVisitSearch._(null)).stay}" title="Refresh Visit List">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../Visit/template/table.xhtml">
+                     <ui:param name="listId" value="officeProviderVisitList"/>
+                     <ui:param name="visitList" value="#{var.VisitProgressNote.providerVisitList._}"/>
+                     <ui:param name="autoCloseView" value="#{var.VisitProgressNote.view.provider}"/>
+                     <ui:param name="tableConfig" value="#{var.VisitProgressNote.providerVisit.tableConfig}"/>
+                  </ui:include>
+               </div>
+               <div style="clear: both;"/>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.visit._ and var.VisitProgressNote.visit._ != null}">
+               #{jsf._do(var.VisitProgressNote.patientVisitSearch.put('patient', var.VisitProgressNote.visit._.patient)).
+                 _do(var.VisitProgressNote.patientVisitList._(jsf.search('Visit', 'v.date DESC, v.time DESC', var.VisitProgressNote.patientVisitSearch))).stay()}
+               #{jsf._do(var.VisitProgressNote.patientVisit.tableConfig.date._ == null ? var.VisitProgressNote.patientVisit.tableConfig.date._(true) : null).
+                 _do(var.VisitProgressNote.patientVisit.tableConfig.time._ == null ? var.VisitProgressNote.patientVisit.tableConfig.time._(true) : null).
+                 _do(var.VisitProgressNote.patientVisit.tableConfig.provider._ == null ? var.VisitProgressNote.patientVisit.tableConfig.provider._(true) : null).
+                 _do(var.VisitProgressNote.patientVisit.tableConfig.action._ == null ? var.VisitProgressNote.patientVisit.tableConfig.action._(true) : null).
+                 _do(var.VisitProgressNote.patientVisit.tableConfig.select._ == null ? var.VisitProgressNote.patientVisit.tableConfig.select._(true) : null).
+                 stay()}
+               <div class="float-left column" style="min-width: 40em;">
+                  <h3 class="table-label" style="display: inline;">
+                     Visits of #{var.VisitProgressNote.visit._.patient.lastName}, #{var.VisitProgressNote.visit._.patient.firstName}
+                     <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                     <span style="display: none;">                           
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.patientVisit.tableConfig.id._}"/>                    
+                        <label>ID</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.patientVisit.tableConfig.action._}"/>
+                        <label>Action</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.patientVisit.tableConfig.procedures._}"/>
+                        <label>Procedures</label>
+                        <div class="separator"/>
+                        <h:commandLink action="#{jsf.stay}" value="Apply">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandLink>
+                     </span>
+                  </h3>
+                  <label class="vlabel" style="margin-left: 1em;">For Period:</label>
+                  #{var.VisitProgressNote.patientVisitPeriod._ == null ? var.VisitProgressNote.patientVisitPeriod._('YEAR') : null}
+                  <h:selectOneMenu value="#{var.VisitProgressNote.patientVisitPeriod._}" title="Status" styleClass="w6">
+                     <f:selectItem itemValue="ALL" itemLabel="ALL"/>
+                     <f:selectItem itemValue="YEAR" itemLabel="Past Year"/>
+                     <f:selectItem itemValue="MONTH" itemLabel="Past Month"/>                    
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:selectOneMenu>                     
+                  <br/>
+                  <ui:include src="../Visit/template/table.xhtml">
+                     <ui:param name="listId" value="patientVisitList"/>
+                     <ui:param name="visitList" value="#{biz.filterByPeriod(var.VisitProgressNote.patientVisitList._, var.VisitProgressNote.patientVisitPeriod._)}"/>
+                     <ui:param name="autoCloseView" value="#{var.VisitProgressNote.view.visit}"/>
+                     <ui:param name="tableConfig" value="#{var.VisitProgressNote.patientVisit.tableConfig}"/>
+                  </ui:include>
+               </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.laboratoryOrderTransaction._ and var.VisitProgressNote.visit._ != null}">
+               #{jsf._do(var.VisitProgressNote.laboratoryOrderTransactionSearch.put('visitId', var.VisitProgressNote.visit._.id)).
+                 _do(var.VisitProgressNote.laboratoryOrderTransactionList._(jsf.search('LaboratoryOrderTransaction', 'l.datetime DESC', var.VisitProgressNote.laboratoryOrderTransactionSearch))).
+                 stay()}
+               #{jsf.
+                 _do(jsf.global('laboratoryOrderTransaction', 'show').put('status', true)).
+                 _do(jsf.global('laboratoryOrderTransaction', 'show').put('laboratoryAccount', true)).
+                 _do(jsf.global('laboratoryOrderTransaction', 'show').put('patient', false)).
+                 _do(jsf.global('laboratoryOrderTransaction', 'show').put('button:SubmitToBilling', false)).
+                 stay()}
+               <div class="float-left column">
+                  <h3 class="table-label" style="display:inline-block;">
+                     Laboratory Orders
+                     <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                     <span style="display: none;">
+                        <h:selectBooleanCheckbox value="#{jsf.global('laboratoryOrderTransaction', 'show')['id']}"/>
+                        <label>ID</label>
+                        <h:selectBooleanCheckbox value="#{jsf.global('laboratoryOrderTransaction', 'show')['orderingProvider']}"/>
+                        <label>Ordering Provider</label>
+                        <h:selectBooleanCheckbox value="#{jsf.global('laboratoryOrderTransaction', 'show')['time']}"/>
+                        <label>Time</label>
+                        <h:selectBooleanCheckbox value="#{jsf.global('laboratoryOrderTransaction', 'show')['createdUser']}"/>
+                        <label>Created By</label>                           
+                        <div class="separator"/>
+                        <h:commandLink action="#{jsf.stay}" value="Apply">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandLink>
+                     </span>
+                  </h3>
+                  <h:commandButton action="#{jsf._do(edi.initLaboratoryOrderTransaction(var.VisitProgressNote.visit._))._to('LaboratoryOrderTransaction/profile').go}" value="Add..." style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../LaboratoryOrderTransaction/template/table.xhtml">
+                     <ui:param name="returnTo" value="../VisitProgressNote/main.jsf"/>
+                     <ui:param name="listId" value="visitLaboratoryOrderTransactionList"/>
+                     <ui:param name="laboratoryOrderTransactionList" value="#{var.VisitProgressNote.laboratoryOrderTransactionList._}"/>
+                  </ui:include>
+               </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.laboratoryResultTransaction._ and var.VisitProgressNote.visit._ != null}">
+               #{jsf.
+                 _do(var.VisitProgressNote.laboratoryResultTransactionSearch.put('patientId', var.VisitProgressNote.visit._.patient.id)).
+                 _do(var.VisitProgressNote.laboratoryResultTransactionSearch.put('myOfficeCode', myOfficeCode)).
+                 _do(var.VisitProgressNote.laboratoryResultTransactionSearch.put('_l.status &lt;&gt; :obsolete', 'OBSOLETE')).
+                 _do(var.VisitProgressNote.laboratoryResultTransactionList._(jsf.search('LaboratoryResultTransaction', 'l.datetime DESC', var.VisitProgressNote.laboratoryResultTransactionSearch))).stay()}
+               #{jsf.
+                 _do(jsf.global('laboratoryResultTransaction', 'show').put('status', false)).
+                 _do(jsf.global('laboratoryResultTransaction', 'show').put('received', false)).
+                 _do(jsf.global('laboratoryResultTransaction', 'show').put('laboratoryAccount', true)).
+                 _do(jsf.global('laboratoryResultTransaction', 'show').put('patient', false)).
+                 stay()}
+               <div class="float-left column">
+                  <h3 class="table-label" style="display:inline-block;">
+                     Laboratory Results of #{var.VisitProgressNote.visit._.patient.lastName}, #{var.VisitProgressNote.visit._.patient.firstName}
+                     <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                     <span style="display: none;">
+                        <h:selectBooleanCheckbox value="#{jsf.global('laboratoryResultTransaction', 'show')['id']}"/>
+                        <label>ID</label>
+                        <h:selectBooleanCheckbox value="#{jsf.global('laboratoryResultTransaction', 'show')['orderingProvider']}"/>
+                        <label>Ordering Provider</label>
+                        <h:selectBooleanCheckbox value="#{jsf.global('laboratoryResultTransaction', 'show')['officeProvider']}"/>
+                        <label>Office Provider</label>
+                        <h:selectBooleanCheckbox value="#{jsf.global('laboratoryResultTransaction', 'show')['time']}"/>
+                        <label>Time</label>
+                        <div class="separator"/>
+                        <h:commandLink action="#{jsf.stay}" value="Apply">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandLink>
+                     </span>
+                  </h3>
+                  <br style="margin-bottom: 0.75em;"/>                    
+                  <ui:include src="../LaboratoryResultTransaction/template/table.xhtml">
+                     <ui:param name="listId" value="patientLaboratoryResultTransactionList"/>
+                     <ui:param name="showTests" value="#{true}"/>
+                     <ui:param name="laboratoryResultTransactionList" value="#{var.VisitProgressNote.laboratoryResultTransactionList._}"/>
+                  </ui:include>
+               </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.referral._ and var.VisitProgressNote.visit._ != null}">
+               #{jsf._do(var.VisitProgressNote.referralTableConfig.procedures._ == null ? var.VisitProgressNote.referralTableConfig.procedures._(true) : null).
+                 _do(var.VisitProgressNote.referralTableConfig.provider._ == null ? var.VisitProgressNote.referralTableConfig.provider._(true) : null).
+                 _do(var.VisitProgressNote.referralTableConfig.status._ == null ? var.VisitProgressNote.referralTableConfig.status._(true) : null).
+                 _do(var.VisitProgressNote.referralTableConfig.action._ == null ? var.VisitProgressNote.referralTableConfig.action._(true) : null).
+                 stay()}
+               #{jsf.                
+                 _do(var.VisitProgressNote.referralSearch.put('patientId', var.VisitProgressNote.visit._.patient.id)).
+                 _do(var.VisitProgressNote.referralSearch.put('myOfficeCode', myOfficeCode)).
+                 _do(var.VisitProgressNote.referralSearch.put('date', var.VisitProgressNote.visit._.date)).
+                 _do(var.VisitProgressNote.referralList._(jsf.search('Referral', 'r.created DESC', var.VisitProgressNote.referralSearch))).
+                 stay()}
+               <div class="float-left column" style="min-width: 40em;">
+                  <h3 class="table-label" style="display:inline-block;">
+                     Referrals
+                     <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                     <span style="display: none;">
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralTableConfig.id._}"/>
+                        <label>ID</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralTableConfig.time._}"/>
+                        <label>Time</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralTableConfig.provider._}"/>
+                        <label>Provider</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralTableConfig.procedures._}"/>
+                        <label>Procedures</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralTableConfig.details._}"/>                              
+                        <label>Details</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralTableConfig.status._}"/>                              
+                        <label>Status</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralTableConfig.action._}"/>
+                        <label>Action</label>
+                        <div class="separator"/>
+                        <h:commandLink action="#{jsf.stay}" value="Apply">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandLink>
+                     </span>
+                  </h3>
+                  <h:commandButton action="#{jsf._do(var.Referral.form.put('referral', biz.newReferralFromVisit(var.VisitProgressNote.visit._)))._to('Referral/new').go}" value="Add..." style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../Referral/template/table.xhtml">
+                     <ui:param name="listId" value="visitReferralList"/>
+                     <ui:param name="referralList" value="#{var.VisitProgressNote.referralList._}"/>
+                     <ui:param name="tableConfig" value="#{var.VisitProgressNote.referralTableConfig}"/>
+                  </ui:include>
+               </div>        
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.referralResult._ and var.VisitProgressNote.visit._ != null}">
+               #{jsf._do(var.VisitProgressNote.referralResultTableConfig.details._ == null ? var.VisitProgressNote.referralResultTableConfig.details._(true) : null).
+                 _do(var.VisitProgressNote.referralResultTableConfig.serviceDate._ == null ? var.VisitProgressNote.referralResultTableConfig.serviceDate._(true) : null).
+                 _do(var.VisitProgressNote.referralResultTableConfig.category._ == null ? var.VisitProgressNote.referralResultTableConfig.category._(true) : null).
+                 _do(var.VisitProgressNote.referralResultTableConfig.action._ == null ? var.VisitProgressNote.referralResultTableConfig.action._(true) : null).
+                 stay()}
+               #{jsf.               
+                 _do(var.VisitProgressNote.referralResultSearch.put('patientId', var.VisitProgressNote.visit._.patient.id)).
+                 _do(var.VisitProgressNote.referralResultSearch.put('myOfficeCode', myOfficeCode)).
+                 _do(var.VisitProgressNote.referralResultList._(jsf.search('ReferralResult', 'r.created DESC', var.VisitProgressNote.referralResultSearch))). 
+                 stay()}
+               <div class="float-left column" style="min-width: 40em;">
+                  <h3 class="table-label" style="display:inline-block;">
+                     Results of #{var.VisitProgressNote.visit._.patient.lastName}, #{var.VisitProgressNote.visit._.patient.firstName}
+                     <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                     <span style="display: none;">
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralResultTableConfig.id._}"/>
+                        <label>ID</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralResultTableConfig.serviceDate._}"/>
+                        <label>Service Date</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralResultTableConfig.category._}"/>
+                        <label>Category</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralResultTableConfig.facility._}"/>
+                        <label>Facility</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralResultTableConfig.specialty._}"/>                              
+                        <label>Specialty</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralResultTableConfig.provider._}"/>                              
+                        <label>Ref. Provider</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralResultTableConfig.details._}"/>
+                        <label>Details</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.referralResultTableConfig.action._}"/>
+                        <label>Action</label>
+                        <div class="separator"/>
+                        <h:commandLink action="#{jsf.stay}" value="Apply">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandLink>
+                     </span>
+                  </h3>
+                  <h:commandButton action="#{jsf._do(var.ReferralResult.form.put('referralResult', biz.newReferralResultFromVisit(var.VisitProgressNote.visit._)))._to('ReferralResult/new').go}" value="Add..." style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../ReferralResult/template/table.xhtml">
+                     <ui:param name="listId" value="patientReferralResultList"/>
+                     <ui:param name="referralResultList" value="#{var.VisitProgressNote.referralResultList._}"/>
+                     <ui:param name="tableConfig" value="#{var.VisitProgressNote.referralResultTableConfig}"/>
+                  </ui:include>
+               </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.visit._ != null}">
+               <div class="float-left column focus-line" style="margin-bottom: 0.5em; margin-left: 0.5em; margin-top: 0.5em;">
+                  <ui:include src="template/progress-note-options.xhtml"/>
+               </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.cc._ and var.VisitProgressNote.visit._ != null}">
+               <div class="float-left column">
+                  <h3 class="table-label cc" style="display:inline-block;">
+                     Chief Complaint
+                  </h3>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._('cc')).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == null}"
+                                   value="Edit" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned()).stay}"
+                                   onclick="pntl.update();"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'cc'}"
+                                   value="OK" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null)).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'cc'}"
+                                   value="Cancel" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned())._do(var.VisitProgressNote.editSection._('hpi')).stay}"
+                                   onclick="pntl.update();"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'cc'}"
+                                   value="OK &amp; Next" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <br/>
+                  <div class="one" style="margin-left: 0.5em; margin-top: 0.5em;">
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ == 'cc'}">
+                        <script>
+                                      $(document).ready(function() {
+                                         pntl.refresh();
+                                         $('html,body').scrollTo('.#{var.VisitProgressNote.editSection._}', '.#{var.VisitProgressNote.editSection._}');
+                                      });
+                        </script>
+                     </ui:fragment>
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ != 'cc'}">
+                        <table class="preline">
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.cc.text}">
+                              <tr><td>#{var.VisitProgressNote.visit._.progressNote.cc.text}</td></tr>
+                           </ui:fragment>
+                        </table>
+                     </ui:fragment>
+                     <h:inputTextarea styleClass="pntl-cc-val" value="#{var.VisitProgressNote.visit._.progressNote.cc.text}" rendered="#{var.VisitProgressNote.editSection._ == 'cc'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-state" value="#{var.VisitProgressNote.visit._.progressNote.templateState.data}" rendered="#{var.VisitProgressNote.editSection._ == 'cc'}" style="display: none;"/>
+                     <h:outputText value="#{biz.sectionTemplate('cc', var.VisitProgressNote.visit._)}" escape="false" rendered="#{var.VisitProgressNote.editSection._ == 'cc'}"/>
+                  </div>
+               </div>
+               <div class="float-left column">
+                  <h3 class="table-label hpi" style="display:inline-block;">
+                     History of Present Illness
+                  </h3>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._('hpi')).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == null}"
+                                   value="Edit" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned()).stay}"
+                                   onclick="pntl.update();"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}"
+                                   value="OK" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null)).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}"
+                                   value="Cancel" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned())._do(var.VisitProgressNote.editSection._('pfsh')).stay}"
+                                   onclick="pntl.update();"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}"
+                                   value="OK &amp; Next" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <br/>
+                  <div class="one" style="margin-left: 0.5em; margin-top: 0.5em;">
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}">
+                        <script>
+                                      $(document).ready(function() {
+                                         pntl.refresh();
+                                         $('html,body').scrollTo('.#{var.VisitProgressNote.editSection._}', '.#{var.VisitProgressNote.editSection._}');
+                                      });
+                        </script>
+                     </ui:fragment>
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ != 'hpi'}">
+                        <table class="preline">
+                           <tr>
+                              <th style="width: 20%;">Location</th><td>#{var.VisitProgressNote.visit._.progressNote.hpi.location}</td>
+                              <th style="width: 10%;">Duration</th><td>#{var.VisitProgressNote.visit._.progressNote.hpi.duration}</td>
+                              <th style="width: 10%;">Severity</th><td>#{var.VisitProgressNote.visit._.progressNote.hpi.severity}</td>
+                           </tr>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.hpi.quality}">
+                              <tr><th>Quality</th><td colspan="5">#{var.VisitProgressNote.visit._.progressNote.hpi.quality}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.hpi.timing}">
+                              <tr><th>Timing</th><td colspan="5">#{var.VisitProgressNote.visit._.progressNote.hpi.timing}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.hpi.context}">
+                              <tr><th>Context</th><td colspan="5">#{var.VisitProgressNote.visit._.progressNote.hpi.context}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.hpi.modifyingFactors}">
+                              <tr><th>Modifying&nbsp;Factors</th><td colspan="3">#{var.VisitProgressNote.visit._.progressNote.hpi.modifyingFactors}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.hpi.associatedSignsAndSymptoms}">
+                              <tr><th>AS&amp;S</th><td colspan="5">#{var.VisitProgressNote.visit._.progressNote.hpi.associatedSignsAndSymptoms}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.hpi.radiation}">
+                              <tr><th>Radiation</th><td colspan="5">#{var.VisitProgressNote.visit._.progressNote.hpi.radiation}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.hpi.freeFormText}">
+                              <tr><td colspan="6">#{var.VisitProgressNote.visit._.progressNote.hpi.freeFormText}</td></tr>
+                           </ui:fragment>
+                        </table>
+                     </ui:fragment>
+                     <h:inputTextarea styleClass="pntl-hpiDuration-val" value="#{var.VisitProgressNote.visit._.progressNote.hpi.duration}" rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-hpiLocation-val" value="#{var.VisitProgressNote.visit._.progressNote.hpi.location}" rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-hpiQuality-val" value="#{var.VisitProgressNote.visit._.progressNote.hpi.quality}" rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-hpiSeverity-val" value="#{var.VisitProgressNote.visit._.progressNote.hpi.severity}" rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-hpiTiming-val" value="#{var.VisitProgressNote.visit._.progressNote.hpi.timing}" rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-hpiContext-val" value="#{var.VisitProgressNote.visit._.progressNote.hpi.context}" rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-hpiModifyingFactors-val" value="#{var.VisitProgressNote.visit._.progressNote.hpi.modifyingFactors}" rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-hpiAssociatedSignsAndSymptoms-val" value="#{var.VisitProgressNote.visit._.progressNote.hpi.associatedSignsAndSymptoms}" rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-hpiRadiation-val" value="#{var.VisitProgressNote.visit._.progressNote.hpi.radiation}" rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-hpiFreeFormText-val" value="#{var.VisitProgressNote.visit._.progressNote.hpi.freeFormText}" rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-state" value="#{var.VisitProgressNote.visit._.progressNote.templateState.data}" rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}" style="display: none;"/>
+                     <h:outputText value="#{biz.sectionTemplate('hpi', var.VisitProgressNote.visit._)}" escape="false" rendered="#{var.VisitProgressNote.editSection._ == 'hpi'}"/>
+                  </div>
+               </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.cc._ and var.VisitProgressNote.visit._ != null}">
+               <div class="float-left column">
+                  <h3 class="table-label pfsh" style="display:inline-block;">
+                     History
+                  </h3>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._('pfsh')).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == null}"
+                                   value="Edit" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(biz.importHistory(var.VisitProgressNote.visit._.progressNote)).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == null}"
+                                   value="Import" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned()).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'pfsh'}"
+                                   value="OK" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null)).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'pfsh'}"
+                                   value="Cancel" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned())._do(var.VisitProgressNote.editSection._('ros')).stay}"
+                                   onclick="pntl.update();"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'pfsh'}"
+                                   value="OK &amp; Next" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <br/>
+                  <div class="one" style="margin-left: 0.5em; margin-top: 0.5em;">
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ == 'pfsh'}">
+                        <script>
+                                      $(document).ready(function() {
+                                         $('html,body').scrollTo('.#{var.VisitProgressNote.editSection._}', '.#{var.VisitProgressNote.editSection._}');
+                                      });
+                        </script>
+                     </ui:fragment>
+                     <table class="preline">
+                        <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.pfsh.pastHistory or var.VisitProgressNote.editSection._ == 'pfsh'}">
+                           <tr>
+                              <th style="width: 20%;">Past Medical</th>
+                              <td>                     
+                                 <h:inputTextarea value="#{var.VisitProgressNote.visit._.progressNote.pfsh.pastHistory}" rendered="#{var.VisitProgressNote.editSection._ == 'pfsh'}" style="width: 98%;"/>
+                                 <h:outputText value="#{var.VisitProgressNote.visit._.progressNote.pfsh.pastHistory}" rendered="#{var.VisitProgressNote.editSection._ != 'pfsh'}"/>
+                              </td>
+                           </tr>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.pfsh.socialHistory or var.VisitProgressNote.editSection._ == 'pfsh'}">
+                           <tr>
+                              <th>Social</th>
+                              <td>
+                                 <h:inputTextarea value="#{var.VisitProgressNote.visit._.progressNote.pfsh.socialHistory}" rendered="#{var.VisitProgressNote.editSection._ == 'pfsh'}" style="width: 98%;"/>
+                                 <h:outputText value="#{var.VisitProgressNote.visit._.progressNote.pfsh.socialHistory}" rendered="#{var.VisitProgressNote.editSection._ != 'pfsh'}"/>
+                              </td>
+                           </tr>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.pfsh.familyHistory or var.VisitProgressNote.editSection._ == 'pfsh'}">
+                           <tr>
+                              <th>Family</th>
+                              <td>
+                                 <h:inputTextarea value="#{var.VisitProgressNote.visit._.progressNote.pfsh.familyHistory}" rendered="#{var.VisitProgressNote.editSection._ == 'pfsh'}" style="width: 98%;"/>
+                                 <h:outputText value="#{var.VisitProgressNote.visit._.progressNote.pfsh.familyHistory}" rendered="#{var.VisitProgressNote.editSection._ != 'pfsh'}"/>
+                              </td>
+                           </tr>
+                        </ui:fragment>                          
+                     </table>                                     
+                  </div>
+               </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.cc._ and var.VisitProgressNote.visit._ != null}">
+               <div class="float-left column">
+                  <h3 class="table-label ros" style="display:inline-block;">
+                     Review of Systems
+                  </h3>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._('ros')).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == null}"
+                                   value="Edit" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned()).stay}"
+                                   onclick="pntl.update();"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'ros'}"
+                                   value="OK" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null)).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'ros'}"
+                                   value="Cancel" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned())._do(var.VisitProgressNote.editSection._('exam')).stay}"
+                                   onclick="pntl.update();"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'ros'}"
+                                   value="OK &amp; Next" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <br/>
+                  <div class="one" style="margin-left: 0.5em; margin-top: 0.5em;">
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ == 'ros'}">
+                        <script>
+                                      $(document).ready(function() {
+                                         pntl.refresh();
+                                         $('html,body').scrollTo('.#{var.VisitProgressNote.editSection._}', '.#{var.VisitProgressNote.editSection._}');
+                                      });
+                        </script>
+                     </ui:fragment>
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ != 'ros'}">
+                        <table class="preline">
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.allergicImmunologic}">
+                              <tr><th>Allergic/Immunologic</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.allergicImmunologic}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.constitutionalSymptoms}">
+                              <tr><th style="width: 20%;">Constitutional</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.constitutionalSymptoms}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.eyes}">
+                              <tr><th>Eyes</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.eyes}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.earsNoseMouthThroat}">
+                              <tr><th>Ears/Nose/Mouth/Throat</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.earsNoseMouthThroat}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.cardiovascular}">
+                              <tr><th>Cardiovascular</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.cardiovascular}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.respiratory}">
+                              <tr><th>Respiratory</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.respiratory}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.gastrointestinal}">
+                              <tr><th>Gastrointestinal</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.gastrointestinal}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.genitourinary}">
+                              <tr><th>Genitourinary</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.genitourinary}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.musculoskeletal}">
+                              <tr><th>Musculoskeletal</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.musculoskeletal}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.integumentary}">
+                              <tr><th>Integumentary</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.integumentary}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.neurological}">
+                              <tr><th>Neurological</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.neurological}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.psychiatric}">
+                              <tr><th>Psychiatric</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.psychiatric}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.endocrine}">
+                              <tr><th>Endocrine</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.endocrine}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.ros.hematologicLymphatic}">
+                              <tr><th>Hematologic/Lymphatic</th><td>#{var.VisitProgressNote.visit._.progressNote.ros.hematologicLymphatic}</td></tr>
+                           </ui:fragment>
+                        </table>
+                     </ui:fragment>
+                     <h:inputTextarea styleClass="pntl-rosConstitutionalSymptoms-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.constitutionalSymptoms}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosEyes-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.eyes}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosEarsNoseMouthThroat-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.earsNoseMouthThroat}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosCardiovascular-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.cardiovascular}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosRespiratory-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.respiratory}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosGastrointestinal-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.gastrointestinal}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosGenitourinary-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.genitourinary}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosMusculoskeletal-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.musculoskeletal}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosIntegumentary-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.integumentary}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosNeurological-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.neurological}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosPsychiatric-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.psychiatric}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosEndocrine-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.endocrine}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosHematologicLymphatic-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.hematologicLymphatic}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-rosAllergicImmunologic-val" value="#{var.VisitProgressNote.visit._.progressNote.ros.allergicImmunologic}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-state" value="#{var.VisitProgressNote.visit._.progressNote.templateState.data}" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}" style="display: none;"/>
+                     <h:outputText value="#{biz.rosSectionFilter(biz.sectionTemplate('ros', var.VisitProgressNote.visit._), var.VisitProgressNote.visit._)}" escape="false" rendered="#{var.VisitProgressNote.editSection._ == 'ros'}"/>
+                  </div>
+               </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.exam._ and var.VisitProgressNote.visit._ != null}">
+               #{jsf._do(var.VisitProgressNote.visitVitalsTableConfig.action._ == null ? var.VisitProgressNote.visitVitalsTableConfig.action._(true) : null).
+                 stay()}
+               <div class="float-left column">
+                  <h3 class="table-label" style="display:inline-block;">
+                     Vital Signs
+                  </h3>
+                  <br/>
+                  #{var.VisitProgressNote.singleVisitVitalsList._(jsf.list(var.VisitProgressNote.visit._.vitals))}
+                  <ui:include src="../VisitVitals/template/table.xhtml">
+                     <ui:param name="visitVitalsList" value="#{var.VisitProgressNote.singleVisitVitalsList._}"/>
+                     <ui:param name="noCounter" value="#{true}"/>
+                     <ui:param name="tableConfig" value="#{var.VisitProgressNote.visitVitalsTableConfig}"/>
+                  </ui:include>
+               </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.exam._ and var.VisitProgressNote.visit._ != null}">
+               <div class="float-left column">
+                  <h3 class="table-label exam" style="display:inline-block;">
+                     Physical Examination
+                  </h3>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._('exam')).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == null}"
+                                   value="Edit" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned()).stay}"
+                                   onclick="pntl.update();"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'exam'}"
+                                   value="OK" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null)).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'exam'}"
+                                   value="Cancel" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned())._do(var.VisitProgressNote.editSection._('treatment')).stay}"
+                                   onclick="pntl.update();"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'exam'}"
+                                   value="OK &amp; Next" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <br/>
+                  <div class="one" style="margin-left: 0.5em; margin-top: 0.5em;">
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ == 'exam'}">
+                        <script>
+                                      $(document).ready(function() {
+                                         pntl.refresh();
+                                         $('html,body').scrollTo('.#{var.VisitProgressNote.editSection._}', '.#{var.VisitProgressNote.editSection._}');
+                                      });
+                        </script>
+                     </ui:fragment>
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ != 'exam'}">
+                        <table class="preline">
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.osConstitutional}">
+                              <tr><th>Constitutional</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.osConstitutional}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.baHead}">
+                              <tr><th style="width: 20%;">Head</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.baHead}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.osEyes}">
+                              <tr><th>Eyes</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.osEyes}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.osEarsNoseMouthThroat}">
+                              <tr><th>Ears/Nose/Mouth/Throat</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.osEarsNoseMouthThroat}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.baNeck}">
+                              <tr><th>Neck</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.baNeck}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.osRespiratory}">
+                              <tr><th>Respiratory</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.osRespiratory}</td></tr>
+                           </ui:fragment>                           
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.osCardiovascular}">
+                              <tr><th>Cardiovascular</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.osCardiovascular}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.baChest}">
+                              <tr><th>Chest</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.baChest}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.osGastrointestinal}">
+                              <tr><th>Gastrointestinal (Abdomen)</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.osGastrointestinal}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.osGenitourinary}">
+                              <tr><th>Genitourinary</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.osGenitourinary}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.baBack}">
+                              <tr><th>Back</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.baBack}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.baGenitaliaGroinButtocks}">
+                              <tr><th>Genitalia/Groin/Buttocks</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.baGenitaliaGroinButtocks}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.osHematologicLymphaticImmunologic}">
+                              <tr><th>Lymphatic/Hematologic</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.osHematologicLymphaticImmunologic}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.osMusculoskeletal}">
+                              <tr><th>Musculoskeletal</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.osMusculoskeletal}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.baEachExtremity}">
+                              <tr><th>Extremities</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.baEachExtremity}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.osSkin}">
+                              <tr><th>Skin</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.osSkin}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.osNeurological}">
+                              <tr><th>Neurological</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.osNeurological}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.exam.osPsychiatric}">
+                              <tr><th>Psychiatric</th><td>#{var.VisitProgressNote.visit._.progressNote.exam.osPsychiatric}</td></tr>
+                           </ui:fragment>
+                        </table>
+                     </ui:fragment>                     
+                     <h:inputTextarea styleClass="pntl-examBaHead-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.baHead}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examBaChest-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.baChest}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examBaAbdomen-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.baAbdomen}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examBaNeck-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.baNeck}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examBaBack-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.baBack}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examBaGenitaliaGroinButtocks-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.baGenitaliaGroinButtocks}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examBaGenitaliaGroinButtocks-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.baGenitaliaGroinButtocks}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examOsConstitutional-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.osConstitutional}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examOsEyes-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.osEyes}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examOsEarsNoseMouthThroat-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.osEarsNoseMouthThroat}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examOsCardiovascular-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.osCardiovascular}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examOsRespiratory-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.osRespiratory}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examOsGastrointestinal-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.osGastrointestinal}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examOsGenitourinary-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.osGenitourinary}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examOsMusculoskeletal-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.osMusculoskeletal}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examOsSkin-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.osSkin}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examOsNeurological-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.osNeurological}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examOsPsychiatric-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.osPsychiatric}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-examOsHematologicLymphaticImmunologic-val" value="#{var.VisitProgressNote.visit._.progressNote.exam.osHematologicLymphaticImmunologic}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-state" value="#{var.VisitProgressNote.visit._.progressNote.templateState.data}" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}" style="display: none;"/>
+                     <h:outputText value="#{biz.sectionTemplate('exam', var.VisitProgressNote.visit._)}" escape="false" rendered="#{var.VisitProgressNote.editSection._ == 'exam'}"/>
+                  </div>
+               </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.treatment._ and var.VisitProgressNote.visit._ != null}">
+               #{jsf.               
+                 _do(var.VisitProgressNote.visitDiagnosisSearch.put('visitId', var.VisitProgressNote.visit._.id)).
+                 _do(var.VisitProgressNote.visitDiagnosisList._(jsf.hintedSearch('VisitDiagnosis', 'v.position', var.VisitProgressNote.visitDiagnosisSearch, '_MEDBASE'))). 
+                 stay()}
+               <div class="float-left column" style="min-width: 40em;">
+                  <h3 class="table-label" style="display:inline-block;">
+                     Diagnoses
+                  </h3>
+                  <h:inputText id="diagnosisFilter" value="#{var.VisitProgressNote.diagnosisFilter._}" title="Type part of DX code or %keyword and press Filter" style="margin: 0; margin-left: 1em; font-size: 0.7em; width: 3em;"/>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.diagnosisSearch.put('code', var.VisitProgressNote.diagnosisFilter._)).
+                                             _do(var.VisitProgressNote.diagnosisSearch.put('description', var.VisitProgressNote.diagnosisFilter._)).
+                                             _do(var.VisitProgressNote.diagnosisList._(jsf.hintedSearch('_Diagnosis', 'd.code', var.VisitProgressNote.diagnosisSearch, '_MEDBASE'))).stay}"
+                                   value="Filter" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="diagnosis" execute="@form"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.diagnosisList._(var.VisitProgressNote.visit._.patient.activeDiagnosisList)).stay}"
+                                   value="Patient Problems" disabled="#{empty var.VisitProgressNote.visit._.patient.activeDiagnosisList}" style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:selectOneMenu id="diagnosis" value="#{var.VisitProgressNote.diagnosisAdd._}" title="Diagnosis" style="margin: 0; margin-left: 1em; font-size: 0.7em; width: 15em;">
+                     <f:selectItems value="#{var.VisitProgressNote.diagnosisList._}"
+                                    var="diagnosis" itemLabel="#{diagnosis.code}, #{diagnosis.description}"/>
+                     <f:converter converterId="EntityConverter"/>
+                  </h:selectOneMenu>
+                  <h:commandButton action="#{jsf._do(biz.addVisitDiagnosis(var.VisitProgressNote.visit._, var.VisitProgressNote.diagnosisAdd._)).stay}"
+                                   value="Add" style="margin: 0; margin-right: 1em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.visit._.diagnosisList == null ? var.VisitProgressNote.visit._.setDiagnosisList(jsf.newObject('java.util.ArrayList')) : null)._do(var.VisitProgressNote.visit._.procedureList == null ? var.VisitProgressNote.visit._.setProcedureList(jsf.newObject('java.util.ArrayList')) : null)._do(var.Visit.specialty.put('visit', var.VisitProgressNote.visit._))._do(var.Visit.specialty.save._(true))._to('Visit/profile').go}"
+                                   value="Superbill..." style="margin: 0; margin-right: 1em; font-size: 0.7em; width: auto;"/>
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../VisitDiagnosis/template/table.xhtml">
+                     <ui:param name="listId" value="visitDiagnosisList"/>
+                     <ui:param name="visitDiagnosisList" value="#{var.VisitProgressNote.visitDiagnosisList._}"/>
+                     <ui:param name="tableConfig" value="#{var.VisitProgressNote.visitDiagnosisTableConfig}"/>
+                  </ui:include>
+               </div>
+               <div class="float-left column" style="min-width: 40em;">
+                  <h3 class="table-label" style="display:inline-block;">
+                     Procedures
+                  </h3>
+                  <h:inputText id="procedureFilter" value="#{var.VisitProgressNote.procedureFilter._}" title="Type part of Procedure code or %keyword and press Filter" style="margin: 0; margin-left: 1em; font-size: 0.7em; width: 3em;"/>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.procedureSearch.put('code', var.VisitProgressNote.procedureFilter._)).
+                                             _do(var.VisitProgressNote.procedureSearch.put('description', var.VisitProgressNote.procedureFilter._)).
+                                             _do(var.VisitProgressNote.procedureList._(jsf.hintedSearch('_Procedure', 'p.code', var.VisitProgressNote.procedureSearch, '_MEDBASE'))).stay}"
+                                   value="Filter" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="procedure" execute="@form"/>
+                  </h:commandButton>
+                  <h:selectOneMenu id="procedure" value="#{var.VisitProgressNote.procedureAdd._}" title="Procedure" style="margin: 0; margin-left: 1em; font-size: 0.7em; width: 20em;">
+                     <f:selectItems value="#{var.VisitProgressNote.procedureList._}"
+                                    var="procedure" itemLabel="#{procedure.code}, #{procedure.description}"/>
+                     <f:converter converterId="EntityConverter"/>
+                  </h:selectOneMenu>
+                  <h:commandButton action="#{jsf._do(biz.addVisitProcedure(var.VisitProgressNote.visit._, var.VisitProgressNote.procedureAdd._)).stay}"
+                                   value="Add" style="margin: 0; margin-right: 1em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.visit._.diagnosisList == null ? var.VisitProgressNote.visit._.setDiagnosisList(jsf.newObject('java.util.ArrayList')) : null)._do(var.VisitProgressNote.visit._.procedureList == null ? var.VisitProgressNote.visit._.setProcedureList(jsf.newObject('java.util.ArrayList')) : null)._do(var.Visit.specialty.put('visit', var.VisitProgressNote.visit._))._do(var.Visit.specialty.save._(true))._to('Visit/profile').go}"
+                                   value="Superbill..." style="margin: 0; margin-right: 1em; font-size: 0.7em; width: auto;"/>
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../VisitProcedure/template/table-new.xhtml">
+                     <ui:param name="listId" value="visitProcedureList"/>
+                     <ui:param name="visitProcedureList" value="#{var.VisitProgressNote.visit._.procedureList}"/>
+                     <ui:param name="tableConfig" value="#{var.VisitProgressNote.visitProcedureTableConfig}"/>
+                  </ui:include>
+               </div>
+               <div class="float-left column" style="min-width: 40em;">
+                  #{var.VisitProgressNote.PatientMedication.tableConfig.refills._ == null ? var.VisitProgressNote.PatientMedication.tableConfig.refills._(true) : null}
+                  #{var.VisitProgressNote.PatientMedication.tableConfig.primaryDiagnosisCode._ == null ? var.VisitProgressNote.PatientMedication.tableConfig.primaryDiagnosisCode._(true) : null}
+                  <h3 class="table-label" style="display: inline;">
+                     Medications
+                     <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                     <span style="display: none;">
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.PatientMedication.tableConfig.created._}"/>                    
+                        <label>Created</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.PatientMedication.tableConfig.updated._}"/>                    
+                        <label>Updated</label>                                 
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.PatientMedication.tableConfig.dispenseQty._}"/>                    
+                        <label>Dispense Quantity</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.PatientMedication.tableConfig.refills._}"/>                    
+                        <label>Refills</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.PatientMedication.tableConfig.dose._}"/>                    
+                        <label>Dose/Unit</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.PatientMedication.tableConfig.route._}"/>                    
+                        <label>Route</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.PatientMedication.tableConfig.frequency._}"/>                    
+                        <label>Frequency</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.PatientMedication.tableConfig.days._}"/>                    
+                        <label>Days</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.PatientMedication.tableConfig.status._}"/>                    
+                        <label>Status</label>
+                        <h:selectBooleanCheckbox value="#{var.VisitProgressNote.PatientMedication.tableConfig.statusDate._}"/>                    
+                        <label>Date</label>
+                        <div class="separator"/>
+                        <h:commandLink action="#{jsf.stay}" value="Apply">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandLink>
+                     </span>
+                  </h3>
+                  <h:commandButton action="#{jsf._do(var.PatientMedication.form.patientMedication._(biz.addVisitMedication(var.VisitProgressNote.visit._))).
+                                             _do(var.PatientMedication.form.prescriberStr._(biz.referringProviderStr(var.PatientMedication.form.patientMedication._.prescriber.id))).
+                                             _to('PatientMedication/edit').go}"
+                                   value="Add..." style="margin: 0; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                  <h:commandButton action="#{jsf._do(var.PatientMedication.form.visit._(var.VisitProgressNote.visit._))._to('PatientMedication/change').go}"
+                                   value="Change..." style="margin: 0; margin-left: 1em; font-size: 0.7em; width: auto;"/> 
+                  #{var.VisitProgressNote.favoritePatientMedicationList._(biz.favoriteMedicationList(var.VisitProgressNote.visit._))}
+                  <h:commandButton disabled="#{empty var.VisitProgressNote.favoritePatientMedicationList._}"
+                                   action="#{jsf._do(var.PatientMedication.form.visit._(var.VisitProgressNote.visit._))._do(var.PatientMedication.form.favoritePatientMedicationList._(var.VisitProgressNote.favoritePatientMedicationList._))._to('PatientMedication/favorite').go}"
+                                   value="Favorites..." style="margin: 0; margin-left: 1em; font-size: 0.7em; width: auto;"/> 
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../PatientMedication/template/table.xhtml">
+                     <ui:param name="listId" value="visitMedicationList"/>
+                     <ui:param name="medicationList" value="#{var.VisitProgressNote.visit._.medicationList}"/>
+                     <ui:param name="tableConfig" value="#{var.VisitProgressNote.PatientMedication.tableConfig}"/>
+                  </ui:include>
+               </div>
+               <!--<div class="float-left column" style="min-width: 40em;">
+               #{var.VisitProgressNote.Prescription.tableConfig.refills._ == null ? var.VisitProgressNote.Prescription.tableConfig.refills._(true) : null}
+               <h3 class="table-label" style="display: inline;">
+                  Prescriptions
+                  <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                  <span style="display: none;">
+                     <h:selectBooleanCheckbox value="#{var.VisitProgressNote.Prescription.tableConfig.created._}"/>                    
+                     <label>Created</label>
+                     <h:selectBooleanCheckbox value="#{var.VisitProgressNote.Prescription.tableConfig.updated._}"/>                    
+                     <label>Updated</label>                                 
+                     <h:selectBooleanCheckbox value="#{var.VisitProgressNote.Prescription.tableConfig.dispenseQty._}"/>                    
+                     <label>Dispense Quantity</label>
+                     <h:selectBooleanCheckbox value="#{var.VisitProgressNote.Prescription.tableConfig.refills._}"/>                    
+                     <label>Refills</label>
+                     <h:selectBooleanCheckbox value="#{var.VisitProgressNote.Prescription.tableConfig.dose._}"/>                    
+                     <label>Dose/Unit</label>
+                     <h:selectBooleanCheckbox value="#{var.VisitProgressNote.Prescription.tableConfig.route._}"/>                    
+                     <label>Route</label>
+                     <h:selectBooleanCheckbox value="#{var.VisitProgressNote.Prescription.tableConfig.frequency._}"/>                    
+                     <label>Frequency</label>
+                     <h:selectBooleanCheckbox value="#{var.VisitProgressNote.Prescription.tableConfig.days._}"/>                    
+                     <label>Days</label>
+                     <h:selectBooleanCheckbox value="#{var.VisitProgressNote.Prescription.tableConfig.pharmacy._}"/>                    
+                     <label>Pharmacy</label>
+                     <div class="separator"/>
+                     <h:commandLink action="#{jsf.stay}" value="Apply">
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandLink>
+                  </span>
+               </h3>
+               <h:commandButton action="#{jsf._do(var.Prescription.form.prescription._(biz.addPrescription(var.VisitProgressNote.visit._, null)))._to('Prescription/edit').go}"
+                                value="Add..." style="margin: 0; margin-right: 1.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>                     
+               <h:commandLink value="Report" action="#{jsf._do(var.Prescription.report.patient._(patientList[0]))._to('Prescription/patient-report').go}" target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 1em"/>
+               <br style="margin-bottom: 0.75em;"/>
+               <ui:include src="../Prescription/template/table.xhtml">
+                  <ui:param name="listId" value="prescriptionList"/>
+                  <ui:param name="prescriptionList" value="#{var.VisitProgressNote.visit._.prescriptionList}"/>
+                  <ui:param name="tableConfig" value="#{var.VisitProgressNote.Prescription.tableConfig}"/>
+               </ui:include>
+            </div>-->
+               <div class="float-left column">
+                  <h3 class="table-label treatment" style="display:inline-block;">
+                     Assessment/Treatment
+                  </h3>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._('treatment')).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == null}"
+                                   value="Edit" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned()).stay}"
+                                   onclick="pntl.update();"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'treatment'}"
+                                   value="OK" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null)).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'treatment'}"
+                                   value="Cancel" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned())._do(var.VisitProgressNote.editSection._('mdm')).stay}"
+                                   onclick="pntl.update();"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'treatment'}"
+                                   value="OK &amp; Next" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <div class="one" style="margin-left: 0.5em; margin-top: 0.5em;">
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ == 'treatment'}">
+                        <script>
+                                      $(document).ready(function() {
+                                         pntl.refresh();
+                                         $('html,body').scrollTo('.#{var.VisitProgressNote.editSection._}', '.#{var.VisitProgressNote.editSection._}');
+                                      });
+                        </script>
+                     </ui:fragment>
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ != 'treatment' and 
+                                              (! empty var.VisitProgressNote.visit._.progressNote.treatment.timeCounseling or
+                                              ! empty var.VisitProgressNote.visit._.progressNote.treatment.assessment or
+                                              ! empty var.VisitProgressNote.visit._.progressNote.treatment.treatment or
+                                              ! empty var.VisitProgressNote.visit._.progressNote.treatment.patientInstructionEducation)}">
+                        <table class="preline">
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.treatment.timeCounseling}">
+                              <tr><th style="width: 20%;">Time</th><td style="white-space: normal;">
+                                    <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Counseling:</label>#{var.VisitProgressNote.visit._.progressNote.treatment.timeCounseling} <label style="font-size: 1em; margin: 0.5em 1em 0.5em 0;">min</label> 
+                                    <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Total:</label>#{var.VisitProgressNote.visit._.progressNote.treatment.timeTotal} <label style="font-size: 1em; margin: 0.5em 1em 0.5em 0;">min</label>
+                                 </td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.treatment.assessment}">
+                              <tr><th style="width: 20%;">Assessment</th><td>#{var.VisitProgressNote.visit._.progressNote.treatment.assessment}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.treatment.treatment}">
+                              <tr><th style="width: 20%;">Treatment</th><td>#{var.VisitProgressNote.visit._.progressNote.treatment.treatment}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.treatment.patientInstructionEducation}">
+                              <tr><th>Patient Instruction/Education</th><td>#{var.VisitProgressNote.visit._.progressNote.treatment.patientInstructionEducation}</td></tr>
+                           </ui:fragment>
+                        </table>
+                     </ui:fragment>
+                     <h:inputTextarea styleClass="pntl-treatmentAssessment-val" value="#{var.VisitProgressNote.visit._.progressNote.treatment.assessment}" rendered="#{var.VisitProgressNote.editSection._ == 'treatment'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-treatmentTreatment-val" value="#{var.VisitProgressNote.visit._.progressNote.treatment.treatment}" rendered="#{var.VisitProgressNote.editSection._ == 'treatment'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-treatmentPatientInstructionEducation-val" value="#{var.VisitProgressNote.visit._.progressNote.treatment.patientInstructionEducation}" rendered="#{var.VisitProgressNote.editSection._ == 'treatment'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-state" value="#{var.VisitProgressNote.visit._.progressNote.templateState.data}" rendered="#{var.VisitProgressNote.editSection._ == 'treatment'}" style="display: none;"/>
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ == 'treatment'}">
+                        <table>
+                           <tr><th>Time</th><td>
+                                 <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Counseling:</label>
+                                 <h:inputText value="#{var.VisitProgressNote.visit._.progressNote.treatment.timeCounseling}" style="width: 2em; margin-right: 0;">
+                                    <f:convertNumber/>
+                                 </h:inputText>
+                                 <label style="font-size: 1em; margin: 0.5em 1em 0.5em 0;">min</label>
+                                 <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Total:</label>
+                                 <h:inputText value="#{var.VisitProgressNote.visit._.progressNote.treatment.timeTotal}" style="width: 2em; margin-right: 0;">
+                                    <f:convertNumber/>
+                                 </h:inputText>
+                                 <label style="font-size: 1em; margin: 0.5em 1em 0.5em 0;">min</label>
+                              </td></tr>
+                           <h:outputText value="#{biz.sectionTemplate('treatment', var.VisitProgressNote.visit._)}" escape="false"/>
+                        </table>
+                     </ui:fragment>
+                  </div>
+                  <h3 class="table-label mdm" style="display:inline-block;">
+                     Medical Decision Making
+                  </h3>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._('mdm')).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == null}"
+                                   value="Edit" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null))._save(var.VisitProgressNote.visit._.progressNote.cleaned()).stay}"
+                                   onclick="pntl.update();"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'mdm'}"
+                                   value="OK" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.VisitProgressNote.editSection._(null)).stay}"
+                                   rendered="#{var.VisitProgressNote.editSection._ == 'mdm'}"
+                                   value="Cancel" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <br/>
+                  <div class="one" style="margin-left: 0.5em; margin-top: 0.5em;">
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ == 'mdm'}">
+                        <script>
+                                      $(document).ready(function() {
+                                         pntl.refresh();
+                                         $('html,body').scrollTo('.#{var.VisitProgressNote.editSection._}', '.#{var.VisitProgressNote.editSection._}');
+                                      });
+                        </script>
+                     </ui:fragment>
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ != 'mdm'}">
+                        <table class="preline">
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.ordered or ! empty var.VisitProgressNote.visit._.progressNote.mdm.reviewed or ! empty var.VisitProgressNote.visit._.progressNote.mdm.riskLevel}">
+                              <tr>
+                                 <td style="white-space: normal;">
+                                    <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.riskLevel}">
+                                       <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 1em;">Risk Level:</label>#{var.VisitProgressNote.visit._.progressNote.mdm.riskLevel}                                
+                                    </ui:fragment>
+                                 </td>
+                                 <td style="width: 40%; white-space: normal;">
+                                    <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.ordered}">
+                                       <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Ordered:</label>#{var.VisitProgressNote.visit._.progressNote.mdm.ordered}
+                                    </ui:fragment>
+                                 </td>
+                                 <td style="width: 40%; white-space: normal;">
+                                    <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.reviewed}">
+                                       <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Reviewed:</label>#{var.VisitProgressNote.visit._.progressNote.mdm.reviewed}
+                                    </ui:fragment>
+                                 </td>
+                              </tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.diagnosticTestsOrdered}">
+                              <tr><th colspan="3">Diagnostic Tests Ordered</th><tr></tr><td colspan="3">#{var.VisitProgressNote.visit._.progressNote.mdm.diagnosticTestsOrdered}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.diagnosticTestResultsReviewed}">
+                              <tr><th colspan="3">Diagnostic Test Results Reviewed</th><tr></tr><td colspan="3">#{var.VisitProgressNote.visit._.progressNote.mdm.diagnosticTestResultsReviewed}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.diagnosticTestResultsDiscussion}">
+                              <tr><th colspan="3">Discussion of Test Results with Performing Physician</th><tr></tr><td colspan="3">#{var.VisitProgressNote.visit._.progressNote.mdm.diagnosticTestResultsDiscussion}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.obtainOldRecordsAdditionalHistory}">
+                              <tr><th colspan="3">Decision to obtain old records</th><tr></tr><td colspan="3">#{var.VisitProgressNote.visit._.progressNote.mdm.obtainOldRecordsAdditionalHistory}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.reviewOldRecords}">
+                              <tr><th colspan="3">Review of old records</th><tr></tr><td colspan="3">#{var.VisitProgressNote.visit._.progressNote.mdm.reviewOldRecords}</td></tr>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.independentVisualization}">
+                              <tr><th colspan="3">Independent visualization of image, tracing or specimen itself</th><tr></tr><td colspan="3">#{var.VisitProgressNote.visit._.progressNote.mdm.independentVisualization}</td></tr>
+                           </ui:fragment>                           
+                        </table>
+                     </ui:fragment>                     
+                     <h:inputTextarea styleClass="pntl-mdmDiagnosticTestsOrdered-val" value="#{var.VisitProgressNote.visit._.progressNote.mdm.diagnosticTestsOrdered}" rendered="#{var.VisitProgressNote.editSection._ == 'mdm'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-mdmDiagnosticTestResultsReviewed-val" value="#{var.VisitProgressNote.visit._.progressNote.mdm.diagnosticTestResultsReviewed}" rendered="#{var.VisitProgressNote.editSection._ == 'mdm'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-mdmDiagnosticTestResultsDiscussion-val" value="#{var.VisitProgressNote.visit._.progressNote.mdm.diagnosticTestResultsDiscussion}" rendered="#{var.VisitProgressNote.editSection._ == 'mdm'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-mdmObtainOldRecordsAdditionalHistory-val" value="#{var.VisitProgressNote.visit._.progressNote.mdm.obtainOldRecordsAdditionalHistory}" rendered="#{var.VisitProgressNote.editSection._ == 'mdm'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-mdmReviewOldRecords-val" value="#{var.VisitProgressNote.visit._.progressNote.mdm.reviewOldRecords}" rendered="#{var.VisitProgressNote.editSection._ == 'mdm'}" style="display: none;"/>
+                     <h:inputTextarea styleClass="pntl-mdmIndependentVisualization-val" value="#{var.VisitProgressNote.visit._.progressNote.mdm.independentVisualization}" rendered="#{var.VisitProgressNote.editSection._ == 'mdm'}" style="display: none;"/>                     
+                     <h:inputTextarea styleClass="pntl-state" value="#{var.VisitProgressNote.visit._.progressNote.templateState.data}" rendered="#{var.VisitProgressNote.editSection._ == 'mdm'}" style="display: none;"/>
+                     <ui:fragment rendered="#{var.VisitProgressNote.editSection._ == 'mdm'}">
+                        <table>
+                           <tr>
+                              <td>
+                                 <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0em;">Risk Level:</label>
+                                 <h:selectOneMenu value="#{var.VisitProgressNote.visit._.progressNote.mdm.riskLevel}" style="width: auto; margin-right: 0;">
+                                    <f:selectItem itemValue="" itemLabel="--"/>
+                                    <f:selectItem itemValue="Minimal" itemLabel="Minimal"/>
+                                    <f:selectItem itemValue="Low" itemLabel="Low"/>
+                                    <f:selectItem itemValue="Moderate" itemLabel="Moderate"/>
+                                    <f:selectItem itemValue="High" itemLabel="High"/>
+                                 </h:selectOneMenu>
+                              </td>
+                              <td>
+                                 <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Ordered Tests:</label>
+                                 #{empty biz.mdmSectionFilter('$mdmSectionFilter', var.VisitProgressNote.visit._) ? null : var.VisitProgressNote.visit._.progressNote.mdm.setLabTestsOrdered(true)}
+                                 <h:selectBooleanCheckbox value="#{var.VisitProgressNote.visit._.progressNote.mdm.labTestsOrdered}"/><label style="font-size: 1em; margin: 0.5em 1em 0.5em 0.3em;">lab</label>
+                                 <h:selectBooleanCheckbox class="ordered-radiology-tests" value="#{var.VisitProgressNote.visit._.progressNote.mdm.radiologyTestsOrdered}"/><label style="font-size: 1em; margin: 0.5em 1em 0.3em 0.5em;">radiology</label>
+                                 <h:selectBooleanCheckbox class="ordered-other-tests" value="#{var.VisitProgressNote.visit._.progressNote.mdm.medicineTestsOrdered}"/><label style="font-size: 1em; margin: 0.5em 0 0.3em 0.5em;">other</label>
+                              </td>
+                              <td>
+                                 <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Reviewed Tests:</label>
+                                 <h:selectBooleanCheckbox value="#{var.VisitProgressNote.visit._.progressNote.mdm.labTestsReviewed}"/><label style="font-size: 1em; margin: 0.5em 1em 0.5em 0.3em;">lab</label>
+                                 <h:selectBooleanCheckbox class="reviewed-radiology-tests" value="#{var.VisitProgressNote.visit._.progressNote.mdm.radiologyTestsReviewed}"/><label style="font-size: 1em; margin: 0.5em 1em 0.3em 0.5em;">radiology</label>
+                                 <h:selectBooleanCheckbox class="reviewed-other-tests" value="#{var.VisitProgressNote.visit._.progressNote.mdm.medicineTestsReviewed}"/><label style="font-size: 1em; margin: 0.5em 0 0.3em 0.5em;">other</label>
+                              </td>
+                           </tr>
+                           <h:outputText value="#{biz.mdmSectionFilter(biz.sectionTemplate('mdm', var.VisitProgressNote.visit._), var.VisitProgressNote.visit._)}" escape="false"/>
+                        </table>
+                     </ui:fragment>
+                  </div>
+               </div>
+            </ui:fragment>
+
+            <ui:fragment rendered="#{var.VisitProgressNote.view.sign._ and var.VisitProgressNote.visit._ != null}">
+               <div class="float-left column">
+                  <h3 class="table-label" style="display:inline-block;">
+                     Service Level
+                  </h3>
+                  <a style="font-size: 0.8em; float: right;" href="http://www.ngsmedicare.com/wps/wcm/connect/d410740049c1dcef894cf9b8b8c8d5ce/1074_0412_EM_Documentation_Training_Tool.pdf?MOD=AJPERES&amp;useDefaultText=0&amp;useDefaultDesc=0" target="_blank">Evaluation &amp; Management Documentation</a>
+                  #{var.VisitProgressNote.visit._.progressNote.serviceLevel.signed ? null : var.VisitProgressNote.visit._.progressNote.serviceLevel.recalculate()}
+                  <br/>
+                  #{var.VisitProgressNote.singleServiceLevelList._(jsf.list(var.VisitProgressNote.visit._.progressNote.serviceLevel))}
+                  <ui:include src="../VisitServiceLevel/template/table.xhtml">
+                     <ui:param name="serviceLevelList" value="#{var.VisitProgressNote.singleServiceLevelList._}"/>
+                     <ui:param name="state" value="#{var.VisitProgressNote.visit._.progressNote.serviceLevel.state}"/>
+                  </ui:include>
+               </div>
+            </ui:fragment>
+            <ui:fragment rendered="#{var.VisitProgressNote.visit._.progressNote.serviceLevel.signed and var.VisitProgressNote.view.addendums._ and var.VisitProgressNote.visit._ != null}">
+               <div class="float-left column">
+                  <h3 class="table-label" style="display:inline-block;">
+                     Addendums
+                  </h3>
+                  <h:commandButton action="#{jsf._do(biz.addVisitProgressNoteAddendum(var.VisitProgressNote.visit._.progressNote, var.VisitProgressNote.addendumText._, access.user.id))._do(var.VisitProgressNote.addendumText._(null)).stay}"
+                                   value="Add" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                     <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:inputTextarea value="#{var.VisitProgressNote.addendumText._}" style="width: 55.7em; height: 3em; margin-left: 0.5em;"/>
+                  <br/>
+                  <ui:include src="../VisitProgressNoteAddendum/template/table.xhtml">
+                     <ui:param name="addendumList" value="#{var.VisitProgressNote.visit._.progressNote.addendumList}"/>
+                  </ui:include>                  
+               </div>
+            </ui:fragment>
+         </ui:define>
+      </ui:composition>
+   </body>
+</html>

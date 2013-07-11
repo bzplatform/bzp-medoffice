@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <label style="font-size: 0.7em; font-weight: bold; margin-right: 0.3em;">Provider:</label>
+         <h:commandLink action="#{jsf._do(var.VisitProgressNote.view.provider._ ? var.VisitProgressNote.view.provider._(null) : var.VisitProgressNote.view.provider._(true)).stay}"
+                        value="VISITS" styleClass="#{var.VisitProgressNote.view.provider._ ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <label style="font-size: 0.7em; font-weight: bold; margin-left: 0.8em; margin-right: 0.3em;">Patient:</label>
+         <h:commandLink action="#{jsf._do(var.VisitProgressNote.view.visit._ ? var.VisitProgressNote.view.visit._(null) : var.VisitProgressNote.view.visit._(true)).stay}"
+                        value="VISITS" styleClass="#{var.VisitProgressNote.view.visit._ ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(var.VisitProgressNote.view.laboratoryOrderTransaction._ ? var.VisitProgressNote.view.laboratoryOrderTransaction._(null) : var.VisitProgressNote.view.laboratoryOrderTransaction._(true)).stay}"
+                        value="LAB.ORDERS" styleClass="#{var.VisitProgressNote.view.laboratoryOrderTransaction._ ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(var.VisitProgressNote.view.laboratoryResultTransaction._ ? var.VisitProgressNote.view.laboratoryResultTransaction._(null) : var.VisitProgressNote.view.laboratoryResultTransaction._(true)).stay}"
+                        value="LAB.RESULTS" styleClass="#{var.VisitProgressNote.view.laboratoryResultTransaction._ ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(var.VisitProgressNote.view.referral._ ? var.VisitProgressNote.view.referral._(null) : var.VisitProgressNote.view.referral._(true)).stay}"
+                        value="REFS" styleClass="#{var.VisitProgressNote.view.referral._ ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(var.VisitProgressNote.view.referralResult._ ? var.VisitProgressNote.view.referralResult._(null) : var.VisitProgressNote.view.referralResult._(true)).stay}"
+                        value="RESULTS" styleClass="#{var.VisitProgressNote.view.referralResult._ ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+      </ui:composition>
+   </body>
+</html>

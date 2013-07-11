@@ -1,0 +1,35 @@
+<ui:fragment rendered="#{listId != null}" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core">
+         <script>
+         $(document).ready(function()
+             {
+                var tableHeadersArray = [];
+                var disabled = {};
+                var tableHeaders = $("thead th", $(".tablesorter.#{listId}Table")).each(function(index, node){
+                   tableHeadersArray.push(node);
+                   if ($(node).find(".nosort").size() > 0) {
+                      disabled[index] = {sorter: false};
+                   }
+                });
+                tableHeaders.bind('click', function(){
+                   if ($(this).find(".nosort").size() > 0) {
+                      $(".tablesorter.#{listId}Table").trigger('sorton', [[]]);
+                   }
+                });
+                $(".tablesorter.#{listId}Table").bind('sortEnd', function(){
+                   $(".#{listId}Config").val(JSON.stringify($(".tablesorter.#{listId}Table")["0"].config.sortList));
+                   $(".#{listId}Config").trigger("change");
+                });
+                $.tablesorter.defaults.cssHeader = "headerSort";
+                $(".tablesorter.#{listId}Table").tablesorter(                 
+                     {
+                          sortList: $(".#{listId}Config").val() == "" ? [] : JSON.parse($(".#{listId}Config").val()),
+                          headers: disabled
+                     }                  
+                );
+             }
+         );
+         </script>
+         <h:inputText value="#{jsf.global(object, listId)['sort']}" styleClass="#{listId}Config" style="display: none;">
+            <f:ajax event="change"/>
+         </h:inputText>
+</ui:fragment>

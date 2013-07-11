@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>MAP-2015</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 1em;
+            }
+         }
+         @media all {
+            body {
+               font-family:Verdana, Geneva, sans-serif;
+               margin: 0em;
+               text-align: center;
+               font-size: 0.8em;
+               line-height: 1.6;
+            }
+            .page {
+               margin-left: 2em;
+               width: 70em;
+               height: 56em;
+               display: block;
+               overflow: hidden;
+            }
+            .req-left {
+               float: left;
+               font-size: 0.6em;
+               text-align: left;
+               width: 20em;
+            }
+            .req-right {
+               float: right;
+               font-size: 0.6em;
+               text-align: right;
+               width: 20em;
+            }
+            .header {
+               margin: 0.5em 0;
+               font-weight: bold;
+               font-size: 1.1em;
+            }
+            .line {
+               text-align: left;
+               font-size: 1em;
+               margin-bottom: 0.25em;
+               white-space: nowrap;
+            }
+            .block {
+               text-align: left;
+               font-size: 1em;
+               margin: 0.25em 0;
+               font-weight: normal;
+            }
+            input {
+               border: none;
+               border-bottom: 1px solid black;
+               margin: 0 1em 0 0.25em;
+               font-size: 1.4em;
+               background: white;
+            }
+            td input {
+               margin: 0 0.5em 0 0em;
+            }
+            li input {
+               margin: 0 0.5em 0 0em;
+            }
+            input.last {
+               margin-right: 0;
+            }
+            .inline {
+               display: inline-block;
+
+            }
+            ol {
+               margin-left: -1.5em;
+            }
+            li {
+               font-weight: bold;
+            }
+            .number {
+               width:1.5em;
+               margin:0;
+            }
+            input[type='checkbox']{
+               border: 1px solid black;
+               background: white;
+               font-size: 1em;
+            }
+            div.cell, td{
+               display: table-cell;
+               padding: 0.3em 0.3em 0.3em 0;
+            }
+            div.cell.last, td.last {
+               padding: 0.3em 0em 0.3em 0;
+            }
+            div.cell.free, td.free {
+               padding: 0.3em 0.5em 0.3em 0.5em;
+            }
+            div.row{
+               display: table-row;
+            }
+            div.table{
+               display:table;
+            }
+            h1 {
+               font-size: 1em;
+               text-decoration: underline;
+               margin-top: 0.5em;
+            }
+            td {
+               vertical-align: text-top;
+            }
+            p {
+               text-align: justify;
+               font-size: 0.9em;
+               margin: 0.25em 0;
+            }
+         }
+      </style>
+   </head>
+   <body>
+      <div class="page">
+         <div class="req-left">
+            MAP-2015 (face) <br />
+            Rev. 8/15/01
+         </div>
+         <div class="req-right">
+            Human Resources Administration<br />
+            Medical Assistance Programs
+         </div>
+         <div class="header">LIVERY, AMBULETTE &amp; NON-EMERGENCY AMBULANCE SERVICES <br />MEDICAID TRANSPORTATION PRIOR APPROVAL FORM</div>
+         <div class="line">Patient Name <input type="text" style="width:23em;" /> Date of Birth <input type="text" style="width:8em;" /> Sex  <input type="text" class="last" style="width:4em;" />
+         </div>
+         <div class="line">Address <input type="text" class="last" style="width:46.8em;" /></div>
+         <div class="line">Medicaid No.: <input type="text" style="width:17em;" /> Social Security Number <input type="text" class="last" style="width:17.3em;"/></div>
+         <ol>
+            <li>
+               <div class="block">(a) List Diagnoses (PRINT):
+                  <div class="inline" style="vertical-align: text-top; position: relative; top: -0.5em; left: 0.5em;">
+                     <div class="line">
+                        <div class="inline number">1)</div><input type="text" style="width:11.4em;"/><div class="inline number">2)</div><input type="text" style="width:11.4em;"/><div class="inline number">3)</div><input type="text" class="last" style="width:11.4em;"/>
+                     </div>
+                     <div class="line">
+                        <div class="inline number">4)</div><input type="text" style="width:11.4em;"/><div class="inline number">5)</div><input type="text" style="width:11.4em;"/><div class="inline number">6)</div><input type="text" class="last" style="width:11.4em;"/>
+                     </div>
+                  </div>
+               </div>
+               <div class="block">(b) Why do these diagnoses justify transportation other than Public Transportation?
+                  <input type="text" style="width:49.2em;" />
+               </div>
+            </li>
+            <li>
+               <div class="block">
+                  <div class="table">
+                     <div class="row">
+                        <div class="cell" style="width:61em;">(a) Does the patient use a wheelchair, scooter or portable oxygen?</div>
+                        <div class="cell last"><input type="checkbox" />Yes <input type="checkbox" />No</div>
+                     </div>
+                     <div class="row">
+                        <div class="cell">(b) Does the patient require personal assistance of another individual to enter or exit a building or vehicle?</div>
+                        <div class="cell last"><input type="checkbox" />Yes <input type="checkbox" />No</div>
+                     </div>
+                     <div class="row">
+                        <div class="cell">(c) Does patient have a family member or home attendant traveling with him/her?</div>
+                        <div class="cell last"><input type="checkbox" />Yes <input type="checkbox" />No</div>
+                     </div>
+                  </div>
+               </div>
+            </li>
+            <li>
+               <div class="block">
+                  <div class="table">
+                     <div class="row">
+                        <div class="cell" style="width:61em;letter-spacing: -0.01em;">(a) Is the patient’s departure/destination point within his/her CMMA? (see definition under the Certification Statement)</div>
+                        <div class="cell last"><input type="checkbox" />Yes <input type="checkbox" />No</div>
+                     </div>
+                  </div>
+               </div>
+               <div class="block">(b) If not, justify travel outside CMMA <input type="text" style="width:49.2em;" />
+               </div>
+            </li>
+            <li>
+               <div class="block">
+                  <div class="line">Respond to this question only if <b>Non-Emergency Ambulance</b> is requested.</div>
+                  <div class="table">
+                     <div class="row">
+                        <div class="cell" style="width:61em;">(a) Does the patient require life-sustaining equipment during transport?</div>
+                        <div class="cell"><input type="checkbox" />Yes <input type="checkbox" />No</div>
+                     </div>
+                     <div class="row">
+                        <div class="cell">(b) Does the patient require monitoring by a certified emergency medical technician or paramedic during transport?</div>
+                        <div class="cell"><input type="checkbox" />Yes <input type="checkbox" />No</div>
+                     </div>
+                     <div class="row">
+                        <div class="cell">(c) Does the patient need to be transported in a reclining position for:</div>
+                     </div>
+                     <div class="line" style="text-align: center; margin-top: 0.5em;">
+                        <div class="inline number">1)</div>Medical reasons <input type="checkbox" style="margin-left:1em;" />Yes <input type="checkbox" />No <div class="inline number" style="margin-left:2em;">2) </div>Psychiatric condition <input type="checkbox" style="margin-left:1em;" />Yes <input type="checkbox" />No
+                     </div>
+                  </div>
+               </div>
+            </li>
+            <li>
+               <div class="block">
+                  <div class="block">
+                     Indicate the location and the mode of transportation ordered pursuant to the filing of this document. Consult the New York State Department
+                     of Health ordering guidelines for definition of each mode of travel.
+                  </div>
+                  <table>
+                     <tr>
+                        <td>(a) Location:</td><td><input type="checkbox"/>Travel is within the CMMA</td><td><input type="checkbox"/>Travel is outside the CMMA</td><td/>
+                     </tr>
+                     <tr>
+                        <td>(b) Mode:</td><td><input type="checkbox"/>LIVERY</td><td><input type="checkbox"/>AMBULETTE</td><td><input type="checkbox"/>Non-Emergency AMBULANCE</td>
+                     </tr>
+                  </table>
+                  <!--<div class="table">
+                     <div class="row">
+                        <div class="cell">(a) Location:</div><div class="free cell"><input type="checkbox"/>Travel is within the CMMA</div><div class="free cell"><input type="checkbox"/>Travel is outside the CMMA</div><div class="cell"/>
+                     </div>
+                     <div class="row">
+                        <div class="cell">(b) Mode:</div><div class="free cell"><input type="checkbox"/>LIVERY</div><div class="free cell"><input type="checkbox"/>AMBULETTE</div><div class="cell"><input type="checkbox"/>Non-Emergency AMBULANCE</div>
+                     </div>
+                  </div>-->
+               </div>
+            </li>
+            <li>
+               <div class="block">
+                  This transportation authorization is from <input type="text" style="width:8em;" /> to <input type="text" style="width:8em;" />. (NOTE: An authorization may cover a one way trip;
+                  a six-month period for patients with acute conditions; or twelve months for patients with chronic conditions.)
+               </div>
+            </li>
+         </ol>
+      </div>
+      <div class="page">
+         <div class="req-left">
+            MAP-2015 (face) <br />
+            Rev. 8/15/01
+         </div>
+         <div class="req-right">
+            Human Resources Administration<br />
+            Medical Assistance Programs
+         </div>
+         <div style="height: 2.5em;"></div>
+         <div class="block">
+            <h1>INSTRUCTIONS:</h1>
+            <p>Updated form is required when authorization period expires or when change in patient's condition results in a higher level of transportation.
+               Form must be retained in medical practitioner's place of business readily retrievable for audit purposes.</p>
+            <h1>CERTIFICATION STATEMENT</h1>
+            <p>I (or the entity) understand that orders for Medicaid-funded travel may result from the completion of this form. I (or the entity) understand and
+               agree to be subject to and bound by all rules, regulations, policies, standards and procedures of the New York State Department of Health, as set
+               forth in Title 18 of the Official Compilation of Rules and Regulations of New York State and other publications of the Department, including
+               Regulation 504.8(2) which requires providers to pay restitution for any direct or indirect monetary damage to the program resulting from
+               improperly or inappropriately ordering services. I (or the entity) certify that the statements made hereon are true, accurate and complete to the
+               best of my knowledge; no material fact has been omitted from this form.</p>
+            <p>I (or the entity) understand that the Common Medical Market Area (CMMA), as defined by New York State Social Service Regulation
+               505.10(b)(5), means the geographic area from which a community customarily obtains its medical care and services. This area lies within a
+               five-mile radius of the recipient's residence.</p>
+            <p>HRA does not intend to limit a recipient's freedom to choose any Medicaid practitioner in the New York City region. Recipients are allowed to
+               receive care and services from any practitioner willing to provide care. However, HRA is not required to pay the transportation expenses of a
+               recipient to accommodate one's free choice when the same medical service is available closer to one's residence. Internal medicine, general and
+               family practice, OB/GYN, pediatric and psychiatric services are considered by HRA to be typically available to Medicaid recipients/patients
+               within the CMMA. This listing is not deemed all-inclusive.</p>
+            <p>By ordering transportation services for Medicaid recipients/patients traveling outside the CMMA, I (or the entity) certify that the Medicaid
+               recipient/patient requires specialized care not available within the recipient/patient's CMMA, or that failure to maintain the continuity of
+               services with a particular medical provider, although other appropriate care is available to the recipient/patient within the CMMA, is essential to
+               the recipient/patient's physical and mental health, or there is an imminent need to initiate ongoing medical services that may be available within
+               the CMMA but for which there exists a waiting list to receive care.</p>
+            <table>
+               <tr>
+                  <td><input type="text" style="width: 14em;"/></td>
+                  <td class="free"><input type="text" style="width: 9em;"/></td>
+                  <td class="free"><input type="text" style="width: 7em;"/></td>
+                  <td class="free"><input type="text" style="width: 7em;"/></td>
+                  <td class="free"><input type="text" style="width: 7em;"/></td>
+               </tr>
+               <tr>
+                  <td>Physician's Name (PRINT)</td><td class="free">Physician's Signature</td><td class="free">Date</td><td>Telephone #</td><td class="free">License #</td>
+               </tr>
+               <tr>
+                  <td><input type="text" style="width: 14em;"/></td>
+                  <td class="free" colspan="2"><input type="text" style="width: 17.5em;"/></td>
+                  <td class="free" colspan="2"><input type="text" style="width: 15.5em;"/></td>
+               </tr>
+               <tr>
+                  <td>Hospital/Clinic/Inst. Name</td><td class="free" colspan="2">Medical Practitioner's Address</td><td class="free" colspan="2">MMIS ID#</td>
+               </tr>
+            </table>
+            <div class="block">Indicate name of nurse/social worker/other person assisting in completing this form.</div>
+            <table>
+               <tr>
+                  <td><input type="text" style="width: 14em;"/></td>
+                  <td class="free"><input type="text" style="width: 17.5em;"/></td>
+                  <td class="free"><input type="text" style="width: 15.5em;"/></td>
+               </tr>
+               <tr>
+                  <td>Name</td><td class="free">Title</td><td class="free">Telephone #</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+   </body>
+</html>

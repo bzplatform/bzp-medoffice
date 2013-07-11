@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! empty var.VisitVitals.form}">
+            <li class="em8">
+               <label style="font-weight:bold;">Blood Pressure:</label>
+            </li>
+            <li class="em7">
+               <label>Sys:</label>
+               <h:inputText value="#{var.VisitVitals.form.visitVitals._.systolicBloodPressure}" style="width: 4em;">
+                  <f:convertNumber/>
+               </h:inputText>
+               <label style="display: inline; padding-left: 0; padding-right: 0;">/</label>
+            </li>
+            <li class="em10">
+               <label>Dias:</label>
+               <h:inputText value="#{var.VisitVitals.form.visitVitals._.diastolicBloodPressure}" style="width: 4em; margin-right: 0;">
+                  <f:convertNumber/>
+               </h:inputText>
+               <label style="display: inline; padding-left: 0;">mmHg</label>
+            </li>
+            <li class="em12">
+               <label>Position:</label>
+               <h:selectOneMenu value="#{var.VisitVitals.form.visitVitals._.bloodPressurePosition}">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItem itemValue="Sitting" itemLabel="Sitting"/>
+                  <f:selectItem itemValue="Standing" itemLabel="Standing"/>
+                  <f:selectItem itemValue="Supine" itemLabel="Supine"/>
+               </h:selectOneMenu>
+            </li>
+            <li class="em12">
+               <label>Location:</label>
+               <h:selectOneMenu value="#{var.VisitVitals.form.visitVitals._.bloodPressureLocation}">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItem itemValue="Left Arm" itemLabel="Left Arm"/>
+                  <f:selectItem itemValue="Right Arm" itemLabel="Right Arm"/>
+               </h:selectOneMenu>
+            </li>
+            <li class="em48" style="height: auto;">
+               <hr/>
+            </li>
+            <li class="em8">
+               <label>Pulse:</label>
+               <h:inputText value="#{var.VisitVitals.form.visitVitals._.pulseRate}" style="width: 4em; margin-right: 0;">
+                  <f:convertNumber/>
+               </h:inputText>
+               <label style="display: inline; padding-left: 0; padding-right: 0;">bpm</label>
+            </li>
+            <li class="em12">
+               <label>Regularity:</label>
+               <h:selectOneMenu value="#{var.VisitVitals.form.visitVitals._.pulseRegularity}">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItem itemValue="Regular" itemLabel="Regular"/>
+                  <f:selectItem itemValue="Irregular" itemLabel="Irregular"/>
+               </h:selectOneMenu>
+            </li>
+            <li class="em48" style="height: auto;">
+               <hr/>
+            </li>
+            <li class="em22">
+               <label>Temperature:</label>
+               <h:inputText value="#{var.VisitVitals.form.visitVitals._.temperature}" style="width: 3em; margin-right: 0;">
+                  <f:convertNumber maxFractionDigits="2"/>
+               </h:inputText>
+               <h:selectOneMenu value="#{var.VisitVitals.form.visitVitals._.temperatureUnit}" style="width: auto; margin-right: 0;">
+                  <f:selectItem itemValue="F" itemLabel="°F"/>
+                  <f:selectItem itemValue="C" itemLabel="°C"/>
+               </h:selectOneMenu>
+               <h:selectOneMenu value="#{var.VisitVitals.form.visitVitals._.temperatureLocation}" style="width: auto;">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItem itemValue="Oral" itemLabel="Oral"/>
+                  <f:selectItem itemValue="Rectal" itemLabel="Rectal"/>
+                  <f:selectItem itemValue="Axillary" itemLabel="Axillary"/>
+                  <f:selectItem itemValue="Temporal Artery" itemLabel="Temporal Artery"/>
+                  <f:selectItem itemValue="Tympanic Membrane" itemLabel="Tympanic Membrane"/>
+               </h:selectOneMenu>
+            </li>
+            <li class="em8">
+               <label>Respiration:</label>
+               <h:inputText value="#{var.VisitVitals.form.visitVitals._.respiratoryRate}" style="width: 4em; margin-right: 0;">
+                  <f:convertNumber/>
+               </h:inputText>
+               <label style="display: inline; padding-left: 0; padding-right: 0;">bpm</label>
+            </li>
+            <li class="em8">
+               <label>Oxygen:</label>
+               <h:inputText value="#{var.VisitVitals.form.visitVitals._.oxygenLevel}" style="width: 4em; margin-right: 0;">
+                  <f:convertNumber/>
+               </h:inputText>
+               <label style="display: inline; padding-left: 0; padding-right: 0;">%</label>
+            </li>
+            <li class="em48" style="height: auto;">
+               <hr/>
+            </li>
+            <li class="em15">
+               <label>Height:</label>
+               <h:inputText value="#{var.VisitVitals.form.visitVitals._.heightBase}" style="width: 3em; margin-right: 0;">
+                  <f:ajax render="bmi" execute="@form" event="blur"/>
+                  <f:convertNumber/>
+               </h:inputText>
+               #{var.VisitVitals.form.visitVitals._.heightUnit == null ? var.VisitVitals.form.visitVitals._.setHeightUnit('ft/in') : null}
+               <h:selectOneMenu value="#{var.VisitVitals.form.visitVitals._.heightUnit}" style="width: 3em; margin-right: 0; margin-left: 0.25em;">
+                  <f:ajax render="bmi heightFractionUnit" execute="@form" event="change"/>
+                  <f:selectItem itemValue="ft/in" itemLabel="ft"/>
+                  <f:selectItem itemValue="m/cm" itemLabel="m"/>
+               </h:selectOneMenu>
+               <h:inputText value="#{var.VisitVitals.form.visitVitals._.heightFraction}" style="width: 3em; margin-right: 0;">
+                  <f:ajax render="bmi" execute="@form" event="blur"/>
+                  <f:convertNumber/>
+               </h:inputText>
+               <label style="display: inline; padding-left: 0; padding-right: 0;">
+                  <h:outputText value="#{var.VisitVitals.form.visitVitals._.heightFractionUnit}" id="heightFractionUnit"/>                 
+               </label>
+            </li>
+            <li class="em10">
+               <label>Weight:</label>
+               <h:inputText value="#{var.VisitVitals.form.visitVitals._.weight}" style="width: 4em; margin-right: 0;">
+                  <f:ajax render="bmi" execute="@form" event="blur"/>
+                  <f:convertNumber/>
+               </h:inputText>
+               <h:selectOneMenu value="#{var.VisitVitals.form.visitVitals._.weightUnit}" style="width: 3em; margin-right: 0;">
+                  <f:ajax render="bmi" execute="@form" event="change"/>
+                  <f:selectItem itemValue="lb" itemLabel="lb"/>
+                  <f:selectItem itemValue="kg" itemLabel="kg"/>
+               </h:selectOneMenu>
+            </li>
+            <li class="em8">
+               <h:panelGroup id="bmi">
+                  #{var.VisitVitals.form.visitVitals._.setBmi(biz.visitVitalsBmi(var.VisitVitals.form.visitVitals._))}
+                  <label>BMI:</label>
+                  <h:inputText value="#{var.VisitVitals.form.visitVitals._.bmi}" disabled="true" style="width: 4em; margin-right: 0;">
+                     <f:convertNumber maxFractionDigits="2"/>
+                  </h:inputText>
+                  <label style="display: inline; padding-left: 0; padding-right: 0;">kg/m<sup>2</sup></label>
+               </h:panelGroup>
+            </li>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

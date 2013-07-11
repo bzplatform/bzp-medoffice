@@ -1,0 +1,431 @@
+<table>
+   <tr>
+      <th>Allergic/Immunologic</th>
+      <td>
+         <div class="pntl-section" data-section="rosAllergicImmunologic">
+            $rosSectionFilter
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th style="width: 20%;">Constitutional Symptoms</th>
+      <td>
+         <div class="pntl-section" data-section="rosConstitutionalSymptoms">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="feelingPoorlyYes" class="radio-group-ros-feelingPoorly" onchange="radioGroup(this, 'ros-feelingPoorly'); return false;"/>
+                  <label data-text-if="feelingPoorlyYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="feelingPoorlyNo" class="radio-group-ros-feelingPoorly" onchange="radioGroup(this, 'ros-feelingPoorly'); return false;"/>
+                  <label data-text-if="feelingPoorlyNo">N<span class="none">o</span></label>
+                  <label data-text-if="feelingPoorlyYes || feelingPoorlyNo">feeling poorly(malaise)<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="feverChillsYes" class="radio-group-ros-feverChills" onchange="radioGroup(this, 'ros-feverChills'); return false;"/>
+                  <label data-text-if="feverChillsYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="feverChillsNo" class="radio-group-ros-feverChills" onchange="radioGroup(this, 'ros-feverChills'); return false;"/>
+                  <label data-text-if="feverChillsNo">N<span class="none">o</span></label>
+                  <label data-text-if="feverChillsYes || feverChillsNo">fever/chills<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="nightSweatsYes" class="radio-group-ros-nightSweats" onchange="radioGroup(this, 'ros-nightSweats'); return false;"/>
+                  <label data-text-if="nightSweatsYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="nightSweatsNo" class="radio-group-ros-nightSweats" onchange="radioGroup(this, 'ros-nightSweats'); return false;"/>
+                  <label data-text-if="nightSweatsNo">N<span class="none">o</span></label>
+                  <label data-text-if="nightSweatsYes || nightSweatsNo">night sweats<span class="none">.</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="weightChangesYes" class="radio-group-ros-weightChanges" onchange="radioGroup(this, 'ros-weightChanges'); return false;"/>
+                  <label data-text-if="weightChangesYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="weightChangesNo" class="radio-group-ros-weightChanges" onchange="radioGroup(this, 'ros-weightChanges'); return false;"/>
+                  <label data-text-if="weightChangesNo">N<span class="none">o</span></label>
+                  <label data-text-if="weightChangesYes || weightChangesNo">recent weight changes<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Eyes</th>
+      <td>
+         <div class="pntl-section" data-section="rosEyes">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="visionProblemsYes" class="radio-group-ros-visionProblems" onchange="radioGroup(this, 'ros-visionProblems'); return false;"/>
+                  <label data-text-if="visionProblemsYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="visionProblemsNo" class="radio-group-ros-visionProblems" onchange="radioGroup(this, 'ros-visionProblems'); return false;"/>
+                  <label data-text-if="visionProblemsNo">N<span class="none">o</span></label>
+                  <label data-text-if="visionProblemsYes || visionProblemsNo">vision problems<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="itchingYes" class="radio-group-ros-itching" onchange="radioGroup(this, 'ros-itching'); return false;"/>
+                  <label data-text-if="itchingYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="itchingNo" class="radio-group-ros-itching" onchange="radioGroup(this, 'ros-itching'); return false;"/>
+                  <label data-text-if="itchingNo">N<span class="none">o</span></label>
+                  <label data-text-if="itchingYes || itchingNo">itching of the eyes<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="eyePainYes" class="radio-group-ros-eyePain" onchange="radioGroup(this, 'ros-eyePain'); return false;"/>
+                  <label data-text-if="eyePainYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="eyePainNo" class="radio-group-ros-eyePain" onchange="radioGroup(this, 'ros-eyePain'); return false;"/>
+                  <label data-text-if="eyePainNo">N<span class="none">o</span></label>
+                  <label data-text-if="eyePainYes || eyePainNo">eye pain<span class="none">.</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="photophobiaYes" class="radio-group-ros-photophobia" onchange="radioGroup(this, 'ros-photophobia'); return false;"/>
+                  <label data-text-if="photophobiaYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="photophobiaNo" class="radio-group-ros-photophobia" onchange="radioGroup(this, 'ros-photophobia'); return false;"/>
+                  <label data-text-if="photophobiaNo">N<span class="none">o</span></label>
+                  <label data-text-if="photophobiaYes || photophobiaNo">photophobia<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Ears/Nose/Mouth/Throat</th>
+      <td>
+         <div class="pntl-section" data-section="rosEarsNoseMouthThroat">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="hearingYes" class="radio-group-ros-hearing" onchange="radioGroup(this, 'ros-hearing'); return false;"/>
+                  <label data-text-if="hearingYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="hearingNo" class="radio-group-ros-hearing" onchange="radioGroup(this, 'ros-hearing'); return false;"/>
+                  <label data-text-if="hearingNo">N<span class="none">o</span></label>
+                  <label data-text-if="hearingYes || hearingNo">hearing loss<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="earacheYes" class="radio-group-ros-earache" onchange="radioGroup(this, 'ros-earache'); return false;"/>
+                  <label data-text-if="hearingYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="earacheNo" class="radio-group-ros-earache" onchange="radioGroup(this, 'ros-earache'); return false;"/>
+                  <label data-text-if="earacheNo">N<span class="none">o</span></label>
+                  <label data-text-if="earacheYes || earacheNo">earache<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="tinnitusYes" class="radio-group-ros-tinnitus" onchange="radioGroup(this, 'ros-tinnitus'); return false;"/>
+                  <label data-text-if="tinnitusYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="tinnitusNo" class="radio-group-ros-tinnitus" onchange="radioGroup(this, 'ros-tinnitus'); return false;"/>
+                  <label data-text-if="tinnitusNo">N<span class="none">o</span></label>
+                  <label data-text-if="tinnitusYes || tinnitusNo">tinnitus<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="nasalYes" class="radio-group-ros-nasal" onchange="radioGroup(this, 'ros-nasal'); return false;"/>
+                  <label data-text-if="nasalYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="nasalNo" class="radio-group-ros-nasal" onchange="radioGroup(this, 'ros-nasal'); return false;"/>
+                  <label data-text-if="nasalNo">N<span class="none">o</span></label>
+                  <label data-text-if="nasalYes || nasalNo">nasal discharge<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="sinusPainYes" class="radio-group-ros-sinusPain" onchange="radioGroup(this, 'ros-sinusPain'); return false;"/>
+                  <label data-text-if="sinusPainYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="sinusPainNo" class="radio-group-ros-sinusPain" onchange="radioGroup(this, 'ros-sinusPain'); return false;"/>
+                  <label data-text-if="sinusPainNo">N<span class="none">o</span></label>
+                  <label data-text-if="sinusPainYes || sinusPainNo">sinus pain<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="epistaxisYes" class="radio-group-ros-epistaxis" onchange="radioGroup(this, 'ros-epistaxis'); return false;"/>
+                  <label data-text-if="epistaxisYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="epistaxisNo" class="radio-group-ros-epistaxis" onchange="radioGroup(this, 'ros-epistaxis'); return false;"/>
+                  <label data-text-if="epistaxisNo">N<span class="none">o</span></label>
+                  <label data-text-if="epistaxisYes || epistaxisNo">epistaxis<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="hoarsenessYes" class="radio-group-ros-hoarseness" onchange="radioGroup(this, 'ros-hoarseness'); return false;"/>
+                  <label data-text-if="hoarsenessYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="hoarsenessNo" class="radio-group-ros-hoarseness" onchange="radioGroup(this, 'ros-hoarseness'); return false;"/>
+                  <label data-text-if="hoarsenessNo">N<span class="none">o</span></label>
+                  <label data-text-if="hoarsenessYes || hoarsenessNo">hoarseness<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="soreThroatYes" class="radio-group-ros-soreThroat" onchange="radioGroup(this, 'ros-soreThroat'); return false;"/>
+                  <label data-text-if="soreThroatYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="soreThroatNo" class="radio-group-ros-soreThroat" onchange="radioGroup(this, 'ros-soreThroat'); return false;"/>
+                  <label data-text-if="soreThroatNo">N<span class="none">o</span></label>
+                  <label data-text-if="soreThroatYes || soreThroatNo">sore throat<span class="none">.</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="bleedingGumsYes" class="radio-group-ros-bleedingGums" onchange="radioGroup(this, 'ros-bleedingGums'); return false;"/>
+                  <label data-text-if="bleedingGumsYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="bleedingGumsNo" class="radio-group-ros-bleedingGums" onchange="radioGroup(this, 'ros-bleedingGums'); return false;"/>
+                  <label data-text-if="bleedingGumsNo">N<span class="none">o</span></label>
+                  <label data-text-if="bleedingGumsYes || bleedingGumsNo">bleeding gums<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="mouthSoresYes" class="radio-group-ros-mouthSores" onchange="radioGroup(this, 'ros-mouthSores'); return false;"/>
+                  <label data-text-if="mouthSoresYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="mouthSoresNo" class="radio-group-ros-mouthSores" onchange="radioGroup(this, 'ros-mouthSores'); return false;"/>
+                  <label data-text-if="mouthSoresNo">N<span class="none">o</span></label>
+                  <label data-text-if="mouthSoresYes || mouthSoresNo">mouth sores<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Cardiovascular</th>
+      <td>
+         <div class="pntl-section" data-section="rosCardiovascular">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="chestPainYes" class="radio-group-ros-chestPain" onchange="radioGroup(this, 'ros-chestPain'); return false;"/>
+                  <label data-text-if="chestPainYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="chestPainNo" class="radio-group-ros-chestPain" onchange="radioGroup(this, 'ros-chestPain'); return false;"/>
+                  <label data-text-if="chestPainNo">N<span class="none">o</span></label>
+                  <label data-text-if="chestPainYes || chestPainNo">chest pain or discomfort<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="palpitationsYes" class="radio-group-ros-palpitations" onchange="radioGroup(this, 'ros-palpitations'); return false;"/>
+                  <label data-text-if="palpitationsYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="palpitationsNo" class="radio-group-ros-palpitations" onchange="radioGroup(this, 'ros-palpitations'); return false;"/>
+                  <label data-text-if="palpitationsNo">N<span class="none">o</span></label>
+                  <label data-text-if="palpitationsYes || palpitationsNo">palpitations<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="heartRateWnlYes" class="radio-group-ros-heartRateWnl" onchange="radioGroup(this, 'ros-heartRateWnl'); return false;"/>
+                  <label data-text-if="heartRateWnlYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="heartRateWnlNo" class="radio-group-ros-heartRateWnl" onchange="radioGroup(this, 'ros-heartRateWnl'); return false;"/>
+                  <label data-text-if="heartRateWnlNo">N<span class="none">o</span></label>
+                  <label data-text-if="heartRateWnlYes || heartRateWnlNo">heart rate wnl<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Respiratory</th>
+      <td>
+         <div class="pntl-section" data-section="rosRespiratory">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="dyspneaYes" class="radio-group-ros-dyspnea" onchange="radioGroup(this, 'ros-dyspnea'); return false;"/>
+                  <label data-text-if="dyspneaYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="dyspneaNo" class="radio-group-ros-dyspnea" onchange="radioGroup(this, 'ros-dyspnea'); return false;"/>
+                  <label data-text-if="dyspneaNo">N<span class="none">o</span></label>
+                  <label data-text-if="dyspneaYes || dyspneaNo">dyspnea<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="coughYes" class="radio-group-ros-cough" onchange="radioGroup(this, 'ros-cough'); return false;"/>
+                  <label data-text-if="coughYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="coughNo" class="radio-group-ros-cough" onchange="radioGroup(this, 'ros-cough'); return false;"/>
+                  <label data-text-if="coughNo">N<span class="none">o</span></label>
+                  <label data-text-if="coughYes || coughNo">cough<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="hemoptysisYes" class="radio-group-ros-hemoptysis" onchange="radioGroup(this, 'ros-hemoptysis'); return false;"/>
+                  <label data-text-if="hemoptysisYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="hemoptysisNo" class="radio-group-ros-hemoptysis" onchange="radioGroup(this, 'ros-hemoptysis'); return false;"/>
+                  <label data-text-if="hemoptysisNo">N<span class="none">o</span></label>
+                  <label data-text-if="hemoptysisYes || hemoptysisNo">hemoptysis<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="wheezingYes" class="radio-group-ros-wheezing" onchange="radioGroup(this, 'ros-wheezing'); return false;"/>
+                  <label data-text-if="wheezingYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="wheezingNo" class="radio-group-ros-wheezing" onchange="radioGroup(this, 'ros-wheezing'); return false;"/>
+                  <label data-text-if="wheezingNo">N<span class="none">o</span></label>
+                  <label data-text-if="wheezingYes || wheezingNo">wheezing<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Gastrointestinal</th>
+      <td>
+         <div class="pntl-section" data-section="rosGastrointestinal">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="appetiteYes" class="radio-group-ros-appetite" onchange="radioGroup(this, 'ros-appetite'); return false;"/>
+                  <label data-text-if="appetiteYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="appetiteNo" class="radio-group-ros-appetite" onchange="radioGroup(this, 'ros-appetite'); return false;"/>
+                  <label data-text-if="appetiteNo">N<span class="none">o</span></label>
+                  <label data-text-if="appetiteYes || appetiteNo">appetite normal<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="dysphagiaYes" class="radio-group-ros-dysphagia" onchange="radioGroup(this, 'ros-dysphagia'); return false;"/>
+                  <label data-text-if="dysphagiaYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="dysphagiaNo" class="radio-group-ros-dysphagia" onchange="radioGroup(this, 'ros-dysphagia'); return false;"/>
+                  <label data-text-if="dysphagiaNo">N<span class="none">o</span></label>
+                  <label data-text-if="dysphagiaYes || dysphagiaNo">dysphagia<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="heartburnYes" class="radio-group-ros-heartburn" onchange="radioGroup(this, 'ros-heartburn'); return false;"/>
+                  <label data-text-if="heartburnYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="heartburnNo" class="radio-group-ros-heartburn" onchange="radioGroup(this, 'ros-heartburn'); return false;"/>
+                  <label data-text-if="heartburnNo">N<span class="none">o</span></label>
+                  <label data-text-if="heartburnYes || heartburnNo">heartburn<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="nauseaYes" class="radio-group-ros-nausea" onchange="radioGroup(this, 'ros-nausea'); return false;"/>
+                  <label data-text-if="nauseaYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="nauseaNo" class="radio-group-ros-nausea" onchange="radioGroup(this, 'ros-nausea'); return false;"/>
+                  <label data-text-if="nauseaNo">N<span class="none">o</span></label>
+                  <label data-text-if="nauseaYes || nauseaNo">nausea<span class="none">.</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="vomitingYes" class="radio-group-ros-vomiting" onchange="radioGroup(this, 'ros-vomiting'); return false;"/>
+                  <label data-text-if="vomitingYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="vomitingNo" class="radio-group-ros-vomiting" onchange="radioGroup(this, 'ros-vomiting'); return false;"/>
+                  <label data-text-if="vomitingNo">N<span class="none">o</span></label>
+                  <label data-text-if="vomitingYes || vomitingNo">vomiting<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="diarrheaYes" class="radio-group-ros-diarrhea" onchange="radioGroup(this, 'ros-diarrhea'); return false;"/>
+                  <label data-text-if="diarrheaYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="diarrheaNo" class="radio-group-ros-diarrhea" onchange="radioGroup(this, 'ros-diarrhea'); return false;"/>
+                  <label data-text-if="diarrheaNo">N<span class="none">o</span></label>
+                  <label data-text-if="diarrheaYes || diarrheaNo">diarrhea<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="abdominalPainYes" class="radio-group-ros-abdominalPain" onchange="radioGroup(this, 'ros-abdominalPain'); return false;"/>
+                  <label data-text-if="abdominalPainYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="abdominalPainNo" class="radio-group-ros-abdominalPain" onchange="radioGroup(this, 'ros-abdominalPain'); return false;"/>
+                  <label data-text-if="abdominalPainNo">N<span class="none">o</span></label>
+                  <label data-text-if="abdominalPainYes || abdominalPainNo">abdominal pain<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="melenaYes" class="radio-group-ros-melena" onchange="radioGroup(this, 'ros-melena'); return false;"/>
+                  <label data-text-if="melenaYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="melenaNo" class="radio-group-ros-melena" onchange="radioGroup(this, 'ros-melena'); return false;"/>
+                  <label data-text-if="melenaNo">N<span class="none">o</span></label>
+                  <label data-text-if="melenaYes || melenaNo">melena<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Musculoskeletal</th>
+      <td>
+         <div class="pntl-section" data-section="rosMusculoskeletal">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="painYes" class="radio-group-ros-pain" onchange="radioGroup(this, 'ros-pain'); return false;"/>
+                  <label data-text-if="painYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="painNo" class="radio-group-ros-pain" onchange="radioGroup(this, 'ros-pain'); return false;"/>
+                  <label data-text-if="painNo">N<span class="none">o</span></label>
+                  <label data-text-if="painYes || painNo">pain localized to one or more joints<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="stiffnessYes" class="radio-group-ros-stiffness" onchange="radioGroup(this, 'ros-stiffness'); return false;"/>
+                  <label data-text-if="stiffnessYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="stiffnessNo" class="radio-group-ros-stiffness" onchange="radioGroup(this, 'ros-stiffness'); return false;"/>
+                  <label data-text-if="stiffnessNo">N<span class="none">o</span></label>
+                  <label data-text-if="stiffnessYes || stiffnessNo">stiffness localized to one or more joints<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Integumentary</th>
+      <td>
+         <div class="pntl-section" data-section="rosIntegumentary">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="breastLumpYes" class="radio-group-ros-breastLump" onchange="radioGroup(this, 'ros-breastLump'); return false;"/>
+                  <label data-text-if="breastLumpYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="breastLumpNo" class="radio-group-ros-breastLump" onchange="radioGroup(this, 'ros-breastLump'); return false;"/>
+                  <label data-text-if="breastLumpNo">N<span class="none">o</span></label>
+                  <label data-text-if="breastLumpYes || breastLumpNo">breast lump<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="nippleYes" class="radio-group-ros-nipple" onchange="radioGroup(this, 'ros-nipple'); return false;"/>
+                  <label data-text-if="nippleYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="nippleNo" class="radio-group-ros-nipple" onchange="radioGroup(this, 'ros-nipple'); return false;"/>
+                  <label data-text-if="nippleNo">N<span class="none">o</span></label>
+                  <label data-text-if="nippleYes || nippleNo">nipple discharge<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="painInBreastYes" class="radio-group-ros-painInBreast" onchange="radioGroup(this, 'ros-painInBreast'); return false;"/>
+                  <label data-text-if="painInBreastYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="painInBreastNo" class="radio-group-ros-painInBreast" onchange="radioGroup(this, 'ros-painInBreast'); return false;"/>
+                  <label data-text-if="painInBreastNo">N<span class="none">o</span></label>
+                  <label data-text-if="painInBreastYes || painInBreastNo">pain in breast<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Neurological</th>
+      <td>
+         <div class="pntl-section" data-section="rosNeurological">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="dizzinessYes" class="radio-group-ros-dizziness" onchange="radioGroup(this, 'ros-dizziness'); return false;"/>
+                  <label data-text-if="dizzinessYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="dizzinessNo" class="radio-group-ros-dizziness" onchange="radioGroup(this, 'ros-dizziness'); return false;"/>
+                  <label data-text-if="dizzinessNo">N<span class="none">o</span></label>
+                  <label data-text-if="dizzinessYes || dizzinessNo">dizziness<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="headacheYes" class="radio-group-ros-headache" onchange="radioGroup(this, 'ros-headache'); return false;"/>
+                  <label data-text-if="headacheYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="headacheNo" class="radio-group-ros-headache" onchange="radioGroup(this, 'ros-headache'); return false;"/>
+                  <label data-text-if="headacheNo">N<span class="none">o</span></label>
+                  <label data-text-if="headacheYes || headacheNo">headache<span class="none">.</span></label>
+               </span>
+               <span>
+                  <input type="checkbox" data-name="facialPainYes" class="radio-group-ros-facialPain" onchange="radioGroup(this, 'ros-facialPain'); return false;"/>
+                  <label data-text-if="facialPainYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="facialPainNo" class="radio-group-ros-facialPain" onchange="radioGroup(this, 'ros-facialPain'); return false;"/>
+                  <label data-text-if="facialPainNo">N<span class="none">o</span></label>
+                  <label data-text-if="facialPainYes || facialPainNo">facial pain<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Hematologic/Lymphatic</th>
+      <td>
+         <div class="pntl-section" data-section="rosHematologicLymphatic">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="bleedingAnemiaYes" class="radio-group-ros-bleedingAnemia" onchange="radioGroup(this, 'ros-bleedingAnemia'); return false;"/>
+                  <label data-text-if="bleedingAnemiaYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="bleedingAnemiaNo" class="radio-group-ros-bleedingAnemia" onchange="radioGroup(this, 'ros-bleedingAnemia'); return false;"/>
+                  <label data-text-if="bleedingAnemiaNo">N<span class="none">o</span></label>
+                  <label data-text-if="bleedingAnemiaYes || bleedingAnemiaNo">bleeding/anemia<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>   
+</table>

@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! empty var.OfficeProvider.form}">
+            <style>
+               a.colored {
+                  color: #AE4EB5;
+                  text-decoration: none;
+                  font-weight: bold;
+               }
+            </style>
+            <li class="em8">
+               <h:panelGroup styleClass="errors" rendered="#{var.OfficeProvider.form.officeProviderValidationMap._ != null and var.OfficeProvider.form.officeProviderValidationMap._.role}">
+                  <b>Role</b> is required
+               </h:panelGroup>   
+               <label>Role:</label>
+               <h:selectOneMenu value="#{var.OfficeProvider.form.officeProvider._.role}" title="Role" disabled="#{var.OfficeProvider.form.officeProvider._.id != null}">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItem itemValue="self" itemLabel="Self"/>
+                  <f:selectItem itemValue="assistant" itemLabel="Assistant"/>
+                  <f:selectItem itemValue="procedure" itemLabel="Procedure"/>
+                  <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.OfficeProvider.form.officeProvider._.setAssociatedProvider(null))._do(var.OfficeProvider.form.officeProvider._.setCptCode(null))._do(var.OfficeProvider.form.officeProvider._.setReferringProvider(null)).listen}"/>
+               </h:selectOneMenu>            
+            </li>
+            <li class="em14">
+               <h:panelGroup styleClass="errors" rendered="#{var.OfficeProvider.form.officeProviderValidationMap._ != null and var.OfficeProvider.form.officeProviderValidationMap._.specialty}">
+                  <b>Specialty</b> is required
+               </h:panelGroup>
+               #{var.OfficeProvider.form.specialtyList._ == null ? var.OfficeProvider.form.specialtyList._(jsf.hintedSearch('Specialty', 's.name', jsf.newMap(), '_MEDBASE'))  : null}          
+               <label>Specialty:</label>
+               <h:selectOneMenu value="#{var.OfficeProvider.form.officeProvider._.specialtyId}" title="Specialty">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.OfficeProvider.form.specialtyList._}" var="specialty" itemLabel="#{specialty.name}" itemValue="#{specialty.id}"/>
+               </h:selectOneMenu>            
+            </li>
+            <li class="em20">
+               <h:panelGroup styleClass="errors" rendered="#{var.OfficeProvider.form.officeProviderValidationMap._ != null and var.OfficeProvider.form.officeProviderValidationMap._.alias}">
+                  <b>Alias</b> is required
+               </h:panelGroup>
+               <label>Alias:</label>
+               <h:inputText value="#{var.OfficeProvider.form.officeProvider._.alias}" title="Alias"/>
+            </li>
+            <li style="height: 1.5em; padding: 0.5em 0 0 0.5em; width: 6em;">
+               <h:selectBooleanCheckbox value="#{var.OfficeProvider.form.officeProvider._.active}"/>
+               <label style="display: inline; margin-left: -1em;">Active</label>            
+            </li>
+            <ui:fragment rendered="#{var.OfficeProvider.form.officeProvider._.role != 'self' and var.OfficeProvider.form.officeProvider._.role != null}">
+               <li class="em16">
+                  <h:panelGroup styleClass="errors" rendered="#{var.OfficeProvider.form.officeProviderValidationMap._ != null and var.OfficeProvider.form.officeProviderValidationMap._.associatedProvider}">
+                     <b>Associated Provider</b> is required
+                  </h:panelGroup>
+                  #{var.OfficeProvider.form.associatedProviderList._ == null ? var.OfficeProvider.form.associatedProviderList._(jsf.hintedSearch('Provider', 'p.lastName', jsf.newMap(), '_HEALTHCARE'))  : null}          
+                  <label>Associated Provider:</label>
+                  <h:selectOneMenu value="#{var.OfficeProvider.form.officeProvider._.associatedProvider}" title="Associated Provider">
+                     <f:selectItem itemValue="" itemLabel="NONE"/>
+                     <f:selectItems value="#{var.OfficeProvider.form.associatedProviderList._}" var="provider" itemLabel="#{provider.lastName}, #{provider.firstName}" itemValue="#{provider}"/>
+                     <f:converter converterId="EntityConverter"/>   
+                  </h:selectOneMenu>            
+               </li>
+               <ui:fragment rendered="#{var.OfficeProvider.form.officeProvider._.role == 'assistant'}">
+                  <li class="em16">        
+                     <label>Referring Provider:</label>
+                     <h:selectOneMenu value="#{var.OfficeProvider.form.officeProvider._.referringProvider}" title="Referring Provider">
+                        <f:selectItem itemValue="" itemLabel="NONE"/>
+                        <f:selectItems value="#{var.OfficeProvider.form.associatedProviderList._}" var="provider" itemLabel="#{provider.lastName}, #{provider.firstName}" itemValue="#{provider}"/>
+                        <f:converter converterId="EntityConverter"/>   
+                     </h:selectOneMenu>            
+                  </li>
+               </ui:fragment>
+               <ui:fragment rendered="#{var.OfficeProvider.form.officeProvider._.role == 'procedure'}">
+                  <li class="em10">
+                     <label>CPT Code:</label>
+                     <h:inputText value="#{var.OfficeProvider.form.officeProvider._.cptCode}" title="CPT Code"/>
+                  </li>
+               </ui:fragment>
+            </ui:fragment>
+            <ui:fragment rendered="#{var.OfficeProvider.form.officeProvider._.role == 'self'}">
+               #{var.OfficeProvider.form.officeProvider._.associatedProvider == null ? var.OfficeProvider.form.officeProvider._.setAssociatedProvider(jsf.newObject('com.medenterprise.medicalcare.domain.medenterprise.Provider')) : null}
+               <li class="em8">
+                  <h:panelGroup styleClass="errors" rendered="#{var.OfficeProvider.form.officeProviderValidationMap._ != null and var.OfficeProvider.form.officeProviderValidationMap._.npi}">
+                     <b>NPI</b> is required
+                  </h:panelGroup>
+                  <label>NPI:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.npi}" disabled="#{var.OfficeProvider.form.officeProvider._.id != null}"/>
+               </li>
+               <li class="em14">
+                  <h:panelGroup styleClass="errors" rendered="#{var.OfficeProvider.form.officeProviderValidationMap._ != null and var.OfficeProvider.form.officeProviderValidationMap._.lastName}">
+                     <b>Last Name</b> is required
+                  </h:panelGroup>
+                  <label>Last Name:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.lastName}" title="Last Name"/>
+               </li>
+               <li class="em12">
+                  <h:panelGroup styleClass="errors" rendered="#{var.OfficeProvider.form.officeProviderValidationMap._ != null and var.OfficeProvider.form.officeProviderValidationMap._.firstName}">
+                     <b>First Name</b> is required
+                  </h:panelGroup>
+                  <label>First Name:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.firstName}" title="First Name"/>
+               </li>
+               <li class="em3">
+                  <label>MI:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.middleInitial}" title="Middle Initial"/>
+               </li>
+               <li class="em5">
+                  <label>Suffix:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.suffix}" title="Suffix"/>
+               </li>
+               <li class="em7">
+                  <h:panelGroup styleClass="errors" rendered="#{var.OfficeProvider.form.officeProviderValidationMap._ != null and var.OfficeProvider.form.officeProviderValidationMap._.sex}">
+                     <b>Sex</b> is required
+                  </h:panelGroup>
+                  <label>Sex:</label>
+                  <h:selectOneMenu value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.sex}" title="Sex">
+                     <f:selectItem itemValue="U" itemLabel="NONE"/>
+                     <f:selectItem itemValue="F" itemLabel="Female"/>
+                     <f:selectItem itemValue="M" itemLabel="Male"/>
+                  </h:selectOneMenu>
+               </li>
+               <li class="em27">
+                  <label>Address:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.address}" title="Address"/>
+               </li>
+               <li class="em12" style="width:12.5em;">
+                  <label>City:</label>
+                  <h:inputText id="city" value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.city}" title="City" style="width:11.3em;"/>
+               </li>
+               <li class="em4">
+                  <label>State:</label>
+                  <h:inputText id="state" value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.state}" title="State"/>
+               </li>
+               <li class="em5">
+                  <label>
+                     <h:commandLink tabindex="99" action="#{jsf._do(var.OfficeProvider.form.provider.zipCode._(biz.findZipCode(var.OfficeProvider.form.officeProvider._.associatedProvider.postalCode)))._do(var.OfficeProvider.form.provider.zipCode._ != null ? jsf._do(var.OfficeProvider.form.officeProvider._.associatedProvider.setCity(var.OfficeProvider.form.provider.zipCode._.city))._do(var.OfficeProvider.form.officeProvider._.associatedProvider.setState(var.OfficeProvider.form.provider.zipCode._.state)).stay() : null).stay()}" 
+                                    value="Zip:" title="Get City and State by Zip Code">
+                        <f:ajax render="city state" execute="zipCode"/>
+                     </h:commandLink>
+                  </label>
+                  <h:inputText id="zipCode" value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.postalCode}" title="Zip Code"/>
+               </li>
+               <li class="em11">
+                  <label>Home Phone:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.homePhone}" styleClass="mask-phone"/>
+               </li>
+               <li class="em11">
+                  <label>Mobile Phone:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.mobilePhone}" styleClass="mask-phone"/>
+               </li>
+               <li class="em11">
+                  <label>Work Phone:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.workPhone}" styleClass="mask-phone"/>
+               </li>
+               <li class="em11">
+                  <label>Extension:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.workPhoneExt}"/>
+               </li>
+               <li class="em48">
+                  <label>Email Address:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.email}" title="Email Address"/>
+               </li>
+               <li class="em16">
+                  <label>State License #:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.stateLicenseNum}" title="State License Number"/>
+               </li>
+               <li class="em16">
+                  <label>Taxonomy Code:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.taxonomyCode}" title="Taxonomy Code"/>
+               </li>
+               <li class="em16">
+                  <label>Extra Taxonomy Codes:</label>
+                  <h:inputText value="#{var.OfficeProvider.form.officeProvider._.associatedProvider.extraTaxonomyCodes}" style="width: 15.4em;" title="Extra Taxonomy Codes"/>
+               </li>
+            </ui:fragment>
+            <li class="em48" style="height: 1em;"/>
+            #{var.OfficeProvider.form.myOfficeList._ == null ? var.OfficeProvider.form.myOfficeList._(jsf.hintedSearch('MyOffice', null, jsf.newMap(), '_HEALTHCARE'))  : null}
+            <ui:repeat value="#{var.OfficeProvider.form.myOfficeList._}" var="myOffice">
+               <li style="height: 1.5em; padding: 0.5em 0 0 0.5em; width: 5.5em;">
+                  #{jsf._do(var.OfficeProvider.form.myOfficeMap.close()[myOffice] == null ? var.OfficeProvider.form.myOfficeMap.close().put(myOffice, var.OfficeProvider.form.officeProvider._.myOfficeList != null ? var.OfficeProvider.form.officeProvider._.myOfficeList.contains(myOffice) : false) : null).stay()}
+                  <h:selectBooleanCheckbox value="#{var.OfficeProvider.form.myOfficeMap.close()[myOffice]}"/>
+                  <label style="display: inline; margin-left: -1em;">#{myOffice.code.toUpperCase()}</label>            
+               </li>
+            </ui:repeat>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

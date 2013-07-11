@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! noCounter}"><div class="tablecounter">#{visitVitalsList.size()}</div></ui:fragment>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{visitVitalsList}" var="visitVitals" rendered="#{not empty visitVitalsList}">
+               <h:column rendered="#{tableConfig.date._}">
+                  <f:facet name="header">
+                     <h:outputText value="Date"/>
+                  </f:facet>
+                  <h:outputText value="#{visitVitals.date}">
+                     <f:convertDateTime pattern="MM/dd/yyyy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Blood Pressure"/>
+                  </f:facet>
+                  <ui:fragment rendered="#{visitVitals.systolicBloodPressure != null and visitVitals.diastolicBloodPressure != null}">
+                     <h:outputText value="#{visitVitals.systolicBloodPressure}" 
+                                   title="#{visitVitals.systolicBloodPressureOutOfNormalRange() ? 'Normal Range: '.concat(visitVitals.systolicBloodPressureNormalRange()) : ''}"
+                                   style="#{visitVitals.systolicBloodPressureOutOfNormalRange() ? 'color:red;' : ''}"/>
+                     <h:outputText value="/"/>
+                     <h:outputText value="#{visitVitals.diastolicBloodPressure}"
+                                   title="#{visitVitals.diastolicBloodPressureOutOfNormalRange() ? 'Normal Range: '.concat(visitVitals.diastolicBloodPressureNormalRange()) : ''}"
+                                   style="#{visitVitals.diastolicBloodPressureOutOfNormalRange() ? 'color:red;' : ''}"/>
+                     <h:outputText value="&nbsp;mmHg "/>
+                     <h:outputText value="#{visitVitals.bloodPressureLocation}" rendered="#{visitVitals.bloodPressureLocation != null}" style="white-space: pre; margin-right: 0.5em;"/>
+                     <h:outputText value="#{visitVitals.bloodPressurePosition}" rendered="#{visitVitals.bloodPressurePosition != null}" style="white-space: pre;"/>                    
+                  </ui:fragment>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Pulse"/>
+                  </f:facet>
+                  <h:outputText value="#{visitVitals.pulseRate}&nbsp;bpm " 
+                                rendered="#{visitVitals.pulseRate != null}"
+                                title="#{visitVitals.pulseRateOutOfNormalRange() ? 'Normal Range: '.concat(visitVitals.pulseRateNormalRange()) : ''}"
+                                style="#{visitVitals.pulseRateOutOfNormalRange() ? 'color:red;' : ''}"/>
+                  <h:outputText value="#{visitVitals.pulseRegularity}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Respiration" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{visitVitals.respiratoryRate}&nbsp;bpm" rendered="#{visitVitals.respiratoryRate != null}"
+                                title="#{visitVitals.respiratoryRateOutOfNormalRange() ? 'Normal Range: '.concat(visitVitals.respiratoryRateNormalRange()) : ''}"
+                                style="#{visitVitals.respiratoryRateOutOfNormalRange() ? 'color:red;' : ''}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Temperature" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{visitVitals.temperature}"
+                                title="#{visitVitals.temperatureOutOfNormalRange() ? 'Normal Range: '.concat(visitVitals.temperatureNormalRange()) : ''}"
+                                style="#{visitVitals.temperatureOutOfNormalRange() ? 'color:red;' : ''}"/>
+                  <h:outputText value=" #{visitVitals.temperatureUnit}°&nbsp;" rendered="#{visitVitals.temperature != null}"/>
+                  <h:outputText value=" #{visitVitals.temperatureLocation}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Oxygen" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{visitVitals.oxygenLevel}%" rendered="#{visitVitals.oxygenLevel != null}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Height" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{visitVitals.heightBase}&nbsp;"/>
+                  <h:outputText value="#{visitVitals.heightBaseUnit}&nbsp;" rendered="#{visitVitals.heightBase != null}"/>
+                  <h:outputText value="#{visitVitals.heightFraction}&nbsp;"/>
+                  <h:outputText value="#{visitVitals.heightFractionUnit}" rendered="#{visitVitals.heightFraction != null}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Weight" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{visitVitals.weight}&nbsp;"/>
+                  <h:outputText value="#{visitVitals.weightUnit}" rendered="#{visitVitals.weight != null}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="BMI" styleClass="nosort"/>
+                  </f:facet>
+                  <nobr>
+                     <h:outputText value="#{visitVitals.bmi}" rendered="#{visitVitals.bmi != null and visitVitals.bmi != 0}">
+                        <f:convertNumber maxFractionDigits="2"/>
+                     </h:outputText>
+                     <h:panelGroup rendered="#{visitVitals.bmi != null and visitVitals.bmi != 0}" style="display: inline-block; margin-top: -1em;">&nbsp;kg/m<sup>2</sup></h:panelGroup>
+                  </nobr>
+               </h:column>
+               <h:column rendered="#{tableConfig.action._}">
+                  <f:facet name="header">
+                     <h:outputText value="Action" styleClass="nosort"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.VisitVitals.form.visitVitals._(visitVitals)).
+                                             _to('VisitVitals/edit').go}"
+                                   style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                   value="Edit..."/>               
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

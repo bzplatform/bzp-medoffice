@@ -1,0 +1,914 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>Progress Note</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 1em;
+               margin: 1em;
+            }
+
+            .action {
+               display: block !important;
+               text-align: left;
+               margin-left: 3em;
+               margin-top: 1em;
+            }
+
+            .printable {
+               display: none;
+            }
+         }
+         @media all {
+
+            body {
+               font-family:Arial, sans-serif;
+               margin: 0em;
+               text-align: left;
+               font-size: 0.8em;
+               line-height: 1.1;
+            }
+            .page {
+               position: relative;
+               margin-left: 3em;              
+               width: 56em;
+               height: 78em;
+               display: block;
+               overflow: visible;
+               padding:0.1em;
+            }
+            header th {
+               text-align: right;
+            }
+            section {
+               margin-top: 1.5em;
+            }
+            section header {
+               margin-bottom: 0;
+               border: 1px solid whitesmoke;
+               background: whitesmoke;
+            }
+            section header h2, section header h3 {
+               text-align: center;
+            }
+            h1, h2 {
+               text-align: left;
+            }
+            h1 {
+               font-size: 1.3em;
+            }
+            h2 {
+               margin: 1em 0 0.3em 0;
+               font-size: 1.2em;
+            }
+            h3 {
+               font-weight: normal;
+               text-decoration:underline;
+            }
+            .bold {
+               font-weight: bold;
+            }
+            .line {
+               margin-top: 0.5em; 
+               margin-bottom: 0.5em; 
+               font-size: 0.9em;
+               white-space: nowrap;
+               overflow: hidden;
+            }
+            table
+            {
+               border-collapse:collapse;
+            }
+            table.data {
+               border: 1px solid silver;
+            }
+            td {
+               padding: 0.25em 0em;
+            }
+            table.data th {
+               padding: 0.25em 0.5em;
+               border: 1px solid silver;
+            }
+            table.data td {
+               padding: 0.25em 0.5em;
+               border: 1px solid silver;
+               font-style: italic;
+               white-space: pre-line;
+            }
+            /*            
+            td {
+                border-left: 1px solid;
+                font-size: 0.8em;
+                font-weight: normal;
+                padding: 0.25em 0.5em;
+                text-align: left;
+            }            
+            */
+            table.data tr th {
+               font-weight: normal;
+            }
+            .data-table > tbody > tr > th {
+               width: 7em;
+               padding-right: 1em;
+               text-align: right;
+               vertical-align: middle;
+            }
+            table.data th {
+               width: 8em;
+            }
+            #vitals th {
+               width: auto;
+            }
+            #vitals td {
+               white-space: nowrap;
+            }
+            .diagnosis-position {
+               width: 1em !important;
+            }
+            label {
+               margin-right: 0.3em;
+            }
+            input {
+               border: none;
+               border-bottom: 1px solid black;
+               margin: 0 1em 0 0;
+               font-family: Times;
+               font-style: italic;
+               font-weight: bold;
+            }
+            table.data tr .label {
+               font-style: normal;
+            }
+            .value {
+               font-style: italic;
+               font-weight: bold;
+            }
+            .legal {
+               font-size:0.8em;
+               line-height: 1.3;
+            }
+            hr {
+               color: black;
+               background-color: black;
+               height: 2px;
+               border:0px none;
+            }
+            .hidden {
+               display: none;
+            }
+            .icd {
+               width: 3em !important;
+            }
+            .chronisity {
+               width: 4em !important;
+            }            
+         }
+         @media print {
+            .action {
+               display: none;
+            }
+            .page {
+               margin-top: 1em;
+            }
+            .break {
+               page-break-before:always;
+               height: 0.3em;
+               padding-top: 2em;
+            }
+         }
+      </style>
+      <script type="text/javascript" src="/#{access.application}/script/jquery/jquery-1.9.0.min.js"></script>
+      <script type="text/javascript" src="/#{access.application}/script/printer.js"></script>
+      <script>
+         $(document).ready(function() {
+            var page = $('.page');
+            layoutPage(page);
+            var total = $('.page').length;
+            $('.page').each(function(index, elem) {
+               $(elem).find('.page-number').html('page ' + (index + 1) + ' of ' + total);
+            });
+         });
+
+         function layoutPage(page) {
+            if (page.find('div:first-child').outerHeight() > page.outerHeight()) {
+               var clone = page.clone();
+               clone.addClass('break');
+               clone.find('.data-table > tbody').empty();
+               $('form').append(clone);
+               while (page.find('div:first-child').outerHeight() > page.outerHeight()) {
+                  clone.find('.data-table > tbody').prepend(page.find('.data-table > tbody > tr:last-child'));
+               }
+               layoutPage(clone);
+            }
+         }
+      </script>
+   </head>
+   <body>
+      <h:form prependId="false">
+         <div class="action"><a href="#" id="print-link" onclick="return print('Portrait')">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         <div class="page">
+            <div>
+               <header style="margin-bottom: 2em;">
+                  <div class="line">
+                     <div style="float: right;"><span class="page-number"></span></div>
+                     <h1 style="margin-top: 0; margin-bottom: 0; font-size:1.8em; text-transform: capitalize;">#{biz.specialty(var.VisitProgressNote.report.visit._.specialtyID).name.toLowerCase()} progress notes</h1>
+                     <h2 style="margin-top:0; font-size: 1em; text-align: left;">SL Quality Care D &amp; T Center</h2>
+                  </div>
+                  <div style=" width: 48%; display: inline-block;">
+                     <table class="data" border="1" cellpadding="0" cellspacing="0" style="width: 100%;">
+                        <tr>
+                           <th style="width:4em;">Patient</th>
+                           <td colspan="5" class="value">#{var.VisitProgressNote.report.visit._.patient.name}</td>
+                        </tr>
+                        <tr>
+                           <th style="width:1em;">MRN</th>
+                           <td class="value" style="width:2.5em;">#{var.VisitProgressNote.report.visit._.patient.id}</td>
+                           <th style="width:1em;">Sex</th>
+                           <td class="value" style="width:1em;">#{var.VisitProgressNote.report.visit._.patient.sex}</td>
+                           <th>Birth Date</th>
+                           <td class="value">
+                              <h:outputText value="#{var.VisitProgressNote.report.visit._.patient.birthDate}"><f:convertDateTime pattern="MM/dd/yy"/></h:outputText>
+                           </td>
+                        </tr>
+                     </table>                     
+                  </div>
+                  <div style="width: 48%; display: inline-block; float: right;">
+                     <table class="data" border="1" cellpadding="0" cellspacing="0" style="width: 100%;">
+                        <tr>
+                           <th style="width:4em;">Provider</th>
+                           <td class="value">#{var.VisitProgressNote.report.visit._.provider.lastName}, #{var.VisitProgressNote.report.visit._.provider.firstName}</td>
+                        </tr>
+                        <tr>
+                           <th>Service Date</th>
+                           <td class="value">
+                              <h:outputText value="#{var.VisitProgressNote.report.visit._.date}"><f:convertDateTime pattern="MM/dd/yy"/></h:outputText>
+                           </td>                                 
+                        </tr>
+                     </table>                     
+                  </div>
+               </header>
+               #{jsf._do(var.VisitProgressNote.report.visit._.progressNote.cleaned()).stay()}
+               <table class="data-table" width="100%" border="0" cellpadding="0" cellspacing="0">
+                  <ui:fragment rendered="#{! var.VisitProgressNote.report.visit._.progressNote.ccEmpty}">
+                     <tr>
+                        <th>Chief Complaint</th>
+                        <td>
+                           <table class="data" width="100%" border="1" cellpadding="0" cellspacing="0" style="margin: 0;">
+                              <tr>
+                                 <td>
+                                    #{var.VisitProgressNote.report.visit._.progressNote.cc.text}
+                                 </td>
+                              </tr>
+                           </table>
+                        </td>
+                     </tr>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! var.VisitProgressNote.report.visit._.progressNote.hpiEmpty}">
+                     <tr>
+                        <th>History of Present Illness</th>
+                        <td>
+                           <table class="data" width="100%" border="1" cellpadding="0" cellspacing="0" style="margin: 0;">
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.hpi.location}">
+                                 <tr>
+                                    <th>
+                                       <label>Location</label>
+                                    </th>
+                                    <td colspan="3">#{var.VisitProgressNote.report.visit._.progressNote.hpi.location}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! empty var.VisitProgressNote.report.visit._.progressNote.hpi.duration or var.VisitProgressNote.report.visit._.progressNote.hpi.severity != null}">
+                                 <tr>
+                                    <th>
+                                       <label>Duration</label>
+                                    </th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.hpi.duration}</td>
+                                    <th style="width: 5em;">
+                                       <label>Severity</label>
+                                    </th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.hpi.severity}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.hpi.quality}">
+                                 <tr>
+                                    <th>
+                                       <label>Quality</label>
+                                    </th>
+                                    <td colspan="3">#{var.VisitProgressNote.report.visit._.progressNote.hpi.quality}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.hpi.timing}">
+                                 <tr>
+                                    <th>
+                                       <label>Timing</label>
+                                    </th>
+                                    <td colspan="3">#{var.VisitProgressNote.report.visit._.progressNote.hpi.timing}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.hpi.context}">
+                                 <tr>
+                                    <th>
+                                       <label>Context</label>
+                                    </th>
+                                    <td colspan="3">#{var.VisitProgressNote.report.visit._.progressNote.hpi.context}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.hpi.modifyingFactors}">
+                                 <tr>
+                                    <th>
+                                       <label>Modifying Factors</label>
+                                    </th>
+                                    <td colspan="3">#{var.VisitProgressNote.report.visit._.progressNote.hpi.modifyingFactors}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.hpi.associatedSignsAndSymptoms}">
+                                 <tr>
+                                    <th>
+                                       <label>AS&amp;S</label>
+                                    </th>
+                                    <td colspan="3">#{var.VisitProgressNote.report.visit._.progressNote.hpi.associatedSignsAndSymptoms}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.hpi.radiation}">
+                                 <tr>
+                                    <th>
+                                       <label>Radiation</label>
+                                    </th>
+                                    <td colspan="3">#{var.VisitProgressNote.report.visit._.progressNote.hpi.radiation}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.hpi.freeFormText}">
+                                 <tr>
+                                    <td colspan="4">#{var.VisitProgressNote.report.visit._.progressNote.hpi.freeFormText}</td>
+                                 </tr>
+                              </ui:fragment>
+                           </table>
+                        </td>
+                     </tr>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! var.VisitProgressNote.report.visit._.progressNote.rosEmpty}">
+                     <tr>
+                        <th>Review of Systems</th>
+                        <td>
+                           <table id="ros" class="data" width="100%" border="1" cellpadding="0" cellspacing="0">
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.allergicImmunologic}">
+                                 <tr>
+                                    <th>Allergic/Immunologic</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.allergicImmunologic}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.constitutionalSymptoms}">
+                                 <tr>
+                                    <th>Constitutional</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.constitutionalSymptoms}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.eyes}">
+                                 <tr>
+                                    <th>Eyes</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.eyes}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.earsNoseMouthThroat}">
+                                 <tr>
+                                    <th>Ears/Nose/Mouth/Throat</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.earsNoseMouthThroat}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.cardiovascular}">
+                                 <tr>
+                                    <th>Cardiovascular</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.cardiovascular}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.respiratory}">
+                                 <tr>
+                                    <th>Respiratory</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.respiratory}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.gastrointestinal}">
+                                 <tr>
+                                    <th>Gastrointestinal</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.gastrointestinal}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.genitourinary}">
+                                 <tr>
+                                    <th>Genitourinary</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.genitourinary}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.musculoskeletal}">
+                                 <tr>
+                                    <th>Musculoskeletal</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.musculoskeletal}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.integumentary}">
+                                 <tr>
+                                    <th>Integumentary</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.integumentary}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.ros._.neurological}">
+                                 <tr>
+                                    <th>Neurological</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.neurological}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.psychiatric}">
+                                 <tr>
+                                    <th>Psychiatric</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.psychiatric}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.endocrine}">
+                                 <tr>
+                                    <th>Endocrine</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.endocrine}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.ros.hematologicLymphatic}">
+                                 <tr>
+                                    <th>Hematologic/Lymphatic</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.ros.hematologicLymphatic}</td>
+                                 </tr>
+                              </ui:fragment>
+                           </table>
+                        </td>
+                     </tr>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! var.VisitProgressNote.report.visit._.progressNote.pfshEmpty}">
+                     <tr>
+                        <th>
+                           History
+                        </th>
+                        <td>
+                           <table class="data" width="100%" border="1" cellpadding="0" cellspacing="0">
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.pfsh.pastHistory}">
+                                 <tr>
+                                    <th>
+                                       <label>Past Medical/</label>
+                                       <br/>
+                                       <label>Surgical Hx</label>
+                                    </th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.pfsh.pastHistory}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.pfsh.familyHistory}">
+                                 <tr>
+                                    <th>
+                                       <label>Family Hx</label>
+                                    </th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.pfsh.familyHistory}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.pfsh.socialHistory}">
+                                 <tr>
+                                    <th>
+                                       <label>Social Hx</label>
+                                    </th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.pfsh.socialHistory}</td>
+                                 </tr>
+                              </ui:fragment>
+                           </table>
+                        </td>
+                     </tr>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! var.VisitProgressNote.report.visit._.vitalsEmpty}">
+                     <tr>
+                        <th>
+                           Vital Signs
+                        </th>
+                        <td>
+                           <table id="vitals" class="data" width="100%" cellpadding="0" cellspacing="0">
+                              <thead>
+                                 <tr>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.systolicBloodPressure != null}">
+                                       <th>Blood Pressure</th>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.pulseRate != null}">
+                                       <th>Pulse</th>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.respiratoryRate != null}">
+                                       <th>Respiration</th>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.temperature != null}">
+                                       <th>Temperature</th>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.oxygenLevel != null}">
+                                       <th>Oxygen</th>
+                                    </ui:fragment>                              
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.heightBase != null}">
+                                       <th>Height</th>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.weight != null}">
+                                       <th>Weight</th>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.bmi != null and var.VisitProgressNote.report.visit._.vitals.bmi &gt; 0}">
+                                       <th>BMI</th>
+                                    </ui:fragment>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 <tr>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.systolicBloodPressure != null}">
+                                       <td style="white-space: normal;">
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.systolicBloodPressure}/#{var.VisitProgressNote.report.visit._.vitals.diastolicBloodPressure}&nbsp;mmHg</span>
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.bloodPressureLocation}</span>
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.bloodPressurePosition}</span>
+                                       </td>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.pulseRate != null}">
+                                       <td>
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.pulseRate}&nbsp;bpm</span>
+                                       </td>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.respiratoryRate != null}">
+                                       <td><span>#{var.VisitProgressNote.report.visit._.vitals.respiratoryRate}&nbsp;bpm</span></td>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.temperature != null}">
+                                       <td style="white-space: normal;">
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.temperature}</span>
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.temperatureUnit}°</span>
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.temperatureLocation}</span>
+                                       </td>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.oxygenLevel != null}">
+                                       <td><span>#{var.VisitProgressNote.report.visit._.vitals.oxygenLevel}%</span></td>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.heightBase != null}">
+                                       <td>
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.heightBase}</span>
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.heightBaseUnit}</span>
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.heightFraction}</span>
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.heightFractionUnit}</span>
+                                       </td>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.weight != null}">
+                                       <td>
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.weight}</span>
+                                          <span>#{var.VisitProgressNote.report.visit._.vitals.weightUnit}</span>
+                                       </td>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.vitals.bmi != null and var.VisitProgressNote.report.visit._.vitals.bmi &gt; 0}">
+                                       <td>
+                                          <h:outputText value="#{var.VisitProgressNote.report.visit._.vitals.bmi}">
+                                             <f:convertNumber maxFractionDigits="2"/>
+                                          </h:outputText>
+                                          kg/m<sup>2</sup>
+                                       </td>
+                                    </ui:fragment>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </td>
+                     </tr>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! var.VisitProgressNote.report.visit._.progressNote.examEmpty}">
+                     <tr>
+                        <th>
+                           Examination
+                        </th>
+                        <td>
+                           <table id="examination" class="data" width="100%" border="1" cellpadding="0" cellspacing="0">
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.osConstitutional}">
+                                 <tr>
+                                    <th>Constitutional</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.osConstitutional}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.baHead}">
+                                 <tr>
+                                    <th>Head</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.baHead}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.osEyes}">
+                                 <tr>
+                                    <th>Eyes</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.osEyes}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.osEarsNoseMouthThroat}">
+                                 <tr>
+                                    <th>Ears/Nose/Mouth/Throat</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.osEarsNoseMouthThroat}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.baNeck}">
+                                 <tr>
+                                    <th>Neck</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.baNeck}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.osRespiratory}">
+                                 <tr>
+                                    <th>Respiratory</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.osRespiratory}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.osCardiovascular}">
+                                 <tr>
+                                    <th>Cardiovascular</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.osCardiovascular}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.baChest}">
+                                 <tr>
+                                    <th>Chest</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.baChest}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.osGastrointestinal}">
+                                 <tr>
+                                    <th>Gastrointestinal (Abdomen)</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.osGastrointestinal}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.osGenitourinary}">
+                                 <tr>
+                                    <th>Genitourinary</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.osGenitourinary}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.baBack}">
+                                 <tr>
+                                    <th>Back</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.baBack}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.baGenitaliaGroinButtocks}">
+                                 <tr>
+                                    <th>Genitalia/Groin/Buttocks</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.baGenitaliaGroinButtocks}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.osHematologicLymphaticImmunologic}">
+                                 <tr>
+                                    <th>Lymphatic/Hematologic</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.osHematologicLymphaticImmunologic}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.osMusculoskeletal}">
+                                 <tr>
+                                    <th>Musculoskeletal</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.osMusculoskeletal}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.baEachExtremity}">
+                                 <tr>
+                                    <th>Extremities</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.baEachExtremity}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.osSkin}">
+                                 <tr>
+                                    <th>Skin</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.osSkin}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.osNeurological}">
+                                 <tr>
+                                    <th>Neurological</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.osNeurological}</td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{!empty var.VisitProgressNote.report.visit._.progressNote.exam.osPsychiatric}">
+                                 <tr>
+                                    <th>Psychiatric</th>
+                                    <td>#{var.VisitProgressNote.report.visit._.progressNote.exam.osPsychiatric}</td>
+                                 </tr>
+                              </ui:fragment>
+                           </table>
+                        </td>
+                     </tr>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{not empty var.VisitProgressNote.report.visit._.visitDiagnosisList}">
+                     <tr>
+                        <th>Diagnoses</th>
+                        <td>
+                           <h:dataTable value="#{var.VisitProgressNote.report.visit._.visitDiagnosisList}" var="visitDiagnosis"
+                                        class="data" width="100%" border="1" cellpadding="0" cellspacing="0">
+                              <h:column headerClass="diagnosis-position">
+                                 <f:facet name="header">
+                                    <h:outputText value="#"/>
+                                 </f:facet>
+                                 <h:outputText value="#{var.VisitProgressNote.report.visit._.visitDiagnosisList.indexOf(visitDiagnosis) + 1}"/>
+                              </h:column>
+                              <h:column headerClass="icd">
+                                 <f:facet name="header">
+                                    <h:outputText value="ICD"/>
+                                 </f:facet>
+                                 <h:outputText value="#{visitDiagnosis.diagnosis.code}"/>
+                              </h:column>
+                              <h:column>
+                                 <f:facet name="header">
+                                    <h:outputText value="Description"/>
+                                 </f:facet>
+                                 <h:outputText value="#{visitDiagnosis.diagnosis.description}" style="font-size: 0.8em; min-width: 15em; display: inline-block;"/>
+                              </h:column>
+                              <h:column headerClass="chronisity">
+                                 <f:facet name="header">
+                                    <h:outputText value="Chronisity"/>
+                                 </f:facet>
+                                 <h:outputText value="#{visitDiagnosis.chronicity}"/>
+                              </h:column>
+                              <h:column>
+                                 <f:facet name="header">
+                                    <h:outputText value="Onset"/>
+                                 </f:facet>
+                                 <h:outputText value="#{visitDiagnosis.onset}"/>
+                              </h:column>
+                              <h:column>
+                                 <f:facet name="header">
+                                    <h:outputText value="Status"/>
+                                 </f:facet>
+                                 <h:outputText value="#{visitDiagnosis.status.name}" rendered="#{visitDiagnosis.status != null}"/>
+                                 <h:outputText value="#{visitDiagnosis.resolutionDate}" style="margin-left: 0.5em;">
+                                    <f:convertDateTime pattern="MM/dd/yy"/>
+                                 </h:outputText>
+                              </h:column>
+                              <h:column>
+                                 <f:facet name="header">
+                                    <h:outputText value="Note"/>
+                                 </f:facet>
+                                 <h:outputText value="#{visitDiagnosis.note}"/>
+                              </h:column>
+                           </h:dataTable>
+                        </td>
+                     </tr>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{not empty var.VisitProgressNote.report.visit._.procedureList}">
+                     <tr>
+                        <th>Procedures</th>
+                        <td>
+                           <h:dataTable value="#{biz.dupletList(var.VisitProgressNote.report.visit._.procedureList)}" var="visitProcedureDuplet"
+                                        class="data" width="100%" border="1" cellpadding="0" cellspacing="0">
+                              <h:column>
+                                 <h:outputText value="#{visitProcedureDuplet[0].procedure.description}" style="min-width: 20em; display: inline-block;"/>
+                              </h:column>
+                              <h:column>
+                                 <h:outputText value="#{visitProcedureDuplet[1].procedure.description}" rendered="#{visitProcedureDuplet[1] != null}" style="min-width: 20em; display: inline-block;"/>
+                              </h:column>  
+                           </h:dataTable>
+                        </td>                  
+                     </tr>                  
+                  </ui:fragment>
+                  <ui:fragment rendered="#{not empty var.VisitProgressNote.report.visit._.medicationList}">
+                     <tr>
+                        <th>Medications</th>
+                        <td>
+                           <h:dataTable value="#{var.VisitProgressNote.report.visit._.medicationList}" var="medication"
+                                        class="data" width="100%" border="1" cellpadding="0" cellspacing="0">
+                              <h:column>
+                                 <f:facet name="header">
+                                    <h:outputText value="Drug"/>
+                                 </f:facet>
+                                 <h:outputText value="#{medication.drug}" style="min-width: 40em; display: inline-block;"/>
+                              </h:column>
+                              <h:column>
+                                 <f:facet name="header">
+                                    <h:outputText value="ICD"/>
+                                 </f:facet>
+                                 <h:outputText value="#{medication.primaryDiagnosisCode}"/>
+                              </h:column>
+                              <h:column>
+                                 <f:facet name="header">
+                                    <h:outputText value="Refills"/>
+                                 </f:facet>
+                                 <h:outputText value="#{medication.refills}"/>
+                              </h:column>
+                           </h:dataTable>
+                        </td>
+                     </tr>               
+                  </ui:fragment>                  
+                  <ui:fragment rendered="#{! var.VisitProgressNote.report.visit._.progressNote.treatmentEmpty}">
+                     <tr>
+                        <th>Assessment/<br/>Treatment</th>
+                        <td>
+                           <table class="data" width="100%" border="1" cellpadding="0" cellspacing="0">
+                              <ui:fragment rendered="#{! empty var.VisitProgressNote.report.visit._.progressNote.treatment.timeCounseling}">
+                                 <tr><th>Time</th><td style="white-space: normal;">
+                                       <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Counseling:</label>#{var.VisitProgressNote.report.visit._.progressNote.treatment.timeCounseling} <label style="font-size: 1em; margin: 0.5em 1em 0.5em 0;">min</label> 
+                                       <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Total:</label>#{var.VisitProgressNote.report.visit._.progressNote.treatment.timeTotal} <label style="font-size: 1em; margin: 0.5em 1em 0.5em 0;">min</label>
+                                    </td></tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! empty var.VisitProgressNote.report.visit._.progressNote.treatment.assessment}">
+                                 <tr><th style="width: 20%;">Assessment</th><td>#{var.VisitProgressNote.report.visit._.progressNote.treatment.assessment}</td></tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! empty var.VisitProgressNote.report.visit._.progressNote.treatment.treatment}">
+                                 <tr><th>Treatment</th><td>#{var.VisitProgressNote.report.visit._.progressNote.treatment.treatment}</td></tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! empty var.VisitProgressNote.report.visit._.progressNote.treatment.patientInstructionEducation}">
+                                 <tr><th>Patient Instruction/Education</th><td>#{var.VisitProgressNote.report.visit._.progressNote.treatment.patientInstructionEducation}</td></tr>
+                              </ui:fragment>
+                           </table>
+                        </td>                  
+                     </tr>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! var.VisitProgressNote.report.visit._.progressNote.mdmEmpty}">
+                     <tr>
+                        <th>Medical Decision Making</th>
+                        <td>
+                           <table class="data" width="100%" border="1" cellpadding="0" cellspacing="0">
+                              <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.ordered or ! empty var.VisitProgressNote.visit._.progressNote.mdm.reviewed or ! empty var.VisitProgressNote.visit._.progressNote.mdm.riskLevel}">
+                                 <tr>
+                                    <td style="white-space: normal;">
+                                       <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.riskLevel}">
+                                          <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Risk&nbsp;Level:</label>#{var.VisitProgressNote.visit._.progressNote.mdm.riskLevel}                                
+                                       </ui:fragment>
+                                    </td>
+                                    <td style="width: 40%; white-space: normal;">
+                                       <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.ordered}">
+                                          <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Ordered:</label>#{var.VisitProgressNote.visit._.progressNote.mdm.ordered}
+                                       </ui:fragment>
+                                    </td>
+                                    <td style="width: 40%; white-space: normal;">
+                                       <ui:fragment rendered="#{! empty var.VisitProgressNote.visit._.progressNote.mdm.reviewed}">
+                                          <label style="font-size: 1em; margin: 0.5em 0.3em 0.5em 0;">Reviewed:</label>#{var.VisitProgressNote.visit._.progressNote.mdm.reviewed}
+                                       </ui:fragment>
+                                    </td>
+                                 </tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! empty var.VisitProgressNote.report.visit._.progressNote.mdm.diagnosticTestsOrdered}">
+                                 <tr><th>Diagnostic Tests Ordered</th><td colspan="2">#{var.VisitProgressNote.report.visit._.progressNote.mdm.diagnosticTestsOrdered}</td></tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! empty var.VisitProgressNote.report.visit._.progressNote.mdm.diagnosticTestResultsReviewed}">
+                                 <tr><th>Diagnostic Test Results Reviewed</th><td colspan="2">#{var.VisitProgressNote.report.visit._.progressNote.mdm.diagnosticTestResultsReviewed}</td></tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! empty var.VisitProgressNote.report.visit._.progressNote.mdm.diagnosticTestResultsDiscussion}">
+                                 <tr><th>Discussion of Test Results with Performing Physician</th><td colspan="2">#{var.VisitProgressNote.report.visit._.progressNote.mdm.diagnosticTestResultsDiscussion}</td></tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! empty var.VisitProgressNote.report.visit._.progressNote.mdm.obtainOldRecordsAdditionalHistory}">
+                                 <tr><th>Decision to obtain old records</th><td colspan="2">#{var.VisitProgressNote.report.visit._.progressNote.mdm.obtainOldRecordsAdditionalHistory}</td></tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! empty var.VisitProgressNote.report.visit._.progressNote.mdm.reviewOldRecords}">
+                                 <tr><th>Review of old records</th><td colspan="2">#{var.VisitProgressNote.report.visit._.progressNote.mdm.reviewOldRecords}</td></tr>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! empty var.VisitProgressNote.report.visit._.progressNote.mdm.independentVisualization}">
+                                 <tr><th>Independent visualization of image, tracing or specimen itself</th><td colspan="2">#{var.VisitProgressNote.report.visit._.progressNote.mdm.independentVisualization}</td></tr>
+                              </ui:fragment>
+                           </table>
+                        </td>                  
+                     </tr>
+                  </ui:fragment>
+                  <tr>
+                     <td colspan="2" style="text-align: right;">
+                        <ui:fragment rendered="#{var.VisitProgressNote.report.visit._.progressNote.serviceLevel.signed}">
+                           <div style="display:inline-block; position:relative;">
+                              <img src="../PatientTransportationAppointment/provider-signature.jsf?npi=#{var.VisitProgressNote.report.visit._.provider.npi}" 
+                                   style="#{var.VisitProgressNote.report.visit._.provider.signatureCss}"/>
+                           </div>
+                           <div style="font-weight: bold; margin-bottom: 1em;">Electronically signed  by #{var.VisitProgressNote.report.visit._.provider.alias} on
+                              <h:outputText value="#{var.VisitProgressNote.report.visit._.progressNote.serviceLevel.signedDatetime}">
+                                 <f:convertDateTime pattern="MM/dd/yy"/>
+                              </h:outputText>
+                              from IP:#{var.VisitProgressNote.report.visit._.progressNote.serviceLevel.signedFromIp}
+                           </div>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{! var.VisitProgressNote.report.visit._.progressNote.serviceLevel.signed}">
+                           <div style="font-size: 1.5em; margin-top: 1em; margin-bottom: 1em; visibility: hidden;">Not Signed</div>
+                        </ui:fragment>
+                     </td>
+                  </tr>
+                  <ui:fragment rendered="#{! empty var.VisitProgressNote.report.visit._.progressNote.addendumList}">
+                     <tr>
+                        <th>Addendums</th>
+                        <td>
+                           <h:dataTable value="#{var.VisitProgressNote.report.visit._.progressNote.addendumList}" var="addendum" rendered="#{not empty var.VisitProgressNote.report.visit._.progressNote.addendumList}"
+                                        class="data" columnClasses="label" width="100%" border="1" cellpadding="0" cellspacing="0">
+                              <h:column>
+                                 <f:facet name="header">
+                                    <h:outputText value="Created"/>
+                                 </f:facet>
+                                 <ui:fragment>
+                                    <h:outputText value="#{addendum.datetime}">
+                                       <f:convertDateTime pattern="MM/dd/yy"/>
+                                    </h:outputText>
+                                    <br/>
+                                    <h:outputText value="by #{access.getUserName(addendum.userId)}"/>
+                                 </ui:fragment>
+                              </h:column>
+                              <h:column>
+                                 <f:facet name="header">
+                                    <h:outputText value="Addendum"/>
+                                 </f:facet>
+                                 <h:outputText value="#{addendum.text}"/>
+                              </h:column>
+                           </h:dataTable>
+                        </td>                  
+                     </tr>
+                  </ui:fragment>
+               </table>
+            </div>
+         </div>
+      </h:form>
+   </body>
+</html>

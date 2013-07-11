@@ -1,0 +1,9 @@
+<div class="tabs border" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" style="border-bottom:none;">
+   <h:commandLink action="#{jsf._to('OfficeProvider/main').go}" value="PROVIDER" styleClass="#{page == 'OfficeProvider/main' ? 'selected' : ''}"/>
+   <h:commandLink action="#{jsf._to('VisitProgressNote/main').go}" value="VISIT" styleClass="#{page == 'VisitProgressNote/main' ? 'selected' : ''}"/>
+   <h:commandLink action="#{jsf._to('Patient/main').go}" value="PATIENT" styleClass="#{page == 'Patient/main' ? 'selected' : ''}"/>
+   <h:commandLink action="#{jsf._to('MyOffice/main').go}" value="OFFICE" styleClass="#{page == 'MyOffice/main' ? 'selected' : ''}" rendered="#{access.isUriPermitted('MyOffice/navigation')}"/>
+   <h:commandLink action="#{jsf._to('LaboratoryAccount/main').go}" value="LAB" styleClass="#{page == 'LaboratoryAccount/main' ? 'selected' : ''}" rendered="#{access.isUriPermitted('LaboratoryAccount/navigation')}"/>
+   <h:commandLink action="#{jsf._to('MyOffice/statistics').go}" value="STATS" styleClass="#{page == 'MyOffice/statistics' ? 'selected' : ''}" rendered="#{access.isUriPermitted('MyOffice/navigation')}"/>
+   <h:commandLink action="#{jsf._to('Administration/main').go}" value="ADMIN" styleClass="#{page == 'Administration/main' ? 'selected' : ''}" rendered="#{access.isUriPermitted('MyOffice/navigation')}"/>
+</div>

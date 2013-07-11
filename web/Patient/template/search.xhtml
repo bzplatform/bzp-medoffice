@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         #{patientSearch == null ? jsf._putSearch('Patient').stay() : null}
+         <div class="menu form">
+            <div class="header">
+               <h3 class="center">Patient Search</h3>
+            </div>
+            <div class="body">
+               <ul class="vertical form-area grid g32">
+                  <li class="em6">
+                     <label for="id" class="vlabel">MRN:</label>
+                     <h:inputText id="id" value="#{patientSearch['id']}" title="ID" onkeypress="return searchEnterKeyHandler(event)"/>
+                   </li>
+                  <li class="em13">
+                     <label for="lastName" class="vlabel">Last Name:</label>
+                     <h:inputText id="lastName" value="#{patientSearch['lastName']}" title="Last Name"/>
+                  </li>
+                  <li class="em13">
+                     <label for="firstName" class="vlabel">First Name:</label>
+                     <h:inputText id="firstName" value="#{patientSearch['firstName']}" title="First Name"/>
+                  </li>
+                  <li class="em13">
+                     <label for="birthDate" class="vlabel">Birth Date:</label>
+                     <h:inputText id="birthDate" value="#{patientSearch['birthDate']}" title="Birth Date" styleClass="mask-date">
+                        <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+                     </h:inputText>
+                  </li>
+                  <li class="em10">
+                     <label for="homePhone" class="vlabel">Home Phone:</label>
+                     <h:inputText id="homePhone" value="#{patientSearch['homePhone']}" title="Home Phone" styleClass="mask-phone"/>
+                  </li>
+                  <li class="em9">
+                     <label for="ssn" class="vlabel">SSN:</label>
+                     <h:inputText id="ssn" value="#{patientSearch['ssn']}" title="SSN" styleClass="mask-ssn"/>
+                  </li>
+               </ul>
+            </div>
+            <div class="footer">
+               #{jsf._do(jsf.global('patient', 'panel:Search')['autoselect'] == null ? jsf.global('patient', 'panel:Search').put('autoselect', true) : null).stay()}
+               <label style="margin: 1.1em; position: relative; top: 0.8em;">
+                  <h:selectBooleanCheckbox value="#{jsf.global('patient', 'panel:Search')['autoselect']}"/>
+                  Autoselect</label>               
+               <h:commandButton action="#{jsf._do(patientSearch.put('birthDate', biz.secureDate(patientSearch['birthDate']))).
+                                          _do(patientSearch.put('id', biz.secureId(patientSearch['id']))).
+                                          _runSearch('Patient', 'p.lastName, p.firstName').
+                                          _do(patientList != null and patientList.size() == 1 and jsf.global('patient', 'panel:Search')['autoselect'] ?
+                                          jsf.global('patient', 'view').put('panel:Search', false) : null).
+                                          _do(patientList != null and patientList.size() == 1 ? patientSearch.clear() : null).stay}"
+                                value="Search" styleClass="ok-button"/>
+               <h:commandButton action="#{jsf._do(patientSearch.clear()).stay}" value="Reset" styleClass="cancel-button"/>
+               <h:commandButton action="#{jsf._do(var.Patient.form.patient._(biz.newPatient(patientSearch)))._to('Patient/new').go}"
+                                style="margin: 0.5em 5.3em 0.5em 0.5em; width: 7em;"
+                                value="New Patient..." styleClass="cancel-button"/>
+            </div>
+         </div>
+      </ui:composition>
+   </body>
+</html>

@@ -1,0 +1,141 @@
+pre {
+   font-family:"Consolas","Monaco","Bitstream Vera Sans Mono","Courier New",Courier,monospace !important;
+   font-size:0.8em !important;
+}
+
+li.laboratory-order {
+   height: auto;
+}
+
+li.laboratory-order > label {
+   margin: 0.5em 0 -1.3em 0 !important;
+   font-weight: bolder;
+   font-size: 0.8em
+}
+
+li.laboratory-order > ul {
+   border: black solid 1px;
+   font-size: 1em;
+
+   margin-top: 1em;
+   margin-bottom: 0em;
+   width: 48em;
+   padding-bottom:1.2em;
+}
+
+.em13 .djsf_DateTextBox {
+   width:12em;
+   margin:0em 0.5em;
+   padding:0.15em;
+   position:relative;
+   top:-0.1em;
+}
+
+.column h3.table-label {
+   margin-left: 0.6em;
+   margin-bottom: -0.5em;
+}
+
+label.intable {
+   min-width: 4em;
+   text-align: right;
+   margin-right: 0.5em;
+   display: inline-block;
+}
+
+.w66 {
+   width:66em;
+}
+
+.w63 {
+   width:63em;
+}
+
+.w60 {
+   width:60em;
+}
+
+.w48 {
+   width:48em;
+}
+
+.w40 {
+   width:40em;
+}
+
+.w36 {
+   width:36em;
+}
+
+.w8 {
+   width:8em;
+}
+
+.w9 {
+   width:9em;
+}
+
+.w10 {
+   width:10em;
+}
+
+.w12 {
+   width:12em;
+}
+
+.w13 {
+   width:13em;
+}
+
+.w14 {
+   width:14em;
+}
+
+.w15 {
+   width:15em;
+}
+
+.w16 {
+   width:16em;
+}
+
+.w20 {
+   width:20em;
+}
+
+.w21 {
+   width:21em;
+}
+
+div.two-column {
+   -moz-column-count: 2;
+}
+
+div.three-column {
+   -moz-column-count: 3;
+}
+
+div.four-column {
+   -moz-column-count: 4;
+}
+
+div.five-column {
+   -moz-column-count: 5;
+}
+
+margin-left-1em {
+   margin-left: 1em;
+}
+
+.intable.djsf_DateTextBox {
+   width:6em;
+   padding:0.15em;
+   position:relative;
+   top:-0.1em;
+   font-size: 1.1em;
+}
+
+select.intable {
+   margin-top:0em;
+}
+

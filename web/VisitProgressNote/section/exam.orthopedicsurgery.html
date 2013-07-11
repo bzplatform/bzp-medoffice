@@ -1,0 +1,1557 @@
+<table>
+   <tr>
+      <th style="width: 20%;">Constitutional</th>
+      <td>
+         <div class="pntl-section" data-section="examOsConstitutional">
+            <span>
+               <input type="checkbox" data-name="assistantDeviceYes" class="radio-group-exam-assistantDevice" onchange="radioGroup(this, 'exam-assistantDevice'); return false;"/>
+               <label data-text-if="assistantDeviceYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="assistantDeviceNo" class="radio-group-exam-assistantDevice" onchange="radioGroup(this, 'exam-assistantDevice'); return false;"/>
+               <label data-text-if="assistantDeviceNo">N<span class="none">o</span></label>
+               <label data-text-if="assistantDeviceYes || assistantDeviceNo">use of assistant device(cane, walker, weelchair, scuter, crutches)<span class="none">.</span></label>
+            </span>
+            <br/>
+            <span data-text-if="howManyBlocks">
+               <label>How many blocks patient can walk?</label>
+               <input type="text" data-name="howManyBlocks" style="width: 3em"/>
+            </span>
+            <span data-text-if="painAtNight" style="margin: 0 2em 0 2em;">
+               <input type="checkbox" data-name="painAtNight"/>
+               <label>pain at night</label>
+            </span>
+            <span data-text-if="painSeverity">
+               <label>Pain severity(1-10)</label>
+               <input type="text" data-name="painSeverity" style="width: 2em"/>
+            </span>
+            <div data-text-if="makeItBetter">
+               <label>What make it better?</label>
+               <input type="text" data-name="makeItBetter" style="width: 25em"/>
+            </div>
+            <div data-text-if="makeItWorse">
+               <label>What make it worse?</label>
+               <input type="text" data-name="makeItWorse" style="width: 25em"/>
+            </div>
+            <span data-text-if="takeMedicine">
+               <input type="checkbox" data-name="takeMedicine"/>
+               <label>take medicine for pain</label>
+            </span>
+            <span>
+               <input type="checkbox" data-name="appearanceWnlYes" class="radio-group-exam-appearanceWnl" onchange="radioGroup(this, 'exam-appearanceWnl'); return false;"/>
+               <label data-text-if="appearanceWnlYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="appearanceWnlNo" class="radio-group-exam-appearanceWnl" onchange="radioGroup(this, 'exam-appearanceWnl'); return false;"/>
+               <label data-text-if="appearanceWnlNo">N<span class="none">o</span></label>
+               <label data-text-if="appearanceWnlYes || appearanceWnlNo">appearance wnl<span class="none">.</span></label>
+            </span>            
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Neck</th>
+      <td>
+         <div class="pntl-section" data-section="examBaNeck">
+            <span>
+               <input type="checkbox" data-name="neckPainYes" class="radio-group-exam-neckPain" onchange="radioGroup(this, 'exam-neckPain'); return false;"/>
+               <label data-text-if="neckPainYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="neckPainNo" class="radio-group-exam-neckPain" onchange="radioGroup(this, 'exam-neckPain'); return false;"/>
+               <label data-text-if="neckPainNo">N<span class="none">o</span></label>
+               <label data-text-if="neckPainYes || neckPainNo">neck pain<span class="none">.</span></label>
+            </span>
+            <span>
+               <input type="checkbox" data-name="neckStiffnessYes" class="radio-group-exam-neckStiffness" onchange="radioGroup(this, 'exam-neckStiffness'); return false;"/>
+               <label data-text-if="neckStiffnessYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="neckStiffnessNo" class="radio-group-exam-neckStiffness" onchange="radioGroup(this, 'exam-neckStiffness'); return false;"/>
+               <label data-text-if="neckStiffnessNo">N<span class="none">o</span></label>
+               <label data-text-if="neckStiffnessYes || neckStiffnessNo">neck stiffness<span class="none">.</span></label>
+            </span>
+            <span>
+               <input type="checkbox" data-name="neckLumpYes" class="radio-group-exam-neckLump" onchange="radioGroup(this, 'exam-neckLump'); return false;"/>
+               <label data-text-if="neckLumpYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="neckLumpNo" class="radio-group-exam-neckLump" onchange="radioGroup(this, 'exam-neckLump'); return false;"/>
+               <label data-text-if="neckLumpNo">N<span class="none">o</span></label>
+               <label data-text-if="neckLumpYes || neckLumpNo">neck lump or swelling<span class="none">.</span></label>
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Back</th>
+      <td>
+         <div class="pntl-section" data-section="examBaBack">
+            <span>
+               <input type="checkbox" data-name="swellingYes" class="radio-group-exam-swelling" onchange="radioGroup(this, 'exam-swelling'); return false;"/>
+               <label data-text-if="swellingYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="swellingNo" class="radio-group-exam-swelling" onchange="radioGroup(this, 'exam-swelling'); return false;"/>
+               <label data-text-if="swellingNo">N<span class="none">o</span></label>
+               <label data-text-if="swellingYes || swellingNo">swelling<span class="none">.</span></label>
+            </span>
+            <span>
+               <input type="checkbox" data-name="tendernessYes" class="radio-group-exam-tenderness" onchange="radioGroup(this, 'exam-tenderness'); return false;"/>
+               <label data-text-if="tendernessYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="tendernessNo" class="radio-group-exam-tenderness" onchange="radioGroup(this, 'exam-tenderness'); return false;"/>
+               <label data-text-if="tendernessNo">N<span class="none">o</span></label>
+               <label data-text-if="tendernessYes || tendernessNo">tenderness on palpation<span class="none">.</span></label>
+            </span>
+            <span>
+               <input type="checkbox" data-name="costovertebralYes" class="radio-group-exam-costovertebral" onchange="radioGroup(this, 'exam-costovertebral'); return false;"/>
+               <label data-text-if="costovertebralYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="costovertebralNo" class="radio-group-exam-costovertebral" onchange="radioGroup(this, 'exam-costovertebral'); return false;"/>
+               <label data-text-if="costovertebralNo">N<span class="none">o</span></label>
+               <label data-text-if="costovertebralYes || costovertebralNo">costovertebral angle tenderness<span class="none">.</span></label>
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Musculoskeletal</th>
+      <td>
+         <div class="pntl-section" data-section="examOsMusculoskeletal">
+            <div data-text-if="other">
+               <textarea data-name="other" style="width: 97%;"></textarea>
+            </div>
+            <label data-text-if="skinAbnormalityN || skinAbnormalityP || echimosisN || echimosisP || deformityN || 
+                   deformityP || tendernessN || tendernessP || spurlingTestN || spurlingTestP ||
+                   extensionNormal || extensionAbnormal || flexionNormal || flexionAbnormal ||
+                   rotationNormal || rotationAbnormal || abductionNormal || abductionAbnormal || 
+                   trapeziusTendernessNormal || trapeziusTendernessAbnormal || dtrBicepsNormal || dtrBicepsAbnormal ||
+                   dtrBrachioradialisNormal || dtrBrachioradialisAbnormal || dtrTricepsNormal || dtrTricepsAbnormal ||
+                   upperMuscleStretchNormal || upperMuscleStretchAbnormal || wrightsTestNormal || wrightsTestAbnormal ||
+                   costoclavicularManeuverNormal || costoclavicularManeuverAbnormal" style="font-weight: bold;">Cervical Spine:</label>
+            <br/>
+            <label data-text-if="skinAbnormalityN || skinAbnormalityP || echimosisN || echimosisP || deformityN || 
+                   deformityP || tendernessN || tendernessP || spurlingTestN || spurlingTestP" style="vertical-align: top; position:relative; top: 0.2em;">General-bilateral:</label>
+            <div style="display: inline-block; width:37em;">
+               <span>
+                  <input type="checkbox" data-name="skinAbnormalityN" class="radio-group-exam-skinAbnormality" onchange="radioGroup(this, 'exam-skinAbnormality'); return false;"/>
+                  <label data-text-if="skinAbnormalityN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="skinAbnormalityP" class="radio-group-exam-skinAbnormality" onchange="radioGroup(this, 'exam-skinAbnormality'); return false;"/>
+                  <label data-text-if="skinAbnormalityP">pos<span class="none">itive</span></label>
+                  <label data-text-if="skinAbnormalityN || skinAbnormalityP">Skin abnormality<span class="none">;</span></label>
+               </span>
+               <span style="margin-left: 2em;">
+                  <input type="checkbox" data-name="echimosisN" class="radio-group-exam-echimosis" onchange="radioGroup(this, 'exam-echimosis'); return false;"/>
+                  <label data-text-if="echimosisN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="echimosisP" class="radio-group-exam-echimosis" onchange="radioGroup(this, 'exam-echimosis'); return false;"/>
+                  <label data-text-if="echimosisP">pos<span class="none">itive</span></label>
+                  <label data-text-if="echimosisN || echimosisP">Echimosis<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span style="margin-right: 4.3em;">
+                  <input type="checkbox" data-name="deformityN" class="radio-group-exam-deformity" onchange="radioGroup(this, 'exam-deformity'); return false;"/>
+                  <label data-text-if="deformityN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="deformityP" class="radio-group-exam-deformity" onchange="radioGroup(this, 'exam-deformity'); return false;"/>
+                  <label data-text-if="deformityP">pos<span class="none">itive</span></label>
+                  <label data-text-if="deformityN || deformityP">Deformity<span class="none">;</span></label>
+               </span>
+               <span style="margin-left: 0.95em;">
+                  <input type="checkbox" data-name="tendernessN" class="radio-group-exam-tenderness" onchange="radioGroup(this, 'exam-tenderness'); return false;"/>
+                  <label data-text-if="tendernessN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="tendernessP" class="radio-group-exam-tenderness" onchange="radioGroup(this, 'exam-tenderness'); return false;"/>
+                  <label data-text-if="tendernessP">pos<span class="none">itive</span></label>
+                  <label data-text-if="tendernessN || tendernessP">Tenderness<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="spurlingTestN" class="radio-group-exam-spurlingTest" onchange="radioGroup(this, 'exam-spurlingTest'); return false;"/>
+                  <label data-text-if="spurlingTestN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="spurlingTestP" class="radio-group-exam-spurlingTest" onchange="radioGroup(this, 'exam-spurlingTest'); return false;"/>
+                  <label data-text-if="spurlingTestP">pos<span class="none">itive</span></label>
+                  <label data-text-if="spurlingTestN || spurlingTestP">Spurling test<span class="none">;</span></label>
+               </span>
+            </div>
+            <br/>
+            <label data-text-if="extensionNormal || extensionAbnormal || flexionNormal || flexionAbnormal ||
+                   rotationNormal || rotationAbnormal || abductionNormal || abductionAbnormal || 
+                   trapeziusTendernessNormal || trapeziusTendernessAbnormal || dtrBicepsNormal || dtrBicepsAbnormal ||
+                   dtrBrachioradialisNormal || dtrBrachioradialisAbnormal || dtrTricepsNormal || dtrTricepsAbnormal ||
+                   upperMuscleStretchNormal || upperMuscleStretchAbnormal || wrightsTestNormal || wrightsTestAbnormal ||
+                   costoclavicularManeuverNormal || costoclavicularManeuverAbnormal" style="vertical-align: top; position:relative; top: 0.2em; margin-right: 0.5em;">ROM:</label>
+            <div style="display: inline-block; width:37em;">
+               <span>
+                  <input type="checkbox" data-name="extensionNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-extension'); return false;"/>
+                  <label data-text-if="extensionNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="extensionAbnormal" class="radio-group-exam-extension" onchange="radioGroup(this, 'exam-extension'); return false;"/>
+                  <label data-text-if="extensionAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="extensionNormal || extensionAbnormal">Extension<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="flexionNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-flexion'); return false;"/>
+                  <label data-text-if="flexionNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="flexionAbnormal" class="radio-group-exam-flexion" onchange="radioGroup(this, 'exam-flexion'); return false;"/>
+                  <label data-text-if="flexionAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="flexionNormal || flexionAbnormal">Flexion<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="rotationNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-rotation'); return false;"/>
+                  <label data-text-if="rotationNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="rotationAbnormal" class="radio-group-exam-rotation" onchange="radioGroup(this, 'exam-rotation'); return false;"/>
+                  <label data-text-if="rotationAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="rotationNormal || rotationAbnormal">Rotation<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="abductionNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-abduction'); return false;"/>
+                  <label data-text-if="abductionNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="abductionAbnormal" class="radio-group-exam-abduction" onchange="radioGroup(this, 'exam-abduction'); return false;"/>
+                  <label data-text-if="abductionAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="abductionNormal || abductionAbnormal">Abduction<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="trapeziusTendernessNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-trapeziusTenderness'); return false;"/>
+                  <label data-text-if="trapeziusTendernessNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="trapeziusTendernessAbnormal" class="radio-group-exam-trapeziusTenderness" onchange="radioGroup(this, 'exam-trapeziusTenderness'); return false;"/>
+                  <label data-text-if="trapeziusTendernessAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="trapeziusTendernessNormal || trapeziusTendernessAbnormal">Trapezius tenderness<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="dtrBicepsNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrBiceps'); return false;"/>
+                  <label data-text-if="dtrBicepsNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="dtrBicepsAbnormal" class="radio-group-exam-dtrBiceps" onchange="radioGroup(this, 'exam-dtrBiceps'); return false;"/>
+                  <label data-text-if="dtrBicepsAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="dtrBicepsNormal || dtrBicepsAbnormal">DTR biceps<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="dtrBrachioradialisNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrBrachioradialis'); return false;"/>
+                  <label data-text-if="dtrBrachioradialisNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="dtrBrachioradialisAbnormal" class="radio-group-exam-dtrBrachioradialis" onchange="radioGroup(this, 'exam-dtrBrachioradialis'); return false;"/>
+                  <label data-text-if="dtrBrachioradialisAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="dtrBrachioradialisNormal || dtrBrachioradialisAbnormal">DTR brachioradialis<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="dtrTricepsNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrTriceps'); return false;"/>
+                  <label data-text-if="dtrTricepsNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="dtrTricepsAbnormal" class="radio-group-exam-dtrTriceps" onchange="radioGroup(this, 'exam-dtrTriceps'); return false;"/>
+                  <label data-text-if="dtrTricepsAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="dtrTricepsNormal || dtrTricepsAbnormal">DTR triceps<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="upperMuscleStretchNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-upperMuscleStretch'); return false;"/>
+                  <label data-text-if="upperMuscleStretchNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="upperMuscleStretchAbnormal" class="radio-group-exam-upperMuscleStretch" onchange="radioGroup(this, 'exam-upperMuscleStretch'); return false;"/>
+                  <label data-text-if="upperMuscleStretchAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="upperMuscleStretchNormal || upperMuscleStretchAbnormal">Upper ext muscle stretch<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="wrightsTestNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-wrightsTest'); return false;"/>
+                  <label data-text-if="wrightsTestNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="wrightsTestAbnormal" class="radio-group-exam-wrightsTest" onchange="radioGroup(this, 'exam-wrightsTest'); return false;"/>
+                  <label data-text-if="wrightsTestAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="wrightsTestNormal || wrightsTestAbnormal">Wright test(thoracic outlet)<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="costoclavicularManeuverNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-costoclavicularManeuver'); return false;"/>
+                  <label data-text-if="costoclavicularManeuverNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="costoclavicularManeuverAbnormal" class="radio-group-exam-costoclavicularManeuver" onchange="radioGroup(this, 'exam-costoclavicularManeuver'); return false;"/>
+                  <label data-text-if="costoclavicularManeuverAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="costoclavicularManeuverNormal || costoclavicularManeuverAbnormal">Costoclavicular maneuver<span class="none">;</span></label>
+               </span>
+            </div>
+            <br/>
+            <div data-text-if="lumberSkinAbnormalityN || lumberSkinAbnormalityP || lumbosacralLordosisN || lumbosacralLordosisP ||
+                 lossLumbarN || lossLumbarP || lumberDeformityN || lumberDeformityP || lumbarTendernessN || lumbarTendernessP ||
+                 lumbarSpasmN || lumbarSpasmP || 
+                 forwardBendingNormal || forwardBendingAbnormal || backwardBendingNormal || backwardBendingAbnormal || 
+                 lateralBendingNormal || lateralBendingAbnormal || straightLegRaiseNormal || straightLegRaiseAbnormal || supineSittingNormal || supineSittingAbnormal ||
+                 dtrKneeNormal || dtrKneeAbnormal || dtrAnkleNormal || dtrAnkleAbnormal" style="font-weight: bold; margin-top: 1em;">Lumbar/Lumbosacral Spine:</div>
+            <label data-text-if="lumberSkinAbnormalityN || lumberSkinAbnormalityP || lumbosacralLordosisN || lumbosacralLordosisP ||
+                   lossLumbarN || lossLumbarP || lumberDeformityN || lumberDeformityP || lumbarTendernessN || lumbarTendernessP ||
+                   lumbarSpasmN || lumbarSpasmP"
+                   style="vertical-align: top; position:relative; top: 0.2em;">General-bilateral:</label>
+            <div style="display: inline-block; width:37em;">
+               <span>
+                  <input type="checkbox" data-name="lumberSkinAbnormalityN" class="radio-group-exam-lumberSkinAbnormality" onchange="radioGroup(this, 'exam-lumberSkinAbnormality'); return false;"/>
+                  <label data-text-if="lumberSkinAbnormalityN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="lumberSkinAbnormalityP" class="radio-group-exam-lumberSkinAbnormality" onchange="radioGroup(this, 'exam-lumberSkinAbnormality'); return false;"/>
+                  <label data-text-if="lumberSkinAbnormalityP">pos<span class="none">itive</span></label>
+                  <label data-text-if="lumberSkinAbnormalityN || lumberSkinAbnormalityP">Skin abnormality<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="lumbosacralLordosisN" class="radio-group-exam-lumbosacralLordosis" onchange="radioGroup(this, 'exam-lumbosacralLordosis'); return false;"/>
+                  <label data-text-if="lumbosacralLordosisN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="lumbosacralLordosisP" class="radio-group-exam-lumbosacralLordosis" onchange="radioGroup(this, 'exam-lumbosacralLordosis'); return false;"/>
+                  <label data-text-if="lumbosacralLordosisP">pos<span class="none">itive</span></label>
+                  <label data-text-if="lumbosacralLordosisN || lumbosacralLordosisP">Lumbosacral lordosis<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="lossLumbarN" class="radio-group-exam-lossLumbar" onchange="radioGroup(this, 'exam-lossLumbar'); return false;"/>
+                  <label data-text-if="lossLumbarN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="lossLumbarP" class="radio-group-exam-lossLumbar" onchange="radioGroup(this, 'exam-lossLumbar'); return false;"/>
+                  <label data-text-if="lossLumbarP">pos<span class="none">itive</span></label>
+                  <label data-text-if="lossLumbarN || lossLumbarP">Loss of normal lumbar lordosis<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="lumberDeformityN" class="radio-group-exam-lumberDeformity" onchange="radioGroup(this, 'exam-lumberDeformity'); return false;"/>
+                  <label data-text-if="lumberDeformityN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="lumberDeformityP" class="radio-group-exam-lumberDeformity" onchange="radioGroup(this, 'exam-lumberDeformity'); return false;"/>
+                  <label data-text-if="lumberDeformityP">pos<span class="none">itive</span></label>
+                  <label data-text-if="lumberDeformityN || lumberDeformityP">Deformity<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="lumbarTendernessN" class="radio-group-exam-lumbarTenderness" onchange="radioGroup(this, 'exam-lumbarTenderness'); return false;"/>
+                  <label data-text-if="lumbarTendernessN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="lumbarTendernessP" class="radio-group-exam-lumbarTenderness" onchange="radioGroup(this, 'exam-lumbarTenderness'); return false;"/>
+                  <label data-text-if="lumbarTendernessP">pos<span class="none">itive</span></label>
+                  <label data-text-if="lumbarTendernessN || lumbarTendernessP">Tenderness on palpation<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="lumbarSpasmN" class="radio-group-exam-lumbarSpasm" onchange="radioGroup(this, 'exam-lumbarSpasm'); return false;"/>
+                  <label data-text-if="lumbarSpasmN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="lumbarSpasmP" class="radio-group-exam-lumbarSpasm" onchange="radioGroup(this, 'exam-lumbarSpasm'); return false;"/>
+                  <label data-text-if="lumbarSpasmP">pos<span class="none">itive</span></label>
+                  <label data-text-if="lumbarSpasmN || lumbarSpasmP">Spasm of paraspinal muscules<span class="none">;</span></label>
+               </span>
+            </div>
+            <br/>
+            <label data-text-if="forwardBendingNormal || forwardBendingAbnormal || backwardBendingNormal || backwardBendingAbnormal || 
+                   lateralBendingNormal || lateralBendingAbnormal || straightLegRaiseNormal || straightLegRaiseAbnormal || supineSittingNormal || supineSittingAbnormal ||
+                   dtrKneeNormal || dtrKneeAbnormal || dtrAnkleNormal || dtrAnkleAbnormal" style="vertical-align: top; position:relative; top: 0.2em; margin-right: 0.5em;">ROM:</label>
+            <div style="display: inline-block; width:37em;">
+               <span>
+                  <input type="checkbox" data-name="forwardBendingNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-forwardBending'); return false;"/>
+                  <label data-text-if="forwardBendingNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="forwardBendingAbnormal" class="radio-group-exam-forwardBending" onchange="radioGroup(this, 'exam-forwardBending'); return false;"/>
+                  <label data-text-if="forwardBendingAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="forwardBendingNormal || forwardBendingAbnormal">Forward bending<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="backwardBendingNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-backwardBending'); return false;"/>
+                  <label data-text-if="backwardBendingNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="backwardBendingAbnormal" class="radio-group-exam-backwardBending" onchange="radioGroup(this, 'exam-backwardBending'); return false;"/>
+                  <label data-text-if="backwardBendingAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="backwardBendingNormal || backwardBendingAbnormal">Backward bending<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="lateralBendingNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-lateralBending'); return false;"/>
+                  <label data-text-if="lateralBendingNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="lateralBendingAbnormal" class="radio-group-exam-lateralBending" onchange="radioGroup(this, 'exam-lateralBending'); return false;"/>
+                  <label data-text-if="lateralBendingAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="lateralBendingNormal || lateralBendingAbnormal">Lateral bending<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="straightLegRaiseNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-straightLegRaise'); return false;"/>
+                  <label data-text-if="straightLegRaiseNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="straightLegRaiseAbnormal" class="radio-group-exam-straightLegRaise" onchange="radioGroup(this, 'exam-straightLegRaise'); return false;"/>
+                  <label data-text-if="straightLegRaiseAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="straightLegRaiseNormal || straightLegRaiseAbnormal">Straight leg raise test<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="supineSittingNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-supineSitting'); return false;"/>
+                  <label data-text-if="supineSittingNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="supineSittingAbnormal" class="radio-group-exam-supineSitting" onchange="radioGroup(this, 'exam-supineSitting'); return false;"/>
+                  <label data-text-if="supineSittingAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="supineSittingNormal || supineSittingAbnormal">Supine sitting<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="dtrKneeNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrKnee'); return false;"/>
+                  <label data-text-if="dtrKneeNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="dtrKneeAbnormal" class="radio-group-exam-dtrKnee" onchange="radioGroup(this, 'exam-dtrKnee'); return false;"/>
+                  <label data-text-if="dtrKneeAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="dtrKneeNormal || dtrKneeAbnormal">DTR knee<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="dtrAnkleNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrAnkle'); return false;"/>
+                  <label data-text-if="dtrAnkleNormal">norm<span class="none">al</span></label>
+                  <input type="checkbox" data-name="dtrAnkleAbnormal" class="radio-group-exam-dtrAnkle" onchange="radioGroup(this, 'exam-dtrAnkle'); return false;"/>
+                  <label data-text-if="dtrAnkleAbnormal">abnorm<span class="none">al</span></label>
+                  <label data-text-if="dtrAnkleNormal || dtrAnkleAbnormal">DTR ankle<span class="none">;</span></label>
+               </span>
+            </div>
+            <div data-text-if="" style="font-weight: bold; margin-top: 1em;">Right Shoulder:</div>
+            <div style="display: inline-block; width:37em;">
+               <span>
+                  <input type="checkbox" data-name="rShoulderSwellingN" class="radio-group-exam-rShoulderSwelling" onchange="radioGroup(this, 'exam-rShoulderSwelling'); return false;"/>
+                  <label data-text-if="rShoulderSwellingN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="rShoulderSwellingP" class="radio-group-exam-rShoulderSwelling" onchange="radioGroup(this, 'exam-rShoulderSwelling'); return false;"/>
+                  <label data-text-if="rShoulderSwellingP">pos<span class="none">itive</span></label>
+                  <label data-text-if="rShoulderSwellingN || rShoulderSwellingP">Swelling<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="rShoulderEchimosisN" class="radio-group-exam-rShoulderEchimosis" onchange="radioGroup(this, 'exam-rShoulderEchimosis'); return false;"/>
+                  <label data-text-if="rShoulderEchimosisN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="rShoulderEchimosisP" class="radio-group-exam-rShoulderEchimosis" onchange="radioGroup(this, 'exam-rShoulderEchimosis'); return false;"/>
+                  <label data-text-if="rShoulderEchimosisP">pos<span class="none">itive</span></label>
+                  <label data-text-if="rShoulderEchimosisN || rShoulderEchimosisP">Echimosis<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="rShoulderScarsN" class="radio-group-exam-rShoulderScars" onchange="radioGroup(this, 'exam-rShoulderScars'); return false;"/>
+                  <label data-text-if="rShoulderScarsN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="rShoulderScarsP" class="radio-group-exam-rShoulderScars" onchange="radioGroup(this, 'exam-rShoulderScars'); return false;"/>
+                  <label data-text-if="rShoulderScarsP">pos<span class="none">itive</span></label>
+                  <label data-text-if="rShoulderScarsN || rShoulderScarsP">Scars<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="rShoulderACJointDeformityN" class="radio-group-exam-rShoulderACJointDeformity" onchange="radioGroup(this, 'exam-rShoulderACJointDeformity'); return false;"/>
+                  <label data-text-if="rShoulderACJointDeformityN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="rShoulderACJointDeformityP" class="radio-group-exam-rShoulderACJointDeformity" onchange="radioGroup(this, 'exam-rShoulderACJointDeformity'); return false;"/>
+                  <label data-text-if="rShoulderACJointDeformityP">pos<span class="none">itive</span></label>
+                  <label data-text-if="rShoulderACJointDeformityN || rShoulderACJointDeformityP">AC joint deformity<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="rShoulderClavicleDeformityN" class="radio-group-exam-rShoulderClavicleDeformity" onchange="radioGroup(this, 'exam-rShoulderClavicleDeformity'); return false;"/>
+                  <label data-text-if="rShoulderClavicleDeformityN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="rShoulderClavicleDeformityP" class="radio-group-exam-rShoulderClavicleDeformity" onchange="radioGroup(this, 'exam-rShoulderClavicleDeformity'); return false;"/>
+                  <label data-text-if="rShoulderClavicleDeformityP">pos<span class="none">itive</span></label>
+                  <label data-text-if="rShoulderClavicleDeformityN || rShoulderClavicleDeformityP">Clavicle deformity<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="rShoulderGlenohumeralDeformityN" class="radio-group-exam-rShoulderGlenohumeralDeformity" onchange="radioGroup(this, 'exam-rShoulderGlenohumeralDeformity'); return false;"/>
+                  <label data-text-if="rShoulderGlenohumeralDeformityN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="rShoulderGlenohumeralDeformityP" class="radio-group-exam-rShoulderGlenohumeralDeformity" onchange="radioGroup(this, 'exam-rShoulderGlenohumeralDeformity'); return false;"/>
+                  <label data-text-if="rShoulderGlenohumeralDeformityP">pos<span class="none">itive</span></label>
+                  <label data-text-if="rShoulderGlenohumeralDeformityN || rShoulderGlenohumeralDeformityP">Glenohumeral deformity<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="lumbarSpasmN" class="radio-group-exam-lumbarSpasm" onchange="radioGroup(this, 'exam-lumbarSpasm'); return false;"/>
+                  <label data-text-if="lumbarSpasmN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="lumbarSpasmP" class="radio-group-exam-lumbarSpasm" onchange="radioGroup(this, 'exam-lumbarSpasm'); return false;"/>
+                  <label data-text-if="lumbarSpasmP">pos<span class="none">itive</span></label>
+                  <label data-text-if="lumbarSpasmN || rShoulderDiffuseAtrophyP">Diffuse atrophy supraspinatus asymmetry<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="lumbarSpasmN" class="radio-group-exam-lumbarSpasm" onchange="radioGroup(this, 'exam-lumbarSpasm'); return false;"/>
+                  <label data-text-if="lumbarSpasmN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="lumbarSpasmP" class="radio-group-exam-lumbarSpasm" onchange="radioGroup(this, 'exam-lumbarSpasm'); return false;"/>
+                  <label data-text-if="lumbarSpasmP">pos<span class="none">itive</span></label>
+                  <label data-text-if="lumbarSpasmN || lumbarSpasmP">Shoulder SAG CN11 asymmetry<span class="none">;</span></label>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="lumbarSpasmN" class="radio-group-exam-lumbarSpasm" onchange="radioGroup(this, 'exam-lumbarSpasm'); return false;"/>
+                  <label data-text-if="lumbarSpasmN">neg<span class="none">ative</span></label>
+                  <input type="checkbox" data-name="lumbarSpasmP" class="radio-group-exam-lumbarSpasm" onchange="radioGroup(this, 'exam-lumbarSpasm'); return false;"/>
+                  <label data-text-if="lumbarSpasmP">pos<span class="none">itive</span></label>
+                  <label data-text-if="lumbarSpasmN || lumbarSpasmP">Sulcus glenohumeral joint asymmetry<span class="none">;</span></label>
+               </span>               
+            </div>
+            <div>
+               <table style="font-size: 1.2em;">
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="forwardBendingNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-forwardBending'); return false;"/>
+                           <label data-text-if="forwardBendingNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="forwardBendingAbnormal" class="radio-group-exam-forwardBending" onchange="radioGroup(this, 'exam-forwardBending'); return false;"/>
+                           <label data-text-if="forwardBendingAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="forwardBendingNormal || forwardBendingAbnormal">Forearm elevation<span class="none">;</span></label>
+                        </span>                        
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="backwardBendingNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-backwardBending'); return false;"/>
+                           <label data-text-if="backwardBendingNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="backwardBendingAbnormal" class="radio-group-exam-backwardBending" onchange="radioGroup(this, 'exam-backwardBending'); return false;"/>
+                           <label data-text-if="backwardBendingAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="backwardBendingNormal || backwardBendingAbnormal">Abduction<span class="none">;</span></label>
+                        </span>                        
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="lateralBendingNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-lateralBending'); return false;"/>
+                           <label data-text-if="lateralBendingNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="lateralBendingAbnormal" class="radio-group-exam-lateralBending" onchange="radioGroup(this, 'exam-lateralBending'); return false;"/>
+                           <label data-text-if="lateralBendingAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="lateralBendingNormal || lateralBendingAbnormal">Adduction<span class="none">;</span></label>
+                        </span>                        
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="straightLegRaiseNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-straightLegRaise'); return false;"/>
+                           <label data-text-if="straightLegRaiseNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="straightLegRaiseAbnormal" class="radio-group-exam-straightLegRaise" onchange="radioGroup(this, 'exam-straightLegRaise'); return false;"/>
+                           <label data-text-if="straightLegRaiseAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="straightLegRaiseNormal || straightLegRaiseAbnormal">External rotation<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="supineSittingNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-supineSitting'); return false;"/>
+                           <label data-text-if="supineSittingNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="supineSittingAbnormal" class="radio-group-exam-supineSitting" onchange="radioGroup(this, 'exam-supineSitting'); return false;"/>
+                           <label data-text-if="supineSittingAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="supineSittingNormal || supineSittingAbnormal">Internal rotation<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="dtrKneeNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrKnee'); return false;"/>
+                           <label data-text-if="dtrKneeNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="dtrKneeAbnormal" class="radio-group-exam-dtrKnee" onchange="radioGroup(this, 'exam-dtrKnee'); return false;"/>
+                           <label data-text-if="dtrKneeAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="dtrKneeNormal || dtrKneeAbnormal">Apley scratch test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="dtrAnkleNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrAnkle'); return false;"/>
+                           <label data-text-if="dtrAnkleNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="dtrAnkleAbnormal" class="radio-group-exam-dtrAnkle" onchange="radioGroup(this, 'exam-dtrAnkle'); return false;"/>
+                           <label data-text-if="dtrAnkleAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="dtrAnkleNormal || dtrAnkleAbnormal">Drop arm test<span class="none">;</span></label>
+                        </span>                        
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="supineSittingNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-supineSitting'); return false;"/>
+                           <label data-text-if="supineSittingNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="supineSittingAbnormal" class="radio-group-exam-supineSitting" onchange="radioGroup(this, 'exam-supineSitting'); return false;"/>
+                           <label data-text-if="supineSittingAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="supineSittingNormal || supineSittingAbnormal">Napolean test<span class="none">;</span></label>
+                        </span>                        
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="dtrKneeNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrKnee'); return false;"/>
+                           <label data-text-if="dtrKneeNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="dtrKneeAbnormal" class="radio-group-exam-dtrKnee" onchange="radioGroup(this, 'exam-dtrKnee'); return false;"/>
+                           <label data-text-if="dtrKneeAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="dtrKneeNormal || dtrKneeAbnormal">Speeds<span class="none">;</span></label>
+                        </span>                        
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="dtrAnkleNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrAnkle'); return false;"/>
+                           <label data-text-if="dtrAnkleNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="dtrAnkleAbnormal" class="radio-group-exam-dtrAnkle" onchange="radioGroup(this, 'exam-dtrAnkle'); return false;"/>
+                           <label data-text-if="dtrAnkleAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="dtrAnkleNormal || dtrAnkleAbnormal">Expansion<span class="none">;</span></label>
+                        </span>                        
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="dtrKneeNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrKnee'); return false;"/>
+                           <label data-text-if="dtrKneeNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="dtrKneeAbnormal" class="radio-group-exam-dtrKnee" onchange="radioGroup(this, 'exam-dtrKnee'); return false;"/>
+                           <label data-text-if="dtrKneeAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="dtrKneeNormal || dtrKneeAbnormal">Rotator cuff triad test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="dtrKneeNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrKnee'); return false;"/>
+                           <label data-text-if="dtrKneeNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="dtrKneeAbnormal" class="radio-group-exam-dtrKnee" onchange="radioGroup(this, 'exam-dtrKnee'); return false;"/>
+                           <label data-text-if="dtrKneeAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="dtrKneeNormal || dtrKneeAbnormal">Instability<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="dtrAnkleNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrAnkle'); return false;"/>
+                           <label data-text-if="dtrAnkleNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="dtrAnkleAbnormal" class="radio-group-exam-dtrAnkle" onchange="radioGroup(this, 'exam-dtrAnkle'); return false;"/>
+                           <label data-text-if="dtrAnkleAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="dtrAnkleNormal || dtrAnkleAbnormal">Apprehension<span class="none">;</span></label>
+                        </span>                        
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="supineSittingNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-supineSitting'); return false;"/>
+                           <label data-text-if="supineSittingNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="supineSittingAbnormal" class="radio-group-exam-supineSitting" onchange="radioGroup(this, 'exam-supineSitting'); return false;"/>
+                           <label data-text-if="supineSittingAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="supineSittingNormal || supineSittingAbnormal">Crossover test<span class="none">;</span></label>
+                        </span>                        
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="dtrAnkleNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrAnkle'); return false;"/>
+                           <label data-text-if="dtrAnkleNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="dtrAnkleAbnormal" class="radio-group-exam-dtrAnkle" onchange="radioGroup(this, 'exam-dtrAnkle'); return false;"/>
+                           <label data-text-if="dtrAnkleAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="dtrAnkleNormal || dtrAnkleAbnormal">Neer impingement test<span class="none">;</span></label>
+                        </span>                        
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="dtrKneeNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrKnee'); return false;"/>
+                           <label data-text-if="dtrKneeNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="dtrKneeAbnormal" class="radio-group-exam-dtrKnee" onchange="radioGroup(this, 'exam-dtrKnee'); return false;"/>
+                           <label data-text-if="dtrKneeAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="dtrKneeNormal || dtrKneeAbnormal">Hawkins test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="dtrAnkleNormal" class="radio-group-exam-skinAbnormalities" onchange="radioGroup(this, 'exam-dtrAnkle'); return false;"/>
+                           <label data-text-if="dtrAnkleNormal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="dtrAnkleAbnormal" class="radio-group-exam-dtrAnkle" onchange="radioGroup(this, 'exam-dtrAnkle'); return false;"/>
+                           <label data-text-if="dtrAnkleAbnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="dtrAnkleNormal || dtrAnkleAbnormal">Empty can test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+               </table>
+            </div>
+            <div data-text-if="" style="font-weight: bold; margin-top: 1em;">Right Elbow:</div>
+            <div>
+               <table style="font-size: 1.2em;">
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Deformity<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Swelling<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Echimosis<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Scars<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Olecranal swelling<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Medial epicondyle<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Lateral epicondyle<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                     </td>
+                  </tr>
+               </table>
+            </div>
+            <div>
+               <table style="font-size: 1.2em;">
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Varus stress<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Valgus stress<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">MFP flexor pronator<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">LES extensor supinator<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Biceps strength<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Triceps strength<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+               </table>
+            </div>
+
+            <div data-text-if="" style="font-weight: bold; margin-top: 1em;">ROM Elbow:</div>
+            <div>
+               <table style="font-size: 1.2em;">
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Flexion<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Extension<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Suprination<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Pronation<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+               </table>
+            </div>
+            <div data-text-if="" style="font-weight: bold; margin-top: 1em;">Right Wrist and Hand:</div>
+            <div>
+               <table style="font-size: 1.2em;">
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Deformity<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Swelling<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Echimosis<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                     </td>
+                  </tr>
+               </table>
+            </div>      
+            <div data-text-if="" style="font-weight: bold; margin-top: 1em;">Tenderness:</div>
+            <div>
+               <table style="font-size: 1.2em;">
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Snuff box<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Distal radius<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Radioulnar joint<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Phalen test(carpal tunnel)<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Finkelstein test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Allen test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Shuck test(TFCC)<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Flick test (carpal tunnel)<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+               </table>
+            </div>
+            <div data-text-if="" style="font-weight: bold; margin-top: 1em;">ROM:</div>
+            <div>
+               <table style="font-size: 1.2em;">
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Flexion<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Extension<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Ulnar deviation<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Radial deviation<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Suprination<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Pronation<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+               </table>
+            </div>      
+            <div data-text-if="" style="font-weight: bold; margin-top: 1em;">Hand:</div>
+            <div>
+               <table style="font-size: 1.2em;">
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Finger flexion<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Finger extension<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Deviation<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Ulnar nerve<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Median nerve<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Capillary refill test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Two point discrimination<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Rotational deformity<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+               </table>
+            </div>
+            <div data-text-if="" style="font-weight: bold; margin-top: 1em;">Right Hip:</div>
+            <div>
+               <table style="font-size: 1.2em;">
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Skin abnormality box<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Swelling<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Echimosis<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Greater trochanter tenderness<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Sacroiliac joint tenderness<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Leg length discrepancy<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Patrick (FABER) test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">FADIR(impigement)<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Difficulty standing up<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Abduction muscle strength<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Trendelenburg test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Leg roll<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Heel strike<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                     </td>
+                  </tr>
+               </table>
+            </div>
+            <div data-text-if="" style="font-weight: bold; margin-top: 1em;">ROM:</div>
+            <div>
+               <table style="font-size: 1.2em;">
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Flexion<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Extension<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Flex inner rotation<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Flex exterior rotation<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Leg raising strength<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Leg strength resistance<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Abduction<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Pelvic compression test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+               </table>
+            </div>
+            <div data-text-if="" style="font-weight: bold; margin-top: 1em;">Knee: Right</div>
+            <div>
+               <table style="font-size: 1.2em;">
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Echimosis<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Surgical scars<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Knee effusion<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Quadriceps muscle<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Tenderness medial<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Tenderness lateral<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Tenderness patella<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Lachman test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Anterior draw test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Pivot shift<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Posterior drawer<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">PCL sulcus test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Varus stress<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Valgus stress<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">McMurray test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Apley test<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Joint line tenderness<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="N" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="N">neg<span class="none">ative</span></label>
+                           <input type="checkbox" data-name="P" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="P">pos<span class="none">itive</span></label>
+                           <label data-text-if="N || P">Patella apprehension<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+
+               </table>
+            </div>
+            <div data-text-if="" style="font-weight: bold; margin-top: 1em;">ROM:</div>
+            <div>
+               <table style="font-size: 1.2em;">
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Flexion<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Extension<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Q angle<span class="none">;</span></label>
+                        </span>
+                     </td>
+                     <td>
+                        <span>
+                           <input type="checkbox" data-name="Normal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Normal">norm<span class="none">al</span></label>
+                           <input type="checkbox" data-name="Abnormal" class="radio-group-exam-" onchange="radioGroup(this, 'exam-'); return false;"/>
+                           <label data-text-if="Abnormal">abn<span class="none">ormal</span></label>
+                           <label data-text-if="Normal || Abnormal">Muscle strength<span class="none">;</span></label>
+                        </span>
+                     </td>
+                  </tr>
+               </table>
+            </div>
+         </div>
+      </td>
+   </tr>
+</table> 

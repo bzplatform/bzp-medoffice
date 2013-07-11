@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{patientList}" var="patient">
+               <h:column rendered="#{tableConfig.patient._}">
+                  <f:facet name="header">
+                     <h:outputText value="MRN"/>
+                  </f:facet>
+                  <h:outputText value="#{patient.id}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.patient._}">
+                  <f:facet name="header">
+                     <h:outputText value="Name"/>
+                  </f:facet>
+                  <h:commandLink action="#{jsf._do(patientList.clear())._do(patientList.add(patient))._do(jsf.global('patient', 'view').put('panel:Search', false)).go(tableConfig.suppressNavigation._ ? jsf.stay() : jsf._to('Patient/main').go())}"
+                                 style="color: black;">
+                     <h:outputText value="#{patient.lastName}, #{patient.firstName}"/>
+                  </h:commandLink>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Sex"/>
+                  </f:facet>
+                  <h:outputText value="#{patient.sex}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="DOB"/>
+                  </f:facet>
+                  <h:outputText value="#{patient.birthDate}">
+                     <f:convertDateTime pattern="MM/dd/yyyy" />
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Age"/>
+                  </f:facet>
+                  <h:outputText value="#{biz.age(patient)}"/>
+               </h:column>               
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Home&nbsp;Phone"/>
+                  </f:facet>
+                  <h:outputText value="#{patient.homePhone}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Cell&nbsp;Phone"/>
+                  </f:facet>
+                  <h:outputText value="#{patient.cellPhone}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.insurances._}">
+                  <f:facet name="header">
+                     <h:outputText value="Insurance(s)"/>
+                  </f:facet>
+                  <ui:repeat value="#{patient.insuranceList}" var="patientInsurance" varStatus="patientInsuranceStatus">
+                     <li style="margin-left: 1em;">#{patientInsurance.insurance.name}
+                        <ui:fragment rendered="#{patientInsurance.insurance.planType == 'HM'}">
+                           <br/>
+                           <b>PCP:</b>
+                           <h:outputText value=" #{biz.referringProvider(patientInsurance.primaryCarePhysicianId).lastName}, #{biz.referringProvider(patientInsurance.primaryCarePhysicianId).firstName}" rendered="#{patientInsurance.primaryCarePhysicianId != null and patientInsurance.primaryCarePhysicianId != 0}"/>
+                           <h:graphicImage value="/theme/#{cookie.theme.value}/image/error.png" style="position: relative; top:2px; left:2px;"
+                                           rendered="#{patientInsurance.primaryCarePhysicianId == null or patientInsurance.primaryCarePhysicianId == 0}" title="Not assigned PCP!"/>
+                        </ui:fragment>
+                     </li>
+                  </ui:repeat>
+               </h:column>
+               <h:column rendered="#{tableConfig.action._}">
+                  <f:facet name="header">
+                     <h:outputText value="Action"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.Patient.form.patient._(biz.refreshedPatient(patient)))._to('Patient/edit').go}"
+                                   value="Demographic..."
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"
+                                   title="Edit Patient Demographic"/>
+                  <input type="button" value="More ▼" class="context-menu-button" style="margin: 0; font-size: 0.8em;"/>
+                  <div style="display: none;">
+                     <h:commandLink action="#{jsf._do(var.Patient.registrationFU.patient._(patient))._to('Patient/registration-form').go}"
+                                    target="_blank"
+                                    value="Registration Form - FU" style="margin-right: 1em;"/>
+                     <h:commandLink action="#{jsf._do(var.Patient.registrationFU.patient._(jsf.newObject('com.medenterprise.domain.entity.Patient')))._to('Patient/registration-form').go}"
+                                    target="_blank"
+                                    value="Registration Form - New" style="margin-right: 1em;"/>
+                     <h:commandLink action="#{jsf._do(var.Patient.label.patient._(patient))._to('Patient/address-label').go}"
+                                    target="_blank"
+                                    value="Address Label" style="margin-right: 1em;"/>
+                     <h:commandLink action="#{jsf._do(var.Patient.label.patient._(patient))._to('Patient/laboratory-label').go}"
+                                    target="_blank"
+                                    value="Laboratory Label" style="margin-right: 1em;"/>
+                     <h:commandLink action="#{jsf._do(var.Patient.report.patient._(patient))._to('Patient/health-record-summary').go}"
+                                    target="_blank"
+                                    value="Health Record Summary" style="margin-right: 1em;"/>
+                  </div>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

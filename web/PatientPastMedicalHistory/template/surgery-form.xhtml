@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <body>
+      <ui:composition>
+         #{jsf._do(var.PatientPastMedicalHistory.form.surgeryListSearch.put('surgery', true)).stay()}
+         #{var.PatientPastMedicalHistory.form.surgeryList._(jsf.hintedSearch('PatientHistoryProblem', 'p.name', var.PatientPastMedicalHistory.form.surgeryListSearch, '_MEDBASE'))}
+         #{jsf._do(var.PatientPastMedicalHistory.form.surgeryChecked.close()).stay()}
+         #{jsf._do(var.PatientPastMedicalHistory.form.surgeryOnset.close()).stay()}
+         <li style="height:2.5em; width: 13.5em;">
+            <label style="font-weight:bold;">Surgery</label>
+         </li>
+         <li style="height:2.5em; width: 11em;">
+            <label style="font-weight:bold;">Date</label>
+         </li>
+         <li style="height:2.5em; width: 13.5em;">
+            <label style="font-weight:bold;">Surgery</label>
+         </li>
+         <li style="height:2.5em; width: 11em;">
+            <label style="font-weight:bold;">Date</label>
+         </li>
+         <ui:repeat value="#{var.PatientPastMedicalHistory.form.surgeryList._}" var="surgery">
+            <li style="height:1.5em; overflow: hidden; width: 13.5em; white-space: nowrap;">
+               <h:selectBooleanCheckbox value="#{var.PatientPastMedicalHistory.form.surgeryChecked[surgery.name]}">
+                  <f:ajax render="@this onset" execute="@this"/>
+               </h:selectBooleanCheckbox>
+               #{surgery.name}
+            </li>
+            <li style="height:1.5em; overflow: hidden; width: 11em;">
+               <h:panelGroup id="onset">
+                  <h:inputText value="#{var.PatientPastMedicalHistory.form.surgeryOnset[surgery.name]}" style="width: 9.5em;" rendered="#{var.PatientPastMedicalHistory.form.surgeryChecked[surgery.name]}">
+                     <f:ajax render="@this" execute="@this"/>
+                  </h:inputText>
+               </h:panelGroup>
+            </li>
+         </ui:repeat>
+         <li style="height:1.5em; overflow: hidden; width: 13.5em;">
+            <h:selectBooleanCheckbox value="#{var.PatientPastMedicalHistory.form.surgeryChecked['other']}">
+               <f:ajax render="@this other onset" execute="@this"/>
+            </h:selectBooleanCheckbox>
+            <h:panelGroup id="other">
+               <h:inputText value="#{var.PatientPastMedicalHistory.form.surgeryOther._}" rendered="#{var.PatientPastMedicalHistory.form.surgeryChecked['other']}" style="width: 9em; margin-left: 0.2em;">
+                  <f:ajax render="@this" execute="@this"/>
+               </h:inputText>
+               <h:outputText value="Other" rendered="#{! var.PatientPastMedicalHistory.form.surgeryChecked['other']}"/>
+            </h:panelGroup>
+         </li>
+         <li style="height:1.5em; overflow: hidden; width: 11em;">
+            <h:panelGroup id="onset">
+               <h:inputText value="#{var.PatientPastMedicalHistory.form.surgeryOnset['other']}" style="width: 9.5em;" rendered="#{var.PatientPastMedicalHistory.form.surgeryChecked['other']}">
+                  <f:ajax render="@this" execute="@this"/>
+               </h:inputText>
+            </h:panelGroup>
+         </li>
+         <br/>
+         <li style="height:2.5em; width: 13.5em; margin-top: 1em;">
+            <label style="font-weight:bold;">More surgeries (CPT)</label>
+         </li>
+         <li style="height:1.5em;">
+            <h:inputText value="#{var.PatientPastMedicalHistory.form.surgeryProcedureFilter._}" style="margin-right: 0; width: 5.4em;"/>
+            <h:commandButton action="#{jsf._do(! empty var.PatientPastMedicalHistory.form.surgeryProcedureFilter._ and var.PatientPastMedicalHistory.form.surgeryProcedureFilter._.length() &gt; 2 ? jsf._do(var.PatientPastMedicalHistory.form.surgeryProcedureSearch.put('code', var.PatientPastMedicalHistory.form.surgeryProcedureFilter._)).
+                                       _do(var.PatientPastMedicalHistory.form.surgeryProcedureSearch.put('description', var.PatientPastMedicalHistory.form.surgeryProcedureFilter._)).
+                                       _do(var.PatientPastMedicalHistory.form.surgeryProcedureList._ == null ? var.PatientPastMedicalHistory.form.surgeryProcedureList._(jsf.newObject('java.util.ArrayList')) : null).
+                                       _do(var.PatientPastMedicalHistory.form.surgeryProcedureSearchList._(jsf.hintedSearch('_Procedure', 'p.code', var.PatientPastMedicalHistory.form.surgeryProcedureSearch, '_MEDBASE'))).
+                                       _do(biz.shrinkListCheckedMapOnsetMap(var.PatientPastMedicalHistory.form.surgeryProcedureList._, var.PatientPastMedicalHistory.form.surgeryProcedureChecked, var.PatientPastMedicalHistory.form.surgeryProcedureOnset)).
+                                       _do(var.PatientPastMedicalHistory.form.surgeryProcedureSearchList._.removeAll(var.PatientPastMedicalHistory.form.surgeryProcedureList._)).
+                                       _do(var.PatientPastMedicalHistory.form.surgeryProcedureList._.addAll(var.PatientPastMedicalHistory.form.surgeryProcedureSearchList._)).stay() : null).stay}"
+                             value="Search" title="Include procedures in combobox based on part of code/description (Minimum 3 symbols)" style="width: auto; margin-right: 0.5em; margin-left: 0;">
+               <f:ajax render="@form" execute="@form"/>
+            </h:commandButton>
+            <h:commandButton action="#{jsf._do(biz.shrinkListCheckedMapOnsetMap(var.PatientPastMedicalHistory.form.surgeryProcedureList._, var.PatientPastMedicalHistory.form.surgeryProcedureChecked, var.PatientPastMedicalHistory.form.surgeryProcedureOnset)).stay}"
+                             value="Clear Unselected" disabled="#{empty var.PatientPastMedicalHistory.form.surgeryProcedureList._}" style="width: auto; margin-right: 1em;">
+               <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+            </h:commandButton>
+         </li>
+         #{jsf._do(var.PatientPastMedicalHistory.form.surgeryProcedureChecked.close()).stay()}
+         #{jsf._do(var.PatientPastMedicalHistory.form.surgeryProcedureOnset.close()).stay()}
+         <ui:fragment rendered="#{! empty var.PatientPastMedicalHistory.form.surgeryProcedureList._}">
+            <li style="height:2.5em; width: 38em;">
+               <label style="font-weight:bold;">Surgery</label>
+            </li>
+            <li style="height:2.5em; width: 11em;">
+               <label style="font-weight:bold;">Date</label>
+            </li>
+            <br/>
+         </ui:fragment>
+         <ui:repeat value="#{var.PatientPastMedicalHistory.form.surgeryProcedureList._}" var="procedure">
+            <li style="height:1.5em; overflow: hidden; width: 7em;">
+               <h:selectBooleanCheckbox value="#{var.PatientPastMedicalHistory.form.surgeryProcedureChecked[procedure]}">
+                  <f:ajax render="@this onset" execute="@this"/>
+               </h:selectBooleanCheckbox>
+               #{procedure.code}
+            </li>
+            <li style="height:1.5em; overflow: hidden; width: 31em;">
+               #{procedure.description}
+            </li>
+            <li style="height:1.5em; overflow: hidden; width: 11em;">
+               <h:panelGroup id="onset">
+                  <h:inputText value="#{var.PatientPastMedicalHistory.form.surgeryProcedureOnset[procedure]}" style="width: 9.5em;" rendered="#{var.PatientPastMedicalHistory.form.surgeryProcedureChecked[procedure]}">
+                     <f:ajax render="@this" execute="@this"/>
+                  </h:inputText>
+               </h:panelGroup>
+            </li>
+            <br/>
+         </ui:repeat>
+      </ui:composition>
+   </body>
+</html>

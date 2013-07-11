@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <body>
+      <ui:composition>
+         <style>
+            li.radio-holder table,  li.radio-holder tr, li.radio-holder td  {
+               background: none;
+               border: none;
+               font-size: 1em;
+               margin: 0;
+               padding: 0;
+            }
+            li.radio-holder input, li.radio-holder label  {
+               display: inline !important;
+               margin: 0.05em;
+            }
+         </style>
+         #{var.PatientPastMedicalHistory.form.testList._(jsf.hintedSearch('PatientHistoryExamTest', 'p.name', var.PatientPastMedicalHistory.form.testListSearch, '_MEDBASE'))}
+         #{jsf._do(var.PatientPastMedicalHistory.form.testChecked.close()).stay()}
+         #{jsf._do(var.PatientPastMedicalHistory.form.testOnset.close()).stay()}
+         #{jsf._do(var.PatientPastMedicalHistory.form.testAbnormal.close()).stay()}
+         <li style="height:2.5em; width: 38em;">
+            <label style="font-weight:bold;">Test/Exam</label>
+         </li>
+         <li style="height:2.5em; width: 11em;">
+            <label style="font-weight:bold;">Date</label>
+         </li>
+         <ui:repeat value="#{var.PatientPastMedicalHistory.form.testList._}" var="test">
+            <li style="height:1.5em; overflow: hidden; width: 28em; white-space: nowrap;">
+               <h:selectBooleanCheckbox value="#{var.PatientPastMedicalHistory.form.testChecked[test.name]}">
+                  <f:ajax render="@this radio onset" execute="@this"/>
+               </h:selectBooleanCheckbox>
+               #{test.name}
+            </li>
+            <li style="height:1.5em; overflow: hidden; width: 10em;" class="radio-holder">
+               <h:panelGroup id="radio">
+                  <h:selectOneRadio value="#{var.PatientPastMedicalHistory.form.testAbnormal[test.name]}" rendered="#{var.PatientPastMedicalHistory.form.testChecked[test.name]}">
+                     <f:selectItem itemValue="normal" itemLabel="Norm."/>
+                     <f:selectItem itemValue="abnormal" itemLabel="Abn."/>
+                     <f:ajax render="@this" execute="@this"/>
+                  </h:selectOneRadio>
+               </h:panelGroup>
+            </li>
+            <li style="height:1.5em; overflow: hidden; width: 11em;">
+               <h:panelGroup id="onset">
+                  <h:inputText value="#{var.PatientPastMedicalHistory.form.testOnset[test.name]}" style="width: 9.5em;" rendered="#{var.PatientPastMedicalHistory.form.testChecked[test.name]}">
+                     <f:ajax render="@this" execute="@this"/>
+                  </h:inputText>
+               </h:panelGroup>
+            </li>
+            <br/>
+         </ui:repeat>
+         <li style="height:1.5em; overflow: hidden; width: 28em;">
+            <h:selectBooleanCheckbox value="#{var.PatientPastMedicalHistory.form.testChecked['other']}">
+               <f:ajax render="@this other radio onset" execute="@this"/>
+            </h:selectBooleanCheckbox>
+            <h:panelGroup id="other">
+               <h:inputText value="#{var.PatientPastMedicalHistory.form.testOther._}" style="width: 12em; margin-left: 0.2em;" rendered="#{var.PatientPastMedicalHistory.form.testChecked['other']}">
+                  <f:ajax render="@this" execute="@this"/>
+               </h:inputText>
+               <h:outputText value="Other" rendered="#{! var.PatientPastMedicalHistory.form.testChecked['other']}"/>
+            </h:panelGroup>
+         </li>
+         <li style="height:1.5em; overflow: hidden; width: 10em;" class="radio-holder">
+            <h:panelGroup id="radio">
+               <h:selectOneRadio value="#{var.PatientPastMedicalHistory.form.testAbnormal['other']}" rendered="#{var.PatientPastMedicalHistory.form.testChecked['other']}">
+                  <f:selectItem itemValue="normal" itemLabel="Norm."/>
+                  <f:selectItem itemValue="abnormal" itemLabel="Abn."/>
+                  <f:ajax render="@this" execute="@this"/>
+               </h:selectOneRadio>
+            </h:panelGroup>
+         </li>
+         <li style="height:1.5em; overflow: hidden; width: 11em;">
+            <h:panelGroup id="onset">
+               <h:inputText value="#{var.PatientPastMedicalHistory.form.testOnset['other']}" style="width: 9.5em;" rendered="#{var.PatientPastMedicalHistory.form.testChecked['other']}">
+                  <f:ajax render="@this" execute="@this"/>
+               </h:inputText>
+            </h:panelGroup>
+         </li>
+         <br/>
+         <li style="height:2.5em; width: 13.5em; margin-top: 1em;">
+            <label style="font-weight:bold;">More Tests/Exams (CPT)</label>
+         </li>
+         <li style="height:1.5em;">
+            <h:inputText value="#{var.PatientPastMedicalHistory.form.testProcedureFilter._}" style="margin-right: 0; width: 5.4em;"/>
+            <h:commandButton action="#{jsf._do(! empty var.PatientPastMedicalHistory.form.testProcedureFilter._ and var.PatientPastMedicalHistory.form.testProcedureFilter._.length() &gt; 2 ? jsf._do(var.PatientPastMedicalHistory.form.testProcedureSearch.put('code', var.PatientPastMedicalHistory.form.testProcedureFilter._)).
+                                       _do(var.PatientPastMedicalHistory.form.testProcedureSearch.put('description', var.PatientPastMedicalHistory.form.testProcedureFilter._)).
+                                       _do(var.PatientPastMedicalHistory.form.testProcedureList._ == null ? var.PatientPastMedicalHistory.form.testProcedureList._(jsf.newObject('java.util.ArrayList')) : null).
+                                       _do(var.PatientPastMedicalHistory.form.testProcedureSearchList._(jsf.hintedSearch('_Procedure', 'p.code', var.PatientPastMedicalHistory.form.testProcedureSearch, '_MEDBASE'))).
+                                       _do(biz.shrinkListCheckedMapOnsetMap(var.PatientPastMedicalHistory.form.testProcedureList._, var.PatientPastMedicalHistory.form.testProcedureChecked, var.PatientPastMedicalHistory.form.testProcedureOnset)).
+                                       _do(var.PatientPastMedicalHistory.form.testProcedureSearchList._.removeAll(var.PatientPastMedicalHistory.form.testProcedureList._)).
+                                       _do(var.PatientPastMedicalHistory.form.testProcedureList._.addAll(var.PatientPastMedicalHistory.form.testProcedureSearchList._)).stay() : null).stay}"
+                             value="Search" title="Include procedures in combobox based on part of code/description (Minimum 3 symbols)" style="width: auto; margin-right: 0.5em; margin-left: 0;">
+               <f:ajax render="@form" execute="@form"/>
+            </h:commandButton>
+            <h:commandButton action="#{jsf._do(biz.shrinkListCheckedMapOnsetMap(var.PatientPastMedicalHistory.form.testProcedureList._, var.PatientPastMedicalHistory.form.testProcedureChecked, var.PatientPastMedicalHistory.form.testProcedureOnset)).stay}"
+                             value="Clear Unselected" disabled="#{empty var.PatientPastMedicalHistory.form.testProcedureList._}" style="width: auto; margin-right: 1em;">
+               <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+            </h:commandButton>
+         </li>
+         #{jsf._do(var.PatientPastMedicalHistory.form.testProcedureChecked.close()).stay()}
+         #{jsf._do(var.PatientPastMedicalHistory.form.testProcedureOnset.close()).stay()}
+         #{jsf._do(var.PatientPastMedicalHistory.form.testProcedureAbnormal.close()).stay()}
+         <ui:fragment rendered="#{! empty var.PatientPastMedicalHistory.form.testProcedureList._}">
+            <li style="height:2.5em; width: 38em;">
+               <label style="font-weight:bold;">Test/Exam</label>
+            </li>
+            <li style="height:2.5em; width: 11em;">
+               <label style="font-weight:bold;">Date</label>
+            </li>
+            <br/>
+         </ui:fragment>
+         <ui:repeat value="#{var.PatientPastMedicalHistory.form.testProcedureList._}" var="procedure">
+            <li style="height:1.5em; overflow: hidden; width: 6em;">
+               <h:selectBooleanCheckbox value="#{var.PatientPastMedicalHistory.form.testProcedureChecked[procedure]}">
+                  <f:ajax render="@this radio onset" execute="@this"/>
+               </h:selectBooleanCheckbox>
+               #{procedure.code}
+            </li>
+            <li style="height:1.5em; overflow: hidden; width: 22em;">
+               #{procedure.description}
+            </li>
+            <li style="height:1.5em; overflow: hidden; width: 10em;" class="radio-holder">               
+               <h:panelGroup id="radio">
+                  <h:selectOneRadio value="#{var.PatientPastMedicalHistory.form.testProcedureAbnormal[procedure]}" rendered="#{var.PatientPastMedicalHistory.form.testProcedureChecked[procedure]}">
+                     <f:selectItem itemValue="normal" itemLabel="Norm."/>
+                     <f:selectItem itemValue="abnormal" itemLabel="Abn."/>
+                     <f:ajax render="@this" execute="@this"/>
+                  </h:selectOneRadio>
+               </h:panelGroup>
+            </li>
+            <li style="height:1.5em; overflow: hidden; width: 11em;">
+               <h:panelGroup id="onset">
+                  <h:inputText value="#{var.PatientPastMedicalHistory.form.testProcedureOnset[procedure]}" style="width: 9.5em;" rendered="#{var.PatientPastMedicalHistory.form.testProcedureChecked[procedure]}">
+                     <f:ajax render="@this" execute="@this"/>
+                  </h:inputText>
+               </h:panelGroup>
+            </li>
+            <br/>
+         </ui:repeat>
+      </ui:composition>
+   </body>
+</html>

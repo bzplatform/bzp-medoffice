@@ -1,0 +1,433 @@
+pre {
+   font-family:"Consolas","Monaco","Bitstream Vera Sans Mono","Courier New",Courier,monospace !important;
+   font-size:0.8em !important;
+}
+
+li.laboratory-order {
+   height: auto;
+}
+
+li.laboratory-order > label {
+   margin: 0.5em 0 -1.3em 0 !important;
+   font-weight: bolder;
+   font-size: 0.8em
+}
+
+li.laboratory-order > ul {
+   border: black solid 1px;
+   font-size: 1em;
+   margin-top: 1em;
+   margin-bottom: 0em;
+   width: 48em;
+   padding-bottom: 0.5em;
+}
+
+.em13 .djsf_DateTextBox, .em13 .djsf_DateTextBoxYYYY {
+   width:12em;
+   margin:0em 0.5em;
+   padding:0.15em;
+   position:relative;
+   top:-0.1em;
+}
+
+.em7 .djsf_DateTextBox, .em7 .djsf_DateTextBoxYYYY {
+   width:6em;
+   margin:0em 0.5em;
+   padding:0.15em;
+   position:relative;
+   top:-0.1em;
+}
+
+.djsf_immediate_DateTextBox {
+   font-size: 0.95em !important;
+}
+
+.column h3.table-label {
+   margin-left: 0.6em;
+}
+
+label.intable {
+   min-width: 3em;
+   text-align: right;
+   margin-right: 0.5em;
+   display: inline-block;
+}
+
+.w66 {
+   width:66em;
+}
+
+.w63 {
+   width:63em;
+}
+
+.w50 {
+   width:50em;
+}
+
+.w60 {
+   width:60em;
+}
+
+.w48 {
+   width:48em;
+}
+
+.w40 {
+   width:40em;
+}
+
+.w42 {
+   width:42em;
+}
+
+.w44 {
+   width:44em;
+}
+
+.w36 {
+   width:36em;
+}
+
+.w2 {
+   width:2em;
+}
+
+.w3 {
+   width:3em;
+}
+
+.w6 {
+   width:6em;
+}
+
+.w8 {
+   width:8em;
+}
+
+.w9 {
+   width:9em;
+}
+
+.w10 {
+   width:10em;
+}
+
+.w12 {
+   width:12em;
+}
+
+.w13 {
+   width:13em;
+}
+
+.w14 {
+   width:14em;
+}
+
+.w15 {
+   width:15em;
+}
+
+.w16 {
+   width:16em;
+}
+
+.w17 {
+   width:17em;
+}
+
+.w18 {
+   width:18em;
+}
+
+.w19 {
+   width:19em;
+}
+
+.w20 {
+   width:20em;
+}
+
+.w21 {
+   width:21em;
+}
+
+.w22 {
+   width:22em;
+}
+
+.w23 {
+   width:23em;
+}
+
+.w25 {
+   width:25em;
+}
+
+.w30 {
+   width:30em;
+}
+
+div.two-column {
+   -moz-column-count: 2;
+}
+
+div.three-column {
+   -moz-column-count: 3;
+}
+
+div.four-column {
+   -moz-column-count: 4;
+}
+
+div.five-column {
+   -moz-column-count: 5;
+}
+
+margin-left-1em {
+   margin-left: 1em;
+}
+
+.intable.djsf_DateTextBox, .intable.djsf_DateTextBoxYYYY {
+   width:6em;
+   padding:0.1em;
+   position:relative;
+   top:-0.1em;
+}
+
+select.intable {
+   margin-top:0em;
+}
+
+.tabs > a {
+   background-color: whitesmoke;
+   border:solid 1px grey;
+   padding:0.3em;
+   text-decoration: none;
+   display: inline-block;
+   margin: -0.35em 0;
+   font-family: Arial;
+   -moz-border-radius-topright: 0.5em;
+   -moz-border-radius-topleft: 0.5em;
+   border-top-right-radius: 0.5em;
+   border-top-left-radius: 0.5em;
+}
+
+.tabs > a.selected {
+   border: solid 2px grey;
+   background: white !important;
+   display: inline-block;
+   position: relative;
+   top: 1px;
+   border-bottom-color: rgb(233,245,199);
+   border-bottom-width: 0;
+}
+
+.tabs {
+   background: whitesmoke;
+}
+
+.tabs.views {
+   border: none;
+   background: none;
+   margin-bottom: -0.6em;
+   margin-left: 0.15em;
+   font-size: 0.9em;
+}
+
+.tabs.views > a {
+   background: whitesmoke;
+}
+
+.tabs.views > a.selected {
+   opacity: 1;
+   border-bottom-color: rgb(244, 245, 189);
+}
+
+.border2px {
+   border: solid 2px;
+}
+
+input[disabled][type = text] {
+   background-color: whitesmoke;
+   color: black;
+   border:1px solid silver;
+}
+
+.focus-line {
+   margin: -0.6em 0.2em 0.5em -0.6em;
+}
+.focus-line div, .focus-line a  {
+   display: inline-block;
+   font-size: 0.55em;
+   margin: 0.2em 0.2em;
+   padding: 0.2em 0.3em;
+   border: solid 1px gray;
+   background: whitesmoke;
+   font-weight: bold;
+   text-decoration: none;
+   -moz-border-radius: 0.2em;
+   border-radius: 0.2em;
+}
+.focus-line a.selected {
+   /*background-color: #FDFFCD;*/
+   background-color: white;
+}
+
+th  {
+   padding:0.2em;
+}
+
+.header h3 {
+   padding:0.2em;
+}
+
+.diagnosis-list a {
+   color: black;
+   text-decoration: none;
+}
+.diagnosis-list label:hover {
+   color: red;
+   cursor: pointer !important;
+}
+
+.claim-data th {
+   text-align: right;
+}
+
+.claim-data {
+   font-size: 1.3em;
+}
+
+.dijitCalendarPopup {
+   font-size: 0.95em;
+   font-family: Arial;
+}
+
+.breadcrumbs, .tabs{
+   padding: 0.2em;
+}
+
+.tablecounter {
+   float: right;
+   font-size: 0.7em;
+   margin-right: 0em;
+   font-weight: bold;
+   position: relative;
+   top: -1.5em;
+}
+
+.compact {
+   margin-top: 0 !important;
+   margin-bottom: 0 !important;
+}
+
+input.intable-action {
+   margin-right: 1em;
+   font-size: 0.8em;
+   width: 5em;
+   margin-top: -0.1em !important;
+   margin-bottom: -0.1em !important;
+}
+
+.tabs.border.views {
+   border:none;
+   background: none;
+   margin-bottom: -0.4em;
+   margin-left: 0.45em;
+   font-size: 0.7em;
+   height: 1.05em;
+   font-weight: bold;
+}
+
+.context-label{
+   font-size: 1em;
+   font-weight: bold;
+   margin-top: -0.8em;
+   margin-left: 0.9em;
+   margin-bottom: 0;
+}
+
+a.colored {
+   text-decoration: none;
+   font-weight: bold;
+}
+
+.theme-icon{
+   cursor: pointer;
+}
+
+.theme-icon:hover{
+   opacity: 0.5;
+}
+
+.emr-grid input {
+   margin: 0.3em;
+}
+
+.emr-grid tr {
+   border-top: solid black 1px;
+   border-bottom: solid black 1px;
+}
+
+.emr-child-grid table {
+   border: none;
+}
+
+.emr-child-grid tr {
+   border: none;
+}
+
+.emr-child-grid td {
+   border: none;
+}
+
+.context-menu-list {
+   text-align: left;
+}
+
+.context-menu-item label {
+   font-size: 11px;
+}
+
+.context-menu-root.titled:before {
+   content: attr(title);
+   display: block;
+   background: #DDD;
+   padding: 2px;
+   height: 1.5em;
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 11px;
+   font-weight: bold;
+}
+
+.smart_autocomplete_container {
+   background: white;
+   padding: 0.3em 0.3em 0.3em 1.2em;
+   font-size: 0.9em;
+}
+
+.smart_autocomplete_container li{
+   text-align: left;
+   margin-left: 0;
+   cursor: pointer;
+}
+
+li.smart_autocomplete_highlight {
+   background: whitesmoke;
+}
+
+.pntl-section label {
+   font-size: 1em;
+   min-width: 0;
+   margin-right: 0.5em;
+}
+
+.none {
+   display: none;
+}
+
+table.preline td {
+   white-space: pre-line;
+}

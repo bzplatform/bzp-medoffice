@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <body>
+        <ui:composition template="template/base.xhtml">
+
+            <ui:define name="title">
+                Medical Care: Denied
+            </ui:define>
+
+            <ui:define name="form">
+                <div class="one-third column"/>
+                <div class="one-third column">
+                    <div class="menu form">
+                        <div class="header">
+                            <h3 class="center">Insufficient Permissions!</h3>
+                        </div>
+                        <div class="body">
+                            <ul class="vertical form-area grid g16">
+                                <h:messages globalOnly="true" styleClass="error"/>
+                                <li class="em16">
+                                    <label class="vlabel">Permision to uri "#{requiredAction}"
+                                        denied for the #{access.user.name == null ? 'Public' : access.user.name}</label>
+                                </li>
+                                <li class="last"/>
+                            </ul>
+                        </div>
+                        <div class="footer">
+                            <h:commandButton action="#{access.goHome}" value="Return" immediate="true" styleClass="cancel-button"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="one-third column"/>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

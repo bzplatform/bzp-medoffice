@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         #{jsf.global('officeProvider', 'view')['panel:Search'] == null ? jsf.global('officeProvider', 'view').put('panel:Search', true) : null}
+         <h:commandLink action="#{jsf._do(jsf.global('officeProvider', 'view')['panel:Search'] ? jsf.global('officeProvider', 'view').put('panel:Search', false) : jsf.global('officeProvider', 'view').put('panel:Search', true)).stay}"
+                        value="SEARCH" styleClass="#{jsf.global('officeProvider', 'view')['panel:Search'] ? 'selected' : ''}" rendered="#{access.isUriPermitted('OfficeProvider/search')}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(jsf.global('officeProvider', 'view')['Appointment/list'] ? jsf.global('officeProvider', 'view').put('Appointment/list', false) : jsf.global('officeProvider', 'view').put('Appointment/list', true)).stay}"
+                        value="APPOINTMENTS" styleClass="#{jsf.global('officeProvider', 'view')['Appointment/list'] ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(jsf.global('officeProvider', 'view')['Visit/list'] ? jsf.global('officeProvider', 'view').put('Visit/list', false) : jsf.global('officeProvider', 'view').put('Visit/list', true)).stay}"
+                        value="VISITS" styleClass="#{jsf.global('officeProvider', 'view')['Visit/list'] ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(jsf.global('officeProvider', 'view')['Referral/list'] ? jsf.global('officeProvider', 'view').put('Referral/list', false) : jsf.global('officeProvider', 'view').put('Referral/list', true)).stay}"
+                        value="REFERRALS" styleClass="#{jsf.global('officeProvider', 'view')['Referral/list'] ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(jsf.global('officeProvider', 'view')['ReferralResult/list'] ? jsf.global('officeProvider', 'view').put('ReferralResult/list', false) : jsf.global('officeProvider', 'view').put('ReferralResult/list', true)).stay}"
+                        value="RESULTS" styleClass="#{jsf.global('officeProvider', 'view')['ReferralResult/list'] ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(jsf.global('officeProvider', 'view')['Schedule/list'] ? jsf.global('officeProvider', 'view').put('Schedule/list', false) : jsf.global('officeProvider', 'view').put('Schedule/list', true)).stay}"
+                        value="SCHEDULE" styleClass="#{jsf.global('officeProvider', 'view')['Schedule/list'] ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(jsf.global('officeProvider', 'view')['Appointment/make'] ? jsf.global('officeProvider', 'view').put('Appointment/make', false) : jsf.global('officeProvider', 'view').put('Appointment/make', true)).stay}"
+                        value="MAKE APPT." styleClass="#{jsf.global('officeProvider', 'view')['Appointment/make'] ? 'selected' : ''}" rendered="#{access.isUriPermitted('MyOffice/navigation')}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <br/>
+         <h:commandLink action="#{jsf._do(jsf.global('officeProvider', 'view')['ProviderInsurance/list'] ? jsf.global('officeProvider', 'view').put('ProviderInsurance/list', false) : jsf.global('officeProvider', 'view').put('ProviderInsurance/list', true)).stay}"
+                        value="INSURANCES" styleClass="#{jsf.global('officeProvider', 'view')['ProviderInsurance/list'] ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(jsf.global('patient', 'view')['panel:Search'] ? jsf.global('patient', 'view').put('panel:Search', false) : jsf.global('patient', 'view').put('panel:Search', true)).stay}"
+                        value="PATIENT SEARCH" styleClass="#{jsf.global('patient', 'view')['panel:Search'] ? 'selected' : ''}" rendered="#{access.isUriPermitted('Patient/search')}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+      </ui:composition>
+   </body>
+</html>

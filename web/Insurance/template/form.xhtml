@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! empty var.Insurance.form}">
+            <style>
+               a.colored {
+                  color: #AE4EB5;
+                  text-decoration: none;
+                  font-weight: bold;
+               }
+            </style>
+            <li class="em24">
+               <h:panelGroup styleClass="errors" rendered="#{var.Insurance.form.insuranceValidationMap._ != null and var.Insurance.form.insuranceValidationMap._.name}">
+                  <b>Name</b> is required
+               </h:panelGroup>
+               <label>Name:</label>
+               <h:inputText value="#{var.Insurance.form.insurance._.name}" title="Name"/>
+            </li>
+            <li class="em9">
+               <label>Short Name:</label>
+               <h:inputText value="#{var.Insurance.form.insurance._.shortName}" title="Short Name"/>
+            </li>
+            <li class="em10">
+               <h:panelGroup styleClass="errors" rendered="#{var.Insurance.form.insuranceValidationMap._ != null and var.Insurance.form.insuranceValidationMap._.type}">
+                  <b>Type</b> is required
+               </h:panelGroup>
+               #{var.Insurance.form.insuranceTypeList._ == null ? var.Insurance.form.insuranceTypeList._(jsf.hintedSearch('InsuranceType', 'i.name', jsf.newMap(), '_MEDBASE'))  : null}          
+               <label>Type:</label>
+               <h:selectOneMenu value="#{var.Insurance.form.insurance._.typeId}" title="Type">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.Insurance.form.insuranceTypeList._}" var="insuranceType" itemLabel="#{insuranceType.name}" itemValue="#{insuranceType.id}"/>
+               </h:selectOneMenu>            
+            </li>
+            <li style="height: 1.5em; padding: 0.5em 0 0 0.5em; width: 6em;">
+               <h:selectBooleanCheckbox value="#{var.Insurance.form.insurance._.active}"/>
+               <label style="display: inline; margin-left: -1em;">Active</label>            
+            </li>
+            <li class="em8">
+               <label>Payer ID:</label>
+               <h:inputText value="#{var.Insurance.form.insurance._.payerId}" title="Payer ID"/>
+            </li>
+            <li class="em32">
+               <label>Web Site:</label>
+               <h:inputText value="#{var.Insurance.form.insurance._.webSite}" title="Web Site"/>
+            </li>
+            <li class="em8">
+               <label>Plan Type:</label>
+               <h:inputText value="#{var.Insurance.form.insurance._.planType}" title="Plan Type"/>
+            </li>
+            <li class="em27">
+               <label>Address:</label>
+               <h:inputText value="#{var.Insurance.form.insurance._.address}" title="Address"/>
+            </li>
+            <li class="em12" style="width:12.5em;">
+               <label>City:</label>
+               <h:inputText id="city" value="#{var.Insurance.form.insurance._.city}" title="City" style="width:11.3em;"/>
+            </li>
+            <li class="em4">
+               <label>State:</label>
+               <h:inputText id="state" value="#{var.Insurance.form.insurance._.state}" title="State"/>
+            </li>
+            <li class="em5">
+               <label>Zip:</label>
+               <h:inputText id="zipCode" value="#{var.Insurance.form.insurance._.zipCode}" title="Zip Code" style="width:4em;"/>
+            </li>
+            <li class="em11">
+               <label>Phone:</label>
+               <h:inputText value="#{var.Insurance.form.insurance._.phone}" styleClass="mask-phone"/>
+            </li>
+            <li class="em37">
+               <label>Email Address:</label>
+               <h:inputText value="#{var.Insurance.form.insurance._.email}" title="Email Address"/>
+            </li>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

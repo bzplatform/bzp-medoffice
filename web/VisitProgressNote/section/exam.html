@@ -1,0 +1,205 @@
+<table>
+   <tr>
+      <th style="width: 20%;">Constitutional</th>
+      <td>
+         <div class="pntl-section" data-section="examOsConstitutional">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Head</th>
+      <td>
+         <div class="pntl-section" data-section="examBaHead">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Eyes</th>
+      <td>
+         <div class="pntl-section" data-section="examOsEyes">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Ears/Nose/Mouth/Throat</th>
+      <td>
+         <div class="pntl-section" data-section="examOsEarsNoseMouthThroat">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Neck</th>
+      <td>
+         <div class="pntl-section" data-section="examBaNeck">
+            <span data-text-if="noTenderness">
+               <input type="checkbox" data-name="noTenderness"/>
+               <label>no tenderness<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="noThyromegaly">
+               <input type="checkbox" data-name="noThyromegaly"/>
+               <label>no thyromegaly<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="noAdenopathy">
+               <input type="checkbox" data-name="noAdenopathy"/>
+               <label>no adenopathy<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="noCarotidBruits">
+               <input type="checkbox" data-name="noCarotidBruits"/>
+               <label>no carotid bruits<span class="none">;</span></label>
+            </span>
+            <span>
+               <input type="checkbox" data-name="normalRomYes" class="radio-group-exam-normalRom" onchange="radioGroup(this, 'exam-normalRom'); return false;"/>
+               <label data-text-if="normalRomYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="normalRomNo" class="radio-group-exam-normalRom" onchange="radioGroup(this, 'exam-normalRom'); return false;"/>
+               <label data-text-if="normalRomNo">N<span class="none">o</span></label>
+               <label data-text-if="normalRomYes || normalRomNo">normal ROM<span class="none">.</span></label>
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Respiratory</th>
+      <td>
+         <div class="pntl-section" data-section="examOsRespiratory">
+            <div data-text-if="other" >
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Cardiovascular</th>
+      <td>
+         <div class="pntl-section" data-section="examOsCardiovascular">            
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Chest</th>
+      <td>
+         <div class="pntl-section" data-section="examBaChest">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Gastrointestinal (Abdomen)</th>
+      <td>
+         <div class="pntl-section" data-section="examOsGastrointestinal">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Genitourinary</th>
+      <td>
+         <div class="pntl-section" data-section="examOsGenitourinary">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Hematologic/Lymphatic/Immunologic</th>
+      <td>
+         <div class="pntl-section" data-section="examOsHematologicLymphaticImmunologic">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>   
+   <tr>
+      <th>Back</th>
+      <td>
+         <div class="pntl-section" data-section="examBaBack">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Genitalia/Groin/Buttocks</th>
+      <td>
+         <div class="pntl-section" data-section="examBaGenitaliaGroinButtocks">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Musculoskeletal</th>
+      <td>
+         <div class="pntl-section" data-section="examOsMusculoskeletal">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Extremities</th>
+      <td>
+         <div class="pntl-section" data-section="examBaEachExtremity">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>   
+   <tr>
+      <th>Skin</th>
+      <td>
+         <div class="pntl-section" data-section="examOsSkin">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Neurological</th>
+      <td>
+         <div class="pntl-section" data-section="examOsNeurological">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Psychiatric</th>
+      <td>
+         <div class="pntl-section" data-section="examOsPsychiatric">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+</table>

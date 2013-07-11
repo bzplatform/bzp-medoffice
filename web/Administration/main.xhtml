@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition template="../template/base.xhtml">
+
+         <ui:define name="title">
+            Medical Care: Administration
+         </ui:define>
+
+         <ui:define name="navigation">
+            <ui:include src="../template/tab-navigation.xhtml">
+               <ui:param name="page" value="Administration/main"/>
+            </ui:include>
+         </ui:define>
+
+         <ui:define name="form">               
+            <div class="float-left column" jsfc="h:panelGroup">
+               <ui:include src="template/search.xhtml"/>
+            </div>
+            
+            <div jsfc="h:panelGroup" rendered="#{var.Administration.subview._ == 'ReferringProvider'}">
+               #{jsf._do(var.Administration.ReferringProvider.tableConfig.id._ == null ? var.Administration.ReferringProvider.tableConfig.id._(true) : null).
+                 _do(var.Administration.ReferringProvider.tableConfig.action._ == null ? var.Administration.ReferringProvider.tableConfig.action._(true) : null).
+                 stay()}
+               <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.Administration.ReferringProvider.list._}">
+                  <h3 class="table-label" style="display:inline-block;">Referring Providers</h3>                 
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../ReferringProvider/template/table.xhtml">
+                     <ui:param name="referringProviderList" value="#{var.Administration.ReferringProvider.list._}"/>
+                     <ui:param name="tableConfig" value="#{var.Administration.ReferringProvider.tableConfig}"/>
+                  </ui:include>
+               </div>
+            </div>
+            <div jsfc="h:panelGroup" rendered="#{var.Administration.subview._ == 'Provider'}">
+               #{jsf._do(var.Administration.OfficeProvider.tableConfig.id._ == null ? var.Administration.OfficeProvider.tableConfig.id._(true) : null).
+                 _do(var.Administration.OfficeProvider.tableConfig.action._ == null ? var.Administration.OfficeProvider.tableConfig.action._(true) : null).
+                 _do(var.Administration.OfficeProvider.tableConfig.alias._ == null ? var.Administration.OfficeProvider.tableConfig.alias._(true) : null).
+                 _do(var.Administration.OfficeProvider.tableConfig.role._ == null ? var.Administration.OfficeProvider.tableConfig.role._(true) : null).
+                 _do(var.Administration.OfficeProvider.tableConfig.npi._ == null ? var.Administration.OfficeProvider.tableConfig.npi._(true) : null).
+                 _do(var.Administration.OfficeProvider.tableConfig.offices._ == null ? var.Administration.OfficeProvider.tableConfig.offices._(true) : null).
+                 stay()}
+               <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.Administration.OfficeProvider.list._}">
+                  <h3 class="table-label" style="display:inline-block;">Providers</h3>
+                  #{var.Administration.OfficeProvider.status._ == null ? var.Administration.OfficeProvider.status._('ACTIVE') : null}
+                  <label class="vlabel" style="margin-left: 1em;">Status:</label>
+                  <h:selectOneMenu value="#{var.Administration.OfficeProvider.status._}" title="Status" styleClass="w6">
+                     <f:selectItem itemValue="ALL" itemLabel="ALL"/>
+                     <f:selectItem itemValue="ACTIVE" itemLabel="Active"/>
+                     <f:selectItem itemValue="INACTIVE" itemLabel="Inactive"/>                    
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:selectOneMenu>  
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../OfficeProvider/template/table.xhtml">
+                     <ui:param name="officeProviderList" value="#{biz.filterByActiveValue(var.Administration.OfficeProvider.list._, var.Administration.OfficeProvider.status._)}"/>
+                     <ui:param name="sourceOfficeProviderList" value="#{var.Administration.OfficeProvider.list._}"/>
+                     <ui:param name="tableConfig" value="#{var.Administration.OfficeProvider.tableConfig}"/>
+                  </ui:include>
+               </div>
+            </div>
+            <div jsfc="h:panelGroup" rendered="#{var.Administration.subview._ == 'Insurance'}">
+               #{jsf._do(var.Administration.Insurance.tableConfig.id._ == null ? var.Administration.Insurance.tableConfig.id._(true) : null).
+                 _do(var.Administration.Insurance.tableConfig.action._ == null ? var.Administration.Insurance.tableConfig.action._(true) : null).
+                 stay()}
+               <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.Administration.Insurance.list._}">
+                  <h3 class="table-label" style="display:inline-block;">Insurances</h3>                 
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../Insurance/template/table.xhtml">
+                     <ui:param name="insuranceList" value="#{var.Administration.Insurance.list._}"/>
+                     <ui:param name="tableConfig" value="#{var.Administration.Insurance.tableConfig}"/>
+                  </ui:include>
+               </div>
+            </div>
+            <div jsfc="h:panelGroup" rendered="#{var.Administration.subview._ == 'Holiday'}">
+               <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.Administration.OfficeSchedule.list._}">
+                  <h3 class="table-label" style="display:inline-block;">Holidays</h3>                 
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../OfficeSchedule/template/table.xhtml">
+                     <ui:param name="officeScheduleList" value="#{var.Administration.OfficeSchedule.list._}"/>
+                  </ui:include>
+               </div>
+            </div>
+         </ui:define>
+
+      </ui:composition>
+
+   </body>
+</html>

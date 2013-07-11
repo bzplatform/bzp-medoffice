@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition template="../template/base.xhtml">
+
+         <ui:define name="title">
+            Medical Care: Edit Profile for #{biz.specialty(var.Visit.specialty.info.visit.specialtyID).name}
+         </ui:define>
+
+         <ui:define name="navigation">
+            <ui:include src="../template/tab-navigation.xhtml"/>
+         </ui:define>
+
+         <ui:define name="form">
+            <div class="column">
+               <div class="menu form">
+                  <div class="header">
+                     <h3 class="center">Edit Profile for #{biz.specialty(var.Visit.specialty.info.visit.specialtyID).name}</h3>
+                  </div>
+                  <div class="body">
+                     <div style="width:44.5em; margin-bottom: 1em;">
+                        <ui:include src="template/profile-edit-form.xhtml"/>
+                     </div>
+                  </div>
+                  <div class="footer">
+                     <h:commandButton action="#{jsf._do(var.Visit.specialty.profile.put('user', access.user.name)).
+                                                _do(var.Visit.specialty.profile.put('modified', jsf.newDate)).
+                                                _do(var.Visit.specialty.profile.put('specialtyId', var.Visit.specialty.info.visit.specialtyID)).
+                                                _do(var.Visit.specialty.profile.removeField('_id')).
+                                                _do(biz.mongoEjb.saveSpecialtyProfile(var.Visit.specialty.profile)).
+                                                _do(var.Visit.provider.profile.put('user', access.user.name)).
+                                                _do(var.Visit.provider.profile.put('modified', jsf.newDate)).
+                                                _do(var.Visit.provider.profile.put('providerId', var.Visit.specialty.info.visit.provider.id)).
+                                                _do(var.Visit.provider.profile.removeField('_id')).
+                                                _do(biz.mongoEjb.saveProviderProfile(var.Visit.provider.profile)).
+                                                _do(var.Visit.specialty.put('profile',null)).
+                                                _do(var.Visit.provider.put('profile',null)).
+                                                back}" styleClass="ok-button" value="OK"/>
+                     <h:commandButton action="#{jsf._do(var.Visit.specialty.put('profile',null))._do(var.Visit.provider.put('profile',null)).back}" value="Cancel" immediate="true" styleClass="cancel-button"/>
+                  </div>
+               </div>
+            </div>
+         </ui:define>
+
+      </ui:composition>
+
+   </body>
+</html>

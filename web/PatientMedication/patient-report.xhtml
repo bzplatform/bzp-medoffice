@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>Patient's Medications Report</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 1em;
+               margin: 1em;
+            }
+
+            .action {
+               display: block !important;
+               text-align: left;
+               margin-left: 3em;
+               margin-top: 1em;
+            }
+         }
+         @media all {
+
+            body {
+               font-family:Arial, sans-serif;
+               margin: 0em;
+               text-align: left;
+               font-size: 0.8em;
+               line-height: 1;
+            }
+            .page {
+               position: relative;
+               margin-left: 3em;              
+               width: 56em;
+               height: 78em;
+               display: block;
+               overflow: hidden;
+               padding:0.1em;
+            }
+
+            h1, h2 {
+               text-align: left;
+            }
+            h1 {
+               font-size: 1.2em;
+            }
+            h2 {
+               font-size: 1em;
+               font-weight: normal;
+            }
+            h3 {
+               margin: 0.1em;
+            }
+            .bold {
+               font-weight: bold;
+            }
+            table {
+               border-collapse:collapse;
+            }
+            table.medication-list {
+               border: 1px solid silver;
+            }
+            td {
+               padding: 0.25em 0em;
+            }
+            table.medication-list th {
+               padding: 0.25em 0.5em;
+               border: 1px solid silver;
+               font-weight: bold;
+            }
+            table.medication-list td {
+               padding: 0.25em 0.5em;
+               border: 1px solid silver;
+               font-style: italic;
+            }
+            th {
+               text-align: left;
+               font-weight: normal;
+            }
+            td, th {
+               vertical-align: top;
+            }
+            .border td, .border th {
+               border-bottom: solid black 1px;
+            }
+            hr {
+               color: black;
+               background-color: black;
+               height: 2px;
+               border:0px none;
+            }
+         }
+         @media print {
+            .action {
+               display: none;
+            }
+            .page {
+               margin-top: 1em;
+            }
+            .break {
+               page-break-before:always;
+               height: 0.3em;
+            }
+         }
+      </style>
+      <script type="text/javascript" src="/#{access.application}/script/jquery/jquery-1.9.0.min.js"></script>
+      <script type="text/javascript" src="/#{access.application}/script/printer.js"></script>
+   </head>
+   <body>
+      <h:form prependId="false">
+         <div class="action"><a href="#" id="print-link" onclick="return print('Portrait')">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         <div class="page">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-bottom: 2em; font-size: 1em;">
+               <tr>
+                  <td valign="top" width="50%">
+                     <h1 style="margin-bottom: 0; font-size: 1.4em; margin-top: 0;">SL Quality Care D &amp; T Center</h1>
+                     #{var.Patient.Medication.report.myOffice._(biz.myOffice(myOfficeCode))}
+                     <h2 style="margin-top: 0.3em; margin-bottom: 0.1em;">#{var.Patient.Medication.report.myOffice._.address}, #{var.Patient.Medication.report.myOffice._.city}, #{var.Patient.Medication.report.myOffice._.state} #{var.Patient.Medication.report.myOffice._.zipCode}</h2>
+                     <h2 style="margin-top: 0.3em; margin-bottom: 0.1em;">#{var.Patient.Medication.report.myOffice._.phone}</h2>
+                  </td>
+                  <td>
+                     <table style="font-size: 1.1em;">
+                        <tr>
+                           <td>
+                              <h1 style="margin-bottom: 0; font-size: 1.1em; margin-top: 0;">Medications</h1>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <label>Patient:</label>
+                              <span class="bold">#{var.Patient.Medication.report.patient._.lastName}, #{var.Patient.Medication.report.patient._.firstName}</span>
+                              <label>MRN:</label>
+                              <span class="bold">#{var.Patient.Medication.report.patient._.id}</span>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <label>Printed: </label>
+                              <h:outputText value="#{jsf.newDate}">
+                                 <f:convertDateTime pattern="MM/dd/yyyy"/>
+                              </h:outputText>
+                           </td>
+                        </tr>
+                     </table>
+                  </td>
+               </tr>
+            </table>
+            <h:dataTable  width="100%" value="#{var.Patient.filteredPatientMedicationList._}" var="medication" rendered="#{not empty var.Patient.filteredPatientMedicationList._}" class="medication-list">
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.created._}">
+                  <f:facet name="header">
+                     <h:outputText value="Created"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.created}" style="white-space: nowrap;">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+                  <br/>
+                  <h:outputText value="by #{access.getUserName(medication.userId)}"/>
+               </h:column>
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.updated._}">
+                  <f:facet name="header">
+                     <h:outputText value="Updated" style="white-space: nowrap;"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.lastUpdated}" style="white-space: nowrap;">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+                  <br/>
+                  <h:outputText value="by #{access.getUserName(medication.lastUpdatedUserId)}" rendered="#{medication.lastUpdatedUserId != null}"/>
+               </h:column>
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.prescriber._}">
+                  <f:facet name="header">
+                     <h:outputText value="Prescriber"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.prescriber.lastName}, #{medication.prescriber.firstName} NPI:#{medication.prescriber.npi}"/>
+               </h:column>
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.prescribingDate._}">
+                  <f:facet name="header">
+                     <h:outputText value="Rx&nbsp;Date"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.prescribingDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Start&nbsp;Date"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.startDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.modifyDate._}">
+                  <f:facet name="header">
+                     <h:outputText value="Modify&nbsp;Date"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.modifyDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.renewalDate._}">
+                  <f:facet name="header">
+                     <h:outputText value="Reneval&nbsp;Date"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.renewalDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header" rendered="#{var.Patient.PatientMedication.tableConfig.drugCode._}">
+                     <h:outputText value="Drug&nbsp;Code"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.drugCode}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Drug"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.drug}"/>
+               </h:column>
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.dispenseQty._}">
+                  <f:facet name="header">
+                     <h:outputText value="Qty"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.dispenseQty}"/>
+               </h:column>
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.refills._}">
+                  <f:facet name="header">
+                     <h:outputText value="Refills"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.refills}"/>
+               </h:column>
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.dose._}">
+                  <f:facet name="header">
+                     <h:outputText value="Dose/Unit"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.dose} #{medication.doseUnit}"/>
+               </h:column>
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.route._}">
+                  <f:facet name="header">
+                     <h:outputText value="Route"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.route}"/>
+               </h:column>
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.frequency._}">
+                  <f:facet name="header">
+                     <h:outputText value="Frequency"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.frequency}"/>
+               </h:column>
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.duration._}">
+                  <f:facet name="header">
+                     <h:outputText value="Duration"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.duration}"/>
+               </h:column>
+               <h:column rendered="#{var.Patient.PatientMedication.tableConfig.endDate._}">
+                  <f:facet name="header">
+                     <h:outputText value="End&nbsp;Date"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.endDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </h:form>
+   </body>
+</html>

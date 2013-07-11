@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! empty var.ProviderInsurance.form}">
+            <li class="em20">
+               <h:panelGroup styleClass="errors" rendered="#{var.ProviderInsurance.form.providerInsuranceValidationMap._ != null and var.ProviderInsurance.form.providerInsuranceValidationMap._.insurance}">
+                  <b>Insurance</b> is required
+               </h:panelGroup>
+               #{jsf._do(var.ProviderInsurance.form.insuranceListSearch.put('active', true)).stay()}
+               #{var.ProviderInsurance.form.insuranceList._ == null ? var.ProviderInsurance.form.insuranceList._(jsf.hintedSearch('Insurance', 'i.name', var.ProviderInsurance.form.insuranceListSearch, '_HEALTHCARE'))  : null}          
+               <label>Insurance:</label>
+               <h:selectOneMenu value="#{var.ProviderInsurance.form.providerInsurance._.insuranceId}" title="Insurance" disabled="#{var.ProviderInsurance.form.providerInsurance._.id != null and var.ProviderInsurance.form.providerInsurance._.insuranceId != null}">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItems value="#{biz.excludeDuplicates(var.ProviderInsurance.form.insuranceList._, var.ProviderInsurance.form.providerInsuranceList._, var.ProviderInsurance.form.providerInsurance._.id != null and var.ProviderInsurance.form.providerInsurance._.insuranceId != null)}" var="insurance" itemLabel="#{insurance.name}" itemValue="#{insurance.id}"/>
+                  <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler"/>
+               </h:selectOneMenu>            
+            </li>
+            <li class="em8">   
+               <label>Office Code:</label>
+               <h:selectOneMenu value="#{var.ProviderInsurance.form.providerInsurance._.officeCode}" title="Office Code">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItem itemValue="mid" itemLabel="mid"/>
+                  <f:selectItem itemValue="ben" itemLabel="ben"/>
+                  <f:selectItem itemValue="can" itemLabel="can"/>
+               </h:selectOneMenu>            
+            </li>
+            <li class="em11">
+               <label>PIN:</label>
+               <h:inputText value="#{var.ProviderInsurance.form.providerInsurance._.pin}" title="PIN"/>
+            </li>
+            <li class="em10">
+               <label>Effective:</label>
+               <h:inputText id="effective" value="#{var.ProviderInsurance.form.providerInsurance._.effectiveDate}" title="Effective Date" styleClass="mask-date" style="width: 8.7em;">
+                  <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+               </h:inputText>
+            </li>
+            <li class="em10">
+               <label>Group ID:</label>
+               <h:inputText value="#{var.ProviderInsurance.form.providerInsurance._.groupId}" title="Group ID"/>
+            </li>
+            <li class="em10">
+               <label>Group Effective:</label>
+               <h:inputText id="groupEffective" value="#{var.ProviderInsurance.form.providerInsurance._.groupEffectiveDate}" title="Group Effective Date" styleClass="mask-date">
+                  <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+               </h:inputText>
+            </li>
+            <li style="height: 1.5em; padding: 0.5em 0 0 0.5em; width: 10em;">
+               <h:selectBooleanCheckbox value="#{var.ProviderInsurance.form.providerInsurance._.capitated}"/>
+               <label style="display: inline; margin-left: -1em;">Capitated</label>            
+            </li>
+            <li class="em48">
+               <label>Insurance Notes:</label>
+               <h:inputText value="#{var.ProviderInsurance.form.providerInsurance._.notes}"/>
+            </li>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

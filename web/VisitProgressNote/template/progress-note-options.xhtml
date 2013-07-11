@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         #{var.VisitProgressNote.view.cc._ == null ? var.VisitProgressNote.view.cc._(true) : null}
+         #{var.VisitProgressNote.view.exam._ == null ? var.VisitProgressNote.view.exam._(true) : null}
+         #{var.VisitProgressNote.view.treatment._ == null ? var.VisitProgressNote.view.treatment._(true) : null}
+         #{var.VisitProgressNote.view.sign._ == null ? var.VisitProgressNote.view.sign._(true) : null}
+         #{var.VisitProgressNote.view.addendums._ == null ? var.VisitProgressNote.view.addendums._(true) : null}
+         <label style="font-size: 0.7em; font-weight: bold; margin-right: 0.3em;">Progress Note:</label>
+         <h:commandLink action="#{jsf._do(var.VisitProgressNote.view.cc._ ? var.VisitProgressNote.view.cc._(false) : var.VisitProgressNote.view.cc._(true)).stay}"
+                        onclick="#{var.VisitProgressNote.editSection._ == 'cc' or var.VisitProgressNote.editSection._ == 'hpi' ? 'alertFinishEditing();return false;' : ''}"
+                        styleClass="#{var.VisitProgressNote.view.cc._ ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+            <span style="#{var.VisitProgressNote.visit._.progressNote.ccEmpty ? 'color:red;' : ''}">CC</span>
+            /
+            <span style="#{var.VisitProgressNote.visit._.progressNote.hpiEmpty ? 'color:red;' : ''}">HPI</span>
+               /
+            <span style="#{var.VisitProgressNote.visit._.progressNote.pfshEmpty ? 'color:red;' : ''}">HISTORY</span>
+            /
+            <span style="#{var.VisitProgressNote.visit._.progressNote.rosEmpty ? 'color:red;' : ''}">ROS</span>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(var.VisitProgressNote.view.exam._ ? var.VisitProgressNote.view.exam._(false) : var.VisitProgressNote.view.exam._(true)).stay}"
+                        onclick="#{var.VisitProgressNote.editSection._ == 'exam' ? 'alertFinishEditing();return false;' : ''}"
+                        styleClass="#{var.VisitProgressNote.view.exam._ ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+            <span style="#{var.VisitProgressNote.visit._.vitalsEmpty ? 'color:red;' : ''}">VITALS</span>
+            /
+            <span style="#{var.VisitProgressNote.visit._.progressNote.examEmpty ? 'color:red;' : ''}">PHYS. EXAM</span>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(var.VisitProgressNote.view.treatment._ ? var.VisitProgressNote.view.treatment._(false) : var.VisitProgressNote.view.treatment._(true)).stay}"
+                        onclick="#{var.VisitProgressNote.editSection._ == 'treatment' ? 'alertFinishEditing();return false;' : ''}"
+                        styleClass="#{var.VisitProgressNote.view.treatment._ ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+            <span style="#{empty var.VisitProgressNote.visit._.diagnosisList ? 'color:red;' : ''}">DX</span>
+            /
+            <span style="#{var.VisitProgressNote.visit._.progressNote.treatmentEmpty ? 'color:red;' : ''}">TREATMENT</span>
+            /
+            <span style="#{var.VisitProgressNote.visit._.progressNote.mdmEmpty ? 'color:red;' : ''}">MED. DECISION</span>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(var.VisitProgressNote.view.sign._ ? var.VisitProgressNote.view.sign._(false) : var.VisitProgressNote.view.sign._(true)).stay}"
+                        styleClass="#{var.VisitProgressNote.view.sign._ ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+            <span style="#{! var.VisitProgressNote.visit._.progressNote.serviceLevel.signed ? 'color:red;' : ''}">SIGN</span>
+         </h:commandLink>
+         <h:commandLink rendered="#{var.VisitProgressNote.visit._.progressNote.serviceLevel.signed}" action="#{jsf._do(var.VisitProgressNote.view.addendums._ ? var.VisitProgressNote.view.addendums._(false) : var.VisitProgressNote.view.addendums._(true)).stay}"
+                        value="ADDENDUMS" styleClass="#{var.VisitProgressNote.view.addendums._ ? 'selected' : ''}">
+            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+         </h:commandLink>
+         <h:commandLink action="#{jsf._do(var.VisitProgressNote.report.visit._(var.VisitProgressNote.visit._))._to('VisitProgressNote/progress-note').go}"
+                        value="REPORT" style="margin: 0; border: none;" target="_blank"/>
+      </ui:composition>
+   </body>
+</html>

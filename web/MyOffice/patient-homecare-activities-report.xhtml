@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>HCPO Activities Report</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 1em;
+               margin: 1em;
+            }
+
+            .action {
+               display: block !important;
+               text-align: left;
+               margin-left: 2em;
+            }
+         }
+         @media all {
+            .action {
+               display: none;
+            }
+            body {
+               font-family:Verdana, Geneva, sans-serif;
+               font-size: 0.95em;
+            }
+            center > div {
+               width: 800px;
+            }
+            div > table {
+               margin-top: -10px;
+            }
+            td, th {
+               border:solid black 1px;
+               vertical-align:baseline;
+            }
+            .signs td, td td {
+               border:none;
+            }
+            #observation-table td, #observation-table td td, #observation-table th {
+               border:solid black 1px;
+            }
+            #observation-table {
+               border-collapse: collapse;
+            }
+            .signs {
+               margin-top: 20px;
+            }
+            td th {
+               text-align:right;
+               vertical-align:baseline;
+            }
+            th {
+               font-size: smaller;
+               white-space: nowrap;
+            }
+            h3, h4 {
+               font-size: 1.2em;
+               margin-top: 0px;
+               margin-bottom: 5px;
+            }
+            p {
+               margin-top: 0px;
+            }
+            table.small td {
+               font-size: 1em;
+            }
+            #observation-table {
+               margin-top: 0.5em;
+               font-size: 0.8em;
+            }
+            #observation-table th {
+               font-size: 0.8em;
+               text-align:center;
+            }
+            div.page {
+               width: 50em;
+            }
+            div > table {
+               margin-top: -10px;
+            }
+            tr.data-row td {
+               font-size: 0.8em;
+               
+            }
+         }
+      </style>
+      <script type="text/javascript" src="/#{access.application}/script/jquery/jquery-1.9.0.min.js"></script>
+      <script type="text/javascript" src="/#{access.application}/script/printer.js"></script>
+   </head>
+   <body>
+      <h:form prependId="false">
+         <div class="action"><a href="#" id="print-link" onclick="return print('Portrait')">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         <div class="action"><h:messages showDetail="#{true}" showSummary="#{false}" infoClass="info"/></div>
+         <div class="page">
+            <table width="100%" border="0" cellpadding="10px" cellspacing="10px">
+               <tr>
+                  <td align="center" valign="top" style="border:none;">
+                     <h3 style="text-transform:uppercase">HCPO Activities</h3>
+                     from #{statistics.formattedDate('MM/dd/yy',jsf.global('myOffice/statistics', 'var')['startDate'])}
+                     to #{statistics.formattedDate('MM/dd/yy',jsf.global('myOffice/statistics', 'var')['endDate'])} for #{biz.myOffice(myOfficeCode).name}
+                  </td>
+               </tr>
+            </table>
+            <table width="100%" cellpadding="5px" cellspacing="0px" style="border-collapse: collapse;">
+               <tr>
+                  <th align="center" valign="top">Provider</th>
+                  <th align="center" valign="top">Total</th>
+                  <th align="center" valign="top">Billable</th>
+                  <th align="center" valign="top">Not Billable</th>
+                  <th align="center" valign="top">Billed</th>
+                  <th align="center" valign="top">Not Billed</th> 
+               </tr>
+               <ui:repeat value="#{statistics.patientHomecareActivitiesReport.providerList}" var="provider" varStatus="status">
+                  <tr class="data-row">
+                     <td>#{provider.name}</td>
+                     <td align="center">#{provider.totalQty}</td>
+                     <td align="center">#{provider.billableQty}</td>
+                     <td align="center">#{provider.notBillableQty}</td>
+                     <td align="center">#{provider.billedQty}</td>
+                     <td align="center" style="#{provider.notBilledQty &gt; 0 ? 'color: red;' : ''}">#{provider.notBilledQty}</td>
+                  </tr>
+                  <ui:fragment rendered="#{status.last}">
+                     <tr class="data-row">
+                        <th align="right" valign="top">Total</th>
+                        <td align="center" valign="top"><strong>#{statistics.patientHomecareActivitiesReport.totalQty}</strong></td>
+                        <td align="center" valign="top"><strong>#{statistics.patientHomecareActivitiesReport.billableQty}</strong></td>
+                        <td align="center" valign="top"><strong>#{statistics.patientHomecareActivitiesReport.notBillableQty}</strong></td>
+                        <td align="center" valign="top"><strong>#{statistics.patientHomecareActivitiesReport.billedQty}</strong></td>
+                        <td align="center" valign="top" style="#{statistics.patientHomecareActivitiesReport.notBilledQty &gt; 0 ? 'color: red;' : ''}"><strong>#{statistics.patientHomecareActivitiesReport.notBilledQty}</strong></td>
+                     </tr>
+                  </ui:fragment>
+               </ui:repeat>
+            </table>
+         </div>
+      </h:form>
+   </body>
+</html>

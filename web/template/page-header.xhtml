@@ -1,0 +1,21 @@
+<div class="header"  xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" style="font-weight: bold; margin-bottom: 0.2em;">
+   <span style="font-size: 0.7em; font-weight: bold; position: relative; top: 0.15em;">#{myOfficeCode != null ? biz.myOffice(myOfficeCode).name : ''}</span>
+   <div class="float-right" style="font-size:0.8em; font-weight: normal; color: black; clear: both;">
+      #{access.user.name}<h:commandLink action="#{access.doorAction}" value="#{access.user == null ? '' : 'LOGOFF'}"
+                     style="margin-left: 1em; text-decoration: none; font-size: 0.85em; font-weight: bold; height: 1em; display: inline-block;"/>
+   </div>
+   <div style="clear: both;"/> 
+   <div style="text-align: right; height: 0em; overflow: visible; position: relative; top: 0.5em; padding-right: 0.5em;">
+      <ui:fragment rendered="#{cookie.theme == null}">
+         <script>
+            $(document).ready(function(){
+               $.cookie('theme', 'frog', {path: '/', expires: 100});
+               location.reload(true);
+            });
+         </script>
+      </ui:fragment>
+      <h:graphicImage value="/theme/mouse/image/icon.png" rendered="#{cookie.theme.value != 'mouse'}" styleClass="theme-icon" title="Mouse theme" onclick="$.cookie('theme', 'mouse', {path: '/', expires: 100}); location.reload(true);"/>
+      <h:graphicImage value="/theme/frog/image/icon.png" rendered="#{cookie.theme.value != 'frog'}" styleClass="theme-icon" title="Frog theme" onclick="$.cookie('theme', 'frog', {path: '/', expires: 100}); location.reload(true);"/>
+   </div>
+<!--<iframe style="display:none;" src="/#{access.application}/template/messenger.jsf"></iframe>-->
+</div>

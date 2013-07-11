@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div style="display: inline-block; width: 11em;">
+            #{jsf._do(var.Appointment.form.officeProviderSearch.put('_EXISTS (SELECT mop FROM MyOfficeProvider mop WHERE mop.myOfficeCode = :myOfficeCode AND mop.officeProviderId = o.id)', myOfficeCode)).stay()}
+            #{jsf._do(var.Appointment.form.officeProviderSearch.put('active', true)).stay()}
+            #{var.Appointment.form.officeProviderList._ == null ? jsf._do(var.Appointment.form.officeProviderSearch.put('specialtyId', var.Appointment.form.appointment._.specialtyID))._do(var.Appointment.form.officeProviderList._(jsf.search('OfficeProvider', 'o.alias', var.Appointment.form.officeProviderSearch))).stay() : null}
+            #{var.Appointment.form.officeProvider._ == null ? var.Appointment.form.officeProvider._(biz.officeProviderById(var.Appointment.form.appointment._.provider.id)) : null}
+            #{var.Appointment.form.providerParticipateInsuranceWarning._(biz.providerParticipateInsuranceWarning(var.Appointment.form.officeProvider._.id, var.Appointment.form.appointment._.patient.primaryInsuranceID))}
+            <label class="vlabel">New Provider:</label>
+            <h:selectOneMenu value="#{var.Appointment.form.officeProvider._}" style="width: 12.5em;#{empty var.Appointment.form.providerParticipateInsuranceWarning._ ? '' :'border: solid red 2px;'}" title="#{var.Appointment.form.providerParticipateInsuranceWarning._}">
+               <f:selectItems value="#{var.Appointment.form.officeProviderList._}" var="officeProvider" itemLabel="#{officeProvider.alias}"/>
+               <f:ajax render="@form" onevent="ajaxEventHandler"/>
+               <f:converter converterId="EntityConverter"/>
+            </h:selectOneMenu>            
+         </div>
+         <div style="display: inline-block; width: 8em;">
+            <div>
+               <h:panelGroup styleClass="errors" rendered="#{var.Appointment.form.passwordExists._ == false}" style="width:auto;">
+                  Password doesn't exist!
+               </h:panelGroup>
+            </div>
+            <label>Password:</label>
+            <h:inputSecret value="#{var.Appointment.form.appointment._.password}" style="width: 100%;"/>
+         </div>
+      </ui:composition>
+   </body>
+</html>

@@ -1,0 +1,475 @@
+<table>
+   <tr>
+      <th style="width: 20%;">Constitutional</th>
+      <td>
+         <div class="pntl-section" data-section="examOsConstitutional">
+            <span data-text-if="appearanceWnl">
+               <input type="checkbox" data-name="appearanceWnl"/>
+               <label>appearance wnl<span class="none">;</span></label>
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Eyes</th>
+      <td>
+         <div class="pntl-section" data-section="examOsEyes">
+            <span>
+               <input type="checkbox" data-name="conjunctivaeYes" class="radio-group-exam-conjunctivae" onchange="radioGroup(this, 'exam-conjunctivae'); return false;"/>
+               <label data-text-if="conjunctivaeYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="conjunctivaeNo" class="radio-group-exam-conjunctivae" onchange="radioGroup(this, 'exam-conjunctivae'); return false;"/>
+               <label data-text-if="conjunctivaeNo">N<span class="none">o</span></label>
+               <label data-text-if="conjunctivaeYes || conjunctivaeNo">conjunctivae/lids clear<span class="none">.</span></label>
+            </span>
+            <span>
+               <input type="checkbox" data-name="perrlaYes" class="radio-group-exam-perrla" onchange="radioGroup(this, 'exam-perrla'); return false;"/>
+               <label data-text-if="perrlaYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="perrlaNo" class="radio-group-exam-perrla" onchange="radioGroup(this, 'exam-perrla'); return false;"/>
+               <label data-text-if="perrlaNo">N<span class="none">o</span></label>
+               <label data-text-if="perrlaYes || perrlaNo">PERRLA<span class="none">.</span></label>
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Ears/Nose/Mouth/Throat</th>
+      <td>
+         <div class="pntl-section" data-section="examOsEarsNoseMouthThroat">
+            <span data-text-if="earsNormal">
+               <input type="checkbox" data-name="earsNormal"/>
+               <label>external ears &AMP; nose normal<span class="none">;</span></label>
+            </span>
+            <label data-text-if="dentitionNormal || dentitionPoor">Dentition:</label>
+            <span data-text-if="dentitionNormal">
+               <input type="checkbox" data-name="dentitionNormal" class="radio-group-exam-dentition" onchange="radioGroup(this, 'exam-dentition'); return false;"/>
+               <label>normal<span class="none">;</span></label>       
+            </span>
+            <span data-text-if="dentitionPoor">
+               <input type="checkbox" data-name="dentitionPoor" class="radio-group-exam-dentition" onchange="radioGroup(this, 'exam-dentition'); return false;"/>
+               <label>poor<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="oropharynxClear">
+               <input type="checkbox" data-name="oropharynxClear"/>
+               <label>oropharynx clear<span class="none">;</span></label>
+            </span>
+            <br/>
+            <span data-text-if="mucousNormal">
+               <input type="checkbox" data-name="mucousNormal"/>
+               <label>hydration of mucous membranes normal<span class="none">;</span></label>
+            </span>            
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Neck</th>
+      <td>
+         <div class="pntl-section" data-section="examBaNeck">
+            <span data-text-if="noTenderness">
+               <input type="checkbox" data-name="noTenderness"/>
+               <label>no tenderness<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="noThyromegaly">
+               <input type="checkbox" data-name="noThyromegaly"/>
+               <label>no thyromegaly<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="noAdenopathy">
+               <input type="checkbox" data-name="noAdenopathy"/>
+               <label>no adenopathy<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="noCarotidBruits">
+               <input type="checkbox" data-name="noCarotidBruits"/>
+               <label>no carotid bruits<span class="none">;</span></label>
+            </span>
+            <br/>
+            <span>
+               <input type="checkbox" data-name="normalRomYes" class="radio-group-exam-normalRom" onchange="radioGroup(this, 'exam-normalRom'); return false;"/>
+               <label data-text-if="normalRomYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="normalRomNo" class="radio-group-exam-normalRom" onchange="radioGroup(this, 'exam-normalRom'); return false;"/>
+               <label data-text-if="normalRomNo">N<span class="none">o</span></label>
+               <label data-text-if="normalRomYes || normalRomNo">normal ROM<span class="none">.</span></label>
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Respiratory</th>
+      <td>
+         <div class="pntl-section" data-section="examOsRespiratory">
+            <span data-text-if="normalRespiratory">
+               <input type="checkbox" data-name="normalRespiratory"/>
+               <label>normal respiratory effort<span class="none">;</span></label>
+            </span>
+            <span data-text-if="clearToAuscultation">
+               <input type="checkbox" data-name="clearToAuscultation"/>
+               <label>clear to auscultation bilaterally<span class="none">;</span></label>
+            </span>            
+            <div data-text-if="other" >
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Cardiovascular</th>
+      <td>
+         <div class="pntl-section" data-section="examOsCardiovascular">
+            <span data-text-if="regularRate">
+               <input type="checkbox" data-name="regularRate"/>
+               <label>regular rate/rhythm<span class="none">;</span></label>
+            </span>
+            <span data-text-if="NoExtremityEdema">
+               <input type="checkbox" data-name="NoExtremityEdema"/>
+               <label>no extremity edema<span class="none">;</span></label>
+            </span>
+            <span data-text-if="noClubbing">
+               <input type="checkbox" data-name="noClubbing"/>
+               <label>no clubbing/cyanosis<span class="none">;</span></label>
+            </span>
+            <span data-text-if="pedalPulses">
+               <label>Pedal pulses<span class="none">;</span></label>
+               <input type="text" data-name="pedalPulses" style="width:3em;"/>
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Chest (Breasts)</th>
+      <td>
+         <div class="pntl-section" data-section="examBaChest">
+            <label data-text-if="noMassesNoLumps || noTenderness || symmetryWnl || noNippleDischarge" style="vertical-align: top; position:relative; top: 0.2em;">Inspection/palpation:</label>
+            <br/>
+            <span data-text-if="noMassesNoLumps">
+               <input type="checkbox" data-name="noMassesNoLumps"/>
+               <label>no masses/no lumps<span class="none">;</span></label>
+            </span>
+            <span data-text-if="noTenderness">
+               <input type="checkbox" data-name="noTenderness"/>
+               <label>no tenderness<span class="none">;</span></label>
+            </span>
+            <span data-text-if="symmetryWnl">
+               <input type="checkbox" data-name="symmetryWnl"/>
+               <label>symmetry wnl<span class="none">;</span></label>
+            </span>
+            <span data-text-if="noNippleDischarge">
+               <input type="checkbox" data-name="noNippleDischarge"/>
+               <label>no nipple discharge<span class="none">;</span></label>
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Gastrointestinal (Abdomen)</th>
+      <td>
+         <div class="pntl-section" data-section="examOsGastrointestinal">
+            <span data-text-if="noMasses">
+               <input type="checkbox" data-name="noMasses"/>
+               <label>no masses<span class="none">;</span></label>
+            </span>
+            <span data-text-if="nonTender">
+               <input type="checkbox" data-name="nonTender"/>
+               <label>non-tender<span class="none">;</span></label>
+            </span>
+            <span data-text-if="benign">
+               <input type="checkbox" data-name="benign"/>
+               <label>benign<span class="none">;</span></label>
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Genitourinary</th>
+      <td>
+         <div class="pntl-section" data-section="examOsGenitourinary">
+            External genitalia:  appearance wnl   no lesions
+            Urethral meatus:  no lesions  no prolaps
+            Urethra: no masses   no tenderness   no scarrring
+            Bladder: no masses   no tenderness   no fullness
+            Vagina:  appearance wnl  no lesions  no discharge  no cystocele  no rectocele 
+            Cervix:  no lesions  no discharge
+            Uterus:  size wnl  contour wnl  position wnl  mobility wnl  no tenderness no descent/support
+            Adnexa/parametria: no masses   no tenderness  no nodularity  no organomegaly
+            Anus and perineum: sphincter tone wnl  no hemorrhoids  no masses 
+
+            <label data-text-if="genitaliaAppearanceWnl || genitaliaNoLesions" style="vertical-align: top; position:relative; top: 0.2em;">External genitalia:</label>
+            <br/>
+            <span data-text-if="genitaliaAppearanceWnl">
+               <input type="checkbox" data-name="genitaliaAppearanceWnl"/>
+               <label>appearance wnl<span class="none">;</span></label>
+            </span>
+            <span data-text-if="genitaliaNoLesions">
+               <input type="checkbox" data-name="genitaliaNoLesions"/>
+               <label>no lesions<span class="none">;</span></label>
+            </span>
+
+            <label data-text-if="meatusNoLesions || meatusNoProlaps" style="vertical-align: top; position:relative; top: 0.2em;">Urethral meatus:</label>
+            <br/>
+            <span data-text-if="meatusNoLesions">
+               <input type="checkbox" data-name="meatusNoLesions"/>
+               <label>no lesions<span class="none">;</span></label>
+            </span>
+            <span data-text-if="meatusNoProlaps">
+               <input type="checkbox" data-name="meatusNoProlaps"/>
+               <label>no prolaps<span class="none">;</span></label>
+            </span>
+
+            <label data-text-if="UrethraNoMasses || UrethraNoTenderness || UrethraNoScarrring" style="vertical-align: top; position:relative; top: 0.2em;">Urethra:</label>
+            <br/>
+            <span data-text-if="UrethraNoMasses">
+               <input type="checkbox" data-name="UrethraNoMasses"/>
+               <label>no masses<span class="none">;</span></label>
+            </span>
+            <span data-text-if="UrethraNoTenderness">
+               <input type="checkbox" data-name="UrethraNoTenderness"/>
+               <label>no tenderness<span class="none">;</span></label>
+            </span>
+            <span data-text-if="UrethraNoScarrring">
+               <input type="checkbox" data-name="UrethraNoScarrring"/>
+               <label>no scarrring<span class="none">;</span></label>
+            </span>
+
+            <label data-text-if="BladderNoMasses || BladderNoTenderness || BladderNoFullness" style="vertical-align: top; position:relative; top: 0.2em;">Bladder:</label>
+            <br/>
+            <span data-text-if="BladderNoMasses">
+               <input type="checkbox" data-name="BladderNoMasses"/>
+               <label>no masses<span class="none">;</span></label>
+            </span>
+            <span data-text-if="BladderNoTenderness">
+               <input type="checkbox" data-name="BladderNoTenderness"/>
+               <label>no tenderness<span class="none">;</span></label>
+            </span>
+            <span data-text-if="BladderNoFullness">
+               <input type="checkbox" data-name="BladderNoFullness"/>
+               <label>no fullness<span class="none">;</span></label>
+            </span>
+
+            <label data-text-if="VaginaAppearanceWnl || VaginaNoLesions || VaginaNoDischarge || VaginaNoCystocele || VaginaNoRectocele" style="vertical-align: top; position:relative; top: 0.2em;">Vagina:</label>
+            <br/>
+            <span data-text-if="VaginaAppearanceWnl">
+               <input type="checkbox" data-name="VaginaAppearanceWnl"/>
+               <label>appearance wnl<span class="none">;</span></label>
+            </span>
+            <span data-text-if="VaginaNoLesions">
+               <input type="checkbox" data-name="VaginaNoLesions"/>
+               <label>no lesions<span class="none">;</span></label>
+            </span>
+            <span data-text-if="VaginaNoDischarge">
+               <input type="checkbox" data-name="VaginaNoDischarge"/>
+               <label>no discharge<span class="none">;</span></label>
+            </span>
+            <span data-text-if="VaginaNoCystocele">
+               <input type="checkbox" data-name="VaginaNoCystocele"/>
+               <label>no cystocele<span class="none">;</span></label>
+            </span>
+            <span data-text-if="VaginaNoRectocele">
+               <input type="checkbox" data-name="VaginaNoRectocele"/>
+               <label>no rectocele<span class="none">;</span></label>
+            </span>
+
+            <label data-text-if="CervixNoLesions || CervixNoDischarge" style="vertical-align: top; position:relative; top: 0.2em;">Cervix:</label>
+            <br/>
+            <span data-text-if="CervixNoLesions">
+               <input type="checkbox" data-name="CervixNoLesions"/>
+               <label>no lesions<span class="none">;</span></label>
+            </span>
+            <span data-text-if="CervixNoDischarge">
+               <input type="checkbox" data-name="CervixNoDischarge"/>
+               <label>no discharge<span class="none">;</span></label>
+            </span>
+
+            <label data-text-if="UterusSizeWnl || UterusContourWnl || UterusPositionWnl || UterusMobilityWnl || UterusNoTenderness || UterusNoDescentSupport" style="vertical-align: top; position:relative; top: 0.2em;">Uterus:</label>
+            <br/>
+            <span data-text-if="UterusSizeWnl">
+               <input type="checkbox" data-name="UterusSizeWnl"/>
+               <label>size wnl<span class="none">;</span></label>
+            </span>
+            <span data-text-if="UterusContourWnl">
+               <input type="checkbox" data-name="UterusContourWnl"/>
+               <label>contour wnl<span class="none">;</span></label>
+            </span>
+            <span data-text-if="UterusPositionWnl">
+               <input type="checkbox" data-name="UterusPositionWnl"/>
+               <label>position wnl<span class="none">;</span></label>
+            </span>
+            <span data-text-if="UterusMobilityWnl">
+               <input type="checkbox" data-name="UterusMobilityWnl"/>
+               <label>mobility wnl<span class="none">;</span></label>
+            </span>
+            <span data-text-if="UterusNoTenderness">
+               <input type="checkbox" data-name="UterusNoTenderness"/>
+               <label>no tenderness<span class="none">;</span></label>
+            </span>
+            <span data-text-if="UterusNoDescentSupport">
+               <input type="checkbox" data-name="UterusNoDescentSupport"/>
+               <label>no descent/support<span class="none">;</span></label>
+            </span>
+
+            <label data-text-if="parametriaNoMasses || parametriaNoTenderness || parametriaNoNodularity || parametriaNoOrganomegaly" style="vertical-align: top; position:relative; top: 0.2em;">Adnexa/parametria:</label>
+            <br/>
+            <span data-text-if="parametriaNoMasses">
+               <input type="checkbox" data-name="parametriaNoMasses"/>
+               <label>no masses<span class="none">;</span></label>
+            </span>
+            <span data-text-if="parametriaNoTenderness">
+               <input type="checkbox" data-name="parametriaNoTenderness"/>
+               <label>no tenderness<span class="none">;</span></label>
+            </span>
+            <span data-text-if="parametriaNoNodularity">
+               <input type="checkbox" data-name="parametriaNoNodularity"/>
+               <label>no nodularity<span class="none">;</span></label>
+            </span>
+            <span data-text-if="parametriaNoOrganomegaly">
+               <input type="checkbox" data-name="parametriaNoOrganomegaly"/>
+               <label>no organomegaly<span class="none">;</span></label>
+            </span>
+            <label data-text-if="AnusSphincterToneWnl || AnusNoHemorrhoids || AnusNoMasses" style="vertical-align: top; position:relative; top: 0.2em;">Anus and perineum:</label>
+            <br/>
+            <span data-text-if="AnusSphincterToneWnl">
+               <input type="checkbox" data-name="AnusSphincterToneWnl"/>
+               <label>sphincter tone wnl<span class="none">;</span></label>
+            </span>
+            <span data-text-if="AnusNoHemorrhoids">
+               <input type="checkbox" data-name="AnusNoHemorrhoids"/>
+               <label>no hemorrhoids<span class="none">;</span></label>
+            </span>
+            <span data-text-if="AnusNoMasses">
+               <input type="checkbox" data-name="AnusNoMasses"/>
+               <label>no masses<span class="none">;</span></label>
+            </span>
+
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Lymphatic/Hematologic</th>
+      <td>
+         <div class="pntl-section" data-section="examOsHematologicLymphaticImmunologic">
+            <span data-text-if="happy">
+               <input type="checkbox" data-name="happy"/>
+               <label>cervical nodes wnl<span class="none">;</span></label>
+            </span>
+            <span data-text-if="inguinalNodes">
+               <input type="checkbox" data-name="inguinalNodes"/>
+               <label>inguinal nodes wnl<span class="none">;</span></label>
+            </span>
+            <span data-text-if="axillaryNodes">
+               <input type="checkbox" data-name="axillaryNodes"/>
+               <label>axillary nodes wnl<span class="none">;</span></label>
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Musculoskeletal</th>
+      <td>
+         <div class="pntl-section" data-section="examOsMusculoskeletal">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Skin</th>
+      <td>
+         <div class="pntl-section" data-section="examOsSkin">
+            <span data-text-if="noObservedLesionsUlcersRashes">
+               <input type="checkbox" data-name="noObservedLesionsUlcersRashes"/>
+               <label>no observed lesions, ulcers, rashes<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="warmDry">
+               <input type="checkbox" data-name="warmDry"/>
+               <label>warm &amp; dry<span class="none">;</span></label>
+            </span>
+            <span data-text-if="noNodulesIndurations">
+               <input type="checkbox" data-name="noNodulesIndurations"/>
+               <label>no nodules, indurations<span class="none">;</span></label>               
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Neurological</th>
+      <td>
+         <div class="pntl-section" data-section="examOsNeurological">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Psychiatric</th>
+      <td>
+         <div class="pntl-section" data-section="examOsPsychiatric">
+            <label data-text-if="x2 || x3">Oriented:</label>
+            <span data-text-if="x2">
+               <input type="checkbox" data-name="x2" class="radio-group-exam-oriented" onchange="radioGroup(this, 'exam-oriented'); return false;"/>
+               <label>X2<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="x3">
+               <input type="checkbox" data-name="x3" class="radio-group-exam-oriented" onchange="radioGroup(this, 'exam-oriented'); return false;"/>
+               <label>X3<span class="none">;</span></label>               
+            </span>
+            <label data-text-if="normal || angry || anxious || depressed || happy || nad">Mood:</label>
+            <span data-text-if="normal">
+               <input type="checkbox" data-name="normal"/>
+               <label>normal<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="angry">
+               <input type="checkbox" data-name="angry"/>
+               <label>angry<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="anxious">
+               <input type="checkbox" data-name="anxious"/>
+               <label>anxious<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="depressed">
+               <input type="checkbox" data-name="depressed"/>
+               <label>depressed<span class="none">;</span></label>               
+            </span>
+            <span data-text-if="happy">
+               <input type="checkbox" data-name="happy"/>
+               <label>happy<span class="none">;</span></label>               
+            </span>
+            <br/>
+            <span data-text-if="nad">
+               <input type="checkbox" data-name="nad"/>
+               <label>NAD<span class="none">;</span></label>               
+            </span>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+</table>

@@ -1,0 +1,54 @@
+<table>
+   <tr>
+      <th style="width: 20%;">Location</th>
+      <td>
+         <div class="pntl-section" data-section="hpiLocation">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 12em;"/>
+            </div>
+         </div>
+      </td>
+      <th style="width: 10%;">Duration</th>
+      <td>
+         <div class="pntl-section" data-section="hpiDuration">
+            <input type="text" data-name="duration" style="width: 3em; margin-right: 0.5em;"/>
+            <select data-text-if="duration" data-name="unit" style="width: 5em;">
+               <option value="hours">hours</option>
+               <option value="days">days</option>
+               <option value="weeks">weeks</option>
+               <option value="months">months</option>
+            </select> 
+         </div>
+      </td>
+      <th style="width: 15%;">Severity (1-10)</th>
+      <td>
+         <div class="pntl-section" data-section="hpiSeverity">
+            <input type="text" data-name="severity" style="width: 4em;"/>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <td colspan="4">
+         <div class="pntl-section" data-section="hpiFreeFormText">
+            <div style="display: inline-block;">
+               <label data-text-if="cycle" style="margin-right: 0.25em;">cycle:</label>
+               <input type="text" data-name="cycle" style="width: 10em; margin-right: 0.5em;"/>
+               <span class="none">;</span>
+               <label data-text-if="contraception" style="margin-right: 0.25em;">contraception:</label>
+               <input type="text" data-name="contraception" style="width: 10em; margin-right: 0.5em;"/>
+               <span class="none">;</span>
+               <label data-text-if="lmp" style="margin-right: 0.25em;">LMP:</label>
+               <input type="text" data-name="lmp" style="width: 8.5em; margin-right: 0.5em;"/>
+               <span class="none">;</span>
+               <label data-text-if="parity" style="margin-right: 0.25em;">parity:</label>
+               <input type="text" data-name="parity" style="width: 6em; margin-right: 0.5em;"/>
+               <span class="none">;</span>
+               <span data-text-if="(cycle || contraception || lmp || parity) &amp;&amp; other" class="none">__BR__</span>
+            </div>
+            <div data-text-if="other">
+               <textarea data-name="other" style="width: 98%; height: 4em;"/>
+               </textarea>
+            </div>
+      </td>
+   </tr>
+</table>

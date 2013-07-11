@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>PT Referrals &amp; Appointments</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 1em;
+               margin: 1em;
+            }
+
+            .action {
+               display: block !important;
+               text-align: left;
+               margin-left: 2em;
+            }
+         }
+         @media print {
+            .page {
+               page-break-after: always;
+            }
+         }
+         @media all {
+            .action {
+               display: none;
+            }
+            body {
+               font-family:Verdana, Geneva, sans-serif;
+               font-size: 0.95em;
+            }
+            center > div {
+               width: 800px;
+            }
+            div > table {
+               margin-top: -10px;
+            }
+            td, th {
+               border:solid black 1px;
+            }
+            .signs td, td td {
+               border:none;
+            }
+            #observation-table td, #observation-table td td, #observation-table th {
+               border:solid black 1px;
+            }
+            #observation-table {
+               border-collapse: collapse;
+            }
+            .signs {
+               margin-top: 20px;
+            }
+            td {
+              text-align:center; 
+            }
+            td th {
+               text-align:right;
+            }
+            th {
+               font-size: 0.7em;
+               white-space: nowrap;
+            }
+            h3, h4 {
+               font-size: 1em;
+               margin-top: 0px;
+               margin-bottom: 5px;
+            }
+            p {
+               margin-top: 0px;
+            }
+            table.small td {
+               font-size: 1em;
+            }
+            #observation-table {
+               margin-top: 0.5em;
+               font-size: 0.8em;
+            }
+            #observation-table th {
+               font-size: 0.8em;
+               text-align:center;
+            }
+            div.page {
+               width: 50em;
+            }
+            div > table {
+               margin-top: 0;
+            }
+            tr.data-row td {
+               font-size: 0.7em;
+
+            }
+         }
+      </style>
+      <script type="text/javascript" src="/#{access.application}/script/jquery/jquery-1.9.0.min.js"></script>
+      <script type="text/javascript" src="/#{access.application}/script/printer.js"></script>
+   </head>
+   <body>
+      <h:form prependId="false">
+         <div class="action">
+            <div class="action"><a href="#" id="print-link" onclick="return print('Portrait', 5)">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         </div>
+         <div class="page">
+            <table width="100%" border="0" cellpadding="10px" cellspacing="10px">
+               <tr>
+                  <td width="33%" align="center" valign="top" style="border:none;">
+                     <h3 style="text-transform:uppercase">PT Referrals &amp; Appointments</h3>
+                     <h:outputText value="#{statistics.ptReferralAndAppointmentReport.startDate}">
+                        <f:convertDateTime pattern="MM/dd/yy" locale="en"/>
+                     </h:outputText> —
+                     <h:outputText value="#{statistics.ptReferralAndAppointmentReport.endDate}">
+                        <f:convertDateTime pattern="MM/dd/yy" locale="en"/>
+                     </h:outputText> 
+                     <span style="font-size:1em; margin-left: -0.4em;">, #{biz.myOffice(myOfficeCode).name}</span>
+                  </td>
+               </tr>
+            </table>
+            <table width="100%" cellpadding="5px" cellspacing="0px" style="border-collapse: collapse;">
+               <tr>
+                  <th colspan="2">Provider</th>
+                  <th style="width: 5em;">Open</th>
+                  <th style="width: 5em;">Done</th>
+                  <th style="width: 5em;">Cancelled</th>
+                  <th style="width: 5em;">Total</th>
+               </tr>
+               <ui:repeat value="#{statistics.ptReferralAndAppointmentReport.providerList}" var="reported">
+                  <tr style="border-top: solid black 2px;">
+                     <th rowspan="4">#{reported.provider.alias}</th>
+                  </tr>
+                  <tr>
+                     <th>Referral</th>
+                     <td>#{reported.referralCountMap.OPEN}</td>
+                     <td>#{reported.referralCountMap.DONE}</td>
+                     <td>#{reported.referralCountMap.CANCELLED}</td>
+                     <td>#{reported.referralCountMap.TOTAL}</td>                    
+                  </tr>
+                  <tr>
+                     <th>Appointment</th>
+                     <td>#{reported.appointmentCountMap.OPEN}</td>
+                     <td>#{reported.appointmentCountMap.DONE}</td>
+                     <td>#{reported.appointmentCountMap.CANCELLED}</td>
+                     <td>#{reported.appointmentCountMap.TOTAL}</td>                    
+                  </tr>
+                  <tr style="border-bottom: solid black 2px;">
+                     <th>Total</th>
+                     <td>#{reported.referralCountMap.OPEN + reported.appointmentCountMap.OPEN}</td>
+                     <td>#{reported.referralCountMap.DONE + reported.appointmentCountMap.DONE}</td>
+                     <td>#{reported.referralCountMap.CANCELLED + reported.appointmentCountMap.CANCELLED}</td>
+                     <td>#{reported.referralCountMap.TOTAL + reported.appointmentCountMap.TOTAL}</td>                    
+                  </tr>
+               </ui:repeat>
+            </table>
+         </div>
+      </h:form>
+   </body>
+</html>

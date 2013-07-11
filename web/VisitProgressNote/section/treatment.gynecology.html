@@ -1,0 +1,75 @@
+<tr>
+   <th style="width: 20%;">Assessment</th>
+   <td style="vertical-align: top;">
+      <div class="pntl-section" data-section="treatmentAssessment">
+         <div data-text-if="other">
+            <textarea data-name="other" style="width: 98%; height: 4em;">
+            </textarea>
+         </div>
+      </div>
+   </td>
+</tr>
+<tr>
+   <th>Treatment</th>
+   <td style="vertical-align: top;">         
+      <div class="pntl-section" data-section="treatmentTreatment">
+         <label data-text-if="counseling">Counseling for:</label>
+         <select style="width: 15em;" id="counseling-presets" data-text-if="false">
+            <option value="">--</option>
+            <option value="Advance directives">Advance directives</option>
+            <option value="Cancer screening">Cancer screening</option>
+            <option value="Domestic violence">Domestic violence</option>
+            <option value="Exercise">Exercise</option>
+            <option value="Life style modification">Life style modification</option>
+            <option value="Breast self exam">Breast self exam</option>
+            <option value="Medications/Side effects/Drug interaction/Risks and benefits">Medications/Side effects/Drug interaction/Risks and benefits</option>
+            <option value="Management of menopause/HRT">Management of menopause/HRT</option>
+            <option value="Nutrition/Dietary surveillance">Nutrition/Dietary surveillance</option>
+            <option value="Prevention STD/HIV/Safe sex">Prevention STD/HIV/Safe sex</option>
+            <option value="Smoking cessation">Smoking cessation</option>
+            <option value="Weight reduction">Weight reduction</option>
+         </select>
+         <input type="button" value="Add" style="font-size: 0.9em;" onclick="new function() {
+                  $('#counseling').val($('#counseling').val() + ($('#counseling').val() == '' || $('#counseling-presets').val() == '' ? '' : '; ') + $('#counseling-presets').val());
+                  $('#counseling-presets').val(null);
+                  return false;
+               }"/>
+         <div data-text-if="counseling">
+            <input type="text" id="counseling" data-name="counseling" style="width: 98%;"/>
+            <span class="none">__BR__</span>
+         </div>
+         <div data-text-if="other">
+            <textarea data-name="other" style="width: 98%; height: 4em;"/>
+            </textarea>
+         </div>
+         <div data-text-if="risksBenefitsAlternatives">
+            Risks, benefits and alternatives of <input type="text" data-name="risksBenefitsAlternatives" style="width: 11em;"/> were discussed. Questions answered.
+            <span class="none">__BR__</span>
+         </div>
+         <div data-text-if="refused">
+            Patient refused <input type="text" data-name="refused" style="width: 35em;"/>
+            <span class="none">__BR__</span>
+         </div>
+         <div data-text-if="rto">
+            <b>RTO</b> <input type="text" data-name="rto" style="width: 3em; margin-right: 0.5em;"/>
+            <select data-text-if="rto" data-name="unit" style="width: 5em;">
+               <option value="days">days</option>
+               <option value="weeks">weeks</option>
+               <option value="months">months</option>
+               <option value="years">years</option>
+            </select>
+         </div>
+      </div>
+   </td>
+</tr>
+<tr>
+   <th>Patient Instruction/Education</th>
+   <td style="vertical-align: top;">         
+      <div class="pntl-section" data-section="treatmentPatientInstructionEducation">            
+         <div data-text-if="other">
+            <textarea data-name="other" style="width: 98%; height: 4em;"/>
+            </textarea>
+         </div>
+      </div>
+   </td>
+</tr>

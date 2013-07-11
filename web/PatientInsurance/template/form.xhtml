@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! empty var.PatientInsurance.form}">
+            <li class="em18">
+               <h:panelGroup styleClass="errors" rendered="#{var.PatientInsurance.form.patientInsuranceValidationMap._ != null and var.PatientInsurance.form.patientInsuranceValidationMap._.insurance}">
+                  <b>Insurance</b> is required
+               </h:panelGroup>
+               #{jsf._do(var.PatientInsurance.form.insuranceListSearch.put('active', true)).stay()}
+               #{var.PatientInsurance.form.insuranceList._ == null ? var.PatientInsurance.form.insuranceList._(jsf.hintedSearch('Insurance', 'i.name', var.PatientInsurance.form.insuranceListSearch, '_MEDBASE'))  : null}          
+               <label>Insurance:</label>
+               <h:selectOneMenu value="#{var.PatientInsurance.form.patientInsurance._.insurance}" disabled="#{var.PatientInsurance.form.patientInsurance._.patientInsuranceID != null and var.PatientInsurance.form.patientInsurance._.insurance.id != null}">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.PatientInsurance.form.insuranceList._}" var="insurance" itemLabel="#{insurance.name}" itemValue="#{insurance}"/>
+                  <f:converter converterId="EntityConverter"/>
+                  <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler"/>
+               </h:selectOneMenu>            
+            </li>
+            <li class="em9">
+               <label>Member ID:</label>
+               <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.policyID}"/>
+            </li>
+            <li class="em8">
+               <label>Group ID:</label>
+               <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.groupID}"/>
+            </li>
+            <li class="em7">
+               <label>Effective:</label>
+               <h:inputText id="effective" value="#{var.PatientInsurance.form.patientInsurance._.effectiveDate}" title="Effective Date" styleClass="mask-date">
+                  <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+               </h:inputText>
+            </li>
+            <li class="em7">
+               <label>Expiration:</label>
+               <h:inputText id="expiration" value="#{var.PatientInsurance.form.patientInsurance._.expirationDate}" title="Expiration Date" styleClass="mask-date">
+                  <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+               </h:inputText>
+            </li>
+            <li class="em27"> 
+               <label>Primary Care Physician:</label>            
+               <h:inputText value="#{var.PatientInsurance.form.referringProviderStr._}" styleClass="autocomplete-referring-provider" title="Type three letters to find provider"/>
+            </li>
+            <li class="em7">
+               <label>Co-Pay:</label>
+               <h:inputText id="coPay" value="#{var.PatientInsurance.form.patientInsurance._.coPay}">
+                  <f:convertNumber maxFractionDigits="2"/>
+                  <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler"/>
+               </h:inputText>
+               <h:message for="coPay" errorClass="errors"/>
+            </li>
+            <li class="em8">
+               <label>Spec. Co-Pay:</label>
+               <h:inputText id="specialistCoPayment" value="#{var.PatientInsurance.form.patientInsurance._.specialistCoPayment}" title="Specialist Co-Pay">
+                  <f:convertNumber maxFractionDigits="2"/>
+                  <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler"/>
+               </h:inputText>
+               <h:message for="deductible" errorClass="errors"/>
+            </li>
+            <li class="em7">
+               <label>Deductible:</label>
+               <h:inputText id="deductible" value="#{var.PatientInsurance.form.patientInsurance._.deductible}">
+                  <f:convertNumber maxFractionDigits="2"/>
+                  <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler"/>
+               </h:inputText>
+               <h:message for="deductible" errorClass="errors"/>
+            </li>
+            <li class="em10"> 
+               #{var.PatientInsurance.form.relationToGuarantorList._ == null ? jsf._do(var.PatientInsurance.form.relationToGuarantorList._(jsf.hintedSearch('RelationToGuarantor', null, var.PatientInsurance.form.relationToGuarantorList.search, '_MEDBASE'))).stay()  : null}          
+               <label>Rel. To Guarantor:</label>            
+               <h:selectOneMenu value="#{var.PatientInsurance.form.patientInsurance._.relationToGuarantor}">
+                  <f:selectItems value="#{var.PatientInsurance.form.relationToGuarantorList._}" var="relation" itemLabel="#{relation.name}" itemValue="#{relation.code}"/>
+                  <f:ajax render="@form" execute="@this" event="change" onevent="ajaxEventHandler"/>
+               </h:selectOneMenu>            
+            </li>
+            <li class="em38">
+               <label>Insurance Notes:</label>
+               <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.notes}" style="width: 37.5em;"/>
+            </li>
+            <ui:fragment rendered="#{var.PatientInsurance.form.patientInsurance._.relationToGuarantor == 'S'}">
+               #{var.PatientInsurance.form.guarantor._(null)}
+               #{var.PatientInsurance.form.patientInsurance._.setGuarantor(null)}
+            </ui:fragment>
+            <ui:fragment rendered="#{var.PatientInsurance.form.patientInsurance._.relationToGuarantor != 'S'}">
+               <li class="em18"> 
+                  #{var.PatientInsurance.form.guarantorList._ == null ? jsf._do(var.PatientInsurance.form.guarantorList._(jsf.hintedSearch('Guarantor', 'g.lastName', var.PatientInsurance.form.guarantorList.search, '_MEDBASE'))).stay()  : null}          
+                  #{var.PatientInsurance.form.guarantor._ == null and var.PatientInsurance.form.guarantorInit._ == null ? jsf._do(var.PatientInsurance.form.guarantor._(var.PatientInsurance.form.patientInsurance._.guarantor))._do(var.PatientInsurance.form.guarantorInit._(true)).stay() : null}
+                  #{var.PatientInsurance.form.guarantor._ == null ? var.PatientInsurance.form.guarantor._(jsf.newObject('com.medenterprise.domain.entity.Guarantor')) : null}
+                  #{var.PatientInsurance.form.patientInsurance._.setGuarantor(var.PatientInsurance.form.guarantor._)}
+                  <label>Guarantor: </label>            
+                  <h:selectOneMenu value="#{var.PatientInsurance.form.guarantor._}" title="Guarantor">
+                     <f:selectItem itemValue="" itemLabel="NEW"/>
+                     <f:selectItems value="#{var.PatientInsurance.form.guarantorList._}" var="guarantor" itemLabel="#{guarantor.lastName} #{guarantor.firstName}"/>
+                     <f:ajax render="@form" execute="@this" event="change" onevent="ajaxEventHandler"/>
+                     <f:converter converterId="EntityConverter"/>
+                  </h:selectOneMenu>            
+               </li>
+               <br/>
+               <li class="em18">
+                  <h:panelGroup styleClass="errors" rendered="#{var.PatientInsurance.form.patientInsuranceValidationMap._ != null and var.PatientInsurance.form.patientInsuranceValidationMap._.guarantorLastName}">
+                     <b>Last Name</b> is required
+                  </h:panelGroup>
+                  <label>Last Name:</label>
+                  <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.guarantor.lastName}" title="Last Name">
+                     <f:ajax render="@form" execute="@this" event="blur" onevent="ajaxEventHandler"/>
+                  </h:inputText>
+               </li>
+               <li class="em13">
+                  <h:panelGroup styleClass="errors" rendered="#{var.PatientInsurance.form.patientInsuranceValidationMap._ != null and var.PatientInsurance.form.patientInsuranceValidationMap._.guarantorFirstName}">
+                     <b>First Name</b> is required
+                  </h:panelGroup>
+                  <label>First Name:</label>
+                  <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.guarantor.firstName}" title="First Name">
+                     <f:ajax render="@form" execute="@this" event="blur" onevent="ajaxEventHandler"/>
+                  </h:inputText>
+               </li>
+               <li class="em4">
+                  <label>MI:</label>
+                  <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.guarantor.mi}" title="Middle Initial"/>
+               </li>
+               <li class="em7">
+                  <label>Birth Date:</label>
+                  <h:inputText id="birthDate" value="#{var.PatientInsurance.form.patientInsurance._.guarantor.birthDate}" title="Birth Date" styleClass="mask-date">
+                     <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+                  </h:inputText>
+               </li>
+               <li class="em7">            
+                  <label>Sex:</label>
+                  <h:selectOneMenu value="#{var.PatientInsurance.form.patientInsurance._.guarantor.sex}" title="Sex">
+                     <f:selectItem itemValue="" itemLabel="NONE"/>
+                     <f:selectItem itemValue="F" itemLabel="Female"/>
+                     <f:selectItem itemValue="M" itemLabel="Male"/>
+                  </h:selectOneMenu>
+               </li>
+               <li class="em27">
+                  <label>Address:</label>
+                  <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.guarantor.address}" title="Address"/>
+               </li>
+               <li class="em12" style="width:12.5em;">
+                  <label>City:</label>
+                  <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.guarantor.city}" title="City" style="width:11.3em;"/>
+               </li>
+               <li class="em4">
+                  <label>State:</label>
+                  <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.guarantor.state}" title="State"/>
+               </li>
+               <li class="em5">
+                  <label>Zip:</label>
+                  <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.guarantor.zipCode}" title="Zip Code"/>
+               </li>
+               <li class="em11">
+                  <label>Home Phone:</label>
+                  <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.guarantor.homePhone}" styleClass="mask-phone"/>
+               </li>
+               <li class="em11">
+                  <label>Emerg. Phone:</label>
+                  <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.guarantor.emergPhone}" styleClass="mask-phone"/>
+               </li>
+               <li class="em11">
+                  <label>Work Phone:</label>
+                  <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.guarantor.workPhone}" styleClass="mask-phone"/>
+               </li>
+               <li class="em7">
+                  <label>Ext.:</label>
+                  <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.guarantor.workPhoneExt}" title="Ext."/>
+               </li>
+               <li class="em9">
+                  <label>SSN:</label>
+                  <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.guarantor.ssn}" styleClass="mask-ssn"/>
+               </li>
+            </ui:fragment>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

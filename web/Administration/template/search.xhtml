@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="tabs border views">
+            #{var.Administration.subview._ == null ? var.Administration.subview._('ReferringProvider') : null}
+            <h:commandLink action="#{jsf._do(var.Administration.subview._('ReferringProvider')).stay}"
+                           value="REF. PROVIDERS"
+                           styleClass="#{var.Administration.subview._ == 'ReferringProvider' ? 'selected' : ''}"/>
+            <h:commandLink action="#{jsf._do(jsf._do(var.Administration.subview._('Provider'))).stay}"
+                           value="PROVIDERS"
+                           styleClass="#{var.Administration.subview._ == 'Provider' ? 'selected' : ''}"/>
+            <h:commandLink action="#{jsf._do(jsf._do(var.Administration.subview._('Insurance'))).stay}"
+                           value="INSURANCES"
+                           styleClass="#{var.Administration.subview._ == 'Insurance' ? 'selected' : ''}"/>
+            <h:commandLink action="#{jsf._do(jsf._do(var.Administration.subview._('Holiday'))).stay}"
+                           value="HOLIDAYS"
+                           styleClass="#{var.Administration.subview._ == 'Holiday' ? 'selected' : ''}"/>
+            <h:commandLink action="#{jsf._do(jsf._do(var.Administration.subview._('PatientGuidline'))).stay}"
+                           value="PATIENT GUIDELINES"
+                           styleClass="#{var.Administration.subview._ == 'PatientGuidline' ? 'selected' : ''}"/>
+         </div>
+         <div class="menu form" style="border-width: 2px;">
+            <div class="body" style="padding-top: 0.3em; width:44.2em;">               
+               <ui:fragment rendered="#{var.Administration.subview._ == 'ReferringProvider'}">
+                  <h:inputText value="#{var.Administration.ReferringProvider.search._}" style="width: 25em; margin-right: 0.3em;"/>                     
+                  <h:commandButton value="Search" title="Search by Last Name, NPI"
+                                   action="#{jsf._do(var.Administration.ReferringProvider.searchMap.clear()).
+                                             _do(var.Administration.ReferringProvider.searchMap.put('lastName', var.Administration.ReferringProvider.search._)).
+                                             _do(var.Administration.ReferringProvider.searchMap.put('npi', var.Administration.ReferringProvider.search._)).
+                                             _do(var.Administration.ReferringProvider.list._(jsf.hintedSearch('_ReferringProvider', 'r.lastName, r.firstName', var.Administration.ReferringProvider.searchMap, '_MEDBASE'))).
+                                             stay}">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.ReferringProvider.form.referringProvider._(jsf.newObject('com.medenterprise.domain.entity.ReferringProvider'))).
+                                             _do(var.Administration.ReferringProvider.list._ == null ? var.Administration.ReferringProvider.list._(jsf.newObject('java.util.ArrayList')) : null).
+                                             _do(var.ReferringProvider.form.referringProviderList._(var.Administration.ReferringProvider.list._)).
+                                             _to('ReferringProvider/edit').go}" style="margin-left: 1em; width: auto;"
+                                   value="Register...">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton> 
+                  <a href="http://www.npinumberlookup.org/" target="_blank" class="colored" style="font-size: 0.8em; margin-left: 1em; text-decoration: underline;">NPI Number Lookup</a>
+               </ui:fragment>
+               <ui:fragment rendered="#{var.Administration.subview._ == 'Provider'}">
+                  <h:inputText value="#{var.Administration.OfficeProvider.search._}" style="width: 25em; margin-right: 0.3em;"/>                     
+                  <h:commandButton value="Search" title="Search by Role, Alias, NPI"
+                                   action="#{jsf._do(var.Administration.OfficeProvider.searchMap.clear()).
+                                             _do(var.Administration.OfficeProvider.searchMap.put('alias', var.Administration.OfficeProvider.search._)).
+                                             _do(var.Administration.OfficeProvider.searchMap.put('role', var.Administration.OfficeProvider.search._)).
+                                             _do(var.Administration.OfficeProvider.searchMap.put('associatedNpi', var.Administration.OfficeProvider.search._)).
+                                             _do(var.Administration.OfficeProvider.list._(jsf.hintedSearch('_OfficeProvider', 'o.alias', var.Administration.OfficeProvider.searchMap, '_HEALTHCARE'))).
+                                             stay}">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.OfficeProvider.form.officeProvider._(jsf.newObject('com.medenterprise.medicalcare.domain.medenterprise.OfficeProvider'))).
+                                             _do(var.OfficeProvider.form.officeProvider._.setActive(true)).
+                                             _do(var.Administration.OfficeProvider.list._ == null ? var.Administration.OfficeProvider.list._(jsf.newObject('java.util.ArrayList')) : null).
+                                             _do(var.OfficeProvider.form.officeProviderList._(var.Administration.OfficeProvider.list._)).
+                                             _to('OfficeProvider/edit').go}" style="margin-left: 1em; width: auto;"
+                                   value="Register...">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+               </ui:fragment>
+               <ui:fragment rendered="#{var.Administration.subview._ == 'Insurance'}">
+                  <h:inputText value="#{var.Administration.Insurance.search._}" style="width: 25em; margin-right: 0.3em;"/>                     
+                  <h:commandButton value="Search" title="Search by Name"
+                                   action="#{jsf._do(var.Administration.Insurance.searchMap.clear()).
+                                             _do(var.Administration.Insurance.searchMap.put('name', var.Administration.Insurance.search._)).
+                                             _do(var.Administration.Insurance.list._(jsf.hintedSearch('Insurance', 'i.name', var.Administration.Insurance.searchMap, '_MEDBASE'))).
+                                             stay}">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.Insurance.form.insurance._(jsf.newObject('com.medenterprise.domain.entity.Insurance'))).
+                                             _do(var.Insurance.form.insurance._.setActive(true)).
+                                             _do(var.Administration.Insurance.list._ == null ? var.Administration.Insurance.list._(jsf.newObject('java.util.ArrayList')) : null).
+                                             _do(var.Insurance.form.insuranceList._(var.Administration.Insurance.list._)).
+                                             _to('Insurance/edit').go}" style="margin-left: 1em; width: auto;"
+                                   value="Add...">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton> 
+               </ui:fragment>
+               <ui:fragment rendered="#{var.Administration.subview._ == 'Holiday'}">
+                  #{var.Administration.Schedule.activeOn._ == null ? var.Administration.Schedule.activeOn._(jsf.newDate) : null}
+                  #{jsf._do(var.Administration.Schedule.schedulePeriodListSearch.clear()).                
+                    _do(var.Administration.Schedule.schedulePeriodListSearch.put('_(o.endDate IS NULL OR o.endDate &gt;= :endDate)', var.Administration.Schedule.activeOn._)).
+                    _do(var.Administration.OfficeSchedule.list._(jsf.hintedSearch('OfficeSchedule', null, var.Administration.Schedule.schedulePeriodListSearch, '_MEDBASE'))).
+                    stay()}
+                  <label for="active_on" class="vlabel">Active On:</label>
+                  <h:inputText id="active_on" value="#{var.Administration.Schedule.activeOn._}" styleClass="djsf_DateTextBox w6">
+                     <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                     <f:convertDateTime dateStyle="short" locale="en"/>
+                  </h:inputText>
+                  <h:commandButton action="#{jsf._do(var.OfficeSchedule.form.officeSchedule._(biz.newOfficeSchedule(myOfficeCode)))._to('OfficeSchedule/edit').go}"
+                                   value="Add..." style="margin-left: 1em; width: auto;">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+               </ui:fragment>
+                <ui:fragment rendered="#{var.Administration.subview._ == 'PatientGuideline'}">
+                  #{jsf._do(var.Administration.PatientGuideline.list._(jsf.hintedSearch('PatientGuideline', null, var.Administration.PatientGuideline.search, '_MEDBASE'))).stay()}
+                  <h:commandButton action="#{jsf._do(var.PatientGuideline.form.patientGuideline._(biz.newPatientGuideline(myOfficeCode)))._to('PatientGuideline/edit').go}"
+                                   value="Add..." style="margin-left: 1em; width: auto;">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+               </ui:fragment>
+            </div>
+         </div>
+      </ui:composition>
+   </body>
+</html>

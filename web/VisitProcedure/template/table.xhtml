@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div>
+            <h:dataTable value="#{visitProcedureList}" var="visitProcedure" rendered="#{not empty visitProcedureList}" styleClass="#{listId}Table">
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="CPT"/>
+                  </f:facet>
+                  <h:commandLink title="Click to Remove" onclick="if(confirm('Remove Procedure #{visitProcedure.code}?')) return true; else return false;" action="#{jsf._do(jsf.removeObj(visitProcedureList, visitProcedure)).stay}" styleClass="colored">
+                     <h:outputText value="#{visitProcedure.code == null ? '???' : visitProcedure.code}"/>
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandLink>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Description"/>
+                  </f:facet>
+                  <h:outputText value="#{visitProcedure.procedure.description}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Mod.1"/>
+                  </f:facet>
+                  #{! var.VisitProcedure.modifierSet.searched[visitProcedure.code]._ ?
+                    jsf._do(var.VisitProcedure.modifierSet[visitProcedure.code]._(biz.procedureCptModifierSet(visitProcedure.code)))._do(var.VisitProcedure.modifierSet.searched[visitProcedure.code]._(true)).stay() :
+                    null}
+                  <h:panelGroup id="mod1">
+                     #{var.VisitProcedure.modifier[visitProcedure.code].trigger._ ? jsf._do(visitProcedure.setModifier1(var.VisitProcedure.modifier[visitProcedure.code]._)).
+                       _do(var.VisitProcedure.modifier[visitProcedure.code]._(null))._do(var.VisitProcedure.modifier[visitProcedure.code].trigger._(null)).stay() : null}
+                     <h:inputText value="#{visitProcedure.modifier1}" style="width:3em;">
+                        <f:ajax event="blur" onevent="ajaxEventHandler"/>
+                     </h:inputText>
+                     <h:selectOneMenu value="#{var.VisitProcedure.modifier[visitProcedure.code]._}" rendered="#{var.VisitProcedure.modifierSet[visitProcedure.code]._ != null}" style="width:1.8em;">
+                        <f:selectItem itemValue="#{null}" itemLabel=""/>
+                        <f:selectItems value="#{var.VisitProcedure.modifierSet[visitProcedure.code]._.modifierList}"
+                                       var="modifier" itemLabel="#{modifier.description}" itemValue="#{modifier.code}"/>
+                        <f:ajax render="mod1" event="change" listener="#{jsf._do(var.VisitProcedure.modifier[visitProcedure.code].trigger._(true)).listen}"/>
+                     </h:selectOneMenu>
+                  </h:panelGroup>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Mod.2"/>
+                  </f:facet>
+                  <h:inputText value="#{visitProcedure.modifier2}" style="width:3em;">
+                     <f:ajax event="blur" onevent="ajaxEventHandler"/>
+                  </h:inputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Mod.3"/>
+                  </f:facet>
+                  <h:inputText value="#{visitProcedure.modifier3}" style="width:3em;">
+                     <f:ajax event="blur" onevent="ajaxEventHandler"/>
+                  </h:inputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Units"/>
+                  </f:facet>
+                  <h:inputText value="#{visitProcedure.units}" style="width:3em;">
+                     <f:ajax event="blur" onevent="ajaxEventHandler"/>
+                  </h:inputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Dx Pointers"/>
+                  </f:facet>
+                  <h:inputText value="#{visitProcedure.diagCodePointers}" style="width:6em;">
+                     <f:ajax event="blur" onevent="ajaxEventHandler"/>
+                  </h:inputText>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <body>
+      <ui:composition>
+         <div class="toolbar" jsfc="h:panelGroup" style="display: none; margin: 0;">
+            <h:commandButton action="#{jsf._do(biz.findByCode('Procedure', element.cpt) != null ? element.put('description',  biz.findByCode('Procedure', element.cpt).description) : null).stay}"
+                             rendered="#{element.cpt != null}"
+                             style="width: 3em; font-size: 0.8em; margin: 0;" value="DB">
+               <f:ajax execute="@form" render="@form" onevent="fixer"/>
+            </h:commandButton>
+            <h:commandButton action="#{jsf._do(list.add(list.indexOf(element) - 1, element)).
+                                       _do(jsf.remove(list, list.lastIndexOf(element))).stay}"
+                             disabled="#{list.indexOf(element) == 0}"
+                             style="width: 1.5em; font-size: 0.8em; margin: 0;" value="↑">
+               <f:ajax execute="@form" render="@form" onevent="fixer"/>
+            </h:commandButton>
+            <h:commandButton action="#{jsf._do(list.add(list.indexOf(element) - 15, element)).
+                                       _do(jsf.remove(list, list.lastIndexOf(element))).stay}"
+                             disabled="#{list.indexOf(element) &lt; 15}"
+                             style="width: 2em; font-size: 0.8em; margin: 0;" value="↑↑">
+               <f:ajax execute="@form" render="@form" onevent="fixer"/>
+            </h:commandButton>
+            <h:commandButton action="#{jsf._do(list.add(list.indexOf(element) + 2, element)).
+                                       _do(jsf.remove(list, list.indexOf(element))).stay}"
+                             disabled="#{list.indexOf(element) == (list.size() - 1)}"
+                             style="width: 1.5em; font-size: 0.8em; margin: 0;" value="↓">
+               <f:ajax execute="@form" render="@form" onevent="fixer"/>
+            </h:commandButton>
+            <h:commandButton action="#{jsf._do(selected._ == element ? selected._(null) : selected._(element)).stay}"
+                             style="width: 1.5em; font-size: 0.8em; margin: 0 0 0 1em;"
+                             rendered="#{! noToolbar}"
+                             value="#{selected._ == element ? '-' : '+'}">
+               <f:ajax execute="@form" render="@form" onevent="fixer"/>
+            </h:commandButton>
+            <h:commandButton action="#{jsf._do(jsf.remove(list, list.indexOf(element))).stay}"  style="width: 1.5em; font-size: 0.8em; margin: 0;" value="X">
+               <f:ajax execute="@form" render="@form" onevent="fixer"/>
+            </h:commandButton>
+            <h:commandButton action="#{jsf._do(selectedForDiagnoses._ == element ? selectedForDiagnoses._(null) : selectedForDiagnoses._(element)).stay}"  style="width: 3em; font-size: 0.8em; margin: 0 0 0 1em;" rendered="#{! noDiagnoses}" value="#{selectedForDiagnoses._ == element ? '&lt;' : '&gt;'} DX">
+               <f:ajax execute="@form" render="@form" onevent="fixer"/>
+            </h:commandButton>
+         </div>
+      </ui:composition>
+   </body>
+</html>

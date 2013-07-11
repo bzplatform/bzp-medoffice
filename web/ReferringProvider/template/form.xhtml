@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! empty var.ReferringProvider.form}">
+            <style>
+               a.colored {
+                  color: #AE4EB5;
+                  text-decoration: none;
+                  font-weight: bold;
+               }
+            </style>
+            <li class="em9">
+               <h:panelGroup styleClass="errors" rendered="#{var.ReferringProvider.form.referringProviderValidationMap._ != null and var.ReferringProvider.form.referringProviderValidationMap._.npi}">
+                  <b>NPI</b> is required
+               </h:panelGroup>
+               <label>NPI:</label>
+               <h:inputText value="#{var.ReferringProvider.form.referringProvider._.npi}" styleClass="mask-npi"/>
+            </li>
+            <li class="em14">
+               <h:panelGroup styleClass="errors" rendered="#{var.ReferringProvider.form.referringProviderValidationMap._ != null and var.ReferringProvider.form.referringProviderValidationMap._.lastName}">
+                  <b>Last Name</b> is required
+               </h:panelGroup>
+               <label>Last Name:</label>
+               <h:inputText value="#{var.ReferringProvider.form.referringProvider._.lastName}" title="Last Name"/>
+            </li>
+            <li class="em9">
+               <h:panelGroup styleClass="errors" rendered="#{var.ReferringProvider.form.referringProviderValidationMap._ != null and var.ReferringProvider.form.referringProviderValidationMap._.firstName}">
+                  <b>First Name</b> is required
+               </h:panelGroup>
+               <label>First Name:</label>
+               <h:inputText value="#{var.ReferringProvider.form.referringProvider._.firstName}" title="First Name"/>
+            </li>
+            <li class="em3">
+               <label>MI:</label>
+               <h:inputText value="#{var.ReferringProvider.form.referringProvider._.middleInitial}" title="Middle Initial"/>
+            </li>
+            <li class="em5">
+               <label>Suffix:</label>
+               <h:inputText value="#{var.ReferringProvider.form.referringProvider._.suffix}" title="Suffix"/>
+            </li>
+            <li style="height: 1.5em; padding: 0.5em 0 0 0.5em; width: 9em;">
+               <h:selectBooleanCheckbox value="#{var.ReferringProvider.form.referringProvider._.officeProvider}"/>
+               <label style="display: inline; margin-left: -1em;">Office Provider</label>            
+            </li>
+            <li class="em27">
+               <label>Address:</label>
+               <h:inputText value="#{var.ReferringProvider.form.referringProvider._.address}" title="Address"/>
+            </li>
+            <li class="em12" style="width:12.5em;">
+               <label>City:</label>
+               <h:inputText id="city" value="#{var.ReferringProvider.form.referringProvider._.city}" title="City" style="width:11.3em;"/>
+            </li>
+            <li class="em4">
+               <label>State:</label>
+               <h:inputText id="state" value="#{var.ReferringProvider.form.referringProvider._.state}" title="State"/>
+            </li>
+            <li class="em5">
+               <label>
+                  <h:commandLink tabindex="99" action="#{jsf._do(var.ReferringProvider.form.referringProvider.zipCode._(biz.findZipCode(var.ReferringProvider.form.referringProvider._.postalCode)))._do(var.ReferringProvider.form.referringProvider.zipCode._ != null ? jsf._do(var.ReferringProvider.form.referringProvider._.setCity(var.ReferringProvider.form.referringProvider.zipCode._.city))._do(var.ReferringProvider.form.referringProvider._.setState(var.ReferringProvider.form.referringProvider.zipCode._.state)).stay() : null).stay()}" 
+                                 value="Zip:" title="Get City and State by Zip Code">
+                     <f:ajax render="city state" execute="zipCode"/>
+                  </h:commandLink>
+               </label>
+               <h:inputText id="zipCode" value="#{var.ReferringProvider.form.referringProvider._.postalCode}" title="Zip Code"/>
+            </li>
+            <li class="em11">
+               <label>Phone:</label>
+               <h:inputText value="#{var.ReferringProvider.form.referringProvider._.phone}" styleClass="mask-phone"/>
+            </li>
+            <li class="em37">
+               <label>Email Address:</label>
+               <h:inputText value="#{var.ReferringProvider.form.referringProvider._.email}" title="Email Address"/>
+            </li>
+            <li class="em16">
+               <label>State License #:</label>
+               <h:inputText value="#{var.ReferringProvider.form.referringProvider._.stateLicenseNum}" title="State License Number"/>
+            </li>
+            <li class="em16">
+               <label>Taxonomy Code:</label>
+               <h:inputText value="#{var.ReferringProvider.form.referringProvider._.providerTaxonomyCode}" title="Taxonomy Code"/>
+            </li>
+            <li class="em8">
+               <label>ADS #:</label>
+               <h:inputText value="#{var.ReferringProvider.form.referringProvider._.adsId}" title="ADS #"/>
+            </li>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

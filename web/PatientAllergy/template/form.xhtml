@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <body>
+      <ui:composition>
+         <li class="em24">            
+            <h:panelGroup styleClass="errors" rendered="#{var.PatientAllergy.form.patientAllergyValidationMap._ != null and var.PatientAllergy.form.patientAllergyValidationMap._.allergy}">
+               <b>Allergy</b> is required
+            </h:panelGroup>
+            <label>Allergy:</label>                        
+            <h:inputText value="#{var.PatientAllergy.form.allergyStr._}" styleClass="autocomplete-allergy" title="Type letter to find Allergy"/>
+         </li>
+         <li class="em24"> 
+            #{var.PatientAllergy.form.allergyReactionList._ == null ? jsf._do(var.PatientAllergy.form.allergyReactionList._(jsf.hintedSearch('AllergyReaction', 'a.description', var.PatientAllergy.form.allergyReactionSearch, '_MEDBASE'))).stay() : null}
+            <label>Reaction:</label>
+            <h:selectOneMenu value="#{var.PatientAllergy.form.patientAllergy._.reaction}">
+               <f:selectItem noSelectionOption="true" itemLabel="NONE"/>
+               <f:selectItems value="#{var.PatientAllergy.form.allergyReactionList._}"
+                              var="reaction" itemLabel="#{reaction.description}" itemValue="#{reaction.description}"/>
+            </h:selectOneMenu>
+         </li>
+      </ui:composition>
+   </body>
+</html>

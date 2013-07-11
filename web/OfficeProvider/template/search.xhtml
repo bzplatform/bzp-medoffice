@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <h:panelGroup rendered="#{jsf.global('officeProvider', 'view')['panel:Search']}">
+            <div class="menu form">
+               <div class="header">
+                  <h3 class="center">Provider Search</h3>
+               </div>
+               <div class="body">
+                  <ul class="vertical form-area grid g32">
+                     <li class="em16">
+                        #{officeProviderSearch == null ? jsf._do(sessionScope.put('officeProviderSearch', jsf.newMap())).stay() : null}
+                        #{specialtyList == null ? jsf._do(sessionScope.put('specialtyList', jsf.search('Specialty', 's.name', jsf.newMap()))).stay() : null}
+                        #{jsf._do(officeProviderSearch.put('_EXISTS (SELECT mop FROM MyOfficeProvider mop WHERE mop.myOfficeCode = :myOfficeCode AND mop.officeProviderId = o.id)', myOfficeCode)).stay()}
+                        <label class="vlabel">Specialty:</label>
+                        <h:selectOneMenu value="#{officeProviderSearch['specialtyId']}" title="Specialty">
+                           <f:selectItem itemValue="#{null}" itemLabel="ALL"/>
+                           <f:selectItems value="#{specialtyList}" itemValue="#{specialty.id}" var="specialty" itemLabel="#{specialty.name}"/>
+                           <f:converter converterId="IntegerConverter"/>
+                        </h:selectOneMenu>
+                     </li>
+                     <li class="em16">
+                        <label for="name" class="vlabel">Provider:</label>
+                        <h:inputText id="name" value="#{officeProviderSearch['alias']}" title="Provider"/>
+                     </li>
+                     #{officeProviderSearch['active'] == null ? officeProviderSearch.put('active', true) : null}
+                  </ul>
+               </div>
+               <div class="footer">
+                  #{jsf._do(jsf.global('officeProvider', 'panel:Search')['autoselect'] == null ? jsf.global('officeProvider', 'panel:Search').put('autoselect', true) : null).stay()}
+                  <label style="margin: 1.3em; position: relative; top: 0.8em;">
+                     <h:selectBooleanCheckbox value="#{jsf.global('officeProvider', 'panel:Search')['autoselect']}"/>
+                     Autoselect</label>
+                  <h:commandButton action="#{jsf._runSearch('OfficeProvider', 'o.alias').
+                                             _do(var.OfficeProvider.searchResult._(biz.newList(officeProviderList))).
+                                             _do(officeProviderList != null and officeProviderList.size() == 1 and jsf.global('officeProvider', 'panel:Search')['autoselect'] ?
+                                             jsf.global('officeProvider', 'view').put('panel:Search', false) : null).stay}" value="Search" styleClass="ok-button"/>
+                  <h:commandButton action="#{jsf._do(officeProviderSearch.clear()).stay}" value="Reset" styleClass="cancel-button"/>
+               </div>
+            </div>
+         </h:panelGroup>
+      </ui:composition>
+   </body>
+</html>

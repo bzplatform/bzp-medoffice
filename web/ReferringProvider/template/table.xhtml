@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:include src="../../template/sorter.xhtml">
+            <ui:param name="listId" value="#{listId}"/>
+            <ui:param name="object" value="referringProvider"/>
+         </ui:include>
+         <div class="tablecounter">#{referringProviderList.size()}</div>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{referringProviderList}" var="referringProvider" rendered="#{not empty referringProviderList}" styleClass="tablesorter #{listId}Table">
+               <h:column rendered="#{selectionMap != null}">
+                  <f:facet name="header">
+                     <h:outputText value="" styleClass="nosort"/>
+                  </f:facet>
+                  <h:selectBooleanCheckbox value="#{selectionMap[referringProvider]}" style="margin:0;"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.id._}">
+                  <f:facet name="header">
+                     <h:outputText value="ID"/>
+                  </f:facet>
+                  <h:outputText value="#{referringProvider.id}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Last Name"/>
+                  </f:facet>
+                  <h:outputText value="#{referringProvider.lastName}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="First Name"/>
+                  </f:facet>
+                  <h:outputText value="#{referringProvider.firstName}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="MI"/>
+                  </f:facet>
+                  <h:outputText value="#{referringProvider.middleInitial}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="NPI"/>
+                  </f:facet>
+                  <h:outputText value="#{referringProvider.npi}"/>
+               </h:column>              
+               <h:column rendered="#{tableConfig.action._}">
+                  <f:facet name="header">
+                     <h:outputText value="Action" styleClass="nosort"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.ReferringProvider.form.referringProvider._(referringProvider)).
+                                             _do(var.ReferringProvider.form.referringProviderList._(referringProviderList)).
+                                           _to('ReferringProvider/edit').go}"
+                                 style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                 value="Edit..."/>
+                  <h:commandButton action="#{jsf._do(jsf.removeObj(referringProviderList, referringProvider))._delete(referringProvider).stay}"
+                                   styleClass="intable-action"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"
+                                   rendered="#{access.isUriPermitted('ReferringProvider/remove')}"
+                                   onclick="if (confirm('Remove #{referringProvider.lastName}, #{referringProvider.firstName}?')) return true; else return false;"
+                                   value="Remove">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>                  
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

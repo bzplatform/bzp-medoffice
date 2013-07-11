@@ -1,0 +1,140 @@
+<table>
+   <tr>
+      <th style="width: 20%;">Constitutional</th>
+      <td>
+         <div class="pntl-section" data-section="examOsConstitutional">
+            <span>
+               <input type="checkbox" data-name="appearanceWnlYes" class="radio-group-exam-appearanceWnl" onchange="radioGroup(this, 'exam-appearanceWnl');
+                     return false;"/>
+               <label data-text-if="appearanceWnlYes">Y<span class="none">es</span></label>
+               <input type="checkbox" data-name="appearanceWnlNo" class="radio-group-exam-appearanceWnl" onchange="radioGroup(this, 'exam-appearanceWnl');
+                     return false;"/>
+               <label data-text-if="appearanceWnlNo">N<span class="none">o</span></label>
+               <label data-text-if="appearanceWnlYes || appearanceWnlNo">appearance wnl<span class="none">.</span></label>
+            </span>            
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+   <style>
+      #exam > span {
+         white-space: nowrap;
+         display: inline-block;
+      }
+   </style>   
+   <th>Gastrointestinal (Abdomen)</th>
+   <td>
+      <div class="pntl-section" data-section="examOsGastrointestinal">
+         <div style="-moz-column-count: 4; width: 40em;" id="exam">
+            <span data-text-if="noMasses">
+               <input type="checkbox" data-name="noMasses"/>
+               <label>no masses<span class="none">;</span></label>
+            </span>
+            <span data-text-if="nonTender">
+               <input type="checkbox" data-name="nonTender"/>
+               <label>non-tender<span class="none">;</span></label>
+            </span>
+            <span data-text-if="positiveBS">
+               <input type="checkbox" data-name="positiveBS"/>
+               <label>positive BS<span class="none">;</span></label>
+            </span>
+            <span data-text-if="noOrganomegaly">
+               <input type="checkbox" data-name="noOrganomegaly"/>
+               <label>no organomegaly<span class="none">;</span></label>
+            </span>
+            <span data-text-if="noHernia">
+               <input type="checkbox" data-name="noHernia"/>
+               <label>no hernia<span class="none">;</span></label>
+            </span>
+            <br/>
+            <span data-text-if="anusWnl">
+               <input type="checkbox" data-name="anusWnl"/>
+               <label>anus wnl<span class="none">;</span></label>
+            </span>
+            <span data-text-if="sphincterToneWnl">
+               <input type="checkbox" data-name="sphincterToneWnl"/>
+               <label>sphincter tone wnl<span class="none">;</span></label>
+            </span>
+            <span data-text-if="noHemorrhoids">
+               <input type="checkbox" data-name="noHemorrhoids"/>
+               <label>no hemorrhoids<span class="none">;</span></label>
+            </span>
+            <span data-text-if="noOcultBlood">
+               <input type="checkbox" data-name="noOcultBlood"/>
+               <label>no ocult blood<span class="none">;</span></label>
+            </span>               
+         </div>           
+         <div data-text-if="other">
+            <input type="text" data-name="other" style="width: 97%;"/>
+         </div>
+      </div>
+   </td>
+</tr>
+<tr>
+   <th>Skin</th>
+   <td>
+      <div class="pntl-section" data-section="examOsSkin">
+         <span data-text-if="noObservedLesionsUlcersRashes">
+            <input type="checkbox" data-name="noObservedLesionsUlcersRashes"/>
+            <label>no observed lesions, ulcers, rashes<span class="none">;</span></label>               
+         </span>
+         <span data-text-if="noNodulesIndurations">
+            <input type="checkbox" data-name="noNodulesIndurations"/>
+            <label>no nodules, indurations<span class="none">;</span></label>               
+         </span>
+         <div data-text-if="other">
+            <input type="text" data-name="other" style="width: 97%;"/>
+         </div>
+      </div>
+   </td>
+</tr>
+<tr>
+   <th>Psychiatric</th>
+   <td>
+      <div class="pntl-section" data-section="examOsPsychiatric">
+         <label data-text-if="x2 || x3">Oriented:</label>
+         <span data-text-if="x2">
+            <input type="checkbox" data-name="x2" class="radio-group-exam-oriented" onchange="radioGroup(this, 'exam-oriented');
+                     return false;"/>
+            <label>X2<span class="none">;</span></label>               
+         </span>
+         <span data-text-if="x3">
+            <input type="checkbox" data-name="x3" class="radio-group-exam-oriented" onchange="radioGroup(this, 'exam-oriented');
+                     return false;"/>
+            <label>X3<span class="none">;</span></label>               
+         </span>
+         <label data-text-if="normal || angry || anxious || depressed || happy || nad">Mood:</label>
+         <span data-text-if="normal">
+            <input type="checkbox" data-name="normal"/>
+            <label>normal<span class="none">;</span></label>               
+         </span>
+         <span data-text-if="angry">
+            <input type="checkbox" data-name="angry"/>
+            <label>angry<span class="none">;</span></label>               
+         </span>
+         <span data-text-if="anxious">
+            <input type="checkbox" data-name="anxious"/>
+            <label>anxious<span class="none">;</span></label>               
+         </span>
+         <span data-text-if="depressed">
+            <input type="checkbox" data-name="depressed"/>
+            <label>depressed<span class="none">;</span></label>               
+         </span>
+         <span data-text-if="happy">
+            <input type="checkbox" data-name="happy"/>
+            <label>happy<span class="none">;</span></label>               
+         </span>
+         <span data-text-if="nad">
+            <input type="checkbox" data-name="nad"/>
+            <label>NAD<span class="none">;</span></label>               
+         </span>
+         <div data-text-if="other">
+            <input type="text" data-name="other" style="width: 97%;"/>
+         </div>
+      </div>
+   </td>
+</tr>
+</table>

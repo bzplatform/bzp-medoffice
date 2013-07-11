@@ -1,0 +1,157 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{medicationList}" var="medication" rendered="#{not empty medicationList}">
+               <h:column rendered="#{tableConfig.created._}">
+                  <f:facet name="header">
+                     <h:outputText value="Created"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.created}" style="white-space: nowrap;">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+                  <br/>
+                  <h:outputText value="by #{access.getUserName(medication.userId)}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.updated._}">
+                  <f:facet name="header">
+                     <h:outputText value="Updated" style="white-space: nowrap;"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.lastUpdated}" style="white-space: nowrap;">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+                  <br/>
+                  <h:outputText value="by #{access.getUserName(medication.lastUpdatedUserId)}" rendered="#{medication.lastUpdatedUserId != null}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.prescriber._}">
+                  <f:facet name="header">
+                     <h:outputText value="Prescriber"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.prescriber.lastName}, #{medication.prescriber.firstName} NPI:#{medication.prescriber.npi}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.prescribingDate._}">
+                  <f:facet name="header">
+                     <h:outputText value="Rx&nbsp;Date"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.prescribingDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{tableConfig.startDate._}">
+                  <f:facet name="header">
+                     <h:outputText value="Start&nbsp;Date"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.startDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{tableConfig.primaryDiagnosisCode._}">
+                  <f:facet name="header" rendered="#{tableConfig.primaryDiagnosisCode._}">
+                     <h:outputText value="ICD"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.primaryDiagnosisCode}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.drugCode._}">
+                  <f:facet name="header" rendered="#{tableConfig.drugCode._}">
+                     <h:outputText value="Drug&nbsp;Code"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.drugCode}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Drug"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.drug}" style="#{medication.tty == 'SBD' ? 'font-weight: bold;' : ''}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.dispenseQty._}">
+                  <f:facet name="header">
+                     <h:outputText value="Qty"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.dispenseQty}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.refills._}">
+                  <f:facet name="header">
+                     <h:outputText value="Refills"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.refills}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.dose._}">
+                  <f:facet name="header">
+                     <h:outputText value="Dose/Unit"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.dose} #{medication.doseUnit}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.route._}">
+                  <f:facet name="header">
+                     <h:outputText value="Route"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.route}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.frequency._}">
+                  <f:facet name="header">
+                     <h:outputText value="Frequency"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.frequency}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.days._}">
+                  <f:facet name="header">
+                     <h:outputText value="Days"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.days}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.status._}">
+                  <f:facet name="header">
+                     <h:outputText value="Status"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.status}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.statusDate._}">
+                  <f:facet name="header">
+                     <h:outputText value="Date"/>
+                  </f:facet>
+                  <h:outputText value="#{medication.statusDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Action"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.PatientMedication.form.patientMedication._(medication))._do(var.PatientMedication.form.prescriberStr._(biz.referringProviderStr(medication.prescriber == null ? null : medication.prescriber.id)))._do(var.PatientMedication.form.drugStr._(medication.drug))._to('PatientMedication/edit').go}"
+                                   styleClass="intable-action"
+                                   disabled="#{! medication.active}"
+                                   value="Edit..." style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"/>
+                  <input type="button" value="More ▼" class="context-menu-button" style="margin: 0; font-size: 0.8em;"/>
+                  <div style="display: none;"> 
+                     <ui:fragment rendered="#{controlActiveStatus}">
+                        <h:commandLink style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"
+                                         rendered="#{! medication.active}"
+                                         action="#{jsf._do(medication.setLastUpdated(jsf.newDate))._do(medication.setLastUpdatedUserId(access.user.id))._do(medication.setActive(true))._save(medication).stay}" value="Set Active"/>
+                        <h:commandLink style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"
+                                         rendered="#{medication.active}"
+                                         action="#{jsf._do(medication.setLastUpdated(jsf.newDate))._do(medication.setLastUpdatedUserId(access.user.id))._do(medication.setActive(false))._save(medication).stay}" value="Set Inactive"/>
+                     </ui:fragment>
+                     <h:commandLink style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"
+                                      rendered="#{! medication.favorite}"
+                                      action="#{jsf._do(medication.setFavorite(true))._save(medication).stay}" value="Set Favorite"/>
+                     <h:commandLink style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"
+                                      rendered="#{medication.favorite}"
+                                      action="#{jsf._do(medication.setFavorite(false))._save(medication).stay}" value="Unset Favorite"/>
+                     <h:commandLink onclick="if (confirm('Remove #{medication.drug}?'))
+                              return true;
+                           else
+                              return false;" action="#{jsf._do(biz.removePatientMedication(medication)).stay}" style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;" value="Remove">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandLink>
+                  </div>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

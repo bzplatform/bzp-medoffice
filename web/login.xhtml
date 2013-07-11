@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition template="template/base.xhtml">
+
+         <ui:define name="title">
+            Medical Care: Login
+         </ui:define>
+
+         <ui:define name="form">
+            <div class="one-third column"/>
+            <div class="one-third column">
+               <div class="menu form">
+                  <div class="header">
+                     <h3 class="center">Login</h3>
+                  </div>
+                  <div class="body">
+                     <ul class="vertical form-area grid g16">
+                        <div>
+                           <h:messages globalOnly="true" styleClass="errors" style="list-style: none;"/>
+                        </div>
+                        <li class="em16">
+                           <label for="name" class="vlabel">Name:</label>
+                           <h:inputText id="name" required="true"
+                                        value="#{access.login.name}">
+                              <f:validateLength minimum="2" maximum="15"/>
+                           </h:inputText>
+                           <h:message for="name" errorClass="errors"/>
+                        </li>
+                        <li class="em16">
+                           <label for="password">Password:</label>
+                           <h:inputSecret id="password" required="true"
+                                          value="#{access.login.password}">
+                              <f:validateLength minimum="3" maximum="15"/>
+                           </h:inputSecret>
+                           <h:message for="password" errorClass="errors"/>
+                        </li>
+                        <li class="em16">
+                           <label for="site" class="vlabel">Site:</label>
+                           <h:selectOneMenu id="site" value="#{sessionScope.myOfficeCode}">
+                              <f:selectItem itemValue="jns" itemLabel="JNS"/>
+                           </h:selectOneMenu>
+                        </li>
+                     </ul>
+                  </div>
+                  <div class="footer">
+                     <h:commandButton action="#{access.doLogin}" value="OK" styleClass="ok-button"/>
+                     <h:commandButton action="#{access.goHome}" value="Cancel" immediate="true" styleClass="cancel-button"/>
+                  </div>
+               </div>
+            </div>
+            <div class="one-third column"/>
+         </ui:define>
+
+      </ui:composition>
+
+   </body>
+</html>

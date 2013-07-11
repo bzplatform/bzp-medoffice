@@ -1,0 +1,68 @@
+<table>
+   <tr>
+      <th style="width: 15%;">Past Medical</th>
+      <td style="vertical-align: top;">
+         <div class="pntl-section" data-section="pfshPastHistory">            
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Social</th>
+      <td style="vertical-align: top;">         
+         <div class="pntl-section" data-section="pfshSocialHistory">
+            <div>
+               <span>
+                  <input type="checkbox" data-name="smokingYes" class="radio-group-pfsh-smoking" onchange="radioGroup(this, 'pfsh-smoking'); return false;"/>
+                  <label data-text-if="smokingYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="smokingNo" class="radio-group-pfsh-smoking" onchange="radioGroup(this, 'pfsh-smoking'); return false;"/>
+                  <label data-text-if="smokingNo">N<span class="none">o</span></label>
+                  <label data-text-if="smokingYes || smokingNo">smoking<span class="none">.</span></label>
+               </span>
+               <span data-text-if="smokingYes">
+                  <input data-name="smokingPerDay" autocomplete="off" class="" style="width:2em; margin-right: 0.5em;" type="text">
+                  <span data-text-if="smokingPerDay">
+                     <select data-name="smokingPerDayUnit" style="width: auto;">
+                        <option value="packs">packs</option><option value="cigarettes">cigarettes</option>
+                     </select>
+                     <span>per day.</span>
+                  </span>
+                  <span data-text-if="smokingDuration">
+                     <span>How long?</span>
+                     <input data-name="smokingDuration" autocomplete="off" class="" style="width:6em;" type="text">
+                  </span>
+               </span>
+               <span data-text-if="smokingNo &amp;&amp; smokingQuitDate">
+                  <span>Quit Date:</span>
+                  <input data-name="smokingQuitDate" autocomplete="off" class="" style="width:6em;" type="text">
+                  <span class="none">.</span>
+               </span>
+               <br/>
+               <span>
+                  <input type="checkbox" data-name="alcoholYes" class="radio-group-pfsh-alcohol" onchange="radioGroup(this, 'pfsh-alcohol'); return false;"/>
+                  <label data-text-if="alcoholYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="alcoholNo" class="radio-group-pfsh-alcohol" onchange="radioGroup(this, 'pfsh-alcohol'); return false;"/>
+                  <label data-text-if="alcoholNo">N<span class="none">o</span></label>
+                  <label data-text-if="alcoholYes || alcoholNo">alcohol<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Family</th>
+      <td style="vertical-align: top;">         
+         <div class="pntl-section" data-section="pfshFamilyHistory">            
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+
+</table>

@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:include src="../../template/sorter.xhtml">
+            <ui:param name="listId" value="#{listId}"/>
+            <ui:param name="object" value="referral"/>
+         </ui:include>
+         <div class="tablecounter">#{referralList.size()}</div>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{referralList}" var="referral" rendered="#{not empty referralList}" styleClass="tablesorter #{listId}Table">
+               <h:column rendered="#{selectionMap != null}">
+                  <f:facet name="header">
+                     <h:outputText value="" styleClass="nosort"/>
+                  </f:facet>
+                  <h:selectBooleanCheckbox value="#{selectionMap[referral]}" style="margin:0;"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.id._}">
+                  <f:facet name="header">
+                     <h:outputText value="ID"/>
+                  </f:facet>
+                  <h:outputText value="#{referral.id}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.time._}">
+                  <f:facet name="header">
+                     <h:outputText value="Created Date/Time"/>
+                  </f:facet>
+                  <h:outputText value="#{referral.created}">
+                     <f:convertDateTime pattern="MM/dd/yy hh:mm a"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{! tableConfig.time._}">
+                  <f:facet name="header">
+                     <h:outputText value="Created"/>
+                  </f:facet>
+                  <h:outputText value="#{referral.created}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{tableConfig.patient._}">
+                  <f:facet name="header">
+                     <h:outputText value="Patient"/>
+                  </f:facet>
+                  <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(edi.patient(referral.patientId)))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" style="color: black;">
+                     <h:outputText value="#{edi.patient(referral.patientId).lastName}, #{edi.patient(referral.patientId).firstName}"/>
+                  </h:commandLink>
+               </h:column>
+               <h:column rendered="#{tableConfig.patient._}">
+                  <f:facet name="header">
+                     <h:outputText value="MRN" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{referral.patientId}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.provider._}">
+                  <f:facet name="header">
+                     <h:outputText value="Provider"/>
+                  </f:facet>
+                  <h:outputText value="#{referral.provider.lastName}, #{referral.provider.firstName}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.procedures._}">
+                  <f:facet name="header">
+                     <h:outputText value="Procedures" styleClass="nosort"/>
+                  </f:facet>
+                  <ui:repeat value="#{referral.procedureList}" var="procedure">
+                     <li style="margin-left: 1em;"><h:outputText value="#{procedure.name}"/></li>
+                  </ui:repeat>
+               </h:column>
+               <h:column rendered="#{tableConfig.details._}">
+                  <f:facet name="header">
+                     <h:outputText value="Facility"/>
+                  </f:facet>
+                  <h:outputText value="#{referral.facility.name}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.details._}">
+                  <f:facet name="header">
+                     <h:outputText value="Diagnoses" styleClass="nosort"/>
+                  </f:facet>
+                  <ui:repeat value="#{referral.diagnosisList}" var="diagnosis">
+                     <li style="margin-left: 1em;">
+                        <h:outputText value="#{diagnosis.code}" style="font-weight: bold; margin-right: 0.5em;"/>
+                        <h:outputText value="#{diagnosis.description}"/>
+                     </li>
+                  </ui:repeat>
+               </h:column>
+               <h:column rendered="#{tableConfig.details._}">
+                  <f:facet name="header">
+                     <h:outputText value="Note" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{referral.note}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.status._}">
+                  <f:facet name="header">
+                     <h:outputText value="Status"/>
+                  </f:facet>
+                  <h:outputText value="#{referral.status}"/>
+                  <h:outputText value=" (#{referral.cancelReason})" rendered="#{referral.status == 'CANCELLED'}"/>                  
+               </h:column>
+               <h:column rendered="#{tableConfig.action._}">
+                  <f:facet name="header">
+                     <h:outputText value="Action" styleClass="nosort"/>
+                  </f:facet>
+                  <h:commandButton disabled ="#{referral.status != 'OPEN'}"
+                                   action="#{jsf._do(var.Referral.form.put('referral', referral))._to('Referral/edit').go}"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"
+                                   value="Edit..."/>
+                  <input type="button" value="More ▼" class="context-menu-button" style="margin: 0; font-size: 0.8em;"/>
+                  <div style="display: none;">
+                     <h:commandLink rendered ="#{referral.status != 'DONE'}"
+                                    action="#{jsf._do(referral.setStatus('DONE'))._save(referral).stay}"
+                                    styleClass="intable-action"
+                                    style="width: 6em;"
+                                    value="Done">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandLink>
+                     <h:commandLink rendered ="#{referral.status != 'OPEN'}"
+                                    action="#{jsf._do(referral.setStatus('OPEN'))._save(referral).stay}"
+                                    styleClass="intable-action"
+                                    style="width: 6em;"
+                                    value="Open">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandLink>
+                     <h:commandLink rendered ="#{referral.status != 'CANCELLED'}"
+                                    action="#{jsf._do(var.Referral.form.put('referral', referral))._to('Referral/cancel').go}"
+                                    styleClass="intable-action"
+                                    style="margin-right: 1em;"
+                                    value="Cancel">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandLink>
+                     <h:commandLink rendered ="#{referral.status != 'OBSOLETE'}"
+                                    action="#{jsf._do(referral.setStatus('OBSOLETE'))._save(referral).stay}"
+                                    styleClass="intable-action"
+                                    style="width: 6em;"
+                                    value="Obsolete">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandLink>
+                     <h:commandLink action="#{jsf._do(var.ReferralResult.form.put('referralResult', biz.newReferralResultFromReferral(referral)))._to('ReferralResult/new').go}"
+                                    value="Create Result" style="margin-right: 1em;"/>
+                     <ui:fragment rendered="#{access.isUriPermitted('MyOffice/administration')}">
+                        <div class="separator"/>
+                        <h:commandLink action="#{jsf._delete(referral).
+                                                 _do(var.OfficeProvider.Referral.search._(null)).
+                                                 _do(var.Patient.Referral.search._(null)).stay}"
+                                       styleClass="intable-action"
+                                       style="width: 6em;"
+                                       onclick="if (confirm('Delete Referral?')) return true; else return false;"
+                                       value="Remove">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandLink>
+                     </ui:fragment>
+                  </div>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

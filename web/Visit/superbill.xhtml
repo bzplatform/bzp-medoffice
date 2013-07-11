@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>Superbill</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 1em;
+               margin: 1em;
+            }
+
+            .action {
+               display: block !important;
+               text-align: left;
+               margin-left: 3em;
+               margin-top: 1em;
+            }
+         }
+         @media all {
+
+            body {
+               font-family:Arial, sans-serif;
+               margin: 0em;
+               text-align: left;
+               font-size: 0.8em;
+               line-height: 1;
+            }
+            .page {
+               position: relative;
+               margin-left: 3em;              
+               width: 56em;
+               height: 76em;
+               display: block;
+               overflow: hidden;
+               padding:0.1em;
+            }
+
+            h1, h2 {
+               text-align: center;
+            }
+            h1 {
+               font-size: 1.2em;
+            }
+            h2 {
+               font-size: 1em;
+               font-weight: normal;
+            }
+            .bold {
+               font-weight: bold;
+            }
+            th {
+               text-align: left;
+               font-weight: normal;
+            }
+            td, th {
+               vertical-align: top;
+            }
+            .border td, .border th {
+               border-bottom: solid black 1px;
+            }
+            hr {
+               color: black;
+               background-color: black;
+               height: 2px;
+               border:0px none;
+            }
+         }
+         @media print {
+            .action {
+               display: none;
+            }
+            .page {
+               margin-top: 2em;
+            }
+         }
+      </style>
+      <script type="text/javascript" src="/#{access.application}/script/jquery/jquery-1.9.0.min.js"></script>
+      <script type="text/javascript" src="/#{access.application}/script/printer.js"></script>
+   </head>
+   <body>
+      <h:form prependId="false">
+         <div class="action"><a href="#" id="print-link" onclick="return print('Portrait')">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         <div class="page">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size: 1.2em;">
+               <tr>
+                  <td valign="top" colspan="2">
+                     <h1 style="margin-bottom: 0;">SL Quality Care D &amp; T Center</h1>
+                     #{var.Visit.superbill.myOffice._(biz.myOffice(myOfficeCode))}
+                     <h2 style="margin-top: 0.3em;">#{var.Visit.superbill.myOffice._.address}, #{var.Visit.superbill.myOffice._.city}, #{var.Visit.superbill.myOffice._.state} #{var.Visit.superbill.myOffice._.zipCode}</h2>                     
+                  </td>
+               </tr>
+               <tr>
+                  <td>
+                     <label>Provider:</label>
+                     <span class="bold">#{var.Visit.superbill.visit.provider.firstName} #{var.Visit.superbill.visit.provider.lastName}, #{var.Visit.superbill.visit.provider.suffix}</span>
+                  </td>
+                  <td style="text-align:right;">
+                     <label>Date of Service:&nbsp;</label>
+                     <h:outputText value="#{var.Visit.superbill.visit.date}" class="bold">
+                        <f:convertDateTime pattern="MM/dd/yyyy"/>
+                     </h:outputText>
+                  </td>
+               </tr>
+            </table>
+            <hr/>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-top: 1em;">
+               <tr>
+                  <td width="50%" align="center" valign="top"><h1 style="margin-bottom: 0.3em; text-align: left; font-size: 0.9em;">PATIENT</h1>
+                     <table border="0" cellpadding="2px" cellspacing="2px" style="border: solid black 1px;">
+                        <tr>
+                           <th>MRN:</th>
+                           <td class="bold">#{var.Visit.superbill.visit.patient.id}</td>
+                        </tr>
+                        <tr>
+                           <th width="*">Name:</th>
+                           <td width="90%" class="bold">#{var.Visit.superbill.visit.patient.lastName}, #{var.Visit.superbill.visit.patient.firstName}</td>
+                        </tr>
+                        <tr>
+                           <th>DOB:</th>
+                           <td><h:outputText value="#{var.Visit.superbill.visit.patient.birthDate}" class="bold">
+                                 <f:convertDateTime pattern="MM/dd/yyyy"/>
+                              </h:outputText></td>
+                        </tr>
+                        <tr>
+                           <th>Gender:</th>
+                           <td class="bold">#{var.Visit.superbill.visit.patient.sex}</td>
+                        </tr>
+                        <tr>
+                           <th>Phone:</th>
+                           <td>#{var.Visit.superbill.visit.patient.homePhone}</td>
+                        </tr>
+                        <tr>
+                           <th>Address:</th>
+                           <td>#{var.Visit.superbill.visit.patient.address}, #{var.Visit.superbill.visit.patient.city},&nbsp;#{var.Visit.superbill.visit.patient.state}&nbsp;#{var.Visit.superbill.visit.patient.zipCode}</td>
+                        </tr>
+                     </table>
+                  </td>
+                  <td style="padding-left: 1em; padding-top: 1em">
+                     <table border="0" cellpadding="2px" cellspacing="2px">
+                        <tr>
+                           <th>Referring Provider:</th>
+                           <td class="bold">#{biz.referringProvider(var.Visit.superbill.visit.referringDoctorID).firstName} #{biz.referringProvider(var.Visit.superbill.visit.referringDoctorID).lastName}</td>
+                        </tr>
+                     </table>
+                     <table border="0" cellpadding="2px" cellspacing="2px">
+                        <tr>
+                           <th>Date of Prescription:</th>
+                           <td class="bold"><h:outputText value="#{var.Visit.superbill.visit.prescriptionDate}" class="bold">
+                                 <f:convertDateTime pattern="MM/dd/yyyy"/>
+                              </h:outputText></td>
+                        </tr>
+                     </table>
+                     <table border="0" cellpadding="2px" cellspacing="2px">
+                        <tr>
+                           <th>Prior Authorization #:</th>
+                           <td class="bold">#{var.Visit.superbill.visit.authorizationNumber}</td>
+                        </tr>
+                     </table>
+                     <table border="0" cellpadding="2px" cellspacing="2px">
+                        <tr>
+                           <th>Insurance(s):</th>
+                           <td class="bold">
+                              <ui:repeat value="#{var.Visit.superbill.visit.patient.insuranceList}" var="patientInsurance">
+                                 #{patientInsurance.insurance.name} <span style="font-weight: normal;">ID:&nbsp;#{patientInsurance.policyID}</span><br/>
+                              </ui:repeat>
+                           </td>
+                        </tr>
+                     </table>
+                  </td>
+               </tr>               
+            </table>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-top: 3em;">
+               <tr>
+                  <td width="50%" align="center" valign="top">
+                     <h1 style="margin-bottom: 0.3em; text-align: left; font-size: 0.9em;">DIAGNOSES</h1>
+                     <table width="100%" cellpadding="2px" cellspacing="0" class="border" style="border-collapse: collapse; border: solid black 1px;">
+                        <tr>
+                           <th class="bold">Code</th><th class="bold">Description</th>
+                        </tr>
+                        <ui:repeat value="#{biz.appendToMinSize(var.Visit.superbill.visit.diagnosisList, 6)}" var="diagnosis">
+                           <tr>
+                              <td>#{diagnosis.code}&nbsp;</td><td>#{diagnosis.description}</td>
+                           </tr>
+                        </ui:repeat>
+                     </table>
+                  </td>
+                  <td style="padding-left: 1em;">
+                     <h1 style="margin-bottom: 0.3em; text-align: left; font-size: 0.9em;">PAYMENTS</h1>
+                     <ui:fragment>
+                        <table width="100%" cellpadding="2px" cellspacing="0" class="border" style="border-collapse: collapse; border: solid black 1px;">
+                           <tr>
+                              <th class="bold">Type</th><th class="bold">Method</th><th class="bold">Check Number</th><th class="bold">Amount</th>
+                           </tr>
+                           <ui:repeat value="#{biz.appendToMinSize(var.Visit.superbill.visit.paymentList, 5)}" var="payment">
+                              <tr>
+                                 <td>#{payment.paymentType.name}&nbsp;</td>
+                                 <td>#{payment.paymentMethod.name}</td>
+                                 <td>#{payment.checkNumber}</td>
+                                 <td><h:outputText value="#{payment.amount}">
+                                       <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText></td>
+                              </tr>
+                           </ui:repeat>
+                           <tr>
+                              <th class="bold" style="text-align: right;" colspan="3">Amount Paid:</th>
+                              <td><h:outputText value="#{var.Visit.superbill.visit.amountPaid}">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                 </h:outputText></td>
+                           </tr>
+                        </table>
+                     </ui:fragment>
+                  </td>
+               </tr>
+            </table>
+            <h1 style="margin-bottom: 0.3em; text-align: left; font-size: 0.9em; margin-top: 3em;">PROCEDURES</h1>
+            <table width="100%" cellpadding="2px" cellspacing="0" class="border" style="border-collapse: collapse; border: solid black 1px;">
+               <tr>
+                  <th class="bold">Code</th><th class="bold">Description</th><th class="bold">DX Pointers</th><th class="bold">M1</th><th class="bold">M2</th><th class="bold">M3</th><th class="bold">Units</th>
+               </tr>
+               <ui:repeat value="#{biz.appendToMinSize(var.Visit.superbill.visit.procedureList, 6)}" var="visitProcedure">
+                  <tr>
+                     <td>#{visitProcedure.code}&nbsp;</td><td>#{visitProcedure.procedure.description}</td><td>#{visitProcedure.diagCodePointers}</td>
+                     <td>#{visitProcedure.modifier1}</td><td>#{visitProcedure.modifier2}</td><td>#{visitProcedure.modifier3}</td><td>#{visitProcedure.units}</td>
+                  </tr>
+               </ui:repeat>
+            </table>            
+            <h1 style="margin-bottom: 0; text-align: left; font-size: 0.9em; margin-top: 3em;">NOTES</h1>
+            <p style="margin-top:0.2em;">#{var.Visit.superbill.visit.notes}</p>
+            <div style="position: absolute; top: 58em; left: 25em; font-size: 1.2em;">Provider Signature _____________________</div>
+         </div>
+      </h:form>
+   </body>
+</html>

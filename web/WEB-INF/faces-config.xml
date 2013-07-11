@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.0"
+              xmlns="http://java.sun.com/xml/ns/javaee" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+   <application>
+      <navigation-handler>
+         jsftoolkit.navigation.Dispatcher
+      </navigation-handler>
+   </application>
+   <converter>
+      <converter-id>EntityConverter</converter-id>
+      <converter-class>
+         jsftoolkit.util.EntityConverter
+      </converter-class>
+   </converter>
+   <converter>
+      <converter-id>IntegerConverter</converter-id>
+      <converter-class>
+         javax.faces.convert.IntegerConverter
+      </converter-class>
+   </converter>
+   <managed-bean>
+      <managed-bean-name>jsf</managed-bean-name>
+      <managed-bean-class>jsftoolkit.controller.SessionController</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+   </managed-bean>
+   <managed-bean>
+      <managed-bean-name>var</managed-bean-name>
+      <managed-bean-class>jsftoolkit.controller.VarMap</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+   </managed-bean>
+   <managed-bean>
+      <managed-bean-name>access</managed-bean-name>
+      <managed-bean-class>jsftoolkit.controller.AccessController</managed-bean-class>
+      <managed-bean-scope>session</managed-bean-scope>
+   </managed-bean>
+   <navigation-rule>
+      <navigation-case>
+         <from-outcome>home</from-outcome>
+         <to-view-id>/OfficeProvider/main.xhtml</to-view-id>
+         <redirect/>
+      </navigation-case>
+      <navigation-case>
+         <from-outcome>login</from-outcome>
+         <to-view-id>/login.xhtml</to-view-id>
+         <redirect/>
+      </navigation-case>
+   </navigation-rule>
+   <lifecycle>
+      <phase-listener>jsftoolkit.navigation.SecurityPhaseListener</phase-listener>
+   </lifecycle>
+</faces-config>
+
+
+
+
+

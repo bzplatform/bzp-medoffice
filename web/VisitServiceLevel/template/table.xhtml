@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{serviceLevelList}" var="serviceLevel" rendered="#{not empty serviceLevelList}">
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Patient Type"/>
+                  </f:facet>
+                  <h:outputText value="#{serviceLevel.patientType}"/>
+               </h:column>
+               <h:column rendered="#{state == 'ESTIMATED_BY_TIME'}">
+                  <f:facet name="header">
+                     <h:outputText value="Time Counseling"/>
+                  </f:facet>
+                  <h:outputText value="#{serviceLevel.timeCounseling} min"/>
+               </h:column>
+               <h:column rendered="#{state == 'ESTIMATED_BY_TIME'}">
+                  <f:facet name="header">
+                     <h:outputText value="Time Total"/>
+                  </f:facet>
+                  <h:outputText value="#{serviceLevel.timeTotal} min"/>
+               </h:column>
+               <h:column rendered="#{state == 'ESTIMATED'}">
+                  <f:facet name="header">
+                     <h:outputText value="History Level"/>
+                  </f:facet>
+                  <h:outputText value="#{serviceLevel.historyLevel}"/>
+               </h:column>
+               <h:column rendered="#{state == 'ESTIMATED'}">
+                  <f:facet name="header">
+                     <h:outputText value="Examination Level"/>
+                  </f:facet>
+                  <h:outputText value="#{serviceLevel.examinationLevel}"/>
+               </h:column>
+               <h:column rendered="#{state == 'ESTIMATED'}">
+                  <f:facet name="header">
+                     <h:outputText value="Decision Type"/>
+                  </f:facet>
+                  <h:outputText value="#{serviceLevel.decisionType}"/>
+               </h:column>
+               <h:column rendered="#{state == 'ESTIMATED'}">
+                  <f:facet name="header">
+                     <h:outputText value="Service Level"/>
+                  </f:facet>
+                  <h:outputText value="#{serviceLevel.serviceLevel}"/>
+               </h:column>
+               <h:column rendered="#{state == 'NO_ESTIMATION'}">
+                  <f:facet name="header">
+                     <h:outputText value="Issues"/>
+                  </f:facet>
+                  <h:outputText value="#{serviceLevel.issues}" escape="false"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Estimated CPT"/>
+                  </f:facet>
+                  <h:outputText value="#{serviceLevel.state}" rendered="#{serviceLevel.state != 'ESTIMATED'}"/>
+                  <h:outputText value="#{serviceLevel.cptCode}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Submitted CPT"/>
+                  </f:facet>
+                  <h:outputText value="#{serviceLevel.submittedCptCode}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Signed"/>
+                  </f:facet>
+                  <h:outputText value="Not Yet" rendered="#{! serviceLevel.signed}"/>
+                  <ui:fragment rendered="#{serviceLevel.signed}">
+                     <h:outputText value="#{serviceLevel.signedDatetime}" style="white-space: nowrap;">
+                        <f:convertDateTime pattern="MM/dd/yy"/>
+                     </h:outputText>
+                     <br/>
+                     <h:outputText value="by #{access.getUserName(serviceLevel.signedUserId)}"/>
+                  </ui:fragment>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Action"/>
+                  </f:facet>
+                  <h:selectOneMenu rendered="#{! serviceLevel.signed and access.user.id == serviceLevel.visit.provider.associatedUserId}" value="#{serviceLevel.submittedCptCode}" style="width: 5em; font-size:0.9em;">
+                     <f:selectItem itemValue="" itemLabel="NONE"/>
+                     <f:selectItems value="#{biz.officeProcedureList(serviceLevel.patientType)}" var="procedure" itemLabel="#{procedure.code} #{procedure.description}" itemValue="#{procedure.code}"/>
+                  </h:selectOneMenu>
+                  <h:commandButton disabled="#{serviceLevel.signed or access.user.id != serviceLevel.visit.provider.associatedUserId}" 
+                                   action="#{jsf._do(biz.signVisitServiceLevel(serviceLevel, access.user.id)).stay}" 
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;" 
+                                   onclick="#{var.VisitProgressNote.editSection._ != null ? 'alertFinishEditing();return false;' : ''}"
+                                   value="Sign">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

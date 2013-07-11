@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition template="../template/base.xhtml">
+
+         <ui:define name="title">
+            Medical Care: Add Records to Past Social History
+         </ui:define>
+
+         <ui:define name="navigation">
+            <ui:include src="../template/tab-navigation.xhtml"/>
+         </ui:define>
+
+         <ui:define name="form">
+            <div class="column">
+               <div class="menu form">
+                  <div class="header">
+                     <h3 class="center">Add Records to Social History for #{var.PatientSocialHistory.form.patient._.lastName}, #{var.PatientSocialHistory.form.patient._.firstName}</h3>
+                  </div>
+                  <div class="body">
+                     <ul class="vertical form-area grid g48">
+                        <ui:include src="template/form.xhtml"/>
+                     </ul>
+                  </div>
+                  <div class="footer">
+                     <h:commandButton action="#{jsf.
+                                                _do(biz.saveSocialHistoryList(var.PatientSocialHistory.form.otherType._, var.PatientSocialHistory.form.status, var.PatientSocialHistory.form.quitDate, var.PatientSocialHistory.form.unit, var.PatientSocialHistory.form.qty, var.PatientSocialHistory.form.duration, var.PatientSocialHistory.form.description, var.PatientSocialHistory.form.patient._, access.user.id)).
+                                                _do(var.PatientSocialHistory.form.$).back}" styleClass="ok-button" value="OK"/>
+                     <h:commandButton action="#{jsf._do(var.PatientSocialHistory.form.$).back}" value="Cancel" immediate="true" styleClass="cancel-button"/>
+                  </div>
+               </div>
+            </div>
+         </ui:define>
+
+      </ui:composition>
+
+   </body>
+</html>

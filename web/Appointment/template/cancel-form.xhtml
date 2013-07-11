@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! empty var.Appointment.form}">
+            <div style="display: inline-block; width: 10em;">            
+               <label>Cancel Reason:</label>
+               <h:selectOneMenu value="#{var.Appointment.form.appointment._.notes}" style="width: 100%;">
+                  <f:selectItem itemValue="Rescheduling" itemLabel="Rescheduling"/>
+                  <f:selectItem itemValue="Canceled by Patient" itemLabel="Canceled by Patient"/>
+                  <f:selectItem itemValue="Canceled by Provider" itemLabel="Canceled by Provider"/>
+                  <f:selectItem itemValue="Error" itemLabel="Error"/>               
+               </h:selectOneMenu>
+            </div>
+            <div style="display: inline-block; width: 8em;">
+               <div>
+                  <h:panelGroup styleClass="errors" rendered="#{var.Appointment.form.passwordExists._ == false}" style="width:auto;">
+                     Password doesn't exist!
+                  </h:panelGroup>
+               </div>
+               <label>Password:</label>
+               <h:inputSecret value="#{var.Appointment.form.appointment._.password}" style="width: 100%;"/>
+            </div>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

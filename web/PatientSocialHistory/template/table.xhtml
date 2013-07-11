@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{historyList}" var="history" rendered="#{not empty historyList}">
+               <h:column rendered="#{tableConfig.created._}">
+                  <f:facet name="header">
+                     <h:outputText value="Created"/>
+                  </f:facet>
+                  <h:outputText value="#{history.created}" style="white-space: nowrap;">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+                  <br/>
+                  <h:outputText value="by #{access.getUserName(history.userId)}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.updated._}">
+                  <f:facet name="header">
+                     <h:outputText value="Updated" style="white-space: nowrap;"/>
+                  </f:facet>
+                  <h:outputText value="#{history.lastUpdated}" style="white-space: nowrap;">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+                  <br/>
+                  <h:outputText value="by #{access.getUserName(history.lastUpdatedUserId)}" rendered="#{history.lastUpdatedUserId != null}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Type"/>
+                  </f:facet>
+                  <h:outputText value="#{history.type}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Status"/>
+                  </f:facet>
+                  <h:outputText value="#{history.status}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Quit&nbsp;Date"/>
+                  </f:facet>
+                  <h:outputText value="#{history.quitDate}" rendered="#{var.PatientSocialHistory._ != history}"/>
+                  <h:inputText value="#{history.quitDate}" rendered="#{var.PatientSocialHistory._ == history}" style="width: 12em;"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Description"/>
+                  </f:facet>
+                  <h:outputText value="#{history.description}" rendered="#{var.PatientSocialHistory._ != history}"/>
+                  <h:inputText value="#{history.description}" rendered="#{var.PatientSocialHistory._ == history}" style="width: 12em;"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Action"/>
+                  </f:facet>
+                  <h:commandButton style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"
+                                   action="#{jsf._do(var.PatientSocialHistory._(history)).stay}" value="Edit" rendered="#{var.PatientSocialHistory._ != history}">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"
+                                   action="#{jsf._do(history.setLastUpdated(jsf.newDate))._do(history.setLastUpdatedUserId(access.user.id))._save(history)._do(var.PatientSocialHistory._(null)).stay}" value="Save" rendered="#{var.PatientSocialHistory._ == history}">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"
+                                   action="#{jsf._do(var.PatientSocialHistory._(null)).stay}" value="Cancel" rendered="#{var.PatientSocialHistory._ == history}">
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton onclick="if(confirm('Remove #{history.type.replaceAll('\\W', ' ')}: #{history.description.replaceAll('\\W', ' ')}?')) return true; else return false;" action="#{jsf._delete(history).stay}" style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;" value="Remove">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

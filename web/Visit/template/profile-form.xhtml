@@ -1,0 +1,487 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <body>
+      <ui:composition>
+         #{jsf._do(empty var.Visit.specialty.profile ? var.Visit.specialty.put('profile', biz.mongoEjb.specialtyProfile(var.Visit.specialty.visit.specialtyID)) : null).stay()}
+         #{jsf._do(empty var.Visit.provider.profile ? var.Visit.provider.put('profile', biz.mongoEjb.providerProfile(var.Visit.specialty.visit.provider.id)) : null).stay()}
+         #{jsf._do(var.Visit.specialty.view._ == null ? var.Visit.specialty.view._('default') : null).stay()}
+         <h:commandButton action="#{jsf._do(var.Visit.specialty.view._('default')).stay}"
+                          disabled="#{var.Visit.specialty.view._ == 'default'}"
+                          style="width: 12em; margin: 0;" value="Procedures/Diagnoses"/>
+         <h:commandButton action="#{jsf._do(var.Visit.specialty.view._('diagnoses')).stay}"
+                          rendered="#{! empty var.Visit.specialty.profile.diagnosisList}"
+                          disabled="#{var.Visit.specialty.view._ == 'diagnoses'}"
+                          style="width: 12em; margin: 0;" value="Common Diagnoses"/>
+         <h:commandButton action="#{jsf._do(var.Visit.specialty.view._('laboratoryDiagnoses')).stay}"
+                          rendered="#{! empty var.Visit.specialty.profile.laboratory.diagnosisList}"
+                          disabled="#{var.Visit.specialty.view._ == 'laboratoryDiagnoses'}"
+                          style="width: 12em; margin: 0;" value="Laboratory Diagnoses">
+         </h:commandButton>
+         <h:commandButton action="#{jsf._do(var.Visit.specialty.view._('providerTab')).stay}"
+                          disabled="#{var.Visit.specialty.view._ == 'providerTab'}"
+                          rendered="#{! empty var.Visit.provider.profile.procedureList}"
+                          style="width: auto; margin: 0;" value="#{var.Visit.provider.profile.label}">
+         </h:commandButton>
+         <ui:fragment rendered="#{var.Visit.specialty.view._ == 'default'}">
+            <div style="-moz-column-count:#{var.Visit.specialty.profile.defaultColumns}; -webkit-column-count:#{var.Visit.specialty.profile.defaultColumns}; padding: 0; margin-right: 0em; margin-top: 0.5em; -webkit-column-gap: 0;">
+               <ui:repeat value="#{var.Visit.specialty.profile.procedureList}" var="procedure">
+                  <ui:fragment rendered="#{procedure.section}">
+                     <ui:repeat value="#{procedure}" var="procedureSection">
+                        <div style="border: solid 1px; display: inline-block; margin-top: -1px; width: 100%; padding: 0.3em; overflow: hidden;">
+                           <ui:fragment rendered="#{! empty procedureSection.name}">
+                              <h3 style="font-size: 0.7em;">#{procedureSection.name}</h3>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{procedureSection.exclusive}">
+                              <h:selectOneMenu value="#{var.Visit.specialty.temp[procedureSection]._}" title="Procedure" style="width: 16em;">
+                                 <f:selectItem itemValue="_NONE" itemLabel="NONE"/>
+                                 <f:selectItems value="#{procedureSection.procedureList}" itemValue="#{procedure.cpt}" var="procedure" itemLabel="#{procedure.cpt} #{procedure.description}"/>                                 
+                              </h:selectOneMenu>
+                              #{var.Visit.specialty.temp[procedureSection]._ == '_NONE' ? var.Visit.specialty.temp[procedureSection]._(null) : null}
+                              <ui:repeat value="#{procedureSection.procedureList}" var="procedure">
+                                 #{jsf._do(var.Visit.specialty.procedure.remove(procedure.cpt)).stay()}
+                              </ui:repeat>
+                              #{jsf._do(! empty var.Visit.specialty.temp[procedureSection]._ ? var.Visit.specialty.procedure[var.Visit.specialty.temp[procedureSection]._]._(true) : null).stay()}
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! procedureSection.exclusive}">
+                              <ui:repeat value="#{procedureSection.procedureList}" var="procedure">
+                                 <ui:fragment rendered="#{procedure.text}">
+                                    <div style="border: none; display: inline;">
+                                       <ui:fragment rendered="#{procedure.brBefore}">
+                                          <br/>
+                                       </ui:fragment>
+                                       <label style="font-size: 0.7em; display: inline-block;">#{procedure.line}</label>
+                                       <ui:fragment rendered="#{procedure.brAfter}">
+                                          <br/>
+                                       </ui:fragment>
+                                    </div>
+                                 </ui:fragment>
+                                 <ui:fragment rendered="#{! procedure.text}">
+                                    <nobr>
+                                       <h:selectBooleanCheckbox value="#{var.Visit.specialty.procedure[procedure.cpt]._}" style="margin: 0;"/>
+                                       <label style="font-size: 0.7em; display: inline-block;" title="#{procedure.cpt} #{procedure.description}"><b>#{procedure.cpt}</b> #{procedureSection.hideDescription ? '' : procedure.description}</label>
+                                    </nobr>
+                                    <ui:repeat value="#{procedure.diagnosisList}" var="diagnosis">
+                                       <ui:fragment rendered="#{diagnosis.section}">
+                                          <ui:repeat value="#{diagnosis}" var="diagnosisSection">
+                                             <ui:fragment rendered="#{diagnosisSection.exclusive}">
+                                                <h:selectOneMenu value="#{var.Visit.specialty.temp[procedure.cpt][diagnosisSection]._}" title="Diagnosis" style="width: 16em; margin-left: 1em;">
+                                                   <f:selectItem itemValue="_NONE" itemLabel="NONE"/>
+                                                   <f:selectItems value="#{diagnosisSection.diagnosisList}" itemValue="#{diagnosis.icd}" var="diagnosis" itemLabel="#{diagnosis.icd} #{diagnosis.description}"/>
+                                                </h:selectOneMenu>
+                                                #{var.Visit.specialty.temp[procedure.cpt][diagnosisSection]._ == '_NONE' ? var.Visit.specialty.temp[procedure.cpt][diagnosisSection]._(null) : null}
+                                                <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                                                   #{jsf._do(var.Visit.specialty.procedure[procedure.cpt].remove(diagnosis.icd)).stay()}
+                                                </ui:repeat>
+                                                #{jsf._do(! empty var.Visit.specialty.temp[procedure.cpt][diagnosisSection]._ ? var.Visit.specialty.procedure[procedure.cpt][var.Visit.specialty.temp[procedure.cpt][diagnosisSection]._]._(true) : null).stay()}
+                                             </ui:fragment>
+                                          </ui:repeat>
+                                       </ui:fragment>
+                                       <ui:fragment rendered="#{diagnosis.text}">
+                                          <ui:fragment rendered="#{diagnosis.brBefore}">
+                                             <br/>
+                                          </ui:fragment>
+                                          <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                                          <ui:fragment rendered="#{diagnosis.brAfter}">
+                                             <br/>
+                                          </ui:fragment>
+                                       </ui:fragment>
+                                       <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                                          <nobr>
+                                             <h:selectBooleanCheckbox value="#{var.Visit.specialty.procedure[procedure.cpt][diagnosis.icd]._}" style="margin: 0 0 0 1.4em;"/>
+                                             <label style="font-size: 0.7em; display: inline-block;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                                          </nobr>
+                                       </ui:fragment>
+                                    </ui:repeat>
+                                 </ui:fragment>
+                              </ui:repeat>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{procedureSection.commonDiagnoses}">
+                              <ui:repeat value="#{var.Visit.specialty.diagnosis.keySet().toArray()}" var="icd">
+                                 <ui:fragment rendered="#{var.Visit.specialty.diagnosis[icd]._}">
+                                    <ui:fragment rendered="#{procedureSection.exclusive and ! empty var.Visit.specialty.temp[procedureSection]._}">
+                                       #{jsf._do(var.Visit.specialty.procedure[var.Visit.specialty.temp[procedureSection]._][icd]._(var.Visit.specialty.diagnosis[icd]._)).stay()}
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{! procedureSection.exclusive}">
+                                       <ui:repeat value="#{procedureSection.procedureList}" var="procedure">
+                                          <ui:fragment>
+                                             #{jsf._do(var.Visit.specialty.procedure[procedure.cpt][icd]._(var.Visit.specialty.diagnosis[icd]._)).stay()}
+                                          </ui:fragment>
+                                       </ui:repeat>
+                                    </ui:fragment>
+                                 </ui:fragment>
+                              </ui:repeat>
+                           </ui:fragment>
+                           <ui:repeat value="#{procedureSection.diagnosisList}" var="diagnosis">
+                              <ui:fragment rendered="#{diagnosis.section}">
+                                 <ui:repeat value="#{diagnosis}" var="diagnosisSection">
+                                    <ui:fragment rendered="#{diagnosisSection.exclusive}">
+                                       <h:selectOneMenu value="#{var.Visit.specialty.temp[procedureSection][diagnosisSection]._}" title="Diagnosis" style="width: 16em; margin-left: 1em;">
+                                          <f:selectItem itemValue="_NONE" itemLabel="NONE"/>
+                                          <f:selectItems value="#{diagnosisSection.diagnosisList}" itemValue="#{diagnosis.icd}" var="diagnosis" itemLabel="#{diagnosis.icd} #{diagnosis.description}"/>                                        
+                                       </h:selectOneMenu>
+                                       #{var.Visit.specialty.temp[procedureSection][diagnosisSection]._ == '_NONE' ? var.Visit.specialty.temp[procedureSection][diagnosisSection]._(null) : null}
+                                       <ui:fragment rendered="#{procedureSection.exclusive and ! empty var.Visit.specialty.temp[procedureSection]._}">
+                                          <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                                             #{jsf._do(var.Visit.specialty.procedure[var.Visit.specialty.temp[procedureSection]._].remove(diagnosis.icd)).stay()}
+                                          </ui:repeat>
+                                          #{jsf._do(! empty var.Visit.specialty.temp[procedureSection][diagnosisSection]._ ? var.Visit.specialty.procedure[var.Visit.specialty.temp[procedureSection]._][var.Visit.specialty.temp[procedureSection][diagnosisSection]._]._(true) : null).stay()}
+                                       </ui:fragment>
+                                       <ui:fragment rendered="#{! procedureSection.exclusive}">
+                                          <ui:repeat value="#{procedureSection.procedureList}" var="procedure">
+                                             <ui:fragment>
+                                                <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                                                   #{jsf._do(var.Visit.specialty.procedure[procedure.cpt].remove(diagnosis.icd)).stay()}
+                                                </ui:repeat>
+                                                #{jsf._do(! empty var.Visit.specialty.temp[procedureSection][diagnosisSection]._ ? var.Visit.specialty.procedure[procedure.cpt][var.Visit.specialty.temp[procedureSection][diagnosisSection]._]._(true) : null).stay()}
+                                             </ui:fragment>
+                                          </ui:repeat>
+                                       </ui:fragment>
+                                    </ui:fragment>
+                                 </ui:repeat>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{diagnosis.text}">
+                                 <ui:fragment rendered="#{diagnosis.brBefore}">
+                                    <br/>
+                                 </ui:fragment>
+                                 <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                                 <ui:fragment rendered="#{diagnosis.brAfter}">
+                                    <br/>
+                                 </ui:fragment>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                                 <nobr>
+                                    <h:selectBooleanCheckbox value="#{var.Visit.specialty.temp[procedureSection][diagnosis.icd]._}" style="margin: 0 0 0 1.4em;"/>
+                                    <label style="font-size: 0.7em; display: inline-block;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                                 </nobr>                                 
+                                 <ui:fragment rendered="#{procedureSection.exclusive and ! empty var.Visit.specialty.temp[procedureSection]._}">
+                                    #{jsf._do(var.Visit.specialty.procedure[var.Visit.specialty.temp[procedureSection]._][diagnosis.icd]._(var.Visit.specialty.temp[procedureSection][diagnosis.icd]._)).stay()}
+                                 </ui:fragment>
+                                 <ui:fragment rendered="#{! procedureSection.exclusive}">
+                                    #{jsf._do(var.Visit.specialty.procedure[procedureSection][diagnosis.icd]._(var.Visit.specialty.temp[procedureSection][diagnosis.icd]._)).stay()}
+                                    <ui:repeat value="#{procedureSection.procedureList}" var="procedure">
+                                       #{jsf._do(var.Visit.specialty.procedure[procedure.cpt][diagnosis.icd]._(var.Visit.specialty.temp[procedureSection][diagnosis.icd]._)).stay()}
+                                    </ui:repeat>
+                                 </ui:fragment>
+                              </ui:fragment>
+                           </ui:repeat>
+                        </div>
+                     </ui:repeat>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{procedure.text}">
+                     <div style="border: none; display: inline;">
+                        <ui:fragment rendered="#{procedure.brBefore}">
+                           <br/>
+                        </ui:fragment>
+                        <label style="font-size: 0.7em; display: inline-block;">#{procedure.line}</label>
+                        <ui:fragment rendered="#{procedure.brAfter}">
+                           <br/>
+                        </ui:fragment>
+                     </div>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! procedure.section and ! procedure.text}">
+                     <div style="border: solid 1px; display: inline-block; margin-top: -1px; width: 100%; padding: 0.3em; overflow: hidden;">
+                        <nobr>
+                           <h:selectBooleanCheckbox value="#{var.Visit.specialty.procedure[procedure.cpt]._}" style="margin: 0;"/>
+                           <label style="font-size: 0.7em; display: inline-block;" title="#{procedure.cpt} #{procedure.description}"><b>#{procedure.cpt}</b> #{procedure.description}</label>
+                        </nobr>
+                        <ui:repeat value="#{procedure.diagnosisList}" var="diagnosis">
+                           <ui:fragment rendered="#{diagnosis.section}">
+                              <ui:repeat value="#{diagnosis}" var="diagnosisSection">
+                                 <ui:fragment rendered="#{diagnosisSection.exclusive}">
+                                    <h:selectOneMenu value="#{var.Visit.specialty.temp[procedure.cpt][diagnosisSection]._}" title="Diagnosis" style="width: 16em; margin-left: 1em;">
+                                       <f:selectItem itemValue="_NONE" itemLabel="NONE"/>
+                                       <f:selectItems value="#{diagnosisSection.diagnosisList}" itemValue="#{diagnosis.icd}" var="diagnosis" itemLabel="#{diagnosis.icd} #{diagnosis.description}"/>
+                                    </h:selectOneMenu>
+                                    #{var.Visit.specialty.temp[procedure.cpt][diagnosisSection]._ == '_NONE' ? var.Visit.specialty.temp[procedure.cpt][diagnosisSection]._(null) : null}
+                                    <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                                       #{jsf._do(var.Visit.specialty.procedure[procedure.cpt].remove(diagnosis.icd)).stay()}
+                                    </ui:repeat>
+                                    #{jsf._do(! empty var.Visit.specialty.temp[procedure.cpt][diagnosisSection]._ ? var.Visit.specialty.procedure[procedure.cpt][var.Visit.specialty.temp[procedure.cpt][diagnosisSection]._]._(true) : null).stay()}
+                                 </ui:fragment>
+                              </ui:repeat>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{diagnosis.text}">
+                              <ui:fragment rendered="#{diagnosis.brBefore}">
+                                 <br/>
+                              </ui:fragment>
+                              <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                              <ui:fragment rendered="#{diagnosis.brAfter}">
+                                 <br/>
+                              </ui:fragment>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                              <nobr>
+                                 <h:selectBooleanCheckbox value="#{var.Visit.specialty.procedure[procedure.cpt][diagnosis.icd]._}" style="margin: 0 0 0 1.4em;"/>
+                                 <label style="font-size: 0.7em; display: inline-block;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                              </nobr>
+                           </ui:fragment>
+                        </ui:repeat>
+                     </div>
+                  </ui:fragment>
+               </ui:repeat>         
+            </div>
+         </ui:fragment>
+         <ui:fragment rendered="#{var.Visit.specialty.view._ == 'diagnoses'}">
+            <div style="-moz-column-count:#{var.Visit.specialty.profile.diagnosesColumns}; -webkit-column-count:#{var.Visit.specialty.profile.diagnosesColumns}; padding: 0; margin-right: 1.2em; margin-top: 0.5em;">
+               <ui:repeat value="#{var.Visit.specialty.profile.diagnosisList}" var="diagnosis">
+                  <ui:fragment rendered="#{diagnosis.section}">
+                     <ui:repeat value="#{diagnosis}" var="diagnosisSection">
+                        <div style="border: solid 1px; display: inline-block; margin-top: -1px; width: 100%; padding: 0.3em; overflow: hidden;">
+                           <ui:fragment rendered="#{! empty diagnosisSection.name}">
+                              <h3 style="font-size: 0.7em;">#{diagnosisSection.name}</h3>
+                           </ui:fragment>
+                           <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                              <nobr>
+                                 <h:selectBooleanCheckbox value="#{var.Visit.specialty.diagnosis[diagnosis.icd]._}" style="margin: 0 0 0 1.4em;"/>
+                                 <label style="font-size: 0.7em; display: inline-block;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                              </nobr>
+                           </ui:repeat>
+                        </div>
+                     </ui:repeat>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{diagnosis.text}">
+                     <ui:fragment rendered="#{diagnosis.brBefore}">
+                        <br/>
+                     </ui:fragment>
+                     <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                     <ui:fragment rendered="#{diagnosis.brAfter}">
+                        <br/>
+                     </ui:fragment>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                     <div style="display: inline-block; margin-top: -1px; width: 100%; padding: 0 0.3em; overflow: hidden;">
+                        <nobr>
+                           <h:selectBooleanCheckbox value="#{var.Visit.specialty.diagnosis[diagnosis.icd]._}" style="margin: 0;"/>
+                           <label style="font-size: 0.7em; display: inline-block;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                        </nobr>
+                     </div>
+                  </ui:fragment>
+               </ui:repeat>
+            </div>
+         </ui:fragment>
+         <ui:fragment rendered="#{var.Visit.specialty.view._ == 'laboratoryDiagnoses'}">
+            <div style="-moz-column-count:#{var.Visit.specialty.profile.laboratoryDiagnosesColumns}; -webkit-column-count:#{var.Visit.specialty.profile.laboratoryDiagnosesColumns}; padding: 0; margin-right: 1.2em; margin-top: 0.5em;">
+               <ui:repeat value="#{var.Visit.specialty.profile.laboratory.diagnosisList}" var="diagnosis" varStatus="status">
+                  <ui:fragment rendered="#{diagnosis.section}">
+                     <ui:repeat value="#{diagnosis}" var="diagnosisSection">
+                        <div style="border: solid 1px; display: inline-block; margin-top: -1px; width: 100%; padding: 0.3em; overflow: hidden;">
+                           <ui:fragment rendered="#{! empty diagnosisSection.name}">
+                              <h3 style="font-size: 0.7em;">#{diagnosisSection.name}</h3>
+                           </ui:fragment>
+                           <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                              <nobr>
+                                 <h:selectBooleanCheckbox value="#{var.Visit.specialty.laboratoryDiagnosis[diagnosis.icd.concat(':').concat(status.index)]._}" style="margin: 0;"/>
+                                 <label style="font-size: 0.7em; display: inline-block;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                              </nobr>
+                           </ui:repeat>
+                        </div>
+                     </ui:repeat>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{diagnosis.text}">
+                     <ui:fragment rendered="#{diagnosis.brBefore}">
+                        <br/>
+                     </ui:fragment>
+                     <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                     <ui:fragment rendered="#{diagnosis.brAfter}">
+                        <br/>
+                     </ui:fragment>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                     <div style="display: inline-block; margin-top: -1px; width: 100%; padding: 0 0.3em; overflow: hidden;">
+                        <nobr>
+                           <h:selectBooleanCheckbox value="#{var.Visit.specialty.laboratoryDiagnosis[diagnosis.icd.concat(':').concat(status.index)]._}" style="margin: 0;"/>
+                           <label style="font-size: 0.7em; display: inline-block;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                        </nobr>
+                     </div>
+                  </ui:fragment>
+               </ui:repeat>
+            </div>
+         </ui:fragment>
+         <ui:fragment rendered="#{var.Visit.specialty.view._ == 'providerTab'}">
+            <div style="-moz-column-count:#{var.Visit.provider.profile.columns}; -webkit-column-count:#{var.Visit.provider.profile.columns}; padding: 0; margin-right: 1.2em; margin-top: 0.5em;">
+               <ui:repeat value="#{var.Visit.provider.profile.procedureList}" var="procedure">
+                  <ui:fragment rendered="#{procedure.section}">
+                     <ui:repeat value="#{procedure}" var="procedureSection">
+                        <div style="border: solid 1px; display: inline-block; margin-top: -1px; width: 100%; padding: 0.3em; overflow: hidden;">
+                           <ui:fragment rendered="#{! empty procedureSection.name}">
+                              <h3 style="font-size: 0.7em;">#{procedureSection.name}</h3>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{procedureSection.exclusive}">
+                              <h:selectOneMenu value="#{var.Visit.provider.temp[procedureSection]._}" title="Procedure" style="width: 16em;">
+                                 <f:selectItem itemValue="_NONE" itemLabel="NONE"/>
+                                 <f:selectItems value="#{procedureSection.procedureList}" itemValue="#{procedure.cpt}" var="procedure" itemLabel="#{procedure.cpt} #{procedure.description}"/>
+                              </h:selectOneMenu>
+                              #{var.Visit.provider.temp[procedureSection]._ == '_NONE' ? var.Visit.provider.temp[procedureSection]._(null) : null}
+                              <ui:repeat value="#{procedureSection.procedureList}" var="procedure">
+                                 #{jsf._do(var.Visit.provider.procedure.remove(procedure.cpt)).stay()}
+                              </ui:repeat>
+                              #{jsf._do(! empty var.Visit.provider.temp[procedureSection]._ ? var.Visit.provider.procedure[var.Visit.provider.temp[procedureSection]._]._(true) : null).stay()}
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! procedureSection.exclusive}">
+                              <ui:repeat value="#{procedureSection.procedureList}" var="procedure">
+                                 <ui:fragment rendered="#{procedure.text}">
+                                    <ui:fragment rendered="#{procedure.brBefore}">
+                                       <br/>
+                                    </ui:fragment>
+                                    <label style="font-size: 0.7em; display: inline-block;">#{procedure.line}</label>
+                                    <ui:fragment rendered="#{procedure.brAfter}">
+                                       <br/>
+                                    </ui:fragment>
+                                 </ui:fragment>
+                                 <ui:fragment rendered="#{! procedure.text}">
+                                    <nobr>
+                                       <h:selectBooleanCheckbox value="#{var.Visit.provider.procedure[procedure.cpt]._}" style="margin: 0;"/>
+                                       <label style="font-size: 0.7em; display: inline-block;" title="#{procedure.cpt} #{procedure.description}"><b>#{procedure.cpt}</b> #{procedureSection.hideDescription ? '' : procedure.description}</label>
+                                    </nobr>
+                                    <ui:repeat value="#{procedure.diagnosisList}" var="diagnosis">
+                                       <ui:fragment rendered="#{diagnosis.section}">
+                                          <ui:repeat value="#{diagnosis}" var="diagnosisSection">
+                                             <ui:fragment rendered="#{diagnosisSection.exclusive}">
+                                                <h:selectOneMenu value="#{var.Visit.provider.temp[procedure.cpt][diagnosisSection]._}" title="Diagnosis" style="width: 16em; margin-left: 1em;">
+                                                   <f:selectItem itemValue="_NONE" itemLabel="NONE"/>
+                                                   <f:selectItems value="#{diagnosisSection.diagnosisList}" itemValue="#{diagnosis.icd}" var="diagnosis" itemLabel="#{diagnosis.icd} #{diagnosis.description}"/>
+                                                </h:selectOneMenu>
+                                                #{var.Visit.provider.temp[procedure.cpt][diagnosisSection]._ == '_NONE' ? var.Visit.provider.temp[procedure.cpt][diagnosisSection]._(null) : null}
+                                                <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                                                   #{jsf._do(var.Visit.provider.procedure[procedure.cpt].remove(diagnosis.icd)).stay()}
+                                                </ui:repeat>
+                                                #{jsf._do(! empty var.Visit.provider.temp[procedure.cpt][diagnosisSection]._ ? var.Visit.provider.procedure[procedure.cpt][var.Visit.provider.temp[procedure.cpt][diagnosisSection]._]._(true) : null).stay()}
+                                             </ui:fragment>
+                                          </ui:repeat>
+                                       </ui:fragment>
+                                       <ui:fragment rendered="#{diagnosis.text}">
+                                          <ui:fragment rendered="#{diagnosis.brBefore}">
+                                             <br/>
+                                          </ui:fragment>
+                                          <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                                          <ui:fragment rendered="#{diagnosis.brAfter}">
+                                             <br/>
+                                          </ui:fragment>
+                                       </ui:fragment>
+                                       <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                                          <nobr>
+                                             <h:selectBooleanCheckbox value="#{var.Visit.provider.procedure[procedure.cpt][diagnosis.icd]._}" style="margin: 0 0 0 1.4em;"/>
+                                             <label style="font-size: 0.7em; display: inline-block;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                                          </nobr>
+                                       </ui:fragment>
+                                    </ui:repeat>
+                                 </ui:fragment>
+                              </ui:repeat>
+                           </ui:fragment>
+                           <ui:repeat value="#{procedureSection.diagnosisList}" var="diagnosis">
+                              <ui:fragment rendered="#{diagnosis.section}">
+                                 <ui:repeat value="#{diagnosis}" var="diagnosisSection">
+                                    <ui:fragment rendered="#{diagnosisSection.exclusive}">
+                                       <h:selectOneMenu value="#{var.Visit.provider.temp[procedureSection][diagnosisSection]._}" title="Diagnosis" style="width: 16em; margin-left: 1em;">
+                                          <f:selectItem itemValue="_NONE" itemLabel="NONE"/>
+                                          <f:selectItems value="#{diagnosisSection.diagnosisList}" itemValue="#{diagnosis.icd}" var="diagnosis" itemLabel="#{diagnosis.icd} #{diagnosis.description}"/>
+                                       </h:selectOneMenu>
+                                       #{var.Visit.provider.temp[procedureSection][diagnosisSection]._ == '_NONE' ? var.Visit.provider.temp[procedureSection][diagnosisSection]._(null) : null}
+                                       <ui:fragment rendered="#{procedureSection.exclusive and ! empty var.Visit.provider.temp[procedureSection]._}">
+                                          <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                                             #{jsf._do(var.Visit.provider.procedure[var.Visit.provider.temp[procedureSection]._].remove(diagnosis.icd)).stay()}
+                                          </ui:repeat>
+                                          #{jsf._do(! empty var.Visit.provider.temp[procedureSection][diagnosisSection]._ ? var.Visit.provider.procedure[var.Visit.provider.temp[procedureSection]._][var.Visit.provider.temp[procedureSection][diagnosisSection]._]._(true) : null).stay()}
+                                       </ui:fragment>
+                                       <ui:fragment rendered="#{! procedureSection.exclusive}">
+                                          <ui:repeat value="#{procedureSection.procedureList}" var="procedure">
+                                             <ui:fragment>
+                                                <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                                                   #{jsf._do(var.Visit.provider.procedure[procedure.cpt].remove(diagnosis.icd)).stay()}
+                                                </ui:repeat>
+                                                #{jsf._do(! empty var.Visit.provider.temp[procedureSection][diagnosisSection]._ ? var.Visit.provider.procedure[procedure.cpt][var.Visit.provider.temp[procedureSection][diagnosisSection]._]._(true) : null).stay()}
+                                             </ui:fragment>
+                                          </ui:repeat>
+                                       </ui:fragment>
+                                    </ui:fragment>
+                                 </ui:repeat>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{diagnosis.text}">
+                                 <ui:fragment rendered="#{diagnosis.brBefore}">
+                                    <br/>
+                                 </ui:fragment>
+                                 <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                                 <ui:fragment rendered="#{diagnosis.brAfter}">
+                                    <br/>
+                                 </ui:fragment>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                                 <nobr>
+                                    <h:selectBooleanCheckbox value="#{var.Visit.provider.temp[procedureSection][diagnosis.icd]._}" style="margin: 0 0 0 1.4em;"/>
+                                    <label style="font-size: 0.7em; display: inline-block;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                                 </nobr>
+                                 <ui:fragment rendered="#{procedureSection.exclusive and ! empty var.Visit.provider.temp[procedureSection]._}">
+                                    #{jsf._do(var.Visit.provider.procedure[var.Visit.provider.temp[procedureSection]._][diagnosis.icd]._(var.Visit.provider.temp[procedureSection][diagnosis.icd]._)).stay()}
+                                 </ui:fragment>
+                                 <ui:fragment rendered="#{! procedureSection.exclusive}">
+                                    <ui:repeat value="#{procedureSection.procedureList}" var="procedure">
+                                       <ui:fragment>
+                                          #{jsf._do(var.Visit.provider.procedure[procedure.cpt][diagnosis.icd]._(var.Visit.provider.temp[procedureSection][diagnosis.icd]._)).stay()}
+                                       </ui:fragment>
+                                    </ui:repeat>
+                                 </ui:fragment>
+                              </ui:fragment>
+                           </ui:repeat>
+                        </div>
+                     </ui:repeat>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{procedure.text}">
+                     <ui:fragment rendered="#{procedure.brBefore}">
+                        <br/>
+                     </ui:fragment>
+                     <label style="font-size: 0.7em; display: inline-block;">#{procedure.line}</label>
+                     <ui:fragment rendered="#{procedure.brAfter}">
+                        <br/>
+                     </ui:fragment>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! procedure.section and ! procedure.text}">
+                     <div style="border: solid 1px; display: inline-block; margin-top: -1px; width: 100%; padding: 0.3em; overflow: hidden;">
+                        <nobr>
+                           <h:selectBooleanCheckbox value="#{var.Visit.provider.procedure[procedure.cpt]._}" style="margin: 0;"/>
+                           <label style="font-size: 0.7em; display: inline-block;" title="#{procedure.cpt} #{procedure.description}"><b>#{procedure.cpt}</b> #{procedure.description}</label>
+                        </nobr>
+                        <ui:repeat value="#{procedure.diagnosisList}" var="diagnosis">
+                           <ui:fragment rendered="#{diagnosis.section}">
+                              <ui:repeat value="#{diagnosis}" var="diagnosisSection">
+                                 <ui:fragment rendered="#{diagnosisSection.exclusive}">
+                                    <h:selectOneMenu value="#{var.Visit.provider.temp[procedure.cpt][diagnosisSection]._}" title="Diagnosis" style="width: 16em; margin-left: 1em;">
+                                       <f:selectItem itemValue="_NONE" itemLabel="NONE"/>
+                                       <f:selectItems value="#{diagnosisSection.diagnosisList}" itemValue="#{diagnosis.icd}" var="diagnosis" itemLabel="#{diagnosis.icd} #{diagnosis.description}"/>
+                                    </h:selectOneMenu>
+                                    #{var.Visit.provider.temp[procedure.cpt][diagnosisSection]._ == '_NONE' ? var.Visit.provider.temp[procedure.cpt][diagnosisSection]._(null) : null}
+                                    <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                                       #{jsf._do(var.Visit.provider.procedure[procedure.cpt].remove(diagnosis.icd)).stay()}
+                                    </ui:repeat>
+                                    #{jsf._do(! empty var.Visit.provider.temp[procedure.cpt][diagnosisSection]._ ? var.Visit.provider.procedure[procedure.cpt][var.Visit.provider.temp[procedure.cpt][diagnosisSection]._]._(true) : null).stay()}
+                                 </ui:fragment>
+                              </ui:repeat>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{diagnosis.text}">
+                              <ui:fragment rendered="#{diagnosis.brBefore}">
+                                 <br/>
+                              </ui:fragment>
+                              <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                              <ui:fragment rendered="#{diagnosis.brAfter}">
+                                 <br/>
+                              </ui:fragment>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                              <nobr>
+                                 <h:selectBooleanCheckbox value="#{var.Visit.provider.procedure[procedure.cpt][diagnosis.icd]._}" style="margin: 0 0 0 1.4em;"/>
+                                 <label style="font-size: 0.7em; display: inline-block;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                              </nobr>
+                           </ui:fragment>
+                        </ui:repeat>
+                     </div>
+                  </ui:fragment>
+               </ui:repeat>
+            </div>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

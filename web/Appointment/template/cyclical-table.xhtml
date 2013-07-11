@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div style="margin-left: 0.5em;">
+            <h:dataTable value="#{appointmentList}" var="appointment" rendered="#{not empty appointmentList}">
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Date"/>
+                  </f:facet>
+                  <h:outputText value="#{appointment.date}">
+                     <f:convertDateTime pattern="EEE, MM/dd"/>
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Time" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{appointment.time}">
+                     <f:convertDateTime pattern="hh:mm a"/>
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Min" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{appointment.duration}"/>
+               </h:column>
+               <!--<h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Patient"/>
+                  </f:facet>               
+                  <h:outputText value="#{appointment.patient.lastName}#{appointment.patient.firstName.trim() != '' ? ', ' : ''}#{appointment.patient.firstName}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="MRN" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{appointment.patient.id}"/>
+               </h:column> -->
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Provider"/>
+                  </f:facet>
+                  <h:outputText value="#{appointment.provider.lastName}#{appointment.provider.firstName.trim() != '' ? ', ' : ''}#{appointment.provider.firstName}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Ref. Provider"/>
+                  </f:facet>
+                  <ui:fragment rendered="#{biz.referringProvider(appointment.referringDoctorID) != null }">
+                     <h:outputText value="#{biz.referringProvider(appointment.referringDoctorID).lastName}, #{biz.referringProvider(appointment.referringDoctorID).firstName}"/>
+                  </ui:fragment>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Already&nbsp;Scheduled"/>
+                  </f:facet>
+                  <ui:repeat value="#{scheduledAppointmentList}" var="scheduledAppointment">
+                     <ui:fragment rendered="#{scheduledAppointment.date == appointment.date}">
+                        <h:outputText value="#{scheduledAppointment.time}">
+                           <f:convertDateTime pattern="hh:mm a"/>
+                        </h:outputText>
+                        &nbsp;
+                        <h:outputText class="scheduled" value="#{scheduledAppointment.provider.lastName}#{scheduledAppointment.provider.firstName.trim() != '' ? ', ' : ''}#{scheduledAppointment.provider.firstName}"/>
+                        <br/>
+                     </ui:fragment>
+                  </ui:repeat>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Make"/>
+                  </f:facet>
+                  #{confirmationMap[biz.appointmentMarker(appointment)]._ == null ? confirmationMap[biz.appointmentMarker(appointment)]._(true) : null}
+                  <h:selectBooleanCheckbox value="#{confirmationMap[biz.appointmentMarker(appointment)]._}"/>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

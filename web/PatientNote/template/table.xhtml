@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{noteList}" var="note" rendered="#{not empty noteList}">
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Created"/>
+                  </f:facet>
+                  <ui:fragment rendered="#{jsf.global('patientNote', 'show')['details']}">
+                  <h:outputText value="#{note.datetime}" style="white-space: nowrap;">
+                     <f:convertDateTime pattern="MM/dd/yy hh:mm a"/>
+                  </h:outputText>
+                  <br/>
+                  <h:outputText value="by #{access.getUserName(note.userId)}"/>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! jsf.global('patientNote', 'show')['details']}">
+                  <h:outputText value="#{note.datetime}" style="white-space: nowrap;">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+                  </ui:fragment>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Updated" style="white-space: nowrap;"/>
+                  </f:facet>
+                  <ui:fragment rendered="#{jsf.global('patientNote', 'show')['details']}">
+                     <h:outputText value="#{note.lastUpdated}" style="white-space: nowrap;">
+                        <f:convertDateTime pattern="MM/dd/yy hh:mm a"/>
+                     </h:outputText>
+                     <br/>
+                     <h:outputText value="by #{access.getUserName(note.lastUpdatedUserId)}" rendered="#{note.lastUpdatedUserId != null}"/>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! jsf.global('patientNote', 'show')['details']}">
+                     <h:outputText value="#{note.lastUpdated}" style="white-space: nowrap;">
+                        <f:convertDateTime pattern="MM/dd/yy"/>
+                     </h:outputText>
+                  </ui:fragment>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Note"/>
+                  </f:facet>
+                  <h:outputText value="#{note.value}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Action"/>
+                  </f:facet>
+                  <h:commandButton disabled="#{jsf.global('patient', 'var')['patientNote'] != null}" action="#{jsf._do(jsf.global('patient', 'var').put('patientNote', note))._do(jsf.global('patient', 'var').put('patient', patientList.get(0)))._do(jsf.global('patient', 'var').put('patientNote:edit:oldValue', note.value)).stay}" style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;" value="Edit..." rendered="#{! note.archive}">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton disabled="#{jsf.global('patient', 'var')['patientNote'] != null}" action="#{jsf._do(note.setArchive(true))._do(note.setLastUpdatedUserId(access.user.id))._do(note.setLastUpdated(jsf.newDate))._save(patientList.get(0)).stay}" style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;" value="Archive" rendered="#{! note.archive}">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton disabled="#{jsf.global('patient', 'var')['patientNote'] != null}" action="#{jsf._do(note.setArchive(false))._do(note.setLastUpdatedUserId(access.user.id))._do(note.setLastUpdated(jsf.newDate))._save(patientList.get(0)).stay}" style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;" value="Restore" rendered="#{note.archive}">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:include src="../../template/sorter.xhtml">
+            <ui:param name="listId" value="#{listId}"/>
+            <ui:param name="object" value="referralResult"/>
+         </ui:include>
+         <div class="tablecounter">#{referralResultList.size()}</div>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{referralResultList}" var="referralResult" rendered="#{not empty referralResultList}" styleClass="tablesorter #{listId}Table">
+               <h:column rendered="#{selectionMap != null}">
+                  <f:facet name="header">
+                     <h:outputText value="" styleClass="nosort"/>
+                  </f:facet>
+                  <h:selectBooleanCheckbox value="#{selectionMap[referralResult]}" style="margin:0;"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.id._}">
+                  <f:facet name="header">
+                     <h:outputText value="ID"/>
+                  </f:facet>
+                  <h:outputText value="#{referralResult.id}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.serviceDate._}">
+                  <f:facet name="header">
+                     <h:outputText value="Service Date"/>
+                  </f:facet>
+                  <h:outputText value="#{referralResult.serviceDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{tableConfig.category._}">
+                  <f:facet name="header">
+                     <h:outputText value="Category"/>
+                  </f:facet>
+                  <h:outputText value="#{referralResult.category.name}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.facility._}">
+                  <f:facet name="header">
+                     <h:outputText value="Facility"/>
+                  </f:facet>
+                  <h:outputText value="#{referralResult.facility.name}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.specialty._}">
+                  <f:facet name="header">
+                     <h:outputText value="Specialty"/>
+                  </f:facet>
+                  <h:outputText value="#{referralResult.specialty.name}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.patient._}">
+                  <f:facet name="header">
+                     <h:outputText value="Patient"/>
+                  </f:facet>
+                  <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(edi.patient(referralResult.patientId)))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" style="color: black;">
+                     <h:outputText value="#{edi.patient(referralResult.patientId).lastName}, #{edi.patient(referralResult.patientId).firstName}"/>
+                  </h:commandLink>
+               </h:column>
+               <h:column rendered="#{tableConfig.patient._}">
+                  <f:facet name="header">
+                     <h:outputText value="MRN" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{referralResult.patientId}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.provider._}">
+                  <f:facet name="header">
+                     <h:outputText value="Ref. Provider"/>
+                  </f:facet>
+                  <h:outputText value="#{referralResult.provider.lastName}, #{referralResult.provider.firstName}" rendered="#{referralResult.provider != null}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.details._}">
+                  <f:facet name="header">
+                     <h:outputText value="Procedure" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{referralResult.procedure.name}"/><br/>
+               </h:column>
+               <h:column rendered="#{tableConfig.details._}">
+                  <f:facet name="header">
+                     <h:outputText value="Note" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{referralResult.note}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.action._}">
+                  <f:facet name="header">
+                     <h:outputText value="Action" styleClass="nosort"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.ReferralResult.form.put('referralResult', referralResult)).
+                                           _to('ReferralResult/edit').go}"
+                                 style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                 value="Edit..."/>
+                  <h:commandButton action="#{jsf._delete(referralResult).
+                                             _do(var.OfficeProvider.ReferralResult.search._(null)).
+                                             _do(var.Patient.ReferralResult.search._(null)).stay}"
+                                   styleClass="intable-action"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"
+                                   rendered="#{access.isUriPermitted('ReferralResult/remove')}"
+                                   onclick="if (confirm('Remove Result?')) return true; else return false;"
+                                   value="Remove">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>                  
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

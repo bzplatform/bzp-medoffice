@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <body>
+      <ui:composition>
+         <li style="height:2.5em; width: 10.5em;">
+            <label style="display: inline;">Type:</label>
+            <h:selectOneMenu value="#{var.PatientSocialHistory.form.type._}" style="width: 6em; margin-left: 0;">
+               <f:selectItem itemLabel="NONE" noSelectionOption="true"/>
+               <f:selectItem itemLabel="Smoking" itemValue="smoking"/>
+               <f:selectItem itemLabel="Alcohol" itemValue="alcohol"/>
+               <f:selectItem itemLabel="OTHER" itemValue="other"/>
+               <f:ajax render="@form" execute="@this" onevent="ajaxEventHandler"/>
+            </h:selectOneMenu>
+         </li>
+         <ui:fragment rendered="#{var.PatientSocialHistory.form.type._ == 'other'}">
+            <li style="height:2.5em; width: 9em;">
+               <h:inputText value="#{var.PatientSocialHistory.form.otherType._}" style="width: 8em; margin-left: 0; margin-right: 0;">
+                  <f:ajax render="@this" execute="@this"/>
+               </h:inputText>
+            </li>
+         </ui:fragment>
+         <ui:fragment rendered="#{var.PatientSocialHistory.form.type._ != null}">
+            <li style="height:2.5em; width: 12em;">
+               <label style="display: inline;">Status:</label>
+               <h:selectOneMenu value="#{var.PatientSocialHistory.form.status.close()[var.PatientSocialHistory.form.type._]}" style="width: 6.5em; margin-left: 0;">
+                  <f:selectItem itemLabel="Not Known" noSelectionOption="true"/>
+                  <f:selectItem itemLabel="Current" itemValue="current"/>
+                  <f:selectItem itemLabel="Socially" itemValue="socially"/>
+                  <f:selectItem itemLabel="Quit" itemValue="quit"/>
+                  <f:selectItem itemLabel="Never" itemValue="never"/>
+                  <f:ajax render="@form" execute="@this" onevent="ajaxEventHandler"/>
+               </h:selectOneMenu>
+            </li>
+            <ui:fragment rendered="#{var.PatientSocialHistory.form.status.close()[var.PatientSocialHistory.form.type._] == 'quit'}">
+               <li style="height:2.5em; width: 18em;">
+                  <label style="display: inline;">Quit Date:</label>
+                  <h:inputText value="#{var.PatientSocialHistory.form.quitDate.close()[var.PatientSocialHistory.form.type._]}" style="width: 11em; margin-left: 0; margin-right: 0;">
+                     <f:ajax render="@this" execute="@this"/>
+                  </h:inputText>
+               </li>
+            </ui:fragment>
+            <br/>
+            <ui:fragment rendered="#{var.PatientSocialHistory.form.type._ == 'smoking' and var.PatientSocialHistory.form.status.close()[var.PatientSocialHistory.form.type._] == 'current'}">
+               <li style="height:2.5em; width: 22em;">
+                  #{jsf._do(var.PatientSocialHistory.form.unit.close()[var.PatientSocialHistory.form.type._] == null ? var.PatientSocialHistory.form.unit.put(var.PatientSocialHistory.form.type._, 'packs') : null).stay()}
+                  <label style="display: inline;">How Many 
+                     <h:selectOneMenu value="#{var.PatientSocialHistory.form.unit.close()[var.PatientSocialHistory.form.type._]}" style="width: 7em; margin: 0.1em;">
+                        <f:selectItem itemLabel="packs" itemValue="packs"/>
+                        <f:selectItem itemLabel="cigarettes" itemValue="cigarettes"/>
+                        <f:ajax render="@this" execute="@this" onevent="ajaxEventHandler"/>
+                     </h:selectOneMenu>
+                     per day:
+                  </label>
+                  <h:inputText value="#{var.PatientSocialHistory.form.qty.close()[var.PatientSocialHistory.form.type._]}" style="width: 3em; margin-left: 0; margin-right: 0;">
+                     <f:ajax render="@this" execute="@this"/>
+                  </h:inputText>
+               </li>
+               <li style="height:2.5em; width: 27em;">
+                  <label style="display: inline;">How Long:</label>
+                  <h:inputText value="#{var.PatientSocialHistory.form.duration.close()[var.PatientSocialHistory.form.type._]}" style="width: 20em; margin-left: 0; margin-right: 0;">
+                     <f:ajax render="@this" execute="@this"/>
+                  </h:inputText>
+               </li>
+            </ui:fragment>
+            <li style="height:2.5em; width: 48em;">
+               <label style="display: inline;">Description:</label>
+               <h:inputText value="#{var.PatientSocialHistory.form.description.close()[var.PatientSocialHistory.form.type._]}" style="width: 41.1em; margin-left: 0; margin-right: 0;">
+                  <f:ajax render="@this" execute="@this"/>
+               </h:inputText>
+            </li>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

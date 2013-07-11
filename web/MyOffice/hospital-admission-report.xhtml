@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>Hospital Admissions</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 1em;
+               margin: 1em;
+            }
+
+            .action {
+               display: block !important;
+               text-align: left;
+               margin-left: 2em;
+            }
+         }
+         @media print {
+            .page {
+               page-break-after: always;
+            }
+         }
+         @media all {
+            .action {
+               display: none;
+            }
+            body {
+               font-family:Verdana, Geneva, sans-serif;
+               font-size: 0.95em;
+            }
+            center > div {
+               width: 800px;
+            }
+            div > table {
+               margin-top: -10px;
+            }
+            td, th {
+               border:solid black 1px;
+            }
+            .signs td, td td {
+               border:none;
+            }
+            #observation-table td, #observation-table td td, #observation-table th {
+               border:solid black 1px;
+            }
+            #observation-table {
+               border-collapse: collapse;
+            }
+            .signs {
+               margin-top: 20px;
+            }
+            td {
+               text-align:left; 
+            }
+            td th {
+               text-align:right;
+            }
+            th {
+               font-size: 0.7em;
+               white-space: nowrap;
+            }
+            h3, h4 {
+               font-size: 1em;
+               margin-top: 0px;
+               margin-bottom: 5px;
+            }
+            p {
+               margin-top: 0px;
+            }
+            table.small td {
+               font-size: 0.8em;
+            }
+            #observation-table {
+               margin-top: 0.5em;
+               font-size: 0.8em;
+            }
+            #observation-table th {
+               font-size: 0.8em;
+               text-align:center;
+            }
+            div.page {
+               width: 50em;
+            }
+            div > table {
+               margin-top: 0;
+            }
+            tr.data-row td {
+               font-size: 0.7em;
+
+            }
+         }
+      </style>
+      <script type="text/javascript" src="/#{access.application}/script/jquery/jquery-1.9.0.min.js"></script>
+      <script type="text/javascript" src="/#{access.application}/script/printer.js"></script>
+   </head>
+   <body>
+      <h:form prependId="false">
+         <div class="action">
+            <div class="action"><a href="#" id="print-link" onclick="return print('Portrait', 5)">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         </div>
+         <div class="page">
+            <table width="100%" border="0" cellpadding="10px" cellspacing="10px">
+               <tr>
+                  <td width="33%" align="center" valign="top" style="border:none; text-align: center;">
+                     <h3 style="text-transform:uppercase">Hospital Admissions</h3>
+                     <h:outputText value="#{statistics.hospitalAdmissionReport.startDate}">
+                        <f:convertDateTime pattern="MM/dd/yy" locale="en"/>
+                     </h:outputText> —
+                     <h:outputText value="#{statistics.hospitalAdmissionReport.endDate}">
+                        <f:convertDateTime pattern="MM/dd/yy" locale="en"/>
+                     </h:outputText> 
+                     <span style="font-size:1em; margin-left: -0.4em;">, #{biz.myOffice(myOfficeCode).name}</span>
+                  </td>
+               </tr>
+            </table>
+            <table width="100%" cellpadding="5px" cellspacing="0px" style="border-collapse: collapse;">
+               <tr>
+                  <th>Hospital</th>
+                  <th>Hospital Code</th>
+                  <th>Count</th>
+               </tr>
+               <ui:repeat value="#{statistics.hospitalAdmissionReport.facilityList}" var="reported">
+                  <tr>
+                     <td>#{reported.facility.name}</td>
+                     <td>#{reported.facility.alias}</td>
+                     <td style="text-align: center;">#{reported.resultList.size()}</td>                
+                  </tr>
+               </ui:repeat>
+               <tr>
+                  <th style="text-align: right;" colspan="2">Grand Total</th>
+                  <th>#{statistics.hospitalAdmissionReport.grandTotal}</th>
+               </tr>
+            </table>            
+         </div>
+      </h:form>
+   </body>
+</html>

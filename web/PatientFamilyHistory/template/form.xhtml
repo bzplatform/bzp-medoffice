@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <body>
+      <ui:composition>
+         #{var.PatientFamilyHistory.form.conditionList._(jsf.hintedSearch('PatientHistoryFamilyCondition', 'p.problem DESC, p.description', var.PatientFamilyHistory.form.conditionListSearch, '_MEDBASE'))}
+         #{var.PatientFamilyHistory.form.memberList._(jsf.hintedSearch('PatientHistoryFamilyMember', 'p.name', var.PatientFamilyHistory.form.memberListSearch, '_MEDBASE'))}
+         <li style="height:2.5em; width: 48em;">
+            <label style="font-weight:bold; display: inline;">Relative(s):</label>
+            <h:selectOneMenu value="#{var.PatientFamilyHistory.form.member._}" style="width: 12.4em;">
+               <f:selectItem itemLabel="NONE" noSelectionOption="true"/>
+               <f:selectItems value="#{var.PatientFamilyHistory.form.memberList._}" var="member" itemLabel="#{member.name}" itemValue="#{member.name}"/>
+               <f:selectItem itemLabel="OTHER" itemValue="other"/>
+               <f:ajax render="@form" execute="@this" onevent="ajaxEventHandler"/>
+            </h:selectOneMenu>
+            <h:inputText value="#{var.PatientFamilyHistory.form.otherMember._}" style="width: 27em; margin-left: 0; margin-right: 0;" rendered="#{var.PatientFamilyHistory.form.member._ == 'other'}">
+               <f:ajax render="@this" execute="@this"/>
+            </h:inputText>
+         </li>
+         <ui:fragment rendered="#{var.PatientFamilyHistory.form.member._ != null}">
+            <li style="height:2.5em; width: 22em;">
+               <label style="font-weight:bold;">Condition</label>
+            </li>
+            <li style="height:2.5em; width: 27em;">
+               <label style="font-weight:bold;">Note</label>
+            </li>
+            <br/>
+            <ui:repeat value="#{var.PatientFamilyHistory.form.conditionList._}" var="condition">
+               <li style="height:1.5em; overflow: hidden; width: 22em; white-space: nowrap;">
+                  <h:selectBooleanCheckbox value="#{var.PatientFamilyHistory.form.condtitionChecked[var.PatientFamilyHistory.form.member._].close()[condition.description]}">
+                     <f:ajax render="@this note" execute="@this"/>
+                  </h:selectBooleanCheckbox>
+                  #{condition.description}
+               </li>
+               <li style="height:1.5em; overflow: hidden; width: 27em;">
+                  <h:panelGroup id="note">
+                     <h:inputText rendered="#{var.PatientFamilyHistory.form.condtitionChecked[var.PatientFamilyHistory.form.member._].close()[condition.description]}" value="#{var.PatientFamilyHistory.form.condtitionNote[var.PatientFamilyHistory.form.member._].close()[condition.description]}" style="width: 25em;">
+                        <f:ajax render="@this" execute="@this"/>
+                     </h:inputText>
+                  </h:panelGroup>
+               </li>
+            </ui:repeat>
+            <li style="height:1.5em; overflow: hidden; width: 22em;">
+               <h:selectBooleanCheckbox value="#{var.PatientFamilyHistory.form.condtitionChecked[var.PatientFamilyHistory.form.member._].close()['other']}">
+                  <f:ajax render="@this other note" execute="@this"/>
+               </h:selectBooleanCheckbox>   
+               <h:panelGroup id="other">
+                  <h:inputText rendered="#{var.PatientFamilyHistory.form.condtitionChecked[var.PatientFamilyHistory.form.member._].close()['other']}" value="#{var.PatientFamilyHistory.form.conditionOther.close()[var.PatientFamilyHistory.form.member._]}" style="width: 17em; margin-left: 0.2em;">
+                     <f:ajax render="@this" execute="@this"/>
+                  </h:inputText>
+                  <h:outputText value="Other" rendered="#{! var.PatientFamilyHistory.form.condtitionChecked[var.PatientFamilyHistory.form.member._].close()['other']}"/>
+               </h:panelGroup>
+            </li>
+            <li style="height:1.5em; overflow: hidden; width: 27em;">
+               <h:panelGroup id="note">
+                  <h:inputText rendered="#{var.PatientFamilyHistory.form.condtitionChecked[var.PatientFamilyHistory.form.member._].close()['other']}" value="#{var.PatientFamilyHistory.form.condtitionNote[var.PatientFamilyHistory.form.member._].close()['other']}" style="width: 25em;">
+                     <f:ajax render="@this" execute="@this"/>
+                  </h:inputText>
+               </h:panelGroup>
+            </li>
+            <br/>
+            <li style="height:2.5em; width: 13.5em; margin-top: 1em;">
+               <label style="font-weight:bold;">More conditions (ICD-9)</label>
+            </li>
+            <li style="height:1.5em;">
+               <h:inputText value="#{var.PatientFamilyHistory.form.diagnosisConditionFilter.close()[var.PatientFamilyHistory.form.member._]}" style="margin-right: 0; width: 5.4em;"/>
+               <h:commandButton action="#{jsf._do(! empty var.PatientFamilyHistory.form.diagnosisConditionFilter.close()[var.PatientFamilyHistory.form.member._] and var.PatientFamilyHistory.form.diagnosisConditionFilter[var.PatientFamilyHistory.form.member._].length() &gt; 2 ? jsf._do(var.PatientFamilyHistory.form.diagnosisConditionSearch[var.PatientFamilyHistory.form.member._].put('code', var.PatientFamilyHistory.form.diagnosisConditionFilter[var.PatientFamilyHistory.form.member._])).
+                                          _do(var.PatientFamilyHistory.form.diagnosisConditionSearch[var.PatientFamilyHistory.form.member._].put('description', var.PatientFamilyHistory.form.diagnosisConditionFilter[var.PatientFamilyHistory.form.member._])).
+                                          _do(var.PatientFamilyHistory.form.diagnosisConditionList.close()[var.PatientFamilyHistory.form.member._] == null ? var.PatientFamilyHistory.form.diagnosisConditionList.close().put(var.PatientFamilyHistory.form.member._, jsf.newObject('java.util.ArrayList')) : null).
+                                          _do(var.PatientFamilyHistory.form.diagnosisConditionSearchList.close().put(var.PatientFamilyHistory.form.member._ ,jsf.hintedSearch('_Diagnosis', 'd.code', var.PatientFamilyHistory.form.diagnosisConditionSearch[var.PatientFamilyHistory.form.member._], '_MEDBASE'))).
+                                          _do(biz.shrinkListCheckedMapOnsetMap(var.PatientFamilyHistory.form.diagnosisConditionList[var.PatientFamilyHistory.form.member._], var.PatientFamilyHistory.form.diagnosisConditionChecked[var.PatientFamilyHistory.form.member._], var.PatientFamilyHistory.form.diagnosisConditionNote[var.PatientFamilyHistory.form.member._])).
+                                          _do(var.PatientFamilyHistory.form.diagnosisConditionSearchList[var.PatientFamilyHistory.form.member._].removeAll(var.PatientFamilyHistory.form.diagnosisConditionList[var.PatientFamilyHistory.form.member._])).
+                                          _do(var.PatientFamilyHistory.form.diagnosisConditionList[var.PatientFamilyHistory.form.member._].addAll(var.PatientFamilyHistory.form.diagnosisConditionSearchList[var.PatientFamilyHistory.form.member._])).stay() : null).stay}"
+                                value="Search" title="Search diagnoses based on part of code/description (Minimum 3 symbols)" style="width: auto; margin-right: 0.5em; margin-left: 0;">
+                  <f:ajax render="@form" execute="@form"/>
+               </h:commandButton>
+               <h:commandButton action="#{jsf._do(biz.shrinkListCheckedMapOnsetMap(var.PatientFamilyHistory.form.diagnosisConditionList.close()[var.PatientFamilyHistory.form.member._], var.PatientFamilyHistory.form.diagnosisConditionChecked[var.PatientFamilyHistory.form.member._], var.PatientFamilyHistory.form.diagnosisConditionNote[var.PatientFamilyHistory.form.member._])).stay}"
+                                value="Clear Unselected" disabled="#{empty var.PatientFamilyHistory.form.diagnosisConditionList[var.PatientFamilyHistory.form.member._]}" style="width: auto; margin-right: 1em;">
+                  <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+               </h:commandButton>
+            </li>
+            <ui:fragment rendered="#{! empty var.PatientFamilyHistory.form.diagnosisConditionList.close()[var.PatientFamilyHistory.form.member._]}">
+               <li style="height:2.5em; width: 22em;">
+                  <label style="font-weight:bold;">Condition</label>
+               </li>
+               <li style="height:2.5em; width: 27em;">
+                  <label style="font-weight:bold;">Note</label>
+               </li>
+               <br/>
+            </ui:fragment>
+            <ui:repeat value="#{var.PatientFamilyHistory.form.diagnosisConditionList.close()[var.PatientFamilyHistory.form.member._]}" var="diagnosis">
+               <li style="height:1.5em; overflow: hidden; width: 6em;">
+                  <h:selectBooleanCheckbox value="#{var.PatientFamilyHistory.form.diagnosisConditionChecked[var.PatientFamilyHistory.form.member._].close()[diagnosis]}">
+                     <f:ajax render="@this note" execute="@this"/>
+                  </h:selectBooleanCheckbox>
+                  #{diagnosis.code}
+               </li>
+               <li style="height:1.5em; overflow: hidden; width: 16em;">
+                  <h:outputText value="#{diagnosis.description}" style="font-size: 0.9em; white-space: nowrap;"/>
+               </li>
+               <li style="height:1.5em; overflow: hidden; width: 27em;">
+                  <h:panelGroup id="note">
+                     <h:inputText rendered="#{var.PatientFamilyHistory.form.diagnosisConditionChecked[var.PatientFamilyHistory.form.member._].close()[diagnosis]}" value="#{var.PatientFamilyHistory.form.diagnosisConditionNote[var.PatientFamilyHistory.form.member._].close()[diagnosis]}" style="width: 25em;">
+                        <f:ajax render="@this" execute="@this"/>
+                     </h:inputText>
+                  </h:panelGroup>
+               </li>
+               <br/>
+            </ui:repeat>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

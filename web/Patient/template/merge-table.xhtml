@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{mergePatientList}" var="patient">
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="MRN"/>
+                  </f:facet>
+                  <h:outputText value="#{patient.id}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Name"/>
+                  </f:facet>
+                     <h:outputText value="#{patient.lastName}, #{patient.firstName}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Sex"/>
+                  </f:facet>
+                  <h:outputText value="#{patient.sex}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="DOB"/>
+                  </f:facet>
+                  <h:outputText value="#{patient.birthDate}">
+                     <f:convertDateTime pattern="MM/dd/yyyy" />
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Age"/>
+                  </f:facet>
+                  <h:outputText value="#{biz.age(patient)}"/>
+               </h:column>               
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Home&nbsp;Phone"/>
+                  </f:facet>
+                  <h:outputText value="#{patient.homePhone}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Action"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(biz.mergePatient(patient.id, patientList[0].id, access.user.id))._do(jsf.removeObj(mergePatientList, patient))._do(var.Patient.MergeSearch.clear()).stay}"
+                                   value="Merge"
+                                   onclick="if(confirm('Merge Patients?')) return true; else return false;"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"
+                                   rendered="#{patient.id != patientList[0].id}"
+                                   title="Use this button to merge patients. This process will merge both patients' records. The end result of the merge will be a single patient with combined history. This patient will be removed."/>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

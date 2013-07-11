@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="menu form" style="margin-bottom: -0.5em;">
+            <div class="body">
+               #{diagnosisSearch == null ? jsf._putSearch('Diagnosis').stay() : null}
+               <nobr><label for="code" class="vlabel">Code:</label><h:inputText id="code" value="#{diagnosisSearch['code']}" title="code"/></nobr>
+               &nbsp;
+               <nobr><label for="description" class="vlabel">Description:</label><h:inputText id="description" value="#{diagnosisSearch['description']}" style="width: 10em;" title="description"/></nobr>
+               &nbsp;
+               <h:commandButton action="#{jsf._do(diagnosisSearch.clear()).stay}" value="Reset"/>
+               <h:commandButton action="#{jsf._runSearch('Diagnosis').stay}" value="Search" style="margin-left: 0.5em;"/>
+               <h:commandButton action="#{jsf._do(sessionScope.put('diagnosisList', null)).stay}" value="Clear" style="margin-left: 0.5em;"/>
+            </div>
+         </div>
+      </ui:composition>
+   </body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <body>
+      <ui:composition>
+         <div class="toolbar-container">
+            <h:inputText value="#{diagnosis.icd}" style="margin-left: 4em; width: 4em; font-size: 0.8em; display: inline-block; font-weight: bold;" title="ICD"/>
+            <h:inputText value="#{diagnosis.description}" style="width: 20.5em; font-size: 0.8em; display: inline-block;" title="Description"/>
+            <ui:include src="diagnosis-toolbar.xhtml">
+               <ui:param name="list" value="#{procedure.diagnosisList}"/>
+               <ui:param name="element" value="#{diagnosis}"/>
+               <ui:param name="noDiagnoses" value="#{true}"/>
+            </ui:include>
+         </div>
+      </ui:composition>
+   </body>
+</html>

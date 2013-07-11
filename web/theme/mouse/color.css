@@ -1,0 +1,263 @@
+body {
+   background: whitesmoke;
+}
+
+.title, .slogan, .figure>p {
+   color: black;
+}
+
+.subtitle {
+   color: black;
+}
+
+.legal {
+   color: black;
+}
+
+a {
+   color: black;
+}
+
+a img {
+   border: none;
+}
+
+.errors {
+   color: #000000;
+   border-color: red;
+   background: white;
+}
+
+a.tooltip:hover span {
+   background-color:#cff;
+   color:#000;
+   border-color: #0cf;
+}
+
+.page>.body {
+   border-color: grey;
+   background: white;
+}
+
+.form>.body {
+   background: whitesmoke;
+}
+
+.form>.footer {
+   background: whitesmoke;
+}
+
+.page>.header {
+   background: none;
+   color: black;
+}
+
+.page>.footer {
+   background: none;
+}
+
+.section > .byline {
+   color: black;
+}
+
+.block>.header, .block>.footer {
+   background-color: whitesmoke;
+   border-color: grey;
+}
+
+.menu {
+   background-color: whitesmoke;
+   border-color: grey;
+   background: white;
+}
+
+li.separator, .menu.block ul>li.parent {
+   border-color: black;
+}
+
+.menu li.selected {
+   background-color:black;
+}
+
+.menu li>a, .menubar>ul>li>a {
+   border-color: transparent;
+}
+
+.menu li.selected>a {
+   background-color: whitesmoke;
+   color: black;
+   border-color: grey;
+}
+
+.menu li>a:hover {
+   border-color: grey;
+   background-color: whitesmoke;
+}
+
+.menu a {
+   color: black;
+}
+
+.menubar>ul>li>a {
+   color: black;
+}
+
+.menu > ul > li > span, .menubar > ul > li > span {
+   color: silver;
+}
+
+.breadcrumbs, .tabs {
+   border-color: silver;
+   background: whitesmoke;
+}
+
+.tabs {
+   border-color: grey;
+}
+
+.breadcrumbs>ul>li>a, .tabs>ul>li>a {
+   color: black;
+}
+
+.breadcrumbs ul li:before, .tabs ul li:before {
+   color: black;
+}
+/* ----------------------------------------- table ------------------------------------------------ */
+
+table {
+   border-color: #000000;
+}
+
+thead {
+   background: silver;
+   color: black;
+}
+
+th, td {
+   border-color: black;
+}
+
+thead th{
+   border-color: black;
+}
+
+thead th:first-child{
+   border-color: black;
+}
+
+tbody > tr {
+   background: white;
+}
+
+tbody > tr:nth-child(even) {
+   background: whitesmoke;
+}
+
+table.hover-row tbody>tr:hover {
+   background-color: #FFEC8B;
+   color: #000000;
+}
+
+a:hover {
+   color:gray;
+}
+
+td .selected {
+   background-color: silver;
+}
+
+td .link {
+   color: black;
+}
+
+/*
+thead tr:hover {
+background-color: transparent;
+color: inherit;
+}
+*/
+
+/* ----------------------------------------- form ------------------------------------------------ */
+
+form.background .form.background {
+   background-color: #FFFFFF;
+}
+
+form .header, .form .header {
+   background: silver;
+   color: black;
+   border-color: black;
+}
+
+form>.footer, .form>.footer {
+   border-color: black;
+}
+
+.form-area {
+   border-color: black;
+}
+
+.toolbar {
+   border-color: black;
+}
+
+.scrollbar {
+   border-color: black;
+}
+
+fieldset {
+   background-color: #EEEBDC;
+   border-color: black;
+}
+
+h3.border {
+   border-color: black;
+}
+
+label > .required {
+   color:#760000;
+}
+
+.ok {
+   color: black;
+   border-color: black;
+}
+
+.warning, .error {
+   color: red;
+   border-color: red;
+}
+
+.info {
+   color: black;
+   border-color: black;
+}
+
+.ui-widget {
+   font-weight: bold;
+   background: whitesmoke;
+   border: solid black 1px;
+   font-size: 0.8em;
+}
+
+/* ----------------------------------------- elements ------------------------------------------------ */
+
+select[disabled="disabled"] {
+   color: black;
+}
+
+.date {
+   color: black;
+}
+
+h3.disabled {
+   color: silver;
+}
+
+.field-label {
+
+}
+
+.ignored {
+   color: silver;
+}

@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <body>
+      <ui:composition>
+         <li style="height:1.5em; width: 40em;">
+            <label style="font-weight:bold;">Medication</label>
+         </li>
+         <li style="height:1.5em; width: 7.5em;">
+            <label style="font-weight:bold;">Action</label>
+         </li>
+         <li style="height:1em; width: 48em;">
+            <hr/>
+         </li>
+         <ui:repeat value="#{var.PatientMedication.form.favoritePatientMedicationList._}" var="medication">
+            <li style="height:1.5em; width: 40em;">
+               <label style="font-size:0.9em; #{medication.tty == 'SBD' ? 'font-weight: bold;' : ''}">#{medication.drug}</label>
+            </li>
+            <li style="height:1.5em; width: 7.5em;">
+               #{var.PatientMedication.form.medicationAction[medication]._ == null ? var.PatientMedication.form.medicationAction[medication]._('NONE') : null}
+               #{var.PatientMedication.form.activeFavorite[medication]._(biz.activeFavoriteMedication(var.PatientMedication.form.visit._.patient, medication))}
+               <h:selectOneMenu value="#{var.PatientMedication.form.medicationAction[medication]._}" style="width: 7.5em;" rendered="#{! var.PatientMedication.form.activeFavorite[medication]._}">
+                  <f:selectItem itemValue="NONE" itemLabel="--"/>
+                  <f:selectItem itemValue="ADD" itemLabel="Add"/>
+                  <f:selectItem itemValue="UNFAVORITE" itemLabel="Unset Favorite"/>
+                  <f:ajax render="modify-panel" execute="@this"/>
+               </h:selectOneMenu>
+               <h:outputText value="ACTIVE" rendered="#{var.PatientMedication.form.activeFavorite[medication]._}"/>
+            </li>
+            <h:panelGroup id="modify-panel">
+               <ui:fragment rendered="#{var.PatientMedication.form.medicationAction[medication]._ == 'ADD'}">
+                  <li class="em15" style="display: inline-block;"> 
+                     <label>Primary Dx:</label>            
+                     <h:selectOneMenu value="#{medication.primaryDiagnosisCode}">
+                        <f:selectItem noSelectionOption="true" itemLabel="NONE"/>
+                        <f:selectItems value="#{var.PatientMedication.form.visit._ != null ? var.PatientMedication.form.visit._.diagnosisList :  var.PatientMedication.form.visit._.patient.activeDiagnosisList}" var="diagnosis" itemLabel="#{diagnosis.code}&nbsp;&nbsp;#{diagnosis.description}" itemValue="#{diagnosis.code}"/>
+                     </h:selectOneMenu>   
+                  </li>
+                  <li class="em8" style="display: inline-block;">
+                     <h:message for="dispenseQty" errorClass="errors"/>
+                     <label>Dispense Qty:</label>
+                     <h:inputText id="dispenseQty" value="#{medication.dispenseQty}">
+                        <f:convertNumber maxFractionDigits="0"/>
+                     </h:inputText>
+                  </li>
+                  <li class="em6" style="display: inline-block;">
+                     <h:message for="days" errorClass="errors"/>
+                     <label>Days:</label>
+                     <h:inputText id="days" value="#{medication.days}">
+                        <f:convertNumber maxFractionDigits="0"/>
+                     </h:inputText>
+                  </li>
+                  <li class="em6" style="display: inline-block;">
+                     <h:message for="refills" errorClass="errors"/>
+                     <label>Refills:</label>
+                     <h:inputText id="refills" value="#{medication.refills}">
+                        <f:convertNumber maxFractionDigits="0"/>
+                     </h:inputText>
+                  </li>
+                  <li class="em9" style="display: inline-block;">
+                     <h:message for="prescribing" errorClass="errors"/>
+                     <label>Rx Date:</label>
+                     <h:inputText id="prescribing" value="#{medication.prescribingDate}" styleClass="mask-date">
+                        <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+                     </h:inputText>
+                  </li>
+                  <br/>
+                  <li class="em6" style="display: inline-block;">
+                     <h:message for="dose" errorClass="errors"/>
+                     <label>Dose:</label>
+                     <h:inputText id="dose" value="#{medication.dose}">
+                        <f:convertNumber maxFractionDigits="2"/>
+                     </h:inputText>
+                  </li>
+                  <li class="em9" style="display: inline-block;"> 
+                     #{var.PatientMedication.form.doseUnitList._ == null ? jsf._do(var.PatientMedication.form.doseUnitList._(jsf.hintedSearch('DrugDoseUnit', null, var.PatientMedication.form.doseUnitList.search, '_MEDBASE'))).stay()  : null}          
+                     <label>Unit:</label>            
+                     <h:selectOneMenu value="#{medication.doseUnit}" style="width:8.6em;">
+                        <f:selectItem noSelectionOption="true" itemLabel="NONE"/>
+                        <f:selectItems value="#{var.PatientMedication.form.doseUnitList._}" var="unit" itemLabel="#{unit.name}" itemValue="#{unit.name}"/>
+                     </h:selectOneMenu>            
+                  </li>
+                  <li class="em14" style="display: inline-block;"> 
+                     #{var.PatientMedication.form.routeList._ == null ? jsf._do(var.PatientMedication.form.routeList._(jsf.hintedSearch('DrugRoute', null, var.PatientMedication.form.routeList.search, '_MEDBASE'))).stay()  : null}          
+                     <label>Route:</label>            
+                     <h:selectOneMenu value="#{medication.route}">
+                        <f:selectItem noSelectionOption="true" itemLabel="NONE"/>
+                        <f:selectItems value="#{var.PatientMedication.form.routeList._}" var="route" itemLabel="#{route.description}" itemValue="#{route.description}"/>
+                     </h:selectOneMenu>            
+                  </li>
+                  <li class="em15" style="display: inline-block;"> 
+                     #{var.PatientMedication.form.frequencyList._ == null ? jsf._do(var.PatientMedication.form.frequencyList._(jsf.hintedSearch('DrugFrequency', null, var.PatientMedication.form.frequencyList.search, '_MEDBASE'))).stay()  : null}          
+                     <label>Frequency</label>            
+                     <h:selectOneMenu value="#{medication.frequency}" style="width: 14.5em;">
+                        <f:selectItem noSelectionOption="true" itemLabel="NONE"/>
+                        <f:selectItems value="#{var.PatientMedication.form.frequencyList._}" var="frequency" itemLabel="#{frequency.description}" itemValue="#{frequency.description}"/>
+                     </h:selectOneMenu>            
+                  </li>
+               </ui:fragment>
+            </h:panelGroup>
+            <li style="height:1em; width: 48em;">
+               <hr/>
+            </li>
+         </ui:repeat>        
+      </ui:composition>
+   </body>
+</html>

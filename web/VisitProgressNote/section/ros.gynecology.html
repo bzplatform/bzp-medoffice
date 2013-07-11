@@ -1,0 +1,184 @@
+<table>
+   <tr>
+      <th>Allergic/Immunologic</th>
+      <td>
+         <div class="pntl-section" data-section="rosAllergicImmunologic">
+            $rosSectionFilter
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th style="width: 20%;">Constitutional Symptoms</th>
+      <td>
+         <div class="pntl-section" data-section="rosConstitutionalSymptoms">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="weightLossYes" class="radio-group-ros-weightLoss" onchange="radioGroup(this, 'ros-weightLoss'); return false;"/>
+                  <label data-text-if="weightLossYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="weightLossNo" class="radio-group-ros-weightLoss" onchange="radioGroup(this, 'ros-weightLoss'); return false;"/>
+                  <label data-text-if="weightLossNo">N<span class="none">o</span></label>
+                  <label data-text-if="weightLossYes || weightLossNo">weight loss<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Ears/Nose/Mouth/Throat</th>
+      <td>
+         <div class="pntl-section" data-section="rosEarsNoseMouthThroat">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="oralLesionsYes" class="radio-group-ros-oralLesions" onchange="radioGroup(this, 'ros-oralLesions'); return false;"/>
+                  <label data-text-if="oralLesionsYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="oralLesionsNo" class="radio-group-ros-oralLesions" onchange="radioGroup(this, 'ros-oralLesions'); return false;"/>
+                  <label data-text-if="oralLesionsNo">N<span class="none">o</span></label>
+                  <label data-text-if="oralLesionsYes || oralLesionsNo">oral lesions<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Gastrointestinal</th>
+      <td>
+         <div class="pntl-section" data-section="rosGastrointestinal">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="nvdYes" class="radio-group-ros-nvd" onchange="radioGroup(this, 'ros-nvd'); return false;"/>
+                  <label data-text-if="nvdYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="nvdNo" class="radio-group-ros-nvd" onchange="radioGroup(this, 'ros-nvd'); return false;"/>
+                  <label data-text-if="nvdNo">N<span class="none">o</span></label>
+                  <label data-text-if="nvdYes || nvdNo">N/V/D<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Genitourinary</th>
+      <td>
+         <div class="pntl-section" data-section="rosGenitourinary">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="urinarySymptomsYes" class="radio-group-ros-urinarySymptoms" onchange="radioGroup(this, 'ros-urinarySymptoms'); return false;"/>
+                  <label data-text-if="urinarySymptomsYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="urinarySymptomsNo" class="radio-group-ros-urinarySymptoms" onchange="radioGroup(this, 'ros-urinarySymptoms'); return false;"/>
+                  <label data-text-if="urinarySymptomsNo">N<span class="none">o</span></label>
+                  <label data-text-if="urinarySymptomsYes || urinarySymptomsNo">urinary symptoms<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Musculoskeletal</th>
+      <td>
+         <div class="pntl-section" data-section="rosMusculoskeletal">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="backPainYes" class="radio-group-ros-backPain" onchange="radioGroup(this, 'ros-backPain'); return false;"/>
+                  <label data-text-if="backPainYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="backPainNo" class="radio-group-ros-backPain" onchange="radioGroup(this, 'ros-backPain'); return false;"/>
+                  <label data-text-if="backPainNo">N<span class="none">o</span></label>
+                  <label data-text-if="backPainYes || backPainNo">back pain<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Neurological</th>
+      <td>
+         <div class="pntl-section" data-section="rosNeurological">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="dizzinessYes" class="radio-group-ros-dizziness" onchange="radioGroup(this, 'ros-dizziness'); return false;"/>
+                  <label data-text-if="dizzinessYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="dizzinessNo" class="radio-group-ros-dizziness" onchange="radioGroup(this, 'ros-dizziness'); return false;"/>
+                  <label data-text-if="dizzinessNo">N<span class="none">o</span></label>
+                  <label data-text-if="dizzinessYes || dizzinessNo">dizziness<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Psychiatric</th>
+      <td>
+         <div class="pntl-section" data-section="rosPsychiatric">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="depressionYes" class="radio-group-ros-depression" onchange="radioGroup(this, 'ros-depression'); return false;"/>
+                  <label data-text-if="depressionYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="depressionNo" class="radio-group-ros-depression" onchange="radioGroup(this, 'ros-depression'); return false;"/>
+                  <label data-text-if="depressionNo">N<span class="none">o</span></label>
+                  <label data-text-if="depressionYes || depressionNo">depression<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Endocrine</th>
+      <td>
+         <div class="pntl-section" data-section="rosEndocrine">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="excessiveThirstYes" class="radio-group-ros-excessiveThirst" onchange="radioGroup(this, 'ros-excessiveThirst'); return false;"/>
+                  <label data-text-if="excessiveThirstYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="excessiveThirstNo" class="radio-group-ros-excessiveThirst" onchange="radioGroup(this, 'ros-excessiveThirst'); return false;"/>
+                  <label data-text-if="excessiveThirstNo">N<span class="none">o</span></label>
+                  <label data-text-if="excessiveThirstYes || excessiveThirstNo">excessive thirst<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Hematologic/Lymphatic</th>
+      <td>
+         <div class="pntl-section" data-section="rosHematologicLymphatic">
+            <div style="display: inline-block; margin-right: 1em;">
+               <span>
+                  <input type="checkbox" data-name="bleedingAnemiaYes" class="radio-group-ros-bleedingAnemia" onchange="radioGroup(this, 'ros-bleedingAnemia'); return false;"/>
+                  <label data-text-if="bleedingAnemiaYes">Y<span class="none">es</span></label>
+                  <input type="checkbox" data-name="bleedingAnemiaNo" class="radio-group-ros-bleedingAnemia" onchange="radioGroup(this, 'ros-bleedingAnemia'); return false;"/>
+                  <label data-text-if="bleedingAnemiaNo">N<span class="none">o</span></label>
+                  <label data-text-if="bleedingAnemiaYes || bleedingAnemiaNo">bleeding/anemia<span class="none">.</span></label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 97%;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+</table>

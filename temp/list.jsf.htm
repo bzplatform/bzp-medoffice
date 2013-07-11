@@ -1,0 +1,445 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html class="dj_gecko dj_ff3 dj_contentbox"
+xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <title>
+            Medical Care: Patients
+         </title>
+      <link rel="stylesheet" type="text/css"
+href="list.jsf_files/index.css">
+      <style type="text/css">
+         @import "/dojoroot/dijit/themes/tundra/tundra.css";
+      </style>
+      <link rel="stylesheet" type="text/css"
+href="list.jsf_files/custom.css">
+      <script type="text/javascript" src="list.jsf_files/dojo.js" djconfig="parseOnLoad: true, locale: 'en'"></script>
+      <script type="text/javascript" src="list.jsf_files/djsf-support.js"></script>
+      <script type="text/javascript" src="list.jsf_files/util.js"></script>
+   </head><div firebugversion="1.5.0" style="display: none;"
+id="_firebugConsole"></div><body class="tundra">
+<form id="j_idt6" name="j_idt6" method="post"
+action="/medical-care/Patient/list.jsf" class="page"
+enctype="application/x-www-form-urlencoded">
+<input name="j_idt6" value="j_idt6" type="hidden">
+<div class="header enclose" style="margin-bottom: 0.2em;">
+   <a href="http://localhost:8080/medical-care"><img
+src="list.jsf_files/logo.png" class="float-left logo"></a>
+    <div class="float-right menubar" style="position: relative; top:
+0.8em; left: 0.5em;">
+        <ul>
+            <li>Chernokozinsky Serge</li>
+            <li>&lt;mid&gt;</li>
+            <li>
+<script type="text/javascript" src="list.jsf_files/jsf.jsf"></script>
+<a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt8':'j_idt8'},'');return
+ false">LOGOFF</a>
+            </li>
+        </ul>
+    </div>
+</div>
+            <div id="breadcrumbs-navigator" class="breadcrumbs border"
+style="border-bottom: medium none;"><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt11':'j_idt11'},'');return
+ false" class="closeButton"><img src="list.jsf_files/close.jpg"></a>
+               <ul>
+                  <li><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt14':'j_idt14'},'');return
+ false">Home</a>
+                  </li>
+                  <li class="selected">
+                     <a
+href="http://localhost:8080/medical-care/Patient/list.jsf">Patients</a>
+                  </li>
+               </ul>
+            </div>
+            <div class="border body">
+            <div class="float-left column">
+               <div class="toolbar">
+                  <label class="vlabel"><input name="j_idt18"
+checked="checked" onchange="document.forms[0].submit()" type="checkbox">
+ Search</label>
+                  <label class="vlabel"><input name="j_idt20"
+onchange="document.forms[0].submit()" type="checkbox"> Transportation
+History</label>
+                  <label class="vlabel"><input name="j_idt22"
+checked="checked" onchange="document.forms[0].submit()" type="checkbox">
+ Visits</label>
+                  <br>
+                  <label class="vlabel"><input name="j_idt24"
+checked="checked" onchange="document.forms[0].submit()" type="checkbox">
+ Laboratory Order Transactions</label>
+                  <label class="vlabel"><input name="j_idt26"
+onchange="document.forms[0].submit()" type="checkbox"> Laboratory Result
+ Transactions</label>
+               </div>
+            </div>
+            <div class="float-left column clear-float">
+            <div class="menu form">
+               <div class="header">
+                  <h3 class="center">Search</h3>
+               </div>
+               <div class="body">
+                  <ul class="vertical form-area grid g32">
+                      <li class="em6">
+                        <label for="id" class="vlabel">MRN:</label><input
+ id="id" name="id" title="ID" type="text">
+                     </li>
+                     <li class="em13">
+                        <label for="lastName" class="vlabel">Last Name:</label><input
+ id="lastName" name="lastName" title="Last Name" type="text">
+                     </li>
+                     <li class="em13">
+                        <label for="firstName" class="vlabel">First
+Name:</label><input id="firstName" name="firstName" title="First Name"
+type="text">
+                     </li>
+                     <li class="em13">
+                        <label for="birthDate" class="vlabel">Birth
+Date:</label><div widgetid="birthDate" role="presentation" class="dijit
+dijitReset dijitInlineTable dijitLeft djsf_DateTextBox dijitTextBox
+dijitDateTextBox" id="widget_birthDate"
+dojoattachevent="onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse"
+ wairole="presentation"><div style="overflow: hidden;"><div
+class="dijitReset dijitValidationIcon"><br></div><div class="dijitReset
+dijitValidationIconText">Χ</div><div class="dijitReset dijitInputField"><input
+ aria-invalid="false" aria-valuenow="" tabindex="0" id="birthDate"
+class="dijitReset" dojoattachpoint="textbox,focusNode"
+autocomplete="off" type="text"><input value="" name="birthDate"
+type="hidden"></div></div></div>
+                     </li>
+                     <li class="em10">
+                        <label for="homePhone" class="vlabel">Home
+Phone:</label><input id="homePhone" name="homePhone" title="Home Phone"
+type="text">
+                     </li>
+                     <li class="em9">
+                        <label for="ssn" class="vlabel">SSN:</label><input
+ id="ssn" name="ssn" title="SSN" type="text">
+                     </li>
+                  </ul>
+               </div>
+               <div class="footer"><input name="j_idt42" value="Reset"
+class="ok-button" type="submit"><input name="j_idt43" value="Search"
+class="cancel-button" type="submit">
+               </div>
+            </div>
+            </div>
+               <div class="float-left column">
+                  <h3 class="table-label">Selected Patient</h3>
+         <div class="border one scrollbar search-true">
+            <div class="table-holder"><table>
+<thead>
+<tr>
+<th scope="col">MRN</th>
+<th scope="col">Last Name</th>
+<th scope="col">First Name</th>
+<th scope="col">Home Phone</th>
+<th scope="col">SSN</th>
+<th scope="col">Birth Date</th>
+<th scope="col">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="even">
+<td>1</td>
+<td>TEST</td>
+<td>PATIENT1</td>
+<td>(718)777-7777</td>
+<td>111-11-7777</td>
+<td>01/01/1908</td>
+<td><span>Add Transportation</span></td>
+</tr>
+</tbody>
+</table>
+
+            </div>
+         </div>
+               </div>
+
+
+
+                  <div class="float-left column">
+                     <h3 class="table-label">Visits</h3>
+                     <div class="toolbar">
+                        <label class="vlabel"><input
+name="j_idt183:0:j_idt185:0:j_idt187"
+onchange="document.forms[0].submit()" type="checkbox"> ID</label>
+                        <label class="vlabel"><input
+name="j_idt183:0:j_idt185:0:j_idt189"
+onchange="document.forms[0].submit()" type="checkbox"> Duration</label>
+
+                     </div>
+         <div class="border one scrollbar search-true">
+
+
+            <div class="table-holder"><table>
+<thead>
+<tr>
+<th scope="col">Date</th>
+<th scope="col">Time</th>
+<th scope="col">Provider</th>
+<th scope="col">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="even">
+<td>10/01/2009</td>
+<td>2:48 PM</td>
+<td>ABRAMOVA, INNA</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt183:0:j_idt185:0:j_idt192:0:j_idt216':'j_idt183:0:j_idt185:0:j_idt192:0:j_idt216'},'');return
+ false">Create Laboratory Order Transaction</a></td>
+</tr>
+</tbody>
+</table>
+
+            </div>
+         </div>
+                  </div>
+
+
+                  <div class="float-left column">
+                     <h3 class="table-label">Laboratory Order
+Transactions</h3>
+                     <div class="toolbar">
+                        <label class="vlabel"><input
+name="j_idt219:0:j_idt221:0:j_idt223"
+onchange="document.forms[0].submit()" type="checkbox"> ID</label>
+                        <label class="vlabel"><input
+name="j_idt219:0:j_idt221:0:j_idt225"
+onchange="document.forms[0].submit()" type="checkbox"> Ordering Provider</label>
+                     </div>
+<style>
+table {
+	border-collapse: collapse;
+	margin-left: -10px;
+	margin-top: -10px;
+}
+thead th:first-child{
+     border-color: #6E6B5C #E8FFBB #6E6B5C #6E6B5C;
+}
+</style>
+
+            <table class="datatablex">
+<thead>
+<tr>
+<th scope="col">Date/Time</th>
+<th scope="col">Laboratory Account</th>
+<th scope="col">Status</th>
+<th scope="col">Action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="even">
+<td>02/17/2010 16:39 PM</td>
+<td>LMAP, ABC Laboratory</td>
+<td>OP</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:0:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:0:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="odd">
+<td>02/17/2010 16:32 PM</td>
+<td>LMAP, ABC Laboratory</td>
+<td>OP</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:1:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:1:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="even">
+<td>02/16/2010 23:30 PM</td>
+<td>LMAP, ABC Laboratory</td>
+<td>OP</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:2:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:2:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="odd">
+<td>02/16/2010 22:00 PM</td>
+<td>LMAP, ABC Laboratory</td>
+<td>OP</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:3:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:3:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="even">
+<td>02/16/2010 21:25 PM</td>
+<td>LMAP, ABC Laboratory</td>
+<td>OP</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:4:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:4:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="odd">
+<td>02/16/2010 20:44 PM</td>
+<td>LMAP, ABC Laboratory</td>
+<td>PR</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:5:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:5:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="even">
+<td>02/16/2010 20:29 PM</td>
+<td>LMAP, ABC Laboratory</td>
+<td>OP</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:6:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:6:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="odd">
+<td>02/16/2010 20:19 PM</td>
+<td>LMAP, ABC Laboratory</td>
+<td>OP</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:7:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:7:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="even">
+<td>02/16/2010 20:03 PM</td>
+<td>LMAP, ABC Laboratory</td>
+<td>OP</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:8:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:8:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="odd">
+<td>02/16/2010 17:46 PM</td>
+<td>LMAP, ABC Laboratory</td>
+<td>OP</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:9:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:9:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="even">
+<td>01/15/2010 15:15 PM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:10:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:10:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="odd">
+<td>01/06/2010 13:53 PM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:11:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:11:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="even">
+<td>12/14/2009 10:15 AM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:12:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:12:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="odd">
+<td>12/08/2009 15:01 PM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:13:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:13:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="even">
+<td>12/08/2009 13:22 PM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:14:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:14:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="odd">
+<td>12/07/2009 13:42 PM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:15:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:15:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="even">
+<td>12/07/2009 12:15 PM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>PR</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:16:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:16:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="odd">
+<td>12/03/2009 13:27 PM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:17:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:17:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="even">
+<td>12/03/2009 11:42 AM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:18:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:18:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="odd">
+<td>12/02/2009 14:52 PM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:19:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:19:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="even">
+<td>12/01/2009 12:50 PM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:20:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:20:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="odd">
+<td>12/01/2009 10:36 AM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:21:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:21:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="even">
+<td>12/01/2009 10:17 AM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:22:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:22:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+<tr class="odd">
+<td>12/01/2009 9:58 AM</td>
+<td>C2157, BIO-REFERENCE Lab</td>
+<td>ST</td>
+<td><a href="#"
+onclick="mojarra.jsfcljs(document.getElementById('j_idt6'),{'j_idt219:0:j_idt221:0:j_idt228:23:j_idt252':'j_idt219:0:j_idt221:0:j_idt228:23:j_idt252'},'');return
+ false">Requisition</a></td>
+</tr>
+</tbody>
+</table>
+
+                  </div>
+            </div><div class="footer">
+   <span class="float-left legal">© 2009 MedEnterprise</span>
+   <a
+href="http://localhost:8080/medical-care/Patient/privacy.policy.html"
+class="float-right legal">Privacy policy</a>
+   <span class="float-right legal" style="margin: 0pt 0.75em;"></span>
+   <a
+href="http://localhost:8080/medical-care/Patient/terms-and-conditions.html"
+ class="float-right legal">Terms and Conditions</a>
+</div><input name="javax.faces.ViewState" id="javax.faces.ViewState"
+value="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"
+ autocomplete="off" type="hidden">
+</form>
+   </body></html>

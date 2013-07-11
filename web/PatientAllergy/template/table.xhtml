@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="tablecounter">#{patientAllergyList.size()}</div>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{patientAllergyList}" var="patientAllergy" rendered="#{not empty patientAllergyList}">
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Allergy"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAllergy.allergy.description}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Reaction"/>
+                  </f:facet>
+                  <h:outputText value="#{patientAllergy.reaction}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Created"/>
+                  </f:facet>
+                  <ui:fragment rendered="#{tableConfig.details._}">
+                     <h:outputText value="#{patientAllergy.datetime}" style="white-space: nowrap;">
+                        <f:convertDateTime pattern="MM/dd/yy hh:mm a"/>
+                     </h:outputText>
+                     <br/>
+                     <h:outputText value="by #{access.getUserName(patientAllergy.userId)}"/>
+                     <br/>
+                     <h:outputText value="ACTIVE" rendered="#{patientAllergy.active}"/>
+                     <h:outputText value="INACTIVE" rendered="#{! patientAllergy.active}"/>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! tableConfig.details._}">
+                     <h:outputText value="#{patientAllergy.datetime}" style="white-space: nowrap;">
+                        <f:convertDateTime pattern="MM/dd/yy"/>
+                     </h:outputText>
+                  </ui:fragment>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Action"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.PatientAllergy.form.patientAllergy._(patientAllergy))._do(var.PatientAllergy.form.allergyStr._(patientAllergy.allergy.description))._to('PatientAllergy/edit').go}"
+                                   styleClass="intable-action"
+                                   value="Edit..." style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"/>
+                  <h:commandButton style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                   rendered="#{! patientAllergy.active}"
+                                   action="#{jsf._do(patientAllergy.setActive(true))._save(patientAllergy).stay}" value="Set Active"/>
+                  <h:commandButton style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                   rendered="#{patientAllergy.active}"
+                                   action="#{jsf._do(patientAllergy.setActive(false))._save(patientAllergy).stay}" value="Set Inactive"/>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

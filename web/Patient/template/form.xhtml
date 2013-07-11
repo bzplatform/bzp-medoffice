@@ -1,0 +1,182 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <ui:fragment rendered="#{! empty var.Patient.form}">
+            <style>
+               a.colored {
+                  color: #AE4EB5;
+                  text-decoration: none;
+                  font-weight: bold;
+               }
+            </style>
+            #{var.Patient.form.patient._ == null ? var.Patient.form.patient._(edi.patient(var.Patient.form.patientId._)) : null}
+            <li class="em14">
+               <h:panelGroup styleClass="errors" rendered="#{var.Patient.form.patientValidationMap._ != null and var.Patient.form.patientValidationMap._.lastName}">
+                  <b>Last Name</b> is required
+               </h:panelGroup>
+               <label>Last Name:</label>
+               <h:inputText value="#{var.Patient.form.patient._.lastName}"/>
+            </li>
+            <li class="em10">
+               <h:panelGroup styleClass="errors" rendered="#{var.Patient.form.patientValidationMap._ != null and var.Patient.form.patientValidationMap._.firstName}">
+                  <b>First Name</b> is required
+               </h:panelGroup>
+               <label>First Name:</label>
+               <h:inputText value="#{var.Patient.form.patient._.firstName}"/>
+            </li>
+            <li class="em3">
+               <label>MI:</label>
+               <h:inputText value="#{var.Patient.form.patient._.mi}" title="Middle Initial"/>
+            </li>
+            <li class="em7">
+               <h:panelGroup styleClass="errors" rendered="#{var.Patient.form.patientValidationMap._ != null and var.Patient.form.patientValidationMap._.birthDate}">
+                  <b>Birth Date</b> is required
+               </h:panelGroup>
+               <label>Birth Date:</label>
+               <h:inputText id="birthDate" value="#{var.Patient.form.patient._.birthDate}" styleClass="mask-date">
+                  <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+               </h:inputText>
+            </li>
+            <li class="em6">
+               <h:panelGroup styleClass="errors" rendered="#{var.Patient.form.patientValidationMap._ != null and var.Patient.form.patientValidationMap._.sex}">
+                  <b>Sex</b> is required
+               </h:panelGroup>
+               <label>Sex:</label>
+               <h:selectOneMenu value="#{var.Patient.form.patient._.sex}" title="Sex">
+                  <f:selectItem itemValue="U" itemLabel="NONE"/>
+                  <f:selectItem itemValue="F" itemLabel="Female"/>
+                  <f:selectItem itemValue="M" itemLabel="Male"/>
+               </h:selectOneMenu>
+            </li>
+            <li class="em9">
+               <label>SSN:</label>
+               <h:inputText value="#{var.Patient.form.patient._.ssn}" styleClass="mask-ssn"/>
+            </li>
+            <li class="em27">
+               <label>Address:</label>
+               <h:inputText value="#{var.Patient.form.patient._.address}"/>
+            </li>
+            <li class="em12" style="width:12.5em;">
+               <label>City:</label>
+               <h:inputText id="city" value="#{var.Patient.form.patient._.city}" style="width:11.3em;"/>
+            </li>
+            <li class="em4">
+               <label>State:</label>
+               <h:inputText id="state" value="#{var.Patient.form.patient._.state}"/>
+            </li>
+            <li class="em5">
+               <label>
+                  <h:commandLink tabindex="99" action="#{jsf._do(var.Patient.form.zipCode._(biz.findZipCode(var.Patient.form.patient._.zipCode)))._do(var.Patient.form.zipCode._ != null ? jsf._do(var.Patient.form.patient._.setCity(var.Patient.form.zipCode._.city))._do(var.Patient.form.patient._.setState(var.Patient.form.zipCode._.state)).stay() : null).stay()}" 
+                                 value="Zip:" title="Get City and State by Zip Code">
+                     <f:ajax render="city state" execute="zipCode"/>
+                  </h:commandLink>
+               </label>
+               <h:inputText id="zipCode" value="#{var.Patient.form.patient._.zipCode}" title="Zip Code" styleClass="mask-zip"/>
+            </li>
+            <li class="em11">
+               <label>Home Phone:</label>
+               <h:inputText value="#{var.Patient.form.patient._.homePhone}" styleClass="mask-phone"/>
+            </li>
+            <li class="em11">
+               <label>Cell Phone:</label>
+               <h:inputText value="#{var.Patient.form.patient._.cellPhone}" styleClass="mask-phone"/>
+            </li>
+            <li class="em11">
+               <label>Emerg. Phone:</label>
+               <h:inputText value="#{var.Patient.form.patient._.emergPhone}" styleClass="mask-phone"/>
+            </li>
+            <li class="em11">
+               <label>Work Phone:</label>
+               <h:inputText value="#{var.Patient.form.patient._.workPhone}" styleClass="mask-phone"/>
+            </li>
+            <li class="em5">
+               <label>Ext.:</label>
+               <h:inputText value="#{var.Patient.form.patient._.workPhoneExt}" style="width:3.8em;"/>
+            </li>
+            <li class="em11">
+               #{var.Patient.form.languageList._ == null ? var.Patient.form.languageList._(jsf.search('Language', 'l.name', jsf.newMap())) : null}
+               <label>Preferred Language:</label>
+               <h:selectOneMenu value="#{var.Patient.form.patient._.preferredLanguageCode}">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.Patient.form.languageList._}" var="language" itemValue="#{language.code}" itemLabel="#{language.name}"/>
+               </h:selectOneMenu>
+            </li>
+            <li class="em22">
+               #{var.Patient.form.ethnicityList._ == null ? var.Patient.form.ethnicityList._(jsf.search('Ethnicity', null, jsf.newMap())) : null}
+               <label>Ethnicity:</label>
+               <h:selectOneMenu value="#{var.Patient.form.patient._.ethnicityId}" style="width:20.7em;">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.Patient.form.ethnicityList._}" var="ethnicity" itemValue="#{ethnicity.id}" itemLabel="#{ethnicity.name}"/>
+               </h:selectOneMenu>
+            </li>
+            <li class="em16">
+               #{var.Patient.form.raceList._ == null ? var.Patient.form.raceList._(jsf.search('Race', null, jsf.newMap())) : null}
+               <label>Race:</label>
+               <h:selectOneMenu value="#{var.Patient.form.patient._.raceId}" style="width:14.7em;">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.Patient.form.raceList._}" var="race" itemValue="#{race.id}" itemLabel="#{race.name}"/>
+               </h:selectOneMenu>
+            </li>
+            <li class="em43">
+               <label>Email Address:</label>
+               <h:inputText value="#{var.Patient.form.patient._.eMailAddress}" style="width:41.7em;"/>
+            </li>
+            <li class="em5">
+               <label>Code:</label>
+               <h:inputText value="#{var.Patient.form.patient._.code}" style="display: none;" styleClass="code-box"/>
+               <input type="text" title="Code" value="#{var.Patient.form.patient._.code}" dojoType="dijit.form.ValidationTextBox" regExp="\w{1,3}" required="false"
+                      invalidMessage="Invalid Code" style="padding: 0.15em; font-size: 1em; width: 4.5em; position:relative; top:-0.1em; margin-left: 0.3em;"
+                      onChange="$('.code-box').val(this.value);"/>
+            </li>
+            <li class="em18">
+               #{jsf._do(var.Patient.form.providerSearch.put('role', 'self')).stay()}
+               #{jsf._do(var.Patient.form.providerSearch.put('active', true)).stay()}
+               #{var.Patient.form.providerList._ == null ? var.Patient.form.providerList._(jsf.hintedSearch('Provider', 'p.alias', var.Patient.form.providerSearch, '_MEDBASE')) : null}
+               <label>Personal Doctor:</label>
+               <h:selectOneMenu value="#{var.Patient.form.patient._.personalDoctor}">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.Patient.form.providerList._}" var="provider" itemLabel="#{provider.alias}"/>
+                  <f:converter converterId="EntityConverter"/>
+               </h:selectOneMenu>
+            </li>
+            <li class="em48" style="height: 0.5em; margin-top: 0.5em;"><hr style="margin-left: 0.5em;"/></li>
+            <li class="em18">
+               #{var.Patient.form.conditionList._ == null ? var.Patient.form.conditionList._(jsf.search('PatientCondition', null, jsf.newMap())) : null}
+               <label>General Condition:</label>
+               <h:selectOneMenu value="#{var.Patient.form.patient._.conditionID}">
+                  <f:selectItem itemValue="" itemLabel="NONE"/>
+                  <f:selectItems value="#{var.Patient.form.conditionList._}" var="condition" itemValue="#{condition.id}" itemLabel="#{condition.name}"/>
+               </h:selectOneMenu>
+            </li>
+            <li class="em7">
+               <label>Date:</label>
+               <h:inputText id="conditionDate" value="#{var.Patient.form.patient._.conditionDate}" title="Condition Date" styleClass="djsf_DateTextBoxYYYY">
+                  <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+               </h:inputText>
+            </li>
+            <ui:fragment rendered="#{var.Patient.form.patient._.id == null}">
+               #{var.Patient.form.patientAds._ == null ? var.Patient.form.patientAds._(jsf.newObject('com.medenterprise.domain.entity.PatientAds')) : null}
+               #{var.Patient.form.patientAdsTypes._ == null ? var.Patient.form.patientAdsTypes._(jsf.hintedSearch('PatientAdsType', null, jsf.newMap(), '_MEDBASE')) : null}
+               <li class="em7">
+                  <label style="font-weight: bold;">When and</label>
+                  <h:inputText id="adsDate" value="#{var.Patient.form.patientAds._.date}" styleClass="djsf_DateTextBoxYYYY">
+                     <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+                  </h:inputText>
+               </li>
+               <li class="em17">
+                  <label style="font-weight: bold;">how did patient hear about us:</label>
+                  <h:selectOneMenu value="#{var.Patient.form.patientAds._.adsTypeId}" style="width:15.7em;">
+                     <f:selectItem itemValue="" itemLabel="NONE"/>
+                     <f:selectItems value="#{var.Patient.form.patientAdsTypes._}" var="adsType" itemValue="#{adsType.id}" itemLabel="#{adsType.type}"/>
+                  </h:selectOneMenu>
+               </li>
+            </ui:fragment>
+         </ui:fragment>
+      </ui:composition>
+   </body>
+</html>

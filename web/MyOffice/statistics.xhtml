@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition template="../template/base.xhtml">
+
+         <ui:define name="title">
+            Medical Care: Statistics
+         </ui:define>
+
+         <ui:define name="navigation">
+            <ui:include src="../template/tab-navigation.xhtml">
+               <ui:param name="page" value="MyOffice/statistics"/>
+            </ui:include>
+         </ui:define>
+
+         <ui:define name="form">
+            <div class="float-left column" jsfc="h:panelGroup">
+               <ui:include src="template/statistics-search.xhtml"/>
+            </div>
+
+            <div class="float-left column" style="clear:both;">
+               <h3 class="table-label">Appointments</h3>
+               <h:commandLink value="All Appointments (Batch)"
+                              action="#{jsf._do(statistics.allAppointmentsReport.setStartDate(jsf.global('myOffice/statistics', 'var')['startDate'])).
+                                        _do(statistics.allAppointmentsReport.setEndDate(jsf.global('myOffice/statistics', 'var')['endDate'])).
+                                        _do(statistics.allAppointmentsReport.setMyOfficeCode(myOfficeCode)).
+                                        _do(statistics.calculateAllAppointmentsReport()).
+                                        _to('MyOffice/all-appointments-report').go}"
+                              style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"
+                              target="_blank"/>
+               <br/>
+               <!-- <h:commandLink value="PT Referrals &amp; Appointments"
+                              action="#{jsf._do(statistics.ptReferralAndAppointmentReport.setStartDate(jsf.global('myOffice/statistics', 'var')['startDate'])).
+                                        _do(statistics.ptReferralAndAppointmentReport.setEndDate(jsf.global('myOffice/statistics', 'var')['endDate'])).
+                                        _do(statistics.ptReferralAndAppointmentReport.setMyOfficeCode(myOfficeCode)).
+                                        _do(statistics.calculatePtReferralAndAppointmentReport()).
+                                        _to('MyOffice/pt-referral-and-appointment-report').go}"
+                              style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"
+                              target="_blank"/>
+               <br/> -->
+               <h:commandLink value="PT Referrals/Appointments Cancelled and Not Show"
+                              action="#{jsf._do(statistics.ptReferralAndAppointmentReport.setStartDate(jsf.global('myOffice/statistics', 'var')['startDate'])).
+                                        _do(statistics.ptReferralAndAppointmentReport.setEndDate(jsf.global('myOffice/statistics', 'var')['endDate'])).
+                                        _do(statistics.ptReferralAndAppointmentReport.setMyOfficeCode(myOfficeCode)).
+                                        _do(statistics.calculateCancelledPtReferralAndAppointmentReport()).
+                                        _to('MyOffice/cancelled-pt-referral-and-appointment-report').go}"
+                              style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"
+                              target="_blank"/>
+               <h3 class="table-label">Results</h3>
+               <h:commandLink value="Hospital Admissions"
+                              action="#{jsf._do(statistics.hospitalAdmissionReport.setStartDate(jsf.global('myOffice/statistics', 'var')['startDate'])).
+                                        _do(statistics.hospitalAdmissionReport.setEndDate(jsf.global('myOffice/statistics', 'var')['endDate'])).
+                                        _do(statistics.hospitalAdmissionReport.setMyOfficeCode(myOfficeCode)).
+                                        _do(statistics.calculateHospitalAdmissionReport()).
+                                        _to('MyOffice/hospital-admission-report').go}"
+                              style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"
+                              target="_blank"/>
+               <br/>
+               <h:commandLink value="Hospital Admissions By Patients"
+                              action="#{jsf._do(statistics.hospitalAdmissionReport.setStartDate(jsf.global('myOffice/statistics', 'var')['startDate'])).
+                                        _do(statistics.hospitalAdmissionReport.setEndDate(jsf.global('myOffice/statistics', 'var')['endDate'])).
+                                        _do(statistics.hospitalAdmissionReport.setMyOfficeCode(myOfficeCode)).
+                                        _do(statistics.calculateHospitalAdmissionReport()).
+                                        _to('MyOffice/hospital-admission-by-patients-report').go}"
+                              style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"
+                              target="_blank"/>
+               <h3 class="table-label">Laboratory</h3>
+               <h:commandLink value="ABC Accepted Tests Sent To Another Laboratory"
+                              action="#{jsf._do(statistics.abcAcceptedTestsSentToAnotherLaboratoryReport.setStartDate(jsf.global('myOffice/statistics', 'var')['startDate'])).
+                                        _do(statistics.abcAcceptedTestsSentToAnotherLaboratoryReport.setEndDate(jsf.global('myOffice/statistics', 'var')['endDate'])).
+                                        _do(statistics.abcAcceptedTestsSentToAnotherLaboratoryReport.setMyOfficeCode(myOfficeCode)).
+                                        _do(statistics.calculateAbcAcceptedTestsSentToAnotherLaboratoryReport()).
+                                        _to('MyOffice/abc-accepted-tests-sent-to-another-laboratory-report').go}"
+                              style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"
+                              target="_blank"/>
+               <h3 class="table-label">Patient Transportation</h3>
+               <h:commandLink value="Patient Transportation Requests"
+                              action="#{jsf._do(statistics.transportationRequestReport.setStartDate(jsf.global('myOffice/statistics', 'var')['startDate'])).
+                                        _do(statistics.transportationRequestReport.setEndDate(jsf.global('myOffice/statistics', 'var')['endDate'])).
+                                        _do(statistics.transportationRequestReport.setMyOfficeCode(myOfficeCode)).
+                                        _do(statistics.calculateTransportationRequestReport()).
+                                        _to('MyOffice/transportation-request-report').go}"
+                              style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"
+                              target="_blank"/>
+               <br/>
+               <h:commandLink value="User Activities with Transportation Forms"
+                              action="#{jsf._do(statistics.changedTransportationReport.setStartDate(jsf.global('myOffice/statistics', 'var')['startDate'])).
+                                        _do(statistics.changedTransportationReport.setEndDate(jsf.global('myOffice/statistics', 'var')['endDate'])).
+                                        _do(statistics.changedTransportationReport.setMyOfficeCode(myOfficeCode)).
+                                        _do(statistics.calculateChangedTransportationReport()).
+                                        _to('MyOffice/changed-transportation-report').go}"
+                              style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"
+                              target="_blank"/>
+               <br/>
+               <ui:fragment rendered="#{access.isUriPermitted('MyOffice/statistics/billing')}">
+                  <h3 class="table-label">Billing</h3>
+                  <h:commandLink value="Posted Referrals"
+                                 action="#{jsf._do(statistics.postedReferralReport.setStartDate(jsf.global('myOffice/statistics', 'var')['startDate'])).
+                                           _do(statistics.postedReferralReport.setEndDate(jsf.global('myOffice/statistics', 'var')['endDate'])).
+                                           _do(statistics.calculatePostedReferralReport()).
+                                           _to('MyOffice/posted-referral-report').go}"
+                                 style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"
+                                 target="_blank"/>
+                  <br/>
+                  <h:commandLink value="HCPO Activities"
+                                 action="#{jsf._do(statistics.patientHomecareActivitiesReport.setStartDate(jsf.global('myOffice/statistics', 'var')['startDate'])).
+                                           _do(statistics.patientHomecareActivitiesReport.setEndDate(jsf.global('myOffice/statistics', 'var')['endDate'])).
+                                           _do(statistics.patientHomecareActivitiesReport.setMyOfficeCode(myOfficeCode)).
+                                           _do(statistics.calculatePatientHomecareActivitiesReport()).
+                                           _to('MyOffice/patient-homecare-activities-report').go}"
+                                 style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"
+                                 target="_blank"/>
+               </ui:fragment>
+            </div>
+         </ui:define>
+      </ui:composition>
+
+   </body>
+</html>

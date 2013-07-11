@@ -1,0 +1,718 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition template="../template/base.xhtml">
+
+         <ui:define name="title">
+            Medical Care: Provider
+         </ui:define>
+
+         <ui:define name="navigation">
+            <ui:include src="../template/tab-navigation.xhtml">
+               <ui:param name="page" value="OfficeProvider/main"/>
+            </ui:include>
+         </ui:define>
+
+         <ui:define name="form">
+            <div class="float-right column focus-line" style="margin-bottom: 0;">
+               <ui:include src="template/options.xhtml"/>
+            </div>
+
+            <div class="float-left" jsfc="h:panelGroup" rendered="#{officeProviderList != null and officeProviderList.size() == 1}">
+               <h3 class="context-label">#{officeProviderList.get(0).alias}</h3>
+            </div>
+
+            <div class="float-left column" jsfc="h:panelGroup" rendered="#{patientList != null and patientList.size() == 1 and ! jsf.global('patient', 'view')['panel:Search']}">
+               #{jsf._do(var.OfficeProvider.Patient.tableConfig.patient._ == null ? var.OfficeProvider.Patient.tableConfig.patient._(true) : null).stay()}
+               #{jsf._do(var.OfficeProvider.Patient.tableConfig.insurances._ == null ? var.OfficeProvider.Patient.tableConfig.insurances._(true) : null).stay()}
+               <h3 class="table-label" style="display:inline-block;">Patient</h3>
+               <h:commandButton action="#{jsf._do(var.Patient.form.patient._(patientList.get(0)))._to('Patient/edit').go}"
+                                value="Demographic..."
+                                style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                title="Edit Patient Demographic"/>
+               <br style="margin-bottom: 0.75em;"/>
+               <ui:include src="../Patient/template/table.xhtml">
+                  <ui:param name="tableConfig" value="#{var.OfficeProvider.Patient.tableConfig}"/>
+               </ui:include>
+            </div>
+
+            <div class="float-left column clear-float" jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['panel:Search'] and access.isUriPermitted('Patient/search')}">
+               <ui:include src="../Patient/template/search.xhtml"/>
+            </div>
+
+            <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty patientList and jsf.global('patient', 'view')['panel:Search']}">
+               #{jsf._do(var.OfficeProvider.patientSearchResult.tableConfig.insurances._ == null ? var.OfficeProvider.patientSearchResult.tableConfig.patient._(true) : null).stay()}
+               #{jsf._do(var.OfficeProvider.patientSearchResult.tableConfig.suppressNavigation._ == null ? var.OfficeProvider.patientSearchResult.tableConfig.suppressNavigation._(true) : null).stay()}
+               <ui:include src="../Patient/template/table.xhtml">
+                  <ui:param name="tableConfig" value="#{var.OfficeProvider.patientSearchResult.tableConfig}"/>
+               </ui:include>
+            </div>           
+
+            <div class="float-left column clear-float" jsfc="h:panelGroup" rendered="#{jsf.global('officeProvider', 'view')['panel:Search'] and access.isUriPermitted('OfficeProvider/search')}">
+               <ui:include src="template/search.xhtml"/>
+            </div>
+
+            <div jsfc="h:panelGroup" rendered="#{not empty officeProviderList}">
+
+               #{jsf._do(var.OfficeProvider.OfficeProvider.tableConfig.name._ == null ? var.OfficeProvider.OfficeProvider.tableConfig.name._(true) : null).stay()}
+               <div jsfc="h:panelGroup" class="float-left column" rendered="#{jsf.global('officeProvider', 'view')['panel:Search'] and var.OfficeProvider.searchResult._ != null}">
+                  <ui:include src="template/table.xhtml">
+                     <ui:param name="tableConfig" value="#{var.OfficeProvider.OfficeProvider.tableConfig}"/>
+                     <ui:param name="globalOfficeProviderList" value="#{officeProviderList}"/>
+                     <ui:param name="officeProviderList" value="#{var.OfficeProvider.searchResult._}"/>
+                  </ui:include>
+               </div>
+
+               <div style="clear: both;"/>
+
+               <div jsfc="h:panelGroup" rendered="#{officeProviderList != null and officeProviderList.size() == 1}">
+
+                  <div jsfc="h:panelGroup" rendered="#{jsf.global('officeProvider', 'view')['ProviderInsurance/list']}">
+                     <ui:fragment rendered="#{officeProviderList.get(0).role == 'self'}">
+                        #{jsf._do(var.OfficeProvider.ProviderInsuranceListSearch.put('providerNpi', officeProviderList.get(0).associatedProvider.npi)).stay()}
+                        #{var.OfficeProvider.ProviderInsuranceListSearch.toString() != var.OfficeProvider.ProviderInsuranceListSearch._ ? jsf._do(var.OfficeProvider.ProviderInsuranceList._(jsf.hintedSearch('ProviderInsurance', 'p.insurance.name', var.OfficeProvider.ProviderInsuranceListSearch, '_HEALTHCARE')))._do(var.OfficeProvider.ProviderInsuranceListSearch._(var.OfficeProvider.ProviderInsuranceListSearch.toString())).stay() : null}
+                        #{jsf._do(var.OfficeProvider.ProviderInsurance.tableConfig.time._ == null ? var.OfficeProvider.ProviderInsurance.tableConfig.time._(true) : null).
+                          _do(var.OfficeProvider.ProviderInsurance.tableConfig.patient._ == null ? var.OfficeProvider.ProviderInsurance.tableConfig.patient._(true) : null).                       
+                          stay()}
+                     </ui:fragment>
+                     <div class="float-left column">
+                        <h3 class="table-label" style="display:inline-block;">Insurances</h3>
+                        <ui:fragment rendered="#{officeProviderList.get(0).role != 'self'}">
+                           <p style="margin-left: 0.2em; margin-top: -0.7em;">Insurances are not applicable for this provider</p>
+                        </ui:fragment>
+                        <ui:fragment rendered="#{officeProviderList.get(0).role == 'self'}">
+                           <h:commandButton action="#{jsf._do(var.ProviderInsurance.form.providerInsurance._(biz.addProviderInsurance(officeProviderList.get(0))))._do(var.ProviderInsurance.form.providerInsuranceList._(var.OfficeProvider.ProviderInsuranceList._))._do(var.ProviderInsurance.form.officeProvider._(officeProviderList.get(0)))._to('ProviderInsurance/edit').go}"
+                                            value="Add..." style="margin: 0; margin-right: 1.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                           <br style="margin-bottom: 0.75em;"/>
+                           <div jsfc="h:panelGroup" rendered="#{not empty var.OfficeProvider.ProviderInsuranceList._}">
+                              <ui:include src="../ProviderInsurance/template/table.xhtml">
+                                 <ui:param name="providerInsuranceList" value="#{var.OfficeProvider.ProviderInsuranceList._}"/>
+                                 <ui:param name="listId" value="providerInsuranceList"/>
+                                 <ui:param name="officeProvider" value="#{! empty officeProviderList ? officeProviderList.get(0) : null}"/>
+                                 <ui:param name="tableConfig" value="#{var.OfficeProvider.ProviderInsurance.tableConfig}"/>
+                              </ui:include>
+                           </div>
+                        </ui:fragment>  
+                     </div>
+                     <div style="clear: both;"/>
+                  </div>
+
+                  <div jsfc="h:panelGroup" rendered="#{jsf.global('officeProvider', 'view')['Schedule/list'] and access.isUriPermitted('Schedule/edit')}">
+                     <div class="float-left column">
+                        <h3 class="table-label" style="display:inline-block;">Appointment Categories</h3>
+                        #{var.OfficeProvider.Schedule.providerAppointmentCategoryList._(biz.providerAppointmentCategoryList(officeProviderList.get(0).id))}
+                        #{var.OfficeProvider.Schedule.visitCategoryList._ == null ? var.OfficeProvider.Schedule.visitCategoryList._(jsf.hintedSearch('VisitCategory', 'v.name', var.OfficeProvider.visitCategoryListSearch, '_MEDBASE')) : null}
+                        <label class="vlabel">Category:</label>
+                        <h:selectOneMenu value="#{var.OfficeProvider.Schedule.visitCategory._}" style="width: 10em;">
+                           <f:selectItems value="#{var.OfficeProvider.Schedule.visitCategoryList._}" var="visitCategory" itemLabel="#{visitCategory.name}"/>
+                           <f:converter converterId="EntityConverter"/>
+                        </h:selectOneMenu>
+                        <label class="vlabel">Duration:</label>
+                        <h:inputText value="#{var.OfficeProvider.Schedule.providerAppointmentDuration._}" style="width: 2em;" onkeypress="return suppressEnterKeyHandler(event)">
+                           <f:converter converterId="IntegerConverter"/>
+                        </h:inputText>
+                        <h:commandButton action="#{jsf._do(biz.addProviderAppointmentCategory(officeProviderList.get(0), var.OfficeProvider.Schedule.appointmentCategory._, var.OfficeProvider.Schedule.providerAppointmentDuration._)).stay}"
+                                         value="Add..." style="margin: 0; margin-right: 1.5em; margin-left: 1em; font-size: 0.7em; width: auto;">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <br style="margin-bottom: 0.75em;"/>
+                        <div style="margin-left: 0.5em; margin-bottom: 1em;">
+                           <ui:repeat value="#{var.OfficeProvider.Schedule.providerAppointmentCategoryList._}" var="providerAppointmentCategory">
+                              <h:commandLink onclick="if (confirm('Remove Appointment Category?'))
+                                 return true;
+                              else
+                                 return false;"  action="#{jsf._delete(providerAppointmentCategory)._do(var.OfficeProvider.providerAppointmentCategoryList._(null)).stay}" style="margin-right: 1em; font-size: 0.9em;">
+                                 <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                                 <h:outputText value="#{providerAppointmentCategory.visitCategory.name} (#{providerAppointmentCategory.duration} min)"/>
+                              </h:commandLink>
+                           </ui:repeat>
+                        </div>
+                     </div>
+                     <div class="float-left column">
+                        <h3 class="table-label" style="display:inline-block;">Schedule Periods</h3>
+                        #{var.OfficeProvider.Schedule.activeOn._ == null ? var.OfficeProvider.Schedule.activeOn._(biz.trimDate(jsf.newDate)) : null}
+                        #{jsf._do(var.OfficeProvider.Schedule.schedulePeriodListSearch.clear()).                
+                          _do(var.OfficeProvider.Schedule.schedulePeriodListSearch.put('officeProviderId', officeProviderList.get(0).id)).
+                          _do(var.OfficeProvider.Schedule.schedulePeriodListSearch.put('_(p.endDate IS NULL OR p.endDate &gt;= :endDate)', var.OfficeProvider.Schedule.activeOn._)).
+                          _do(var.OfficeProvider.Schedule.schedulePeriodList._(jsf.hintedSearch('ProviderSchedule', 'p.startDate, p.id', var.OfficeProvider.Schedule.schedulePeriodListSearch, '_MEDBASE'))).
+                          stay()}
+                        <label for="active_on" class="vlabel">Active On:</label>
+                        <h:inputText id="active_on" value="#{var.OfficeProvider.Schedule.activeOn._}" styleClass="djsf_DateTextBox w6">
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                        </h:inputText>
+                        <h:commandButton action="#{jsf._do(var.ProviderSchedule.form.providerSchedule._(biz.newProviderSchedule(officeProviderList[0], myOfficeCode)))._to('ProviderSchedule/edit').go}"
+                                         value="Add..." style="margin: 0; margin-right: 1.5em; margin-left: 1em; font-size: 0.7em; width: auto;">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <br style="margin-bottom: 0.75em;"/>
+                        <div jsfc="h:panelGroup" rendered="#{not empty var.OfficeProvider.Schedule.schedulePeriodList._}">
+                           <ui:include src="../ProviderSchedule/template/table.xhtml">
+                              <ui:param name="providerScheduleList" value="#{var.OfficeProvider.Schedule.schedulePeriodList._}"/>
+                              <ui:param name="listId" value="providerScheduleList"/>
+                              <ui:param name="tableConfig" value="#{var.OfficeProvider.ProviderSchedule.tableConfig}"/>
+                           </ui:include>
+                        </div>
+                     </div>
+                     <div style="clear: both;"/>
+                  </div>
+
+                  <div jsfc="h:panelGroup" rendered="#{jsf.global('officeProvider', 'view')['Appointment/make'] and patientList != null and patientList.size() == 1}">
+                     #{jsf._do(var.Patient.Appointment.search.clear()).                
+                       _do(var.Patient.Appointment.search.put('patient', patientList.get(0))).
+                       _do(var.Patient.Appointment.search.put('status', 'OPEN')).
+                       _do(var.Patient.Appointment.list._(jsf.search('Appointment', 'a.date, a.time', var.Patient.Appointment.search))).                    
+                       stay()}
+                     #{jsf._do(var.Patient.Appointment.tableConfig.time._ == null ? var.Patient.Appointment.tableConfig.time._(true) : null).
+                       _do(var.Patient.Appointment.tableConfig.date._ == null ? var.Patient.Appointment.tableConfig.date._(true) : null).
+                       _do(var.Patient.Appointment.tableConfig.provider._ == null ? var.Patient.Appointment.tableConfig.provider._(true) : null).
+                       _do(var.Patient.Appointment.tableConfig.action._ == null ? var.Patient.Appointment.tableConfig.action._(true) : null).
+                       stay()}
+                     <div class="float-left column" style="min-width: 40em; margin-bottom: -0.5em;" jsfc="h:panelGroup">
+                        <h3 class="table-label" style="display: inline;">
+                           Patient Appointments
+                           <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                           <span style="display: none;">                           
+                              <h:selectBooleanCheckbox value="#{var.Patient.Appointment.tableConfig.id._}"/>                    
+                              <label>ID</label>
+                              <h:selectBooleanCheckbox value="#{var.Patient.Appointment.tableConfig.duration._}"/>
+                              <label>Duration</label>
+                              <h:selectBooleanCheckbox value="#{var.Patient.Appointment.tableConfig.referringProvider._}"/>
+                              <label>Referring Provider</label>
+                              <div class="separator"/>
+                              <h:commandLink action="#{jsf.stay}" value="Apply">
+                                 <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                              </h:commandLink>
+                           </span>
+                        </h3>
+                        <h:commandLink value="Report" action="#{jsf._do(var.Patient.Appointment.report.patient._(patientList[0]))._do(var.Patient.Appointment.report.appointmentList._(var.Patient.Appointment.list._))._to('Appointment/patient-report').go}" target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 1em"/>
+                        <br style="margin-bottom: 0.75em;"/>
+                        <ui:include src="../Appointment/template/table.xhtml">
+                           <ui:param name="appointmentList" value="#{var.Patient.Appointment.list._}"/>
+                           <ui:param name="listId" value="patientAppointmentList"/>
+                           <ui:param name="tableConfig" value="#{var.Patient.Appointment.tableConfig}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+
+                  <div jsfc="h:panelGroup" rendered="#{jsf.global('officeProvider', 'view')['Appointment/make']}">
+                     <div class="float-left column">
+                        <h3 class="table-label" style="display: inline-block; #{var.Appointment.reschedule._ != null ? 'color: red;' : ''}">#{var.Appointment.reschedule._ != null ? 'Reschedule' : 'Make'} Appointment</h3>
+                        #{var.OfficeProvider.patient._ != patientList.get(0) ? jsf._do(var.OfficeProvider.providerAppointmentCategory._(null))._do(var.OfficeProvider.timePeriodManagerList._(null))._do(var.OfficeProvider.patient._(patientList.get(0))).stay() : null}
+                        #{var.OfficeProvider.appointmentStartDate._ == null ? var.OfficeProvider.appointmentStartDate._(jsf.newDate) : null}
+                        <label for="appointment_date" class="vlabel">Date:</label>
+                        <h:inputText id="make_appointment_date" value="#{var.OfficeProvider.appointmentStartDate._}" styleClass="djsf_DateTextBox w6">
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.OfficeProvider.timePeriodManagerList._(null)).listen}"/>
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                        </h:inputText>
+                        <h:commandButton style="width: 2em; font-size: 0.8em;" value="&lt;" action="#{jsf._do(var.OfficeProvider.appointmentStartDate._(jsf.addDays(var.OfficeProvider.appointmentStartDate._, -1))).stay}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.OfficeProvider.timePeriodManagerList._(null)).listen}"/>
+                        </h:commandButton>
+                        <h:commandButton style="width: 2em; font-size: 0.8em; margin-right: 1em;" value="&gt;" action="#{jsf._do(var.OfficeProvider.appointmentStartDate._(jsf.addDays(var.OfficeProvider.appointmentStartDate._, 1))).stay}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.OfficeProvider.timePeriodManagerList._(null)).listen}"/>
+                        </h:commandButton>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.OfficeProvider.Appointment.schedule._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Schedule
+                        </label>
+                        #{var.OfficeProvider.Appointment.emergencyMode._ == null ? var.OfficeProvider.Appointment.emergencyMode._(false) : null}
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.OfficeProvider.Appointment.emergencyMode._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           <h:outputText value=" Emergency" style="#{var.OfficeProvider.Appointment.emergencyMode._ ? 'color: red' : ''}"/>
+                        </label>
+                        <h:commandButton action="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh', true))._do(var.Appointment.cyclical.officeProvider._(var.OfficeProvider.officeProvider._))._do(var.Appointment.cyclical.providerAppointmentCategory._(var.OfficeProvider.providerAppointmentCategory._))._do(var.Appointment.cyclical.providerAppointmentDuration._(var.OfficeProvider.providerAppointmentDuration._))._to('Appointment/cyclical').go}"
+                                         style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                         disabled="#{patientList == null or patientList.size() != 1}"
+                                         title="Create Cyclical Appointments"
+                                         value="Cyclical..."/>
+                        <div class="toolbar" style="margin-bottom:0.3em; margin-right: 0em; margin-top: -0.5em;"> 
+                           #{var.OfficeProvider.specialtyList._ == null ? jsf._do(var.OfficeProvider.specialtyList._(jsf.search('Specialty', 's.name', jsf.newMap()))).stay() : null}
+                           #{jsf._do(var.OfficeProvider.officeProviderSearch.put('_EXISTS (SELECT mop FROM MyOfficeProvider mop WHERE mop.myOfficeCode = :myOfficeCode AND mop.officeProviderId = o.id)', myOfficeCode)).stay()}
+                           #{jsf._do(var.OfficeProvider.officeProviderSearch.put('active', true)).stay()}
+                           #{var.OfficeProvider.specialtyId._ != officeProviderList[0].specialtyId or var.OfficeProvider.officeProvider._ != officeProviderList[0] ? jsf._do(var.OfficeProvider.specialtyId._(officeProviderList[0].specialtyId))._do(var.OfficeProvider.officeProvider._(officeProviderList[0]))._do(var.OfficeProvider.timePeriodManagerList._(null))._do(var.OfficeProvider.officeProviderList._(null))._do(var.OfficeProvider.providerAppointmentCategoryList._(null))._do(var.OfficeProvider.providerAppointmentCategory._(null))._do(var.OfficeProvider.providerAppointmentDuration._(null)).stay() : null}                                                    
+                           <label class="vlabel">Specialty:</label>
+                           <h:selectOneMenu value="#{var.OfficeProvider.specialtyId._}" style="width: 14em;">
+                              <f:selectItems value="#{var.OfficeProvider.specialtyList._}" itemValue="#{specialty.id}" var="specialty" itemLabel="#{specialty.name}"/>
+                              <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.OfficeProvider.officeProviderList._(null))._do(var.OfficeProvider.officeProvider._(null))._do(var.OfficeProvider.providerAppointmentCategoryList._(null))._do(var.OfficeProvider.providerAppointmentCategory._(null))._do(var.OfficeProvider.providerAppointmentDuration._(null)).
+                                                                                            _do(var.OfficeProvider.timePeriodManagerList._(null))._do(var.OfficeProvider.officeProviderSearch.put('specialtyId', biz.parseInt(var.OfficeProvider.specialtyId._)))._do(var.OfficeProvider.officeProviderList._(jsf.search('OfficeProvider', 'o.alias', var.OfficeProvider.officeProviderSearch))).
+                                                                                            _do(! empty var.OfficeProvider.officeProviderList._ ? var.OfficeProvider.officeProvider._(var.OfficeProvider.officeProviderList._[0]) : null)._do(officeProviderList.clear())._do(officeProviderList.add(var.OfficeProvider.officeProvider._)).listen}"/>
+                              <f:converter converterId="IntegerConverter"/>
+                           </h:selectOneMenu>
+                           #{var.OfficeProvider.officeProviderList._ == null ? jsf._do(var.OfficeProvider.officeProviderSearch.put('specialtyId', var.OfficeProvider.specialtyId._))._do(var.OfficeProvider.officeProviderList._(jsf.search('OfficeProvider', 'o.alias', var.OfficeProvider.officeProviderSearch))).stay() : null}
+                           #{var.OfficeProvider.officeProvider._ == null and ! empty var.OfficeProvider.officeProviderList._ ? var.OfficeProvider.officeProvider._(var.OfficeProvider.officeProviderList._[0]) : null}
+                           #{var.OfficeProvider.providerParticipateInsuranceWarning._(biz.providerParticipateInsuranceWarning(var.OfficeProvider.officeProvider._.id, patientList.get(0).primaryInsuranceID))}
+                           <label class="vlabel">Provider:</label>
+                           <h:selectOneMenu value="#{var.OfficeProvider.officeProvider._}" style="width: 16em;#{empty var.OfficeProvider.providerParticipateInsuranceWarning._ ? '' :'border: solid red 2px;'}" title="#{var.OfficeProvider.providerParticipateInsuranceWarning._}">
+                              <f:selectItems value="#{var.OfficeProvider.officeProviderList._}" var="officeProvider" itemLabel="#{officeProvider.alias}"/>
+                              <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.OfficeProvider.providerAppointmentCategoryList._(null))._do(var.OfficeProvider.providerAppointmentCategory._(null))._do(var.OfficeProvider.providerAppointmentDuration._(null))._do(var.OfficeProvider.timePeriodManagerList._(null))._do(sessionScope.put('officeProviderList', jsf.newObject('java.util.ArrayList')))._do(officeProviderList.add(var.OfficeProvider.officeProvider._))._do(var.OfficeProvider.providerAppointmentDurationEnabled._(null)).listen}"/>
+                              <f:converter converterId="EntityConverter"/>
+                           </h:selectOneMenu>
+                           #{var.OfficeProvider.providerAppointmentCategoryList._ == null ? var.OfficeProvider.providerAppointmentCategoryList._(biz.providerAppointmentCategoryList(var.OfficeProvider.officeProvider._.id)) : null}
+                           #{var.OfficeProvider.providerAppointmentCategory._ == null and ! empty var.OfficeProvider.providerAppointmentCategoryList._ ? var.OfficeProvider.providerAppointmentCategory._(biz.preferredProviderAppointmentCategory(var.OfficeProvider.providerAppointmentCategoryList._, patientList, var.OfficeProvider.specialtyId._)) : null}
+                           <label class="vlabel">Category:</label>
+                           <h:selectOneMenu value="#{var.OfficeProvider.providerAppointmentCategory._}" style="width: 4em;">
+                              <f:selectItems value="#{var.OfficeProvider.providerAppointmentCategoryList._}" var="providerAppointmentCategory" itemLabel="#{providerAppointmentCategory.appointmentCategory.shortName}"/>
+                              <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.OfficeProvider.providerAppointmentDuration._(null))._do(var.OfficeProvider.timePeriodManagerList._(null)).listen}"/>
+                              <f:converter converterId="EntityConverter"/>
+                           </h:selectOneMenu>
+                           #{var.OfficeProvider.providerAppointmentDuration._ == null ? var.OfficeProvider.providerAppointmentDuration._(var.OfficeProvider.providerAppointmentCategory._.duration) : null}
+                           <h:inputText value="#{var.OfficeProvider.providerAppointmentDuration._}"
+                                        disabled="#{var.OfficeProvider.providerAppointmentDurationEnabled._ == null}"
+                                        style="width: 2em;" onkeypress="return suppressEnterKeyHandler(event)">
+                              <f:ajax render="@form" onevent="ajaxEventHandler" event="change" listener="#{jsf._do(var.OfficeProvider.timePeriodManagerList._(null)).listen}"/>
+                              <f:converter converterId="IntegerConverter"/>
+                           </h:inputText>
+                           <h:commandButton action="#{jsf._do(var.OfficeProvider.providerAppointmentDurationEnabled._ == null ? var.OfficeProvider.providerAppointmentDurationEnabled._(true) : var.OfficeProvider.providerAppointmentDurationEnabled._(null)).stay}"
+                                            style="margin: 0; margin-right: 0.5em; margin-left: 0em; font-size: 0.7em; width: 2.5em;"
+                                            title="Enable/Disable duration change"
+                                            value="#{var.OfficeProvider.providerAppointmentDurationEnabled._ == null ? 'On' : 'Off'}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandButton>
+                           #{var.OfficeProvider.timePeriodManagerList._ == null ? jsf._do(var.OfficeProvider.timePeriodManagerList._(biz.defineTimePeriodManagerList(var.OfficeProvider.appointmentStartDate._, 14, var.OfficeProvider.officeProvider._.id, var.OfficeProvider.providerAppointmentCategory._.appointmentCategory.id, var.OfficeProvider.providerAppointmentDuration._)))._do(var.OfficeProvider.timePeriodManagerListValidationMap._(biz.timePeriodManagerListValidationMap(var.OfficeProvider.timePeriodManagerList._, patientList, var.OfficeProvider.specialtyId._))).stay() : null}
+                           <div class="one">
+                              <table>
+                                 <thead>
+                                    <tr>
+                                       <ui:repeat value="#{var.OfficeProvider.timePeriodManagerList._}" var="timePeriodManager">
+                                          <th style="text-align: center; vertical-align: top;">
+                                             <h:outputText value="#{timePeriodManager.activeDate}">
+                                                <f:convertDateTime pattern="EEE" locale="en"/>
+                                             </h:outputText>
+                                             <br/>
+                                             <h:outputText value="#{timePeriodManager.activeDate}">
+                                                <f:convertDateTime pattern="MM/dd" locale="en"/>
+                                             </h:outputText>
+                                             <br/>
+                                             <ui:repeat value="#{var.OfficeProvider.timePeriodManagerListValidationMap._[timePeriodManager]}" var="error">
+                                                <h:graphicImage value="/theme/#{cookie.theme.value}/image/error.png" style="position: relative; top:2px; left:2px;"
+                                                                rendered="#{! empty timePeriodManager.availableTimePeriodList}"
+                                                                title="#{error}"/>
+                                             </ui:repeat>
+                                          </th>
+                                       </ui:repeat>
+                                    </tr>
+                                 </thead>
+                                 <tbody>                                
+                                    <ui:fragment rendered="#{var.OfficeProvider.Appointment.schedule._}">
+                                       <tr>
+                                          <ui:repeat value="#{var.OfficeProvider.timePeriodManagerList._}" var="timePeriodManager">
+                                             <td>                                          
+                                                <ui:repeat value="#{timePeriodManager.scheduleTimePeriodList}" var="timePeriod" varStatus="status">                                             
+                                                   <div style="font-weight: bold; text-align: center;">
+                                                      <h:outputText value="#{timePeriod.startTime}" style="font-size: 0.85em; white-space: nowrap;">
+                                                         <f:convertDateTime pattern="h:mm a" locale="en"/>
+                                                      </h:outputText>
+                                                      <br/>
+                                                      <h:outputText value="#{timePeriod.endTime}" style="font-size: 0.85em; white-space: nowrap;">
+                                                         <f:convertDateTime pattern="h:mm a" locale="en"/>
+                                                      </h:outputText>
+                                                   </div>
+                                                   <ui:fragment rendered="#{status.index &lt; timePeriodManager.scheduleTimePeriodList.size() - 1}">
+                                                      <hr/>
+                                                   </ui:fragment>
+                                                </ui:repeat>
+                                             </td>
+                                          </ui:repeat>
+                                       </tr>
+                                    </ui:fragment>
+                                    <tr>
+                                       <ui:repeat value="#{var.OfficeProvider.timePeriodManagerList._}" var="timePeriodManager">
+                                          <td style="vertical-align: top; #{! timePeriodManager.active() ? 'opacity:0.5; background-color: silver; vertical-align: middle; height: 6em;' : ''}">
+                                             <h:outputText value="#{timePeriodManager.classifierName != null ? timePeriodManager.classifierName : 'Off Duty'}" style="font-weight: bold; font-size: 1.1em; text-align: center; transform:rotate(-90deg); display: block; white-space: pre; margin-left: -1em; margin-right: -1em;" rendered="#{! timePeriodManager.active()}"/>                                          
+                                             <ui:repeat value="#{var.OfficeProvider.Appointment.emergencyMode._ ? timePeriodManager.scheduleTimePeriodList : timePeriodManager.availableTimePeriodList}" var="timePeriod">
+                                                <ui:repeat value="#{timePeriod.timeList(var.OfficeProvider.providerAppointmentDuration._)}" var="time">
+                                                   <h:commandLink immediate="true"
+                                                                  rendered="#{var.Appointment.reschedule._ == null}"
+                                                                  onclick="#{biz.appointmentOnclick(var.OfficeProvider.timePeriodManagerListValidationMap._[timePeriodManager])}"
+                                                                  disabled="#{patientList == null or patientList.size() != 1}"
+                                                                  style="#{var.OfficeProvider.Appointment.emergencyMode._ and timePeriodManager.busyTime(time, var.OfficeProvider.providerAppointmentDuration._) ? 'color: gray;' : ''}"
+                                                                  action="#{jsf._do(var.Appointment.form.appointment._(biz.newAppointment(timePeriodManager.activeDate, time, patientList.get(0), var.OfficeProvider.officeProvider._.id, var.OfficeProvider.providerAppointmentCategory._.appointmentCategory.id, var.OfficeProvider.providerAppointmentDuration._, myOfficeCode)))._do(var.Appointment.form.referringProvider._(biz.referringProviderByLastVisit(timePeriodManager.activeDate, patientList.get(0))))._do(var.OfficeProvider.timePeriodManagerList._(null))._to('Appointment/new').go}">
+                                                      <h:outputText value="#{time}" style="font-size: 0.85em; white-space: nowrap;">
+                                                         <f:convertDateTime pattern="h:mm a" locale="en"/>
+                                                      </h:outputText>
+                                                   </h:commandLink>
+                                                   <h:commandLink immediate="true"
+                                                                  rendered="#{var.Appointment.reschedule._ != null}"
+                                                                  disabled="#{patientList == null or patientList.size() != 1 or var.OfficeProvider.officeProvider._.specialtyId != var.Appointment.reschedule._.specialtyID}"
+                                                                  style="#{var.OfficeProvider.Appointment.emergencyMode._ and timePeriodManager.busyTime(time, var.OfficeProvider.providerAppointmentDuration._) ? 'color: gray;' : ''}"
+                                                                  action="#{jsf._do(biz.rescheduleAppointment(var.Appointment.reschedule._, timePeriodManager.activeDate, time, var.OfficeProvider.officeProvider._.id, access.user.id))._do(var.OfficeProvider.timePeriodManagerList._(null))._do(var.Appointment.reschedule._(null)).stay}">
+                                                      <h:outputText value="#{time}" style="font-size: 0.85em; white-space: nowrap;">
+                                                         <f:convertDateTime pattern="h:mm a" locale="en"/>
+                                                      </h:outputText>
+                                                   </h:commandLink>
+                                                   <br/>
+                                                </ui:repeat>
+                                             </ui:repeat>
+                                          </td>
+                                       </ui:repeat>
+                                    </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                     <div style="clear: both;"/>
+                  </div>
+
+                  <div jsfc="h:panelGroup" rendered="#{jsf.global('officeProvider', 'view')['Appointment/list']}">
+                     #{jsf.global('officeProvider', 'var').containsKey('appointmentDate') ? null : jsf.global('officeProvider', 'var').put('appointmentDate', jsf.newDate)}
+                     #{jsf._do(jsf.global('officeProvider', 'appointment:search').clear()).
+                       _do(jsf.global('officeProvider', 'appointment:search').put('start_date', jsf.global('officeProvider', 'var')['appointmentDate'])).
+                       _do(jsf.global('officeProvider', 'appointment:search').put('end_date', jsf.global('officeProvider', 'var')['appointmentDate'])).
+                       _do(jsf.global('officeProvider', 'appointment:search').put('status', 'OPEN')).
+                       _do(var.OfficeProvider.Appointment.billingGroup._ != '_ALL' and var.OfficeProvider.Appointment.billingGroup._ != null ? jsf.global('officeProvider', 'appointment:search').put(var.OfficeProvider.Appointment.billingGroup._, null) : null).
+                       stay()}
+                     #{(jsf.global('officeProvider', 'event')['refresh'] or jsf.global('officeProvider', 'event')['refresh:appointmentList'] or jsf.global('officeProvider', 'appointment:search')['officeProvider_dot_id'] == null or jsf.global('officeProvider', 'appointment:search')['officeProvider_dot_id'] != officeProviderList.get(0).id) ?
+                       jsf._do(jsf.global('officeProvider', 'appointment:search').put('officeProvider_dot_id', officeProviderList.get(0).id)).
+                       _runSearch('Appointment', 'a.date, a.time', jsf.global('officeProvider', 'appointment:search'), 'officeProviderAppointmentList').stay() : ''}
+                     #{jsf._do(var.OfficeProvider.Appointment.tableConfig.time._ == null ? var.OfficeProvider.Appointment.tableConfig.time._(true) : null).
+                       _do(var.OfficeProvider.Appointment.tableConfig.patient._ == null ? var.OfficeProvider.Appointment.tableConfig.patient._(true) : null).
+                       _do(var.OfficeProvider.Appointment.tableConfig.action._ == null ? var.OfficeProvider.Appointment.tableConfig.action._(true) : null).
+                       stay()}
+                     <div class="float-left column">
+                        <h3 class="table-label" style="display:inline-block;">
+                           Appointments
+                           <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                           <span style="display: none;">
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Appointment.tableConfig.id._}"/>
+                              <label>ID</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Appointment.tableConfig.duration._}"/>
+                              <label>Duration</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Appointment.tableConfig.referringProvider._}"/>
+                              <label>Referring Provider</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Appointment.tableConfig.insurance._}"/>
+                              <label>Insurance</label>
+                              <div class="separator"/>
+                              <h:commandLink action="#{jsf.stay}" value="Apply">
+                                 <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                              </h:commandLink>
+                           </span>                           
+                        </h3>
+                        <label for="appointment_date" class="vlabel">Date:</label>
+                        <h:inputText id="appointment_date" value="#{jsf.global('officeProvider', 'var')['appointmentDate']}" styleClass="djsf_DateTextBox w6">
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:appointmentList', true)).listen}"/>
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                        </h:inputText>
+                        <h:commandButton style="width: 2em; font-size: 0.8em;" value="&lt;" action="#{jsf._do(jsf.global('officeProvider', 'var').put('appointmentDate', jsf.addDays(jsf.global('officeProvider', 'var')['appointmentDate'], -1))).stay}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:appointmentList', true)).listen}"/>
+                        </h:commandButton>
+                        <h:commandButton style="width: 2em; font-size: 0.8em; margin-right: 1em;" value="&gt;" action="#{jsf._do(jsf.global('officeProvider', 'var').put('appointmentDate', jsf.addDays(jsf.global('officeProvider', 'var')['appointmentDate'], 1))).stay}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:appointmentList', true)).listen}"/>
+                        </h:commandButton>
+                        <label class="vlabel" style="margin-left: 0.5em;">Ins. Group: </label>
+                        <h:selectOneMenu value="#{var.OfficeProvider.Appointment.billingGroup._}" style="width: 8em; margin-right: 1em;" title="Insurance Group">
+                           <f:selectItem itemValue="_ALL" itemLabel="ALL"/>
+                           <f:selectItem itemValue="_a.patient.servicePaymentTypeID = 1" itemLabel="Medicaid"/>
+                           <f:selectItem itemValue="_a.patient.servicePaymentTypeID IN (2,4,5,15)" itemLabel="Medicare"/>
+                           <f:selectItem itemValue="_a.patient.servicePaymentTypeID NOT IN (1,2,4,5,15)" itemLabel="Commercial"/>
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:appointmentList', true)).listen}"/>
+                        </h:selectOneMenu>
+                        <h:commandLink value="Report" action="#{jsf._to('Appointment/provider-report').go}" target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>
+                        <h:commandButton value="Refresh" style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;" action="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:appointmentList', true)).stay}" title="Refresh Appointment List">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <br style="margin-bottom: 0.75em;"/>
+                        <div jsfc="h:panelGroup" rendered="#{not empty officeProviderAppointmentList}">
+                           <ui:include src="../Appointment/template/table.xhtml">
+                              <ui:param name="appointmentList" value="#{officeProviderAppointmentList}"/>
+                              <ui:param name="listId" value="officeProviderAppointmentList"/>
+                              <ui:param name="tableConfig" value="#{var.OfficeProvider.Appointment.tableConfig}"/>
+                           </ui:include>
+                        </div>
+                     </div>
+                     <div style="clear: both;"/>
+                  </div>
+
+                  <div jsfc="h:panelGroup" rendered="#{jsf.global('officeProvider', 'view')['Visit/list']}">
+                     #{jsf.global('officeProvider', 'view')['Appointment/list'] and jsf.global('officeProvider', 'var')['appointmentDate'] != jsf.global('officeProvider', 'var')['visitDate'] ? jsf._do(jsf.global('officeProvider', 'var').put('visitDate', jsf.global('officeProvider', 'var')['appointmentDate']))._do(jsf.global('officeProvider', 'event').put('refresh:visitList', true)).stay() : null}
+                     #{jsf.global('officeProvider', 'var').containsKey('visitDate') ? null : jsf.global('officeProvider', 'var').put('visitDate', jsf.newDate)}
+                     #{jsf.global('officeProvider', 'var').containsKey('billingGroup') ? null : jsf.global('officeProvider', 'var').put('billingGroup', '_ALL')}
+                     #{jsf._do(jsf.global('officeProvider', 'visit:search').clear()).
+                       _do(jsf.global('officeProvider', 'var')['billingGroup'] != '_ALL' ? jsf.global('officeProvider', 'visit:search').put(jsf.global('officeProvider', 'var')['billingGroup'], null) : null).
+                       _do(jsf.global('officeProvider', 'visit:search').put('start_date', jsf.global('officeProvider', 'var')['visitDate'])).
+                       _do(jsf.global('officeProvider', 'visit:search').put('end_date', jsf.global('officeProvider', 'var')['visitDate'])).stay()}
+                     #{(jsf.global('officeProvider', 'event')['refresh'] or jsf.global('officeProvider', 'event')['refresh:visitList'] or jsf.global('officeProvider', 'visit:search')['officeProvider_dot_id'] == null or jsf.global('officeProvider', 'visit:search')['officeProvider_dot_id'] != officeProviderList.get(0).id) ?
+                       jsf._do(jsf.global('officeProvider', 'visit:search').put('officeProvider_dot_id', officeProviderList.get(0).id)).
+                       _do(var.OfficeProvider.put('visitList', jsf.search('Visit', 'v.date DESC, v.time DESC', jsf.global('officeProvider', 'visit:search'), 100))).stay() : ''}
+                     #{jsf._do(var.OfficeProvider.Visit.tableConfig.date._ == null ? var.OfficeProvider.Visit.tableConfig.date._(true) : null).
+                       _do(var.OfficeProvider.Visit.tableConfig.time._ == null ? var.OfficeProvider.Visit.tableConfig.time._(true) : null).
+                       _do(var.OfficeProvider.Visit.tableConfig.patient._ == null ? var.OfficeProvider.Visit.tableConfig.patient._(true) : null).
+                       _do(var.OfficeProvider.Visit.tableConfig.action._ == null ? var.OfficeProvider.Visit.tableConfig.action._(true) : null).
+                       stay()}
+                     <div class="float-left column">
+                        <h3 class="table-label" style="display:inline-block;">
+                           Visits
+                           <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                           <span style="display: none;">
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Visit.tableConfig.id._}"/>
+                              <label>ID</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Visit.tableConfig.action._}"/>
+                              <label>Action</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Visit.tableConfig.insurance._}"/>
+                              <label>Insurance</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Visit.tableConfig.procedures._}"/>
+                              <label>Procedures</label>
+                              <div class="separator"/>
+                              <h:commandLink action="#{jsf.stay}" value="Apply">
+                                 <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                              </h:commandLink>
+                           </span>
+                        </h3>
+                        <ui:fragment rendered="#{! jsf.global('officeProvider', 'view')['Appointment/list']}">
+                           <label for="visit_date" class="vlabel">Date:</label>
+                           <h:inputText id="visit_date" value="#{jsf.global('officeProvider', 'var')['visitDate']}" styleClass="djsf_DateTextBox w6">
+                              <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:visitList', true)).listen}"/>
+                              <f:convertDateTime dateStyle="short" locale="en"/>
+                           </h:inputText>
+                           <h:commandButton style="width: 2em; font-size: 0.8em;" value="&lt;" action="#{jsf._do(jsf.global('officeProvider', 'var').put('visitDate', jsf.addDays(jsf.global('officeProvider', 'var')['visitDate'], -1))).stay}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:visitList', true)).listen}"/>
+                           </h:commandButton>
+                           <h:commandButton style="width: 2em; font-size: 0.8em; margin-right: 1em;" value="&gt;" action="#{jsf._do(jsf.global('officeProvider', 'var').put('visitDate', jsf.addDays(jsf.global('officeProvider', 'var')['visitDate'], 1))).stay}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:visitList', true)).listen}"/>
+                           </h:commandButton>
+                        </ui:fragment>
+                        <label class="vlabel" style="margin-left: 0.5em;">Ins. Group: </label>
+                        <h:selectOneMenu value="#{jsf.global('officeProvider', 'var')['billingGroup']}" style="width: 8em;" title="Insurance Group">
+                           <f:selectItem itemValue="_ALL" itemLabel="ALL"/>
+                           <f:selectItem itemValue="_v.patient.servicePaymentTypeId = 1" itemLabel="Medicaid"/>
+                           <f:selectItem itemValue="_v.patient.servicePaymentTypeId IN (2,4,5,15)" itemLabel="Medicare"/>
+                           <f:selectItem itemValue="_v.patient.servicePaymentTypeId NOT IN (1,2,4,5,15)" itemLabel="Commercial"/>
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:visitList', true)).listen}"/>
+                        </h:selectOneMenu>
+                        <h:commandButton action="#{jsf.go(biz.policyIdIssue(patientList.get(0).id) ? jsf._do(var.alert._('Insurance Member ID is undefined. Enter Member ID and Make Visit'))._to('alert').go() : jsf._do(jsf.global('officeProvider', 'event').put('refresh', true))._do(var.Visit.form.visit._(biz.newVisit(patientList[0], var.OfficeProvider.officeProvider._, jsf.global('officeProvider', 'var')['visitDate'], null, myOfficeCode)))._do(var.Visit.form.visitValidationMap._(biz.visitValidationMap(var.Visit.form.visit._)))._to('Visit/new').go())}"
+                                         style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                         disabled="#{patientList == null or patientList.size() != 1}"
+                                         title="Create Walk-in Visit"
+                                         value="Walk-in..."/>
+                        <h:commandLink value="Report" action="#{jsf._to('Visit/provider-report').go}" target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 1em"/>
+                        <h:commandButton value="Refresh" style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;" action="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:visitList', true)).stay}" title="Refresh Visit List">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <br style="margin-bottom: 0.75em;"/>
+                        <div jsfc="h:panelGroup" rendered="#{not empty var.OfficeProvider.visitList}">
+                           <ui:include src="../Visit/template/table.xhtml">
+                              <ui:param name="listId" value="officeProviderVisitList"/>
+                              <ui:param name="visitList" value="#{var.OfficeProvider.visitList}"/>
+                              <ui:param name="tableConfig" value="#{var.OfficeProvider.Visit.tableConfig}"/>
+                           </ui:include>
+                        </div>
+                     </div>
+                     <div style="clear: both;"/>
+                  </div>                  
+
+                  <div jsfc="h:panelGroup" rendered="#{jsf.global('officeProvider', 'view')['Referral/list']}">
+                     #{jsf._do(var.OfficeProvider.Referral.startDate._ == null ? var.OfficeProvider.Referral.startDate._(jsf.newDate) : '').stay()}
+                     #{jsf._do(var.OfficeProvider.Referral.endDate._ == null ? var.OfficeProvider.Referral.endDate._(jsf.newDate) : '').stay()}  
+                     #{jsf._do(var.OfficeProvider.Referral.tableConfig.procedures._ == null ? var.OfficeProvider.Referral.tableConfig.procedures._(true) : null).
+                       _do(var.OfficeProvider.Referral.tableConfig.patient._ == null ? var.OfficeProvider.Referral.tableConfig.patient._(true) : null).
+                       _do(var.OfficeProvider.Referral.tableConfig.status._ == null ? var.OfficeProvider.Referral.tableConfig.status._(true) : null).
+                       stay()}
+                     <div class="float-left column">
+                        <h3 class="table-label" style="display:inline-block;">Referrals
+                           <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                           <span style="display: none;">
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Referral.tableConfig.id._}"/>
+                              <label>ID</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Referral.tableConfig.time._}"/>
+                              <label>Time</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Referral.tableConfig.patient._}"/>
+                              <label>Patient</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Referral.tableConfig.procedures._}"/>
+                              <label>Procedures</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Referral.tableConfig.details._}"/>
+                              <label>Details</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Referral.tableConfig.status._}"/>
+                              <label>Status</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.Referral.tableConfig.action._}"/>
+                              <label>Action</label>
+                              <div class="separator"/>
+                              <h:commandLink action="#{jsf.stay}" value="Apply">
+                                 <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                              </h:commandLink>
+                           </span>
+                        </h3>
+                        <h:commandButton action="#{jsf._do(transportation.selectAll(var.OfficeProvider.Referral.selected, var.OfficeProvider.Referral.list._)).stay}"
+                                         style="font-size: 0.7em; width: auto; margin-right: 0.5em; margin-left: 0.5em" value="Select All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.OfficeProvider.Referral.selected.$).stay}"
+                                         style="font-size: 0.7em; width: auto; margin-right: 0.5em" value="Unselect All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandLink action="#{jsf._do(var.Referral.batch.selected._(var.OfficeProvider.Referral.selected))._to('Referral/batch').go}"
+                                       value="Print Requisitions"
+                                       style="font-size: 0.8em; width: auto; margin-right: 0.5em"
+                                       target="_blank"/>
+                        <br/>
+                        <label for="referralStartDate" class="vlabel" style="margin-left: 0.5em;">From:</label>
+                        <h:inputText id="referralStartDate" disabled="#{var.OfficeProvider.Referral.pending.view._}" value="#{var.OfficeProvider.Referral.startDate._}" 
+                                     styleClass="#{var.OfficeProvider.Referral.pending.view._ ? '' : 'djsf_DateTextBox'} w6" style="font-size:0.97em; padding: 0em; color:rgba(0, 0, 0, 0); margin: 0 0.1em; width: 6.2em;">
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                        </h:inputText>
+                        <label for="referralEndDate" class="vlabel">To:</label>
+                        <h:inputText id="referralEndDate" value="#{var.OfficeProvider.Referral.endDate._}" disabled="#{var.OfficeProvider.Referral.pending.view._}" 
+                                     styleClass="#{var.OfficeProvider.Referral.pending.view._ ? '' : 'djsf_DateTextBox'} w6" style="font-size:0.97em; padding: 0em; color:rgba(0, 0, 0, 0); margin: 0 0.1em; width: 6.2em;">
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                        </h:inputText>
+                        <label for="order-status">Status:</label>
+                        <h:selectOneMenu value="#{var.OfficeProvider.Referral.status._}"
+                                         styleClass="w8" title="Status" disabled="#{var.OfficeProvider.Referral.pending.view._}">
+                           <f:selectItem itemValue="" itemLabel="ALL"/>
+                           <f:selectItem itemValue="OPEN" itemLabel="Open"/>
+                           <f:selectItem itemValue="DONE" itemLabel="Done"/>
+                           <f:selectItem itemValue="CANCELLED" itemLabel="Cancelled"/>
+                           <f:selectItem itemValue="OBSOLETE" itemLabel="Obsolete"/>
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                        </h:selectOneMenu>
+                        <h:selectBooleanCheckbox value="#{var.OfficeProvider.Referral.pending.view._}" style="margin-left:1em; margin-right: 0;">
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>   
+                        <label style="margin-left: 0; margin-right: 0;">
+                           #{jsf._do(var.OfficeProvider.Referral.pending.days._ == null ? var.OfficeProvider.Referral.pending.days._(4) : null).stay()}
+                           #{jsf._do(var.OfficeProvider.Referral.pending.search.put('officeProvider', officeProviderList.get(0))).
+                             _do(var.OfficeProvider.Referral.pending.search.put('myOfficeCode', myOfficeCode)).
+                             _do(var.OfficeProvider.Referral.pending.search.put('end_created', jsf.addDays(jsf.newDate, -var.OfficeProvider.Referral.pending.days._))).
+                             _do(var.OfficeProvider.Referral.pending.search.put('status', 'OPEN')).stay()}
+                           #{jsf._do(var.OfficeProvider.Referral.search.clear()).                
+                             _do(var.OfficeProvider.Referral.search.put('start_created', var.OfficeProvider.Referral.startDate._)).
+                             _do(var.OfficeProvider.Referral.search.put('end_created', var.OfficeProvider.Referral.endDate._)).                    
+                             _do(var.OfficeProvider.Referral.search.put('officeProvider', officeProviderList.get(0))).
+                             _do(var.OfficeProvider.Referral.search.put('myOfficeCode', myOfficeCode)).
+                             _do(var.OfficeProvider.Referral.search.put('status', var.OfficeProvider.Referral.status._)).
+                             _do(var.OfficeProvider.Referral.pending.view._ ? var.OfficeProvider.Referral.search.clear() : null).
+                             _do(var.OfficeProvider.Referral.pending.view._ ? var.OfficeProvider.Referral.search.putAll(var.OfficeProvider.Referral.pending.search) : null).
+                             _do(var.OfficeProvider.Referral.search._ != var.OfficeProvider.Referral.search.toString().hashCode() ? var.OfficeProvider.Referral.list._(jsf.search('Referral', 'r.created DESC', var.OfficeProvider.Referral.search)): null).
+                             _do(var.OfficeProvider.Referral.search._ != var.OfficeProvider.Referral.search.toString().hashCode() ? var.OfficeProvider.Referral.search._(var.OfficeProvider.Referral.search.toString().hashCode()) : null).
+                             stay()}
+                           Pending
+                           <ui:fragment rendered="#{! var.OfficeProvider.Referral.pending.view._}">
+                              #{var.OfficeProvider.Referral.pending.count._(jsf.searchCount('Referral', var.OfficeProvider.Referral.pending.search))}                              
+                              (<h:outputText value="#{var.OfficeProvider.Referral.pending.count._}" style="#{var.OfficeProvider.Referral.pending.count._ &gt; 0 ? 'color: red' : ''}"/>)
+                           </ui:fragment>                           
+                        </label>
+                        <ui:fragment rendered="#{var.OfficeProvider.Referral.pending.view._}">
+                           <label>over</label>
+                           <h:inputText id="refPendingDays" value="#{var.OfficeProvider.Referral.pending.days._}" styleClass="djsf_immediate_NumberSpinner w2">
+                              <f:convertNumber/>
+                           </h:inputText>
+                           <label>days</label>
+                        </ui:fragment>
+                        <br style="margin-bottom: 0.75em;"/>                        
+                        <div jsfc="h:panelGroup" rendered="#{not empty var.OfficeProvider.Referral.list._}">
+                           <ui:include src="../Referral/template/table.xhtml">
+                              <ui:param name="listId" value="officeProviderReferralList"/>
+                              <ui:param name="selectionMap" value="#{var.OfficeProvider.Referral.selected.close()}"/>
+                              <ui:param name="referralList" value="#{var.OfficeProvider.Referral.list._}"/>
+                              <ui:param name="tableConfig" value="#{var.OfficeProvider.Referral.tableConfig}"/>
+                           </ui:include>
+                        </div>
+                     </div>
+                  </div>
+
+                  <div jsfc="h:panelGroup" rendered="#{jsf.global('officeProvider', 'view')['ReferralResult/list']}">
+                     #{jsf._do(var.OfficeProvider.ReferralResult.startDate._ == null ? var.OfficeProvider.ReferralResult.startDate._(jsf.newDate) : '').stay()}
+                     #{jsf._do(var.OfficeProvider.ReferralResult.endDate._ == null ? var.OfficeProvider.ReferralResult.endDate._(jsf.newDate) : '').stay()}  
+                     #{jsf._do(var.OfficeProvider.ReferralResult.tableConfig.details._ == null ? var.OfficeProvider.ReferralResult.tableConfig.details._(true) : null).
+                       _do(var.OfficeProvider.ReferralResult.tableConfig.patient._ == null ? var.OfficeProvider.ReferralResult.tableConfig.patient._(true) : null).
+                       _do(var.OfficeProvider.ReferralResult.tableConfig.category._ == null ? var.OfficeProvider.ReferralResult.tableConfig.category._(true) : null).
+                       _do(var.OfficeProvider.ReferralResult.tableConfig.serviceDate._ == null ? var.OfficeProvider.ReferralResult.tableConfig.serviceDate._(true) : null).
+                       stay()}
+                     <div class="float-left column">
+                        <h3 class="table-label" style="display:inline-block;">Results
+                           <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                           <span style="display: none;">
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.ReferralResult.tableConfig.id._}"/>
+                              <label>ID</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.ReferralResult.tableConfig.serviceDate._}"/>
+                              <label>Service Date</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.ReferralResult.tableConfig.category._}"/>
+                              <label>Category</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.ReferralResult.tableConfig.facility._}"/>
+                              <label>Facility</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.ReferralResult.tableConfig.specialty._}"/>
+                              <label>Specialty</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.ReferralResult.tableConfig.patient._}"/>
+                              <label>Patient</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.ReferralResult.tableConfig.details._}"/>
+                              <label>Details</label>
+                              <h:selectBooleanCheckbox value="#{var.OfficeProvider.ReferralResult.tableConfig.action._}"/>
+                              <label>Action</label>
+                              <div class="separator"/>
+                              <h:commandLink action="#{jsf.stay}" value="Apply">
+                                 <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                              </h:commandLink>
+                           </span>
+                        </h3>
+                        <h:commandButton action="#{jsf._do(transportation.selectAll(var.OfficeProvider.ReferralResult.selected, var.OfficeProvider.ReferralResult.list._)).stay}"
+                                         style="font-size: 0.7em; width: auto; margin-right: 0.5em; margin-left: 0.5em" value="Select All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.OfficeProvider.ReferralResult.selected.$).stay}"
+                                         style="font-size: 0.7em; width: auto; margin-right: 0.5em; margin-left: 0.5em" value="Unselect All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <br/>
+                        <label for="referralResultStartDate" class="vlabel" style="margin-left: 0.5em;">From:</label>
+                        <h:inputText id="referralResultStartDate" value="#{var.OfficeProvider.ReferralResult.startDate._}" styleClass="djsf_DateTextBox w6">
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                        </h:inputText>
+                        <label for="referralResultEndDate" class="vlabel">To:</label>
+                        <h:inputText id="referralResultEndDate" value="#{var.OfficeProvider.ReferralResult.endDate._}" styleClass="djsf_DateTextBox w6">
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                        </h:inputText>			                              
+                        #{var.ReferralResult.categoryList._ == null ? var.ReferralResult.categoryList._(jsf.search('ReferralResultCategory', 'r.name', jsf.newMap())) : null}
+                        <label>Category:</label>
+                        <h:selectOneMenu value="#{var.OfficeProvider.ReferralResult.category._}" title="Category" styleClass="w8">
+                           <f:selectItem itemValue="#{null}" itemLabel="ALL"/>
+                           <f:selectItems value="#{var.ReferralResult.categoryList._}" var="category" itemLabel="#{category.name}"/>
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                           <f:converter converterId="EntityConverter"/>
+                        </h:selectOneMenu>                        
+                        #{jsf._do(var.OfficeProvider.ReferralResult.search.clear()).                
+                          _do(var.OfficeProvider.ReferralResult.search.put('start_created', var.OfficeProvider.ReferralResult.startDate._)).
+                          _do(var.OfficeProvider.ReferralResult.search.put('end_created', var.OfficeProvider.ReferralResult.endDate._)).
+                          _do(var.OfficeProvider.ReferralResult.search.put('category', var.OfficeProvider.ReferralResult.category._)).
+                          _do(var.OfficeProvider.ReferralResult.search.put('officeProvider', officeProviderList.get(0))).
+                          _do(var.OfficeProvider.ReferralResult.search.put('myOfficeCode', myOfficeCode)).
+                          _do(var.OfficeProvider.ReferralResult.search.put('status', var.OfficeProvider.ReferralResult.status._)).
+                          _do(var.OfficeProvider.ReferralResult.pending.view._ ? var.OfficeProvider.ReferralResult.search.clear() : null).
+                          _do(var.OfficeProvider.ReferralResult.pending.view._ ? var.OfficeProvider.ReferralResult.search.putAll(var.OfficeProvider.ReferralResult.pending.search) : null).
+                          _do(var.OfficeProvider.ReferralResult.search._ != var.OfficeProvider.ReferralResult.search.toString().hashCode() ? var.OfficeProvider.ReferralResult.list._(jsf.search('ReferralResult', 'r.created DESC', var.OfficeProvider.ReferralResult.search)): null).
+                          _do(var.OfficeProvider.ReferralResult.search._ != var.OfficeProvider.ReferralResult.search.toString().hashCode() ? var.OfficeProvider.ReferralResult.search._(var.OfficeProvider.ReferralResult.search.toString().hashCode()) : null).
+                          stay()}
+                        <br style="margin-bottom: 0.75em;"/>   
+                        <div jsfc="h:panelGroup" rendered="#{not empty var.OfficeProvider.ReferralResult.list._}">
+                           <ui:include src="../ReferralResult/template/table.xhtml">
+                              <ui:param name="listId" value="officeProviderReferralResultList"/>
+                              <ui:param name="selectionMap" value="#{var.OfficeProvider.ReferralResult.selected.close()}"/>
+                              <ui:param name="referralResultList" value="#{var.OfficeProvider.ReferralResult.list._}"/>
+                              <ui:param name="tableConfig" value="#{var.OfficeProvider.ReferralResult.tableConfig}"/>
+                           </ui:include>
+                        </div>
+                     </div>
+                  </div>                  
+
+               </div>
+            </div>
+
+            #{jsf._do(jsf.global('officeProvider', 'event').clear()).stay()}
+            #{jsf._do(jsf.global('patient', 'event').put('refresh', true)).stay()}
+
+         </ui:define>
+
+      </ui:composition>
+
+   </body>
+</html>

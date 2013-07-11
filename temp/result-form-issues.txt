@@ -1,0 +1,8 @@
+1) Remove "Collected Date/Time" and "Status" columns from table
+2) "Result code/description" split on two columns "code", "description"
+3) Remove column "Status"
+4) Instead of line "Result #1" put "Ordered Test" with code and description of the test and corresponding line "Request Code/Description" delete
+5) "Collected date/time", "received date/time" and "reported data time" remove from results and put in common header with the names "Collected Time", "Received Time", "Reported Time".
+6) Instead of "Result Status" simply put "Status"
+7) Improve printing of pages.
+8) Remove address and phone of bioreference

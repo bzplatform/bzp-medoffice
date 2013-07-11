@@ -1,0 +1,1391 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition template="../template/base.xhtml">
+
+         <ui:define name="title">
+            Medical Care: Patient
+         </ui:define>
+
+         <ui:define name="navigation">
+            <ui:include src="../template/tab-navigation.xhtml">
+               <ui:param name="page" value="Patient/main"/>
+            </ui:include>
+         </ui:define>
+
+         <ui:define name="form">
+
+            <div class="float-right column focus-line">
+               <ui:include src="template/options.xhtml"/>
+            </div>
+            <div class="float-left" jsfc="h:panelGroup" rendered="#{patientList != null and patientList.size() == 1}">
+               #{jsf._do(patientList.set(0, biz.refreshedPatient(patientList.get(0)))).stay()}
+               <h3 class="context-label">
+                  <span style="font-size:0.7em; font-weight: bold">#{patientList.get(0).id}</span> #{jsf.concat(patientList.get(0).lastName, ', ' , patientList.get(0).firstName)}                  
+                  <h:graphicImage value="/theme/#{cookie.theme.value}/image/black-ribbon.png" style="position: relative; top:2px; margin-bottom: -14px;" rendered="#{patientList.get(0).conditionID == 8}" title="Deceased"/>                  
+                  #{jsf._do(jsf.delayClosed(patientList.get(0), 'effectivePatientTransportation', 3) ? jsf.global('patient', 'effectivePatientTransportation').put(patientList.get(0), transportation.effectivePatientTransportation(patientList.get(0))) : null).stay()}
+                  <h:commandLink action="#{jsf._do(jsf.global('patient', 'view')['PatientTransportation/list'] ? jsf.global('patient', 'view').put('PatientTransportation/list', false) : jsf.global('patient', 'view').put('PatientTransportation/list', true)).stay}">
+                     <h:graphicImage value="/theme/#{cookie.theme.value}/image/wheelchair.png" style="position: relative; top:2px;" rendered="#{patientList.get(0).conditionID == 1}" title="WheelChair"/>
+                     <h:graphicImage value="/theme/#{cookie.theme.value}/image/ambulance.png" style="position: relative; top:2px;" rendered="#{jsf.global('patient', 'effectivePatientTransportation')[patientList.get(0)] != null and jsf.global('patient', 'effectivePatientTransportation')[patientList.get(0)].expirationDate &gt; jsf.newDate}" title="Eligible for Transportation"/>
+                     <h:graphicImage value="/theme/#{cookie.theme.value}/image/ambulance-warning.png" style="position: relative; top:2px;" rendered="#{jsf.global('patient', 'effectivePatientTransportation')[patientList.get(0)] != null and jsf.global('patient', 'effectivePatientTransportation')[patientList.get(0)].expirationDate &lt; jsf.newDate}" title="Conditionally Eligible for Transportation"/>
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandLink>
+                  <h:commandLink action="#{jsf._do(jsf.global('patient', 'view')['PatientNote/list'] ? jsf.global('patient', 'view').put('PatientNote/list', false) : jsf.global('patient', 'view').put('PatientNote/list', true)).stay}">
+                     <h:graphicImage value="/theme/#{cookie.theme.value}/image/note.png" style="position: relative; top:2px;" rendered="#{! empty biz.filter(patientList.get(0).noteList, true)}" title="Has Notes"/>
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandLink>
+                  <h:outputText value="#{patientList.get(0).code}" style="font-size: 0.7em; margin-left: 0.3em" title="Patient's code"/>
+               </h3>
+            </div>
+
+            <div class="float-left column" jsfc="h:panelGroup" rendered="#{patientList != null and patientList.size() == 1}">
+               #{jsf._do(var.Patient.Patient.tableConfig.insurances._ == null ? var.Patient.Patient.tableConfig.insurances._(true) : null).stay()}
+               #{jsf._do(var.Patient.Patient.tableConfig.action._ == null ? var.Patient.Patient.tableConfig.action._(true) : null).stay()}
+               <ui:include src="template/table.xhtml">
+                  <ui:param name="tableConfig" value="#{var.Patient.Patient.tableConfig}"/>
+               </ui:include>
+            </div>
+
+            <div class="float-left column clear-float" jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['panel:Search'] and access.isUriPermitted('Patient/search')}">
+               <ui:include src="template/search.xhtml"/>
+            </div>
+
+            <div class="float-left column clear-float" jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['Patient/merge'] and access.isUriPermitted('Patient/merge')}">
+               <ui:include src="template/merge-search.xhtml"/>
+            </div>
+
+            <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty patientList and jsf.global('patient', 'view')['panel:Search']}">
+               #{jsf._do(var.Patient.searchResult.tableConfig.insurances._ == null ? var.Patient.searchResult.tableConfig.insurances._(true) : null).stay()}
+               #{jsf._do(var.Patient.searchResult.tableConfig.patient._ == null ? var.Patient.searchResult.tableConfig.patient._(true) : null).stay()}
+               <ui:include src="template/table.xhtml">
+                  <ui:param name="tableConfig" value="#{var.Patient.searchResult.tableConfig}"/>
+               </ui:include>
+            </div>
+
+            <div jsfc="h:panelGroup" rendered="#{patientList != null and patientList.size() == 1}">
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['PatientInsurance/list']}">                  
+                  <div class="float-left column" jsfc="h:panelGroup">
+                     #{jsf._do(var.Patient.PatientInsurance.tableConfig.action._ == null ? var.Patient.PatientInsurance.tableConfig.action._(true) : null).stay()}
+                     #{jsf._do(patientList.set(0, biz.refreshedPatient(patientList.get(0)))).stay()}
+                     <h3 class="table-label" style="display:inline-block;">
+                        Insurances
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientInsurance.tableConfig.id._}"/>
+                           <label>ID</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientInsurance.tableConfig.action._}"/>
+                           <label>Action</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <h:commandButton action="#{jsf._do(var.PatientInsurance.form.patientInsurance._(biz.addPatientInsurance(patientList.get(0))))._to('PatientInsurance/edit').go}"
+                                      value="Add..." style="margin: 0; margin-right: 1.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                     <label class="vlabel">Service Payment Type:</label>
+                     <h:inputText value="#{patientList.get(0).servicePaymentType.code}" style="width: 5em;" disabled="true"/>
+                     #{! var.Patient.PatientInsurance.containsKey(patientList.get(0)) ? var.Patient.PatientInsurance[patientList.get(0)].accountId._(patientList.get(0).accountId) : null}
+                     <label class="vlabel">Billing Account ID:</label>
+                     <h:inputText value="#{var.Patient.PatientInsurance[patientList.get(0)].accountId._}" style="width: 5em;">
+                        <f:ajax render="@form" execute="@this" event="blur" onevent="ajaxEventHandler"/>
+                     </h:inputText>
+                     <h:commandButton style="margin-left: 0.5em; font-size: 0.7em; width: auto;"
+                                      action="#{jsf._do(patientList.get(0).setAccountId(var.Patient.PatientInsurance[patientList.get(0)].accountId._)).
+                                                _do(patientList.get(0).setDemographicUpdateDate(jsf.newDate)).
+                                                _do(patientList.get(0).setDemographicUpdateUserId(access.user.id)).
+                                                _save(patientList.get(0)).
+                                                _do(var.Patient.PatientInsurance.remove(patientList.get(0))).stay}"
+                                      disabled="#{var.Patient.PatientInsurance[patientList.get(0)].accountId._ == patientList.get(0).accountId}"
+                                      value="Save">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton style="margin-left: 0.5em; font-size: 0.7em; width: auto;"
+                                      action="#{jsf._do(var.Patient.PatientInsurance.remove(patientList.get(0))).stay}"
+                                      disabled="#{var.Patient.PatientInsurance[patientList.get(0)].accountId._ == patientList.get(0).accountId}"
+                                      value="Cancel">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <br style="margin-bottom: 0.75em;"/>
+                     <ui:include src="../PatientInsurance/template/table.xhtml">
+                        <ui:param name="patientInsuranceList" value="#{empty patientList ? null : patientList.get(0).insuranceList}"/>
+                        <ui:param name="tableConfig" value="#{var.Patient.PatientInsurance.tableConfig}"/>
+                     </ui:include>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['PatientNote/list']}">
+                  <div class="float-left column" jsfc="h:panelGroup" style="min-width: 40em;">
+                     <h3 class="table-label" style="display: inline;">
+                        Notes
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">                           
+                           <h:selectBooleanCheckbox value="#{jsf.global('patientNote', 'show')['details']}"/>                    
+                           <label>Details</label>
+                           <h:selectBooleanCheckbox value="#{jsf.global('patientNote', 'show')['archive']}"/>
+                           <label>Show archived</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     #{var.Patient.PatientNote.exemptFromReportingPatientId._ != patientList.get(0).id ? jsf._do(var.Patient.PatientNote.exemptFromReporting._(patientList.get(0).status.exemptFromReporting))._do(var.Patient.PatientNote.exemptFromReportingPatientId._(patientList.get(0).id)).stay() : null}
+                     <h:selectBooleanCheckbox value="#{var.Patient.PatientNote.exemptFromReporting._}">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectBooleanCheckbox>
+                     <label class="vlabel">Exempt&nbsp;from&nbsp;Reporting</label>
+                     <h:commandButton style="margin-left: 0.5em; font-size: 0.7em; width: auto;"
+                                      action="#{jsf._do(patientList.get(0).status.setExemptFromReporting(var.Patient.PatientNote.exemptFromReporting._)).
+                                                _do(biz.savePatientStatus(patientList.get(0).status, access.user.id)).
+                                                _do(var.Patient.PatientNote.exemptFromReportingPatientId._(null)).stay}"
+                                      rendered="#{patientList.get(0).status.exemptFromReporting != var.Patient.PatientNote.exemptFromReporting._}"
+                                      value="Save">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton style="margin-left: 0.5em; font-size: 0.7em; width: auto;"
+                                      action="#{jsf._do(var.Patient.PatientNote.exemptFromReportingPatientId._(null)).stay}"
+                                      rendered="#{patientList.get(0).status.exemptFromReporting != var.Patient.PatientNote.exemptFromReporting._}"
+                                      value="Cancel">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     #{jsf._do(patientNoteTemplateList == null ? jsf._runSearch('PatientNoteTemplate', null, jsf.newMap(), 'patientNoteTemplateList').stay() : null).stay()}
+                     <label style="margin-left: 1em;">Template:</label>
+                     <h:selectOneMenu id="patientNoteTemplate" value="#{patientNoteTemplate}" title="Note Template" style="margin-right:1em; width: 8em;">
+                        <f:selectItem itemValue="#{null}" itemLabel="NONE"/>
+                        <f:selectItems value="#{patientNoteTemplateList}"
+                                       var="patientNoteTemplate" itemLabel="#{patientNoteTemplate.value}"/>
+                        <f:converter converterId="EntityConverter"/>
+                     </h:selectOneMenu>
+                     <h:commandButton value="Add..." style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;" action="#{jsf._do(jsf.global('patient', 'var').put('patientNote', jsf.newObject('com.medenterprise.domain.entity.PatientNote'))).
+                                                                                                                                      _do(jsf.global('patient', 'var').put('patientNote:edit:oldValue', null)).
+                                                                                                                                      _do(jsf.global('patient', 'var')['patientNote'].setPatientId(patientList.get(0).id)).
+                                                                                                                                      _do(patientNoteTemplate != null ? jsf.global('patient', 'var')['patientNote'].setValue(patientNoteTemplate.value) : null).stay}">
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>                        
+                     <div style="display: inline-block; float: right; margin-right: 0.5em;">
+                        <h:commandButton value="Save" 
+                                         style="font-size: 0.7em; width: auto;"
+                                         rendered="#{jsf.global('patient', 'var')['patientNote'] != null}"
+                                         action="#{jsf.
+                                                   _do(jsf.global('patient', 'var')['patientNote:edit:oldValue'] == null ? jsf.global('patient', 'var')['patientNote'].setUserId(access.user.id) : jsf.global('patient', 'var')['patientNote'].setLastUpdatedUserId(access.user.id)).
+                                                   _do(jsf.global('patient', 'var')['patientNote:edit:oldValue'] == null ? jsf.global('patient', 'var')['patientNote'].setDatetime(jsf.newDate) : jsf.global('patient', 'var')['patientNote'].setLastUpdated(jsf.newDate)).
+                                                   _do(jsf.global('patient', 'var')['patientNote:edit:oldValue'] == null ? patientList.get(0).noteList.add(jsf.global('patient', 'var')['patientNote']) : null).
+                                                   _do(jsf.global('patient', 'var')['patientNote:edit:oldValue'] == null ? jsf.global('patient', 'var').put('patient', patientList.get(0)) : null).
+                                                   _do(jsf.global('patient', 'var').put('patientNote', null)).
+                                                   _do(jsf.global('patient', 'var').put('patientNote:edit:oldValue', null)).
+                                                   _save(jsf.global('patient', 'var')['patient']).
+                                                   _do(jsf.global('patient', 'var').put('patient', null)).
+                                                   stay}">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton value="Cancel" rendered="#{jsf.global('patient', 'var')['patientNote'] != null}"
+                                         style="font-size: 0.7em; width: auto;"
+                                         action="#{jsf.
+                                                   _do(jsf.global('patient', 'var').put('patient', null)).
+                                                   _do(jsf.global('patient', 'var').put('patientNote', null)).
+                                                   _do(jsf.global('patient', 'var').put('patientNote:edit:oldValue', null)).
+                                                   stay}">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                     </div>
+                     <h:inputTextarea value="#{jsf.global('patient', 'var')['patientNote'].value}" cols="88" rows="1" rendered="#{jsf.global('patient', 'var')['patientNote'] != null}" style="margin-bottom: 0.5em; margin-left: 0.5em;"/>
+                     <br/>
+                     <ui:include src="../PatientNote/template/table.xhtml">
+                        <ui:param name="listId" value="patientNoteList"/>
+                        <ui:param name="noteList" value="#{biz.filter(patientList != null and patientList.size() == 1 ? patientList.get(0).noteList : null, ! jsf.global('patientNote', 'show')['archive'])}"/>
+                     </ui:include>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['PatientHistory/list']}">
+                  #{jsf._do(patientList.set(0, biz.refreshedPatient(patientList.get(0)))).stay()}
+                  <div class="float-left column" jsfc="h:panelGroup" style="min-width: 40em;">
+                     <h3 class="table-label" style="display: inline;">
+                        Past Medical History
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientPastMedicalHistory.tableConfig.created._}"/>                    
+                           <label>Created</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientPastMedicalHistory.tableConfig.updated._}"/>                    
+                           <label>Updated</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientPastMedicalHistory.tableConfig.code._}"/>                    
+                           <label>Code</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientPastMedicalHistory.tableConfig.codingSchema._}"/>                    
+                           <label>Coding Schema</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <h:commandButton value="Add Problems..." style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;" action="#{jsf._do(var.PatientPastMedicalHistory.form.patient._(patientList[0]))._to('PatientPastMedicalHistory/problem').go}">
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton value="Add Surgeries..." style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;" action="#{jsf._do(var.PatientPastMedicalHistory.form.patient._(patientList[0]))._to('PatientPastMedicalHistory/surgery').go}">
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton value="Add Tests/Exams..." style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;" action="#{jsf._do(var.PatientPastMedicalHistory.form.patient._(patientList[0]))._to('PatientPastMedicalHistory/test').go}">
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton> 
+                     <label class="vlabel" style="margin-left: 1em;">Type:</label>
+                     #{var.Patient.pastMedicalHistoryType._ == null ? var.Patient.pastMedicalHistoryType._('ALL') : null}
+                     <h:selectOneMenu value="#{var.Patient.pastMedicalHistoryType._}" title="Type" styleClass="w8">
+                        <f:selectItem itemValue="ALL" itemLabel="ALL"/>
+                        <f:selectItem itemValue="problem" itemLabel="Problem"/>
+                        <f:selectItem itemValue="surgery" itemLabel="Surgery"/>
+                        <f:selectItem itemValue="test/exam" itemLabel="Test/Exam"/> 
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectOneMenu>
+                     <br style="margin-bottom: 0.75em;"/>
+                     #{var.Patient.filteredPatientPastMedicalHistoryList._(biz.filterByType(patientList.get(0).pastMedicalHistoryList, var.Patient.pastMedicalHistoryType._))}
+                     <ui:include src="../PatientPastMedicalHistory/template/table.xhtml">
+                        <ui:param name="listId" value="patientPastMedicalHistoryList"/>
+                        <ui:param name="historyList" value="#{var.Patient.filteredPatientPastMedicalHistoryList._}"/>
+                        <ui:param name="tableConfig" value="#{var.Patient.PatientPastMedicalHistory.tableConfig}"/>
+                     </ui:include>
+                  </div>
+                  <div class="float-left column" jsfc="h:panelGroup" style="min-width: 40em;">
+                     <h3 class="table-label" style="display: inline;">
+                        Family History
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientFamilyHistory.tableConfig.created._}"/>                    
+                           <label>Created</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientFamilyHistory.tableConfig.updated._}"/>                    
+                           <label>Updated</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientFamilyHistory.tableConfig.code._}"/>                    
+                           <label>Code</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientFamilyHistory.tableConfig.codingSchema._}"/>                    
+                           <label>Coding Schema</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <h:commandButton value="Add Records..." style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;" action="#{jsf._do(var.PatientFamilyHistory.form.patient._(patientList[0]))._to('PatientFamilyHistory/new').go}">
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <br style="margin-bottom: 0.75em;"/>
+                     <ui:include src="../PatientFamilyHistory/template/table.xhtml">
+                        <ui:param name="listId" value="patientFamilyHistoryList"/>
+                        <ui:param name="historyList" value="#{patientList.get(0).familyHistoryList}"/>
+                        <ui:param name="tableConfig" value="#{var.Patient.PatientFamilyHistory.tableConfig}"/>
+                     </ui:include>
+                  </div>
+                  <div class="float-left column" jsfc="h:panelGroup" style="min-width: 40em;">
+                     <h3 class="table-label" style="display: inline;">
+                        Social History
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientSocialHistory.tableConfig.created._}"/>                    
+                           <label>Created</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientSocialHistory.tableConfig.updated._}"/>                    
+                           <label>Updated</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <h:commandButton value="Add Records..." style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;" action="#{jsf._do(var.PatientSocialHistory.form.patient._(patientList[0]))._to('PatientSocialHistory/new').go}">
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <br style="margin-bottom: 0.75em;"/>
+                     <ui:include src="../PatientSocialHistory/template/table.xhtml">
+                        <ui:param name="listId" value="patientSocialHistoryList"/>
+                        <ui:param name="historyList" value="#{patientList.get(0).socialHistoryList}"/>
+                        <ui:param name="tableConfig" value="#{var.Patient.PatientSocialHistory.tableConfig}"/>
+                     </ui:include>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['PatientMedication/list']}">
+                  <div class="float-left column" jsfc="h:panelGroup" style="min-width: 40em;">
+                     #{var.Patient.PatientMedication.tableConfig.frequency._ == null ? var.Patient.PatientMedication.tableConfig.frequency._(true) : null}
+                     #{var.Patient.PatientMedication.tableConfig.prescribingDate._ == null ? var.Patient.PatientMedication.tableConfig.prescribingDate._(true) : null}
+                     <h3 class="table-label" style="display: inline;">
+                        Medications
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.created._}"/>                    
+                           <label>Created</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.updated._}"/>                    
+                           <label>Updated</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.prescriber._}"/>                    
+                           <label>Prescriber</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.prescribingDate._}"/>                    
+                           <label>Rx Date</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.startDate._}"/>                    
+                           <label>Start Date</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.modifyDate._}"/>                    
+                           <label>Modify Date</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.renewalDate._}"/>                    
+                           <label>Renewal Date</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.drugCode._}"/>                    
+                           <label>Drug Code</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.dispenseQty._}"/>                    
+                           <label>Dispense Quantity</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.refills._}"/>                    
+                           <label>Refills</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.dose._}"/>                    
+                           <label>Dose/Unit</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.route._}"/>                    
+                           <label>Route</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.frequency._}"/>                    
+                           <label>Frequency</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.days._}"/>                    
+                           <label>Days</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.tableConfig.endDate._}"/>                    
+                           <label>End Date</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <h:commandButton action="#{jsf._do(var.PatientMedication.form.patientMedication._(biz.addPatientMedication(patientList.get(0)))).
+                                                _do(var.Patient.PatientMedication.takesNoMedication._ ? jsf._do(patientList.get(0).status.setTakesNoMedication(false)).
+                                                _do(biz.savePatientStatus(patientList.get(0).status, access.user.id))._do(var.Patient.PatientMedication.takesNoMedicationPatientId._(null)).stay() : null)._to('PatientMedication/edit').go}"
+                                      value="Add..." style="margin: 0; margin-right: 1.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                     <label class="vlabel" style="margin-left: 1em;">View:</label>
+                     #{var.Patient.medicationStatus._ == null ? var.Patient.medicationStatus._('ACTIVE') : null}
+                     <h:selectOneMenu value="#{var.Patient.medicationStatus._}" styleClass="w8">
+                        <f:selectItem itemValue="ALL" itemLabel="ALL"/>
+                        <f:selectItem itemValue="ACTIVE" itemLabel="Active"/>
+                        <f:selectItem itemValue="INACTIVE" itemLabel="Inactive"/>
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectOneMenu>
+                     #{var.Patient.PatientMedication.takesNoMedicationPatientId._ != patientList.get(0).id ? jsf._do(var.Patient.PatientMedication.takesNoMedication._(patientList.get(0).status.takesNoMedication))._do(var.Patient.PatientMedication.takesNoMedicationPatientId._(patientList.get(0).id)).stay() : null}
+                     <h:selectBooleanCheckbox value="#{var.Patient.PatientMedication.takesNoMedication._}" disabled="#{! var.Patient.PatientMedication.takesNoMedication._ and ! empty biz.filterByActiveValue(patientList.get(0).medicationList, 'ACTIVE')}" style="margin-left: 1em;">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectBooleanCheckbox>
+                     <label class="vlabel">Takes No Medication</label>
+                     <h:commandButton style="margin-left: 0.5em; font-size: 0.7em; width: auto;"
+                                      action="#{jsf._do(patientList.get(0).status.setTakesNoMedication(var.Patient.PatientMedication.takesNoMedication._)).
+                                                _do(biz.savePatientStatus(patientList.get(0).status, access.user.id)).
+                                                _do(var.Patient.PatientMedication.takesNoMedicationPatientId._(null)).stay}"
+                                      rendered="#{patientList.get(0).status.takesNoMedication != var.Patient.PatientMedication.takesNoMedication._}"
+                                      value="Save">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton style="margin-left: 0.5em; font-size: 0.7em; width: auto;"
+                                      action="#{jsf._do(var.Patient.PatientMedication.takesNoMedicationPatientId._(null)).stay}"
+                                      rendered="#{patientList.get(0).status.takesNoMedication != var.Patient.PatientMedication.takesNoMedication._}"
+                                      value="Cancel">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandLink value="Report" action="#{jsf._do(var.Patient.Medication.report.patient._(patientList[0]))._to('PatientMedication/patient-report').go}" target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 1em"/>
+                     <br style="margin-bottom: 0.75em;"/>
+                     #{var.Patient.filteredPatientMedicationList._(biz.filterByActiveValue(patientList.get(0).medicationList, var.Patient.medicationStatus._))}
+                     <ui:include src="../PatientMedication/template/table.xhtml">
+                        <ui:param name="listId" value="patientMedicationList"/>
+                        <ui:param name="medicationList" value="#{var.Patient.filteredPatientMedicationList._}"/>
+                        <ui:param name="controlActiveStatus" value="#{true}"/>
+                        <ui:param name="tableConfig" value="#{var.Patient.PatientMedication.tableConfig}"/>
+                     </ui:include>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['PatientImmunization/list']}">
+                  <div class="float-left column" jsfc="h:panelGroup" style="min-width: 40em;">
+                     <h3 class="table-label" style="display: inline;">
+                        Immunizations
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientImmunization.tableConfig.created._}"/>                    
+                           <label>Created</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientImmunization.tableConfig.updated._}"/>                    
+                           <label>Updated</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientImmunization.tableConfig.administrationTime._}"/>                    
+                           <label>Administration Time</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientImmunization.tableConfig.cvxCode._}"/>                    
+                           <label>CVX Code</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientImmunization.tableConfig.dose._}"/>                    
+                           <label>Dose</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientImmunization.tableConfig.route._}"/>                    
+                           <label>Route</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientImmunization.tableConfig.site._}"/>                    
+                           <label>Site</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientImmunization.tableConfig.reaction._}"/>                    
+                           <label>Reaction</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientImmunization.tableConfig.manufacturer._}"/>                    
+                           <label>Manufacturer</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientImmunization.tableConfig.lotNumber._}"/>                    
+                           <label>Lot Number</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientImmunization.tableConfig.expirationDate._}"/>                    
+                           <label>Expiration Date</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>                     
+                     </h3>
+                     <h:commandButton action="#{jsf._do(var.PatientImmunization.form.patientImmunization._(biz.addPatientImmunization(patientList.get(0))))._to('PatientImmunization/edit').go}"
+                                      value="Add..." style="margin: 0; margin-right: 1.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>                    
+                     <br style="margin-bottom: 0.75em;"/>
+                     <ui:include src="../PatientImmunization/template/table.xhtml">
+                        <ui:param name="listId" value="patientImmunizationList"/>
+                        <ui:param name="immunizationList" value="#{patientList.get(0).immunizationList}"/>
+                        <ui:param name="tableConfig" value="#{var.Patient.PatientImmunization.tableConfig}"/>
+                     </ui:include>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['PatientAllergy/list']}">
+                  <div class="float-left column" jsfc="h:panelGroup" style="min-width: 40em;">
+                     #{jsf._do(var.Patient.PatientAllergy.search.clear())._do(var.Patient.PatientAllergy.search.put('patientId', patientList.get(0).id)).
+                       _do(var.Patient.PatientAllergy.list._(jsf.hintedSearch('PatientAllergy', null, var.Patient.PatientAllergy.search.map(), '_MEDBASE'))).stay()}
+                     <h3 class="table-label" style="display: inline;">
+                        Allergies
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">                           
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAllergy.tableConfig.details._}"/>                    
+                           <label>Details</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <h:commandButton action="#{jsf._do(var.PatientAllergy.form.patientAllergy._(biz.addPatientAllergy(patientList.get(0))))._to('PatientAllergy/edit').go}"
+                                      value="Add..." style="margin: 0; margin-right: 1.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/> 
+                     <label class="vlabel">View:</label>
+                     #{var.Patient.allergyStatus._ == null ? var.Patient.allergyStatus._('ACTIVE') : null}
+                     <h:selectOneMenu value="#{var.Patient.allergyStatus._}" title="Status" styleClass="w6" style="margin-right: 1em;">
+                        <f:selectItem itemValue="ALL" itemLabel="ALL"/>
+                        <f:selectItem itemValue="ACTIVE" itemLabel="Active"/>
+                        <f:selectItem itemValue="INACTIVE" itemLabel="Inactive"/>                    
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectOneMenu>
+                     #{var.Patient.filteredPatientAllergyList._(biz.filterByActiveValue(var.Patient.PatientAllergy.list._, var.Patient.allergyStatus._))}
+                     #{var.Patient.PatientAllergy.nkdaPatientId._ != patientList.get(0).id ? jsf._do(var.Patient.PatientAllergy.nkda._(patientList.get(0).status.nkda))._do(var.Patient.PatientAllergy.nkdaPatientId._(patientList.get(0).id)).stay() : null}
+                     <h:selectBooleanCheckbox value="#{var.Patient.PatientAllergy.nkda._}" disabled="#{! var.Patient.PatientAllergy.nkda._ and ! empty var.Patient.filteredPatientAllergyList._}">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectBooleanCheckbox>
+                     <label class="vlabel">NKDA</label>
+                     <h:commandButton style="margin-left: 0.5em; font-size: 0.7em; width: auto;"
+                                      action="#{jsf._do(patientList.get(0).status.setNkda(var.Patient.PatientAllergy.nkda._)).
+                                                _do(biz.savePatientStatus(patientList.get(0).status, access.user.id)).
+                                                _do(var.Patient.PatientAllergy.nkdaPatientId._(null)).stay}"
+                                      rendered="#{patientList.get(0).status.nkda != var.Patient.PatientAllergy.nkda._}"
+                                      value="Save">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton style="margin-left: 0.5em; font-size: 0.7em; width: auto;"
+                                      action="#{jsf._do(var.Patient.PatientAllergy.nkdaPatientId._(null)).stay}"
+                                      rendered="#{patientList.get(0).status.nkda != var.Patient.PatientAllergy.nkda._}"
+                                      value="Cancel">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <br style="margin-bottom: 0.75em;"/>
+                     <ui:include src="../PatientAllergy/template/table.xhtml">
+                        <ui:param name="listId" value="patientAllergyList"/>
+                        <ui:param name="patientAllergyList" value="#{var.Patient.filteredPatientAllergyList._}"/>
+                        <ui:param name="tableConfig" value="#{var.Patient.PatientAllergy.tableConfig}"/>
+                     </ui:include>
+                  </div>
+               </div>
+
+               <ui:fragment rendered="#{jsf.global('patient', 'view')['Diagnosis/list']}">
+                  #{jsf.               
+                    _do(var.Patient.patientDiagnosisSearch.put('patientId', patientList[0].id)).
+                    _do(var.Patient.patientDiagnosisList._(jsf.hintedSearch('PatientDiagnosis', null, var.Patient.patientDiagnosisSearch, '_MEDBASE'))). 
+                    stay()}
+                  <div class="float-left column" style="min-width: 40em;">
+                     <h3 class="table-label" style="display:inline-block;">
+                        Problem List
+                     </h3>
+                     <h:inputText id="diagnosisFilter" value="#{var.Patient.diagnosisFilter._}" title="Type part of DX code or %keyword and press Filter" style="margin: 0; margin-left: 1em; font-size: 0.7em; width: 4em;"/>
+                     <h:commandButton action="#{jsf._do(var.Patient.diagnosisSearch.put('code', var.Patient.diagnosisFilter._)).
+                                                _do(var.Patient.diagnosisSearch.put('description', var.Patient.diagnosisFilter._)).
+                                                _do(var.Patient.diagnosisList._(jsf.hintedSearch('_Diagnosis', 'd.code', var.Patient.diagnosisSearch, '_MEDBASE'))).stay}"
+                                      value="Filter" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;">
+                        <f:ajax render="diagnosis" execute="@form"/>
+                     </h:commandButton>
+                     <h:selectOneMenu id="diagnosis" value="#{var.Patient.diagnosisAdd._}" title="Diagnosis" style="margin: 0; margin-left: 1em; font-size: 0.7em; width: 20em;">
+                        <f:selectItems value="#{var.Patient.diagnosisList._}"
+                                       var="diagnosis" itemLabel="#{diagnosis.code}, #{diagnosis.description}"/>
+                        <f:converter converterId="EntityConverter"/>
+                     </h:selectOneMenu>
+                     <h:commandButton action="#{jsf._do(biz.addPatientDiagnosis(patientList[0], var.Patient.diagnosisAdd._)).stay}"
+                                      value="Add" style="margin: 0; margin-right: 1em; font-size: 0.7em; width: auto;">
+                        <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <label class="vlabel" style="margin-left: 1em;">Status:</label>
+                     #{var.Patient.diagnosisStatus._ == null ? var.Patient.diagnosisStatus._('ACTIVE') : null}
+                     <h:selectOneMenu value="#{var.Patient.diagnosisStatus._}" title="Status" styleClass="w6">
+                        <f:selectItem itemValue="ALL" itemLabel="ALL"/>
+                        <f:selectItem itemValue="ACTIVE" itemLabel="Active"/>
+                        <f:selectItem itemValue="INACTIVE" itemLabel="Resolved"/>                    
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectOneMenu>
+                     <br style="margin-bottom: 0.75em;"/>
+                     #{var.Patient.filteredPatientDiagnosisList._(biz.filterByActiveValue(var.Patient.patientDiagnosisList._, var.Patient.diagnosisStatus._))}
+                     <ui:include src="../PatientDiagnosis/template/table.xhtml">
+                        <ui:param name="listId" value="patientDiagnosisList"/>
+                        <ui:param name="patientDiagnosisList" value="#{var.Patient.filteredPatientDiagnosisList._}"/>
+                        <ui:param name="tableConfig" value="#{var.Patient.patientDiagnosisTableConfig}"/>
+                     </ui:include>
+                  </div>               
+               </ui:fragment>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['PatientTransportation/list']}">
+                  #{(patientTransportationSearch['patientHashcode'] == null or patientTransportationSearch['patientHashcode'] != transportation.patientHashcode(patientList.get(0))) ?
+                    jsf._putSearch('PatientTransportation')._do(patientTransportationSearch.put('patientHashcode', transportation.patientHashcode(patientList.get(0)))).
+                    _runSearch('PatientTransportation', 'p.startDate DESC').stay() : ''}
+                  <div class="float-left one column" jsfc="h:panelGroup">
+                     <h3 class="table-label" style="display:inline-block;">
+                        Transportation
+                        <ui:fragment rendered="#{not empty patientTransportationList}">
+                           <label for="transportationCompany" class="vlabel">Favorite:</label>
+                           #{transportationCompanyList == null ?
+                             jsf._runSearch('PatientTransportationCompany', null, jsf.newMap(), 'transportationCompanyList').stay() : null}
+                           #{var.Patient.toSave._ != null ? jsf._save(var.Patient.toSave._)._do(var.Patient.toSave._(null))._do(var.Patient.profile._(null)).stay() : null}
+                           #{var.Patient.profile._ == null or (var.Patient.profile._.patientId != null and var.Patient.profile._.patientId != patientList.get(0).id) ? var.Patient.profile._(biz.patientProfile(patientList.get(0).id)) : null}
+                           <h:selectOneMenu id="transportationCompany" value="#{var.Patient.profile._.transportationCompanyId}"
+                                            styleClass="w16" title="Transportation Company">
+                              <f:selectItem itemValue="" itemLabel="NONE"/>
+                              <f:selectItems value="#{transportationCompanyList}" var="transportationCompany" itemLabel="#{transportationCompany.name}" itemValue="#{transportationCompany.id}"/>
+                              <f:ajax render="@form" event="change" listener="#{jsf._do(var.Patient.toSave._(var.Patient.profile._)).listen}"/>
+                           </h:selectOneMenu>
+                           <label class="vlabel">
+                              <h:selectBooleanCheckbox value="#{patientList.get(0).isExceptNearLocation}">
+                                 <f:ajax render="@this" listener="#{jsf._save(patientList.get(0)).listen}"/>
+                              </h:selectBooleanCheckbox>
+                              Only for Other Office
+                           </label>
+                           <label class="vlabel">
+                              <h:selectBooleanCheckbox value="#{var.Patient.PatientTransportation.legacy._}">
+                                 <f:ajax render="@form"/>
+                              </h:selectBooleanCheckbox>
+                              Legacy View
+                           </label>
+                        </ui:fragment>
+                     </h3>
+                     <h:commandButton style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                      rendered="#{patientList.size() == 1 and jsf.global('patient', 'view')['PatientTransportation/list']}"
+                                      action="#{jsf._new('com.medenterprise.medicalcare.domain.medenterprise.PatientTransportation').
+                                                _do(patientTransportation.setPatientId(patientList.get(0).id)).
+                                                _do(patientTransportationList.add(0, patientTransportation)).
+                                                _do(jsf.global(patientTransportation).put('mode', 'Edit')).
+                                                _do(jsf.global(patientTransportation).put('status', 'New')).stay}"
+                                      value="Add...">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"
+                                      rendered="#{patientList.size() == 1 and jsf.global('patient', 'view')['PatientTransportation/list']}"
+                                      action="#{jsf._do(transportation.updatePatientHashcodeForPatient(patientList.get(0))).
+                                                _do(patientTransportationList.add(0, patientTransportation)).
+                                                _do(patientTransportationSearch.put('patientHashcode', null)).stay}"
+                                      title="If hashcode (based on patient lastname, firstname, dob) has updated press this button. Note that transportation forms assigned by hashcode."
+                                      value="Sync.">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <div jsfc="h:panelGroup" rendered="#{not empty patientTransportationList}">
+                        <ui:include src="../PatientTransportation/template/table.xhtml">
+                           <ui:param name="legacy" value="#{var.Patient.PatientTransportation.legacy._}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+               </div>
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['PatientAuthorization/list']}">                                
+                  #{jsf._do(var.Patient.PatientAuthorization.tableConfig.number._ == null ? var.Patient.PatientAuthorization.tableConfig.number._(true) : null).
+                    _do(var.Patient.PatientAuthorization.tableConfig.startDate._ == null ? var.Patient.PatientAuthorization.tableConfig.startDate._(true) : null).
+                    _do(var.Patient.PatientAuthorization.tableConfig.expirationDate._ == null ? var.Patient.PatientAuthorization.tableConfig.expirationDate._(true) : null).
+                    _do(var.Patient.PatientAuthorization.tableConfig.count._ == null ? var.Patient.PatientAuthorization.tableConfig.count._(true) : null).
+                    _do(var.Patient.PatientAuthorization.tableConfig.insurance._ == null ? var.Patient.PatientAuthorization.tableConfig.insurance._(true) : null).
+                    _do(var.Patient.PatientAuthorization.tableConfig.specialty._ == null ? var.Patient.PatientAuthorization.tableConfig.specialty._(true) : null).
+                    _do(var.Patient.PatientAuthorization.tableConfig.status._ == null ? var.Patient.PatientAuthorization.tableConfig.status._(true) : null).
+                    _do(var.Patient.PatientAuthorization.tableConfig.provider._ == null ? var.Patient.PatientAuthorization.tableConfig.provider._(true) : null).
+                    _do(var.Patient.PatientAuthorization.tableConfig.usedCount._ == null ? var.Patient.PatientAuthorization.tableConfig.usedCount._(true) : null).
+                    _do(var.Patient.PatientAuthorization.tableConfig.action._ == null ? var.Patient.PatientAuthorization.tableConfig.action._(true) : null).
+                    stay()}
+                  #{jsf._do(var.Patient.PatientAuthorization.search.clear()).                
+                    _do(var.Patient.PatientAuthorization.search.put('patientId', patientList.get(0).id)).
+                    _do(var.Patient.PatientAuthorization.search.put('myOfficeCode', myOfficeCode)).
+                    _do(var.Patient.PatientAuthorization.list._(jsf.search('PatientAuthorization', 'p.created DESC', var.Patient.PatientAuthorization.search))).                        
+                    stay()}
+                  <div class="float-left column" style="min-width: 40em;">
+                     <h3 class="table-label" style="display:inline-block;">
+                        Authorizations
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.id._}"/>
+                           <label>ID</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.created._}"/>
+                           <label>Created Date</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.startDate._}"/>
+                           <label>Start Date</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.expirationDate._}"/>
+                           <label>Expiration Date</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.specialty._}"/>                              
+                           <label>Specialty</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.insurance._}"/>                              
+                           <label>Insurance</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.provider._}"/>
+                           <label>Provider</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.number._}"/>
+                           <label>Authorization Number</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.count._}"/>
+                           <label>Count</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.usedCount._}"/>
+                           <label>Used</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.note._}"/>
+                           <label>Note</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.status._}"/>
+                           <label>Status</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientAuthorization.tableConfig.action._}"/>
+                           <label>Action</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <h:commandButton action="#{jsf._do(var.PatientAuthorization.form.put('patientAuthorization', biz.newPatientAuthorizationFromPatient(patientList.get(0))))._to('PatientAuthorization/new').go}" value="Add..." style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;" disabled="#{patientList.get(0).primaryInsuranceID == null}"/>                        
+                     <br style="margin-bottom: 0.75em;"/>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.Patient.PatientAuthorization.list._}">
+                        <ui:include src="../PatientAuthorization/template/table.xhtml">
+                           <ui:param name="listId" value="patientPatientAuthorizationList"/>
+                           <ui:param name="patientAuthorizationList" value="#{var.Patient.PatientAuthorization.list._}"/>
+                           <ui:param name="tableConfig" value="#{var.Patient.PatientAuthorization.tableConfig}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['Appointment/list'] or jsf.global('patient', 'view')['Appointment/make']}">
+                  #{jsf._do(var.Patient.Appointment.search.clear()).                
+                    _do(var.Patient.Appointment.search.put('patient', patientList.get(0))).
+                    _do(var.Patient.Appointment.search.put('stateID', 1)).
+                    _do(var.Patient.Appointment.list._(jsf.search('Appointment', 'a.date, a.time', var.Patient.Appointment.search))).                    
+                    stay()}
+                  #{jsf._do(var.Patient.Appointment.tableConfig.time._ == null ? var.Patient.Appointment.tableConfig.time._(true) : null).
+                    _do(var.Patient.Appointment.tableConfig.date._ == null ? var.Patient.Appointment.tableConfig.date._(true) : null).
+                    _do(var.Patient.Appointment.tableConfig.provider._ == null ? var.Patient.Appointment.tableConfig.provider._(true) : null).
+                    _do(var.Patient.Appointment.tableConfig.action._ == null ? var.Patient.Appointment.tableConfig.action._(true) : null).
+                    stay()}
+                  <div class="float-left column" style="min-width: 40em;" jsfc="h:panelGroup">
+                     <h3 class="table-label" style="display: inline;">
+                        Appointments
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">                           
+                           <h:selectBooleanCheckbox value="#{var.Patient.Appointment.tableConfig.id._}"/>                    
+                           <label>ID</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.Appointment.tableConfig.duration._}"/>
+                           <label>Duration</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.Appointment.tableConfig.referringProvider._}"/>
+                           <label>Referring Provider</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <h:commandLink value="Report" action="#{jsf._do(var.Patient.Appointment.report.patient._(patientList[0]))._do(var.Patient.Appointment.report.appointmentList._(var.Patient.Appointment.list._))._to('Appointment/patient-report').go}" target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 1em"/>
+                     <br style="margin-bottom: 0.75em;"/>
+                     <ui:include src="../Appointment/template/table.xhtml">
+                        <ui:param name="appointmentList" value="#{var.Patient.Appointment.list._}"/>
+                        <ui:param name="listId" value="patientAppointmentList"/>
+                        <ui:param name="tableConfig" value="#{var.Patient.Appointment.tableConfig}"/>
+                     </ui:include>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['Appointment/make']}">
+                  <div class="float-left column">
+                     <h3 class="table-label" style="display: inline-block; #{var.Appointment.reschedule._ != null ? 'color: red;' : ''}">#{var.Appointment.reschedule._ != null ? 'Reschedule' : 'Make'} Appointment</h3>
+                     #{var.Patient.patient._ != patientList.get(0) ? jsf._do(var.Patient.providerAppointmentCategory._(null))._do(var.Patient.timePeriodManagerList._(null))._do(var.Patient.patient._(patientList.get(0))).stay() : null}
+                     #{var.Patient.appointmentStartDate._ == null ? var.Patient.appointmentStartDate._(jsf.newDate) : null}
+                     <label for="appointment_date" class="vlabel">Date:</label>
+                     <h:inputText id="make_appointment_date" value="#{var.Patient.appointmentStartDate._}" styleClass="djsf_DateTextBox w6">
+                        <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.Patient.timePeriodManagerList._(null)).listen}"/>
+                        <f:convertDateTime dateStyle="short" locale="en"/>
+                     </h:inputText>
+                     <h:commandButton style="width: 2em; font-size: 0.8em;" value="&lt;" action="#{jsf._do(var.Patient.appointmentStartDate._(jsf.addDays(var.Patient.appointmentStartDate._, -1))).stay}">
+                        <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.Patient.timePeriodManagerList._(null)).listen}"/>
+                     </h:commandButton>
+                     <h:commandButton style="width: 2em; font-size: 0.8em; margin-right: 1em;" value="&gt;" action="#{jsf._do(var.Patient.appointmentStartDate._(jsf.addDays(var.Patient.appointmentStartDate._, 1))).stay}">
+                        <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.Patient.timePeriodManagerList._(null)).listen}"/>
+                     </h:commandButton>
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.Patient.Appointment.schedule._}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        Schedule
+                     </label>
+                     #{var.Patient.Appointment.emergencyMode._ == null ? var.Patient.Appointment.emergencyMode._(false) : null}
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.Patient.Appointment.emergencyMode._}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        <h:outputText value=" Emergency" style="#{var.Patient.Appointment.emergencyMode._ ? 'color: red' : ''}"/>
+                     </label>
+                     <h:commandButton action="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh', true))._do(var.Appointment.cyclical.officeProvider._(var.Patient.officeProvider._))._do(var.Appointment.cyclical.providerAppointmentCategory._(var.Patient.providerAppointmentCategory._))._do(var.Appointment.cyclical.providerAppointmentDuration._(var.Patient.providerAppointmentDuration._))._to('Appointment/cyclical').go}"
+                                      style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                      title="Create Cyclical Appointments"
+                                      value="Cyclical..."/>
+                     <div class="toolbar" style="margin-bottom:0.3em; margin-right: 0em; margin-top: -0.5em;"> 
+                        #{var.Patient.specialtyList._ == null ? jsf._do(var.Patient.specialtyList._(jsf.search('Specialty', 's.name', jsf.newMap()))).stay() : null}
+                        #{jsf._do(var.Patient.officeProviderSearch.put('_EXISTS (SELECT mop FROM MyOfficeProvider mop WHERE mop.myOfficeCode = :myOfficeCode AND mop.officeProviderId = o.id)', myOfficeCode)).stay()}
+                        #{jsf._do(var.Patient.officeProviderSearch.put('active', true)).stay()}
+                        #{var.Patient.specialtyId._ == null ? (! empty officeProviderList and officeProviderList.size() == 1 ? jsf._do(var.Patient.specialtyId._(officeProviderList[0].specialtyId))._do(var.Patient.officeProvider._(officeProviderList[0]))._do(var.Patient.officeProviderList._(null))._do(var.Patient.providerAppointmentCategoryList._(null))._do(var.Patient.providerAppointmentCategory._(null))._do(var.Patient.providerAppointmentDuration._(null))._do(var.Patient.timePeriodManagerList._(null)).stay() : var.Patient.specialtyId._(biz.parseInt('1'))) : null}
+                        #{var.Patient.specialtyId._ != null ? (! empty officeProviderList and officeProviderList.size() == 1 and var.Patient.specialtyId._ != officeProviderList[0].specialtyId ? jsf._do(var.Patient.specialtyId._(officeProviderList[0].specialtyId))._do(var.Patient.officeProvider._(officeProviderList[0]))._do(var.Patient.officeProviderList._(null))._do(var.Patient.providerAppointmentCategoryList._(null))._do(var.Patient.providerAppointmentCategory._(null))._do(var.Patient.providerAppointmentDuration._(null))._do(var.Patient.timePeriodManagerList._(null)).stay() : null) : null}
+                        #{var.Patient.specialtyId._ != null ? (! empty officeProviderList and officeProviderList.size() == 1 and var.Patient.officeProvider._ != officeProviderList[0] ? jsf._do(var.Patient.specialtyId._(officeProviderList[0].specialtyId))._do(var.Patient.officeProvider._(officeProviderList[0]))._do(var.Patient.providerAppointmentCategoryList._(null))._do(var.Patient.providerAppointmentCategory._(null))._do(var.Patient.providerAppointmentDuration._(null))._do(var.Patient.timePeriodManagerList._(null)).stay() : null) : null}
+                        <label class="vlabel">Specialty:</label>
+                        <h:selectOneMenu value="#{var.Patient.specialtyId._}" style="width: 14em;">
+                           <f:selectItems value="#{var.Patient.specialtyList._}" itemValue="#{specialty.id}" var="specialty" itemLabel="#{specialty.name}"/>
+                           <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.Patient.officeProviderList._(null))._do(sessionScope.put('officeProviderList', null))._do(var.Patient.officeProvider._(null))._do(var.Patient.providerAppointmentCategoryList._(null))._do(var.Patient.providerAppointmentCategory._(null))._do(var.Patient.providerAppointmentDuration._(null))._do(var.Patient.timePeriodManagerList._(null)).listen}"/>
+                           <f:converter converterId="IntegerConverter"/>
+                        </h:selectOneMenu>
+                        #{var.Patient.officeProviderList._ == null ? jsf._do(var.Patient.officeProviderSearch.put('specialtyId', var.Patient.specialtyId._))._do(var.Patient.officeProviderList._(jsf.search('OfficeProvider', 'o.alias', var.Patient.officeProviderSearch))).stay() : null}
+                        #{var.Patient.officeProvider._ == null and ! empty var.Patient.officeProviderList._ ? var.Patient.officeProvider._(var.Patient.officeProviderList._[0]) : null}
+                        #{jsf._do(sessionScope.put('officeProviderList', jsf.newObject('java.util.ArrayList')))._do(officeProviderList.add(var.Patient.officeProvider._)).stay()}
+                        #{var.Patient.providerParticipateInsuranceWarning._(biz.providerParticipateInsuranceWarning(var.Patient.officeProvider._.id, patientList.get(0).primaryInsuranceID))}
+                        <label class="vlabel">Provider:</label>
+                        <h:selectOneMenu value="#{var.Patient.officeProvider._}" style="width: 16em;#{empty var.Patient.providerParticipateInsuranceWarning._ ? '' :'border: solid red 2px;'}" title="#{var.Patient.providerParticipateInsuranceWarning._}">
+                           <f:selectItems value="#{var.Patient.officeProviderList._}" var="officeProvider" itemLabel="#{officeProvider.alias}"/>
+                           <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.Patient.providerAppointmentCategoryList._(null))._do(var.Patient.providerAppointmentCategory._(null))._do(var.Patient.providerAppointmentDuration._(null))._do(var.Patient.timePeriodManagerList._(null))._do(sessionScope.put('officeProviderList', jsf.newObject('java.util.ArrayList')))._do(officeProviderList.add(var.Patient.officeProvider._))._do(var.Patient.providerAppointmentDurationEnabled._(null)).listen}"/>
+                           <f:converter converterId="EntityConverter"/>
+                        </h:selectOneMenu>
+                        #{var.Patient.providerAppointmentCategoryList._ == null ? var.Patient.providerAppointmentCategoryList._(biz.providerAppointmentCategoryList(var.Patient.officeProvider._.id)) : null}
+                        #{var.Patient.providerAppointmentCategory._ == null and ! empty var.Patient.providerAppointmentCategoryList._ ? var.Patient.providerAppointmentCategory._(biz.preferredProviderAppointmentCategory(var.Patient.providerAppointmentCategoryList._, patientList, var.Patient.specialtyId._)) : null}
+                        <label class="vlabel">Category:</label>
+                        <h:selectOneMenu value="#{var.Patient.providerAppointmentCategory._}" style="width: 4em;">
+                           <f:selectItems value="#{var.Patient.providerAppointmentCategoryList._}" var="providerAppointmentCategory" itemLabel="#{providerAppointmentCategory.appointmentCategory.shortName}"/>
+                           <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.Patient.providerAppointmentDuration._(null))._do(var.Patient.timePeriodManagerList._(null)).listen}"/>
+                           <f:converter converterId="EntityConverter"/>
+                        </h:selectOneMenu>
+                        #{var.Patient.providerAppointmentDuration._ == null ? var.Patient.providerAppointmentDuration._(var.Patient.providerAppointmentCategory._.duration) : null}
+                        <h:inputText value="#{var.Patient.providerAppointmentDuration._}"
+                                     disabled="#{var.Patient.providerAppointmentDurationEnabled._ == null}"
+                                     style="width: 2em;" onkeypress="return suppressEnterKeyHandler(event)">
+                           <f:ajax render="@form" onevent="ajaxEventHandler" event="change" listener="#{jsf._do(var.Patient.timePeriodManagerList._(null)).listen}"/>
+                           <f:converter converterId="IntegerConverter"/>
+                        </h:inputText>
+                        <h:commandButton action="#{jsf._do(var.Patient.providerAppointmentDurationEnabled._ == null ? var.Patient.providerAppointmentDurationEnabled._(true) : var.Patient.providerAppointmentDurationEnabled._(null)).stay}"
+                                         style="margin: 0; margin-right: 0.5em; margin-left: 0em; font-size: 0.7em; width: 2.5em;"
+                                         title="Enable/Disable duration change"
+                                         value="#{var.Patient.providerAppointmentDurationEnabled._ == null ? 'On' : 'Off'}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        #{var.Patient.timePeriodManagerList._ == null ? jsf._do(var.Patient.timePeriodManagerList._(biz.defineTimePeriodManagerList(var.Patient.appointmentStartDate._, 14, var.Patient.officeProvider._.id, var.Patient.providerAppointmentCategory._.appointmentCategory.id, var.Patient.providerAppointmentDuration._)))._do(var.Patient.timePeriodManagerListValidationMap._(biz.timePeriodManagerListValidationMap(var.Patient.timePeriodManagerList._, patientList, var.Patient.specialtyId._))).stay() : null}
+                        <div class="one">
+                           <table>
+                              <thead>
+                                 <tr>
+                                    <ui:repeat value="#{var.Patient.timePeriodManagerList._}" var="timePeriodManager">
+                                       <th style="text-align: center; vertical-align: top;">
+                                          <h:outputText value="#{timePeriodManager.activeDate}">
+                                             <f:convertDateTime pattern="EEE" locale="en"/>
+                                          </h:outputText>
+                                          <br/>
+                                          <h:outputText value="#{timePeriodManager.activeDate}">
+                                             <f:convertDateTime pattern="MM/dd" locale="en"/>
+                                          </h:outputText>
+                                          <br/>
+                                          <ui:repeat value="#{var.Patient.timePeriodManagerListValidationMap._[timePeriodManager]}" var="error">
+                                             <h:graphicImage value="/theme/#{cookie.theme.value}/image/error.png" style="position: relative; top:2px; left:2px;"
+                                                             rendered="#{! empty timePeriodManager.availableTimePeriodList}"
+                                                             title="#{error}"/>
+                                          </ui:repeat>
+                                       </th>
+                                    </ui:repeat>
+                                 </tr>
+                              </thead>
+                              <tbody>                                
+                                 <ui:fragment rendered="#{var.Patient.Appointment.schedule._}">
+                                    <tr>
+                                       <ui:repeat value="#{var.Patient.timePeriodManagerList._}" var="timePeriodManager">
+                                          <td>                                          
+                                             <ui:repeat value="#{timePeriodManager.scheduleTimePeriodList}" var="timePeriod" varStatus="status">                                             
+                                                <div style="font-weight: bold; text-align: center;">
+                                                   <h:outputText value="#{timePeriod.startTime}" style="font-size: 0.85em; white-space: nowrap;">
+                                                      <f:convertDateTime pattern="h:mm a" locale="en"/>
+                                                   </h:outputText>
+                                                   <br/>
+                                                   <h:outputText value="#{timePeriod.endTime}" style="font-size: 0.85em; white-space: nowrap;">
+                                                      <f:convertDateTime pattern="h:mm a" locale="en"/>
+                                                   </h:outputText>
+                                                </div>
+                                                <ui:fragment rendered="#{status.index &lt; timePeriodManager.scheduleTimePeriodList.size() - 1}">
+                                                   <hr/>
+                                                </ui:fragment>
+                                             </ui:repeat>
+                                          </td>
+                                       </ui:repeat>
+                                    </tr>
+                                 </ui:fragment>
+                                 <tr>
+                                    <ui:repeat value="#{var.Patient.timePeriodManagerList._}" var="timePeriodManager">
+                                       <td style="vertical-align: top; #{! timePeriodManager.active() ? 'opacity:0.5; background-color: silver; vertical-align: middle; height: 6em;' : ''}">
+                                          <h:outputText value="#{timePeriodManager.classifierName != null ? timePeriodManager.classifierName : 'Off Duty'}" style="font-weight: bold; font-size: 1.1em; text-align: center; transform:rotate(-90deg); display: block; white-space: pre; margin-left: -1em; margin-right: -1em;" rendered="#{! timePeriodManager.active()}"/>                                          
+                                          <ui:repeat value="#{var.Patient.Appointment.emergencyMode._ ? timePeriodManager.scheduleTimePeriodList : timePeriodManager.availableTimePeriodList}" var="timePeriod">
+                                             <ui:repeat value="#{timePeriod.timeList(var.Patient.providerAppointmentDuration._)}" var="time">
+                                                <h:commandLink immediate="true"
+                                                               onclick="#{biz.appointmentOnclick(var.Patient.timePeriodManagerListValidationMap._[timePeriodManager])}"
+                                                               disabled="#{patientList == null or patientList.size() != 1}"
+                                                               rendered="#{var.Appointment.reschedule._ == null}"
+                                                               style="#{var.Patient.Appointment.emergencyMode._ and timePeriodManager.busyTime(time, var.Patient.providerAppointmentDuration._) ? 'color: gray;' : ''}"
+                                                               action="#{jsf._do(var.Appointment.form.appointment._(biz.newAppointment(timePeriodManager.activeDate, time, patientList.get(0), var.Patient.officeProvider._.id, var.Patient.providerAppointmentCategory._.appointmentCategory.id, var.Patient.providerAppointmentDuration._, myOfficeCode)))._do(var.Appointment.form.referringProvider._(biz.referringProviderByLastVisit(timePeriodManager.activeDate, patientList.get(0))))._do(var.Patient.timePeriodManagerList._(null))._to('Appointment/new').go}">
+                                                   <h:outputText value="#{time}" style="font-size: 0.85em; white-space: nowrap;">
+                                                      <f:convertDateTime pattern="h:mm a" locale="en"/>
+                                                   </h:outputText>
+                                                </h:commandLink>
+                                                <h:commandLink immediate="true"
+                                                               disabled="#{patientList == null or patientList.size() != 1 or var.Appointment.reschedule._.patient.id != patientList[0].id}"
+                                                               rendered="#{var.Appointment.reschedule._ != null}"
+                                                               style="#{var.Patient.Appointment.emergencyMode._ and timePeriodManager.busyTime(time, var.Patient.providerAppointmentDuration._) ? 'color: gray;' : ''}"
+                                                               action="#{jsf._do(biz.rescheduleAppointment(var.Appointment.reschedule._, timePeriodManager.activeDate, time, var.Patient.officeProvider._.id, access.user.id))._do(var.Patient.timePeriodManagerList._(null))._do(var.Appointment.reschedule._(null)).stay}">
+                                                   <h:outputText value="#{time}" style="font-size: 0.85em; white-space: nowrap;">
+                                                      <f:convertDateTime pattern="h:mm a" locale="en"/>
+                                                   </h:outputText>
+                                                </h:commandLink>
+                                                <br/>
+                                             </ui:repeat>
+                                          </ui:repeat>
+                                       </td>
+                                    </ui:repeat>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="clear: both;"/>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['Visit/list']}">
+                  #{jsf._do(jsf.global('patient', 'visit:search').put('patient', patientList.get(0))).
+                    _do(var.Patient.Visit.list._(jsf.search('Visit', 'v.date DESC, v.time DESC', jsf.global('patient', 'visit:search')))).stay()}
+                  #{jsf._do(var.Patient.Visit.tableConfig.date._ == null ? var.Patient.Visit.tableConfig.date._(true) : null).
+                    _do(var.Patient.Visit.tableConfig.time._ == null ? var.Patient.Visit.tableConfig.time._(true) : null).
+                    _do(var.Patient.Visit.tableConfig.provider._ == null ? var.Patient.Visit.tableConfig.provider._(true) : null).
+                    _do(var.Patient.Visit.tableConfig.action._ == null ? var.Patient.Visit.tableConfig.action._(true) : null).
+                    stay()}
+                  <div class="float-left column" style="min-width: 40em;" jsfc="h:panelGroup" rendered="#{not empty var.Patient.Visit.list._}">
+                     <h3 class="table-label" style="display: inline;">
+                        Visits
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">                           
+                           <h:selectBooleanCheckbox value="#{var.Patient.Visit.tableConfig.id._}"/>                    
+                           <label>ID</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.Visit.tableConfig.action._}"/>
+                           <label>Action</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.Visit.tableConfig.procedures._}"/>
+                           <label>Procedures</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <label class="vlabel" style="margin-left: 1em;">For Period:</label>
+                     #{var.Patient.visitPeriod._ == null ? var.Patient.visitPeriod._('YEAR') : null}
+                     <h:selectOneMenu value="#{var.Patient.visitPeriod._}" title="Status" styleClass="w8">
+                        <f:selectItem itemValue="ALL" itemLabel="ALL"/>
+                        <f:selectItem itemValue="YEAR" itemLabel="Past Year"/>
+                        <f:selectItem itemValue="MONTH" itemLabel="Past Month"/>                    
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectOneMenu>                     
+                     <br/>
+                     <ui:include src="../Visit/template/table.xhtml">
+                        <ui:param name="listId" value="patientVisitList"/>
+                        <ui:param name="visitList" value="#{biz.filterByPeriod(var.Patient.Visit.list._, var.Patient.visitPeriod._)}"/>
+                        <ui:param name="tableConfig" value="#{var.Patient.Visit.tableConfig}"/>
+                     </ui:include>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['Vitals/list']}">
+                  #{jsf._do(var.Patient.VisitVitals.search.put('visit_dot_patient', patientList.get(0))).
+                    _do(var.Patient.VisitVitals.list._(jsf.hintedSearch('VisitVitals', 'v.visit.date DESC, v.visit.time DESC', var.Patient.VisitVitals.search, '_MEDBASE'))).stay()}
+                  #{jsf._do(var.Patient.VisitVitals.tableConfig.date._ == null ? var.Patient.VisitVitals.tableConfig.date._(true) : null).
+                    stay()}
+                  <div class="float-left column" style="min-width: 40em;" jsfc="h:panelGroup" rendered="#{not empty var.Patient.VisitVitals.list._}">
+                     <h3 class="table-label" style="display: inline;">
+                        Vital Signs                
+                     </h3>
+                     <label class="vlabel" style="margin-left: 1em;">For Period:</label>
+                     #{var.Patient.visitVitalsPeriod._ == null ? var.Patient.visitVitalsPeriod._('YEAR') : null}
+                     <h:selectOneMenu value="#{var.Patient.visitVitalsPeriod._}" title="Status" styleClass="w8">
+                        <f:selectItem itemValue="ALL" itemLabel="ALL"/>
+                        <f:selectItem itemValue="YEAR" itemLabel="Past Year"/>               
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectOneMenu>                     
+                     <br/>
+                     <ui:include src="../VisitVitals/template/table.xhtml">
+                        <ui:param name="listId" value="patientVisitVitalsList"/>
+                        <ui:param name="visitVitalsList" value="#{biz.filterByPeriod(var.Patient.VisitVitals.list._, var.Patient.visitVitalsPeriod._)}"/>
+                        <ui:param name="tableConfig" value="#{var.Patient.VisitVitals.tableConfig}"/>
+                     </ui:include>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['Emr/list']}">
+                  #{jsf._do(var.Patient.Emr.startDate._ == null ? var.Patient.Emr.startDate._(jsf.newDate) : '').stay()}
+                  #{jsf._do(var.Patient.Emr.endDate._ == null ? var.Patient.Emr.endDate._(jsf.newDate) : '').stay()}                
+                  #{jsf._do(var.Patient.Emr.tableConfig.provider._(true)).
+                    _do(var.Patient.Emr.tableConfig.date._(true)).
+                    _do(var.Patient.Emr.tableConfig.action._(true)).
+                    _do(var.Patient.Emr.tableConfig.status._(true)).
+                    _do(var.Patient.Emr.tableConfig.document._(true)).
+                    stay()}
+                  #{jsf._do(var.Patient.Emr.search.clear()).                
+                    _do(var.Patient.Emr.search.put('patientId', patientList.get(0).id)).
+                    _do(var.Patient.Emr.search.put('myOfficeCode', myOfficeCode)).
+                    _do(var.Patient.Emr.search._ != var.Patient.Emr.search.toString().hashCode() ? var.Patient.Emr.list._(jsf.hintedSearch('EmrRecord', 'e.date DESC', var.Patient.Emr.search, '_HEALTHCARE')): null).
+                    _do(var.Patient.Emr.search._ != var.Patient.Emr.search.toString().hashCode() ? var.Patient.Emr.search._(var.Patient.Emr.search.toString().hashCode()) : null).
+                    stay()}
+                  <div class="float-left column" style="min-width: 40em;">
+                     <h3 class="table-label" style="display: inline;">
+                        EMR
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">                           
+                           <h:selectBooleanCheckbox value="#{var.Patient.Emr.tableConfig.id._}"/>                    
+                           <label>ID</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.Emr.tableConfig.action._}"/>
+                           <label>Action</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>                    
+                     </h3>
+                     <label class="vlabel" style="margin-left: 1em;">For Period:</label>
+                     #{var.Patient.emrPeriod._ == null ? var.Patient.emrPeriod._('YEAR') : null}
+                     <h:selectOneMenu value="#{var.Patient.emrPeriod._}" title="Status" styleClass="w8">
+                        <f:selectItem itemValue="ALL" itemLabel="ALL"/>
+                        <f:selectItem itemValue="YEAR" itemLabel="Past Year"/>
+                        <f:selectItem itemValue="MONTH" itemLabel="Past Month"/>                    
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectOneMenu>
+                     <br/>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.Patient.Emr.list._}">
+                        <ui:include src="../EM/template/table.xhtml">
+                           <ui:param name="listId" value="patientEmrList"/>
+                           <ui:param name="emrRecordList" value="#{biz.filterByPeriod(var.Patient.Emr.list._, var.Patient.emrPeriod._)}"/>
+                           <ui:param name="tableConfig" value="#{var.Patient.Emr.tableConfig}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+                  <div style="clear: both;"/>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['PatientHomecare/list']}">
+                  #{(! var.Patient.PatientHomecare.searchMap.containsKey('patientHashcode') or var.Patient.PatientHomecare.searchMap.patientHashcode != transportation.patientHashcode(patientList.get(0))) ?
+                    jsf._do(var.Patient.PatientHomecare.searchMap.put('patientHashcode', transportation.patientHashcode(patientList.get(0)))).
+                    _do(var.Patient.PatientHomecare.put('list', jsf.search('PatientHomecare', 'p.issueDate DESC', var.Patient.PatientHomecare.searchMap))).stay() : null}                  
+                  <div class="float-left one column" jsfc="h:panelGroup" style="min-width: 40em;">
+                     <h3 class="table-label">
+                        Home Care Plan Oversights
+                        <h:commandButton style="width: auto; position: relative; top: 0em; margin-left:0.5em; font-size: 0.8em;"
+                                         action="#{jsf._do(var.Patient.PatientHomecare.put('new', jsf.newObject('com.medenterprise.medicalcare.domain.medenterprise.PatientHomecare'))).
+                                                   _do(var.Patient.PatientHomecare.new.setPatientId(patientList.get(0).id)).
+                                                   _do(var.Patient.PatientHomecare.new.setRecertification(true)).
+                                                   _do(var.Patient.PatientHomecare.list.add(0, var.Patient.PatientHomecare.new)).
+                                                   _do(var.PatientHomecare[var.Patient.PatientHomecare.new].mode._('Edit')).
+                                                   _do(var.PatientHomecare[var.Patient.PatientHomecare.new].status._('New')).stay}"
+                                         value="Add...">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.Patient.view.PatientHomecare.toolbar._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Toolbar
+                        </label>
+                     </h3>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.Patient.PatientHomecare.list}">
+                        <ui:include src="../PatientHomecare/template/table.xhtml">
+                           <ui:param name="patientHomecareList" value="#{var.Patient.PatientHomecare.list}"/>
+                           <ui:param name="viewToolbar" value="#{var.Patient.view.PatientHomecare.toolbar._}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['PatientHomecare/list']}">
+                  #{(! var.Patient.PatientHomecareRequest.searchMap.containsKey('patientHashcode') or var.Patient.PatientHomecareRequest.searchMap.patientHashcode != transportation.patientHashcode(patientList.get(0))) ?
+                    jsf._do(var.Patient.PatientHomecareRequest.searchMap.put('patientHashcode', transportation.patientHashcode(patientList.get(0)))).
+                    _do(var.Patient.PatientHomecareRequest.put('list', jsf.search('PatientHomecareRequest', 'p.issueDate DESC', var.Patient.PatientHomecareRequest.searchMap))).stay() : null}                  
+                  <div class="float-left one column" jsfc="h:panelGroup" style="min-width: 40em;">
+                     <h3 class="table-label">
+                        Medical Requests for Home Care (M11-q) 
+                        <h:commandButton style="width: auto; position: relative; top: 0em; margin-left:0.5em; font-size: 0.8em;"
+                                         action="#{jsf._do(var.Patient.PatientHomecareRequest.put('new', jsf.newObject('com.medenterprise.medicalcare.domain.medenterprise.PatientHomecareRequest'))).
+                                                   _do(var.Patient.PatientHomecareRequest.new.setPatientId(patientList.get(0).id)).
+                                                   _do(var.Patient.PatientHomecareRequest.list.add(0, var.Patient.PatientHomecareRequest.new)).
+                                                   _do(var.PatientHomecareRequest[var.Patient.PatientHomecareRequest.new].mode._('Edit')).
+                                                   _do(var.PatientHomecareRequest[var.Patient.PatientHomecareRequest.new].status._('New')).stay}"
+                                         value="Add...">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.Patient.view.PatientHomecareRequest.toolbar._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Toolbar
+                        </label>
+                     </h3>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.Patient.PatientHomecareRequest.list}">
+                        <ui:include src="../PatientHomecareRequest/template/table.xhtml">
+                           <ui:param name="patientHomecareRequestList" value="#{var.Patient.PatientHomecareRequest.list}"/>
+                           <ui:param name="viewToolbar" value="#{var.Patient.view.PatientHomecareRequest.toolbar._}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['Referral/list']}">                                
+                  #{jsf._do(var.Patient.Referral.tableConfig.procedures._ == null ? var.Patient.Referral.tableConfig.procedures._(true) : null).
+                    _do(var.Patient.Referral.tableConfig.provider._ == null ? var.Patient.Referral.tableConfig.provider._(true) : null).
+                    _do(var.Patient.Referral.tableConfig.status._ == null ? var.Patient.Referral.tableConfig.status._(true) : null).
+                    _do(var.Patient.Referral.tableConfig.action._ == null ? var.Patient.Referral.tableConfig.action._(true) : null).
+                    stay()}
+                  #{jsf._do(var.Patient.Referral.search.clear()).                
+                    _do(var.Patient.Referral.search.put('patientId', patientList.get(0).id)).
+                    _do(var.Patient.Referral.search.put('myOfficeCode', myOfficeCode)).
+                    _do(var.Patient.Referral.search._ != var.Patient.Referral.search.toString().hashCode() ? var.Patient.Referral.list._(jsf.search('Referral', 'r.created DESC', var.Patient.Referral.search)): null).
+                    _do(var.Patient.Referral.search._ != var.Patient.Referral.search.toString().hashCode() ? var.Patient.Referral.search._(var.Patient.Referral.search.toString().hashCode()) : null).
+                    stay()}
+                  <div class="float-left column" style="min-width: 40em;">
+                     <h3 class="table-label" style="display:inline-block;">
+                        Referrals
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">
+                           <h:selectBooleanCheckbox value="#{var.Patient.Referral.tableConfig.id._}"/>
+                           <label>ID</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.Referral.tableConfig.time._}"/>
+                           <label>Time</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.Referral.tableConfig.provider._}"/>
+                           <label>Provider</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.Referral.tableConfig.procedures._}"/>
+                           <label>Procedures</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.Referral.tableConfig.details._}"/>                              
+                           <label>Details</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.Referral.tableConfig.status._}"/>                              
+                           <label>Status</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.Referral.tableConfig.action._}"/>
+                           <label>Action</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <h:commandButton action="#{jsf._do(var.Referral.form.put('referral', biz.newReferralFromPatient(patientList.get(0))))._to('Referral/new').go}" value="Add..." style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                     <br style="margin-bottom: 0.75em;"/>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.Patient.Referral.list._}">
+                        <ui:include src="../Referral/template/table.xhtml">
+                           <ui:param name="listId" value="patientReferralList"/>
+                           <ui:param name="referralList" value="#{var.Patient.Referral.list._}"/>
+                           <ui:param name="tableConfig" value="#{var.Patient.Referral.tableConfig}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['ReferralResult/list']}">                                
+                  #{jsf._do(var.Patient.ReferralResult.tableConfig.details._ == null ? var.Patient.ReferralResult.tableConfig.details._(true) : null).
+                    _do(var.Patient.ReferralResult.tableConfig.provider._ == null ? var.Patient.ReferralResult.tableConfig.provider._(true) : null).
+                    _do(var.Patient.ReferralResult.tableConfig.category._ == null ? var.Patient.ReferralResult.tableConfig.category._(true) : null).
+                    _do(var.Patient.ReferralResult.tableConfig.action._ == null ? var.Patient.ReferralResult.tableConfig.action._(true) : null).
+                    _do(var.Patient.ReferralResult.tableConfig.serviceDate._ == null ? var.Patient.ReferralResult.tableConfig.serviceDate._(true) : null).
+                    stay()}
+                  #{jsf._do(var.Patient.ReferralResult.search.clear()).                
+                    _do(var.Patient.ReferralResult.search.put('patientId', patientList.get(0).id)).
+                    _do(var.Patient.ReferralResult.search.put('myOfficeCode', myOfficeCode)).
+                    _do(var.Patient.ReferralResult.list._(jsf.search('ReferralResult', 'r.created DESC', var.Patient.ReferralResult.search))). 
+                    stay()}
+                  <div class="float-left column" style="min-width: 40em;">
+                     <h3 class="table-label" style="display:inline-block;">
+                        Results
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">
+                           <h:selectBooleanCheckbox value="#{var.Patient.ReferralResult.tableConfig.id._}"/>
+                           <label>ID</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.ReferralResult.tableConfig.serviceDate._}"/>
+                           <label>Service Date</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.ReferralResult.tableConfig.category._}"/>
+                           <label>Category</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.ReferralResult.tableConfig.facility._}"/>
+                           <label>Facility</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.ReferralResult.tableConfig.specialty._}"/>                              
+                           <label>Specialty</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.ReferralResult.tableConfig.provider._}"/>                              
+                           <label>Ref. Provider</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.ReferralResult.tableConfig.details._}"/>
+                           <label>Details</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.ReferralResult.tableConfig.action._}"/>
+                           <label>Action</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <h:commandButton action="#{jsf._do(var.ReferralResult.form.put('referralResult', biz.newReferralResultFromPatient(patientList.get(0))))._to('ReferralResult/new').go}" value="Add..." style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                     <br style="margin-bottom: 0.75em;"/>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.Patient.ReferralResult.list._}">
+                        <ui:include src="../ReferralResult/template/table.xhtml">
+                           <ui:param name="listId" value="patientReferralResultList"/>
+                           <ui:param name="referralResultList" value="#{var.Patient.ReferralResult.list._}"/>
+                           <ui:param name="tableConfig" value="#{var.Patient.ReferralResult.tableConfig}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['LaboratoryOrderTransaction/list']}">
+                  #{jsf.
+                    _do(jsf.global('patient', 'laboratoryOrderTransaction:search').put('patientId', patientList.get(0).id)).
+                    _do(jsf.global('patient', 'laboratoryOrderTransaction:search').put('myOfficeCode', myOfficeCode)).
+                    _do(jsf.global('patient', 'laboratoryOrderTransaction').put('list',jsf.search('LaboratoryOrderTransaction', 'l.datetime DESC', jsf.global('patient', 'laboratoryOrderTransaction:search')))).
+                    stay()}
+                  #{jsf.
+                    _do(jsf.global('laboratoryOrderTransaction', 'show').put('status', true)).
+                    _do(jsf.global('laboratoryOrderTransaction', 'show').put('laboratoryAccount', true)).
+                    _do(jsf.global('laboratoryOrderTransaction', 'show').put('patient', false)).
+                    _do(jsf.global('laboratoryOrderTransaction', 'show').put('button:SubmitToBilling', false)).
+                    stay()}
+                  <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty jsf.global('patient', 'laboratoryOrderTransaction')['list']}">
+                     <h3 class="table-label" style="display:inline-block;">
+                        Laboratory Orders
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">
+                           <h:selectBooleanCheckbox value="#{jsf.global('laboratoryOrderTransaction', 'show')['id']}"/>
+                           <label>ID</label>
+                           <h:selectBooleanCheckbox value="#{jsf.global('laboratoryOrderTransaction', 'show')['orderingProvider']}"/>
+                           <label>Ordering Provider</label>
+                           <h:selectBooleanCheckbox value="#{jsf.global('laboratoryOrderTransaction', 'show')['time']}"/>
+                           <label>Time</label>
+                           <h:selectBooleanCheckbox value="#{jsf.global('laboratoryOrderTransaction', 'show')['createdUser']}"/>
+                           <label>Created By</label>                           
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <label class="vlabel" style="margin-left: 1em;">For Period:</label>
+                     #{var.Patient.laboratoryOrderTransactionPeriod._ == null ? var.Patient.laboratoryOrderTransactionPeriod._('YEAR') : null}
+                     <h:selectOneMenu value="#{var.Patient.laboratoryOrderTransactionPeriod._}" title="Status" styleClass="w8">
+                        <f:selectItem itemValue="ALL" itemLabel="ALL"/>
+                        <f:selectItem itemValue="YEAR" itemLabel="Past Year"/>
+                        <f:selectItem itemValue="MONTH" itemLabel="Past Month"/>                    
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectOneMenu> 
+                     <br style="margin-bottom: 0.75em;"/>
+                     <ui:include src="../LaboratoryOrderTransaction/template/table.xhtml">
+                        <ui:param name="returnTo" value="../Patient/main.jsf"/>
+                        <ui:param name="listId" value="patientLaboratoryOrderTransactionList"/>
+                        <ui:param name="laboratoryOrderTransactionList" value="#{biz.filterByPeriod(jsf.global('patient', 'laboratoryOrderTransaction')['list'], var.Patient.laboratoryOrderTransactionPeriod._)}"/>
+                     </ui:include>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['LaboratoryResultTransaction/list']}">
+                  #{jsf._do(var.Patient.LaboratoryResultTransaction.search.clear()).
+                    _do(var.Patient.LaboratoryResultTransaction.search.put('patientId', patientList.get(0).id)).
+                    _do(var.Patient.LaboratoryResultTransaction.search.put('myOfficeCode', myOfficeCode)).
+                    _do(var.Patient.LaboratoryResultTransaction.search.put('_l.status &lt;&gt; :obsolete', 'OBSOLETE')).
+                    _do(var.Patient.LaboratoryResultTransaction.list._(jsf.search('LaboratoryResultTransaction', 'l.datetime DESC', var.Patient.LaboratoryResultTransaction.search))).stay()}
+                  #{jsf.
+                    _do(var.Patient.LaboratoryResultTransaction.tableConfig.status._(true)).
+                    _do(var.Patient.LaboratoryResultTransaction.tableConfig.laboratoryAccount._(true)).
+                    _do(var.Patient.LaboratoryResultTransaction.tableConfig.received._(true)).
+                    _do(var.Patient.LaboratoryResultTransaction.tableConfig.tests._ == null ? var.Patient.LaboratoryResultTransaction.tableConfig.tests._(true) : null).
+                    stay()}
+                  <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.Patient.LaboratoryResultTransaction.list._}">
+                     <h3 class="table-label" style="display:inline-block;">
+                        Laboratory Results
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">
+                           <h:selectBooleanCheckbox value="#{var.Patient.LaboratoryResultTransaction.tableConfig.id._}"/>
+                           <label>ID</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.LaboratoryResultTransaction.tableConfig.orderingProvider._}"/>
+                           <label>Ordering Provider</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.LaboratoryResultTransactiont.tableConfig.officeProvider._}"/>
+                           <label>Office Provider</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.LaboratoryResultTransaction.tableConfig.time._}"/>
+                           <label>Time</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.LaboratoryResultTransaction.tableConfig.tests._}"/>                              
+                           <label>Tests</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.LaboratoryResultTransaction.tableConfig.metaHistory._}"/>
+                           <label>Prn. History</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <label class="vlabel" style="margin-left: 1em;">For Period:</label>
+                     #{var.Patient.laboratoryResultTransactionPeriod._ == null ? var.Patient.laboratoryResultTransactionPeriod._('YEAR') : null}
+                     <h:selectOneMenu value="#{var.Patient.laboratoryResultTransactionPeriod._}" title="Status" styleClass="w8">
+                        <f:selectItem itemValue="ALL" itemLabel="ALL"/>
+                        <f:selectItem itemValue="YEAR" itemLabel="Past Year"/>
+                        <f:selectItem itemValue="MONTH" itemLabel="Past Month"/>                    
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:selectOneMenu> 
+                     <br style="margin-bottom: 0.75em;"/>                    
+                     <ui:include src="../LaboratoryResultTransaction/template/table.xhtml">
+                        <ui:param name="listId" value="patientLaboratoryResultTransactionList"/>
+                        <ui:param name="laboratoryResultTransactionList" value="#{biz.filterByPeriod(var.Patient.LaboratoryResultTransaction.list._, var.Patient.laboratoryResultTransactionPeriod._)}"/>
+                        <ui:param name="tableConfig" value="#{var.Patient.LaboratoryResultTransaction.tableConfig}"/>
+                     </ui:include>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['PatientChartActivity/list']}">
+                  #{jsf._do(var.Patient.PatientChartProfile._ == null or var.Patient.PatientChartProfile._.chartStateId != patientList.get(0).chartStateID ? 
+                    jsf._do(var.Patient.PatientChartProfile._(biz.patientChartProfile(patientList.get(0).chartStateID)))._do(var.Patient.PatientChartProfileOld._(biz.patientChartProfile(patientList.get(0).chartStateID))) : null).                 
+                    stay()} 
+                  <div class="float-left column" jsfc="h:panelGroup" style="min-width: 40em;">
+                     <h3 class="table-label" style="display:inline-block;">Chart Profile</h3>              
+                     <label class="vlabel">General Volume Count:</label>
+                     <h:inputText value="#{patientList.get(0).chartVolumeCount}" style="width: 2em;" disabled="true"/>
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.Patient.PatientChartProfile._.radiology}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        Radiology
+                     </label>
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.Patient.PatientChartProfile._.dental}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        Dental
+                     </label>
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.Patient.PatientChartProfile._.dermatology}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        Dermatology
+                     </label>
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.Patient.PatientChartProfile._.cardiology}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        Cardiology
+                     </label>
+                     <h:commandButton style="margin-left: 0.5em; font-size: 0.7em; width: auto;"
+                                      action="#{jsf._do(patientList.get(0).setChartStateID(biz.chartStateId(var.Patient.PatientChartProfile._))).
+                                                _do(patientList.get(0).setDemographicUpdateDate(jsf.newDate)).
+                                                _do(patientList.get(0).setDemographicUpdateUserId(access.user.id)).
+                                                _save(patientList.get(0)).
+                                                _do(var.Patient.PatientChartProfile._(null)).stay}"
+                                      disabled="#{var.Patient.PatientChartProfile._.toString() == var.Patient.PatientChartProfileOld._.toString()}"
+                                      value="Save">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton style="margin-left: 0.5em; font-size: 0.7em; width: auto;"
+                                      action="#{jsf._do(var.Patient.PatientChartProfile._(null)).stay}"
+                                      disabled="#{var.Patient.PatientChartProfile._.toString() == var.Patient.PatientChartProfileOld._.toString()}"
+                                      value="Cancel">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                  </div>
+                  #{jsf._do(var.Patient.PatientChartActivity.tableConfig.provider._ == null ? var.Patient.PatientChartActivity.tableConfig.provider._(true) : null).
+                    _do(var.Patient.PatientChartActivity.tableConfig.volumeNumber._ == null ? var.Patient.PatientChartActivity.tableConfig.volumeNumber._(true) : null).
+                    _do(var.Patient.PatientChartActivity.tableConfig.pullDate._ == null ? var.Patient.PatientChartActivity.tableConfig.pullDate._(true) : null).
+                    _do(var.Patient.PatientChartActivity.tableConfig.pullTime._ == null ? var.Patient.PatientChartActivity.tableConfig.pullTime._(true) : null).
+                    _do(var.Patient.PatientChartActivity.tableConfig.location._ == null ? var.Patient.PatientChartActivity.tableConfig.location._(true) : null).
+                    _do(var.Patient.PatientChartActivity.tableConfig.reason._ == null ? var.Patient.PatientChartActivity.tableConfig.reason._(true) : null).
+                    _do(var.Patient.PatientChartActivity.tableConfig.takenBy._ == null ? var.Patient.PatientChartActivity.tableConfig.takenBy._(true) : null).
+                    _do(var.Patient.PatientChartActivity.tableConfig.edit._ == null ? var.Patient.PatientChartActivity.tableConfig.edit._(true) : null).
+                    _do(var.Patient.PatientChartActivity.tableConfig.action._ == null ? var.Patient.PatientChartActivity.tableConfig.action._(true) : null).
+                    stay()}
+                  #{jsf._do(var.Patient.PatientChartActivity.search.clear()).                
+                    _do(var.Patient.PatientChartActivity.search.put('patientId', patientList.get(0).id)).
+                    _do(! var.Patient.PatientChartActivity.tableConfig.history._ ? var.Patient.PatientChartActivity.search.put('_(p.stateId = 0 OR p.stateId = 1)', null) : null).
+                    _do(var.Patient.PatientChartActivity.list._(jsf.search('PatientChartActivity', 'p.volumeNumber DESC, p.pullDate DESC, p.pullTime DESC', var.Patient.PatientChartActivity.search))). 
+                    stay()}                  
+                  <div class="float-left column" jsfc="h:panelGroup" style="min-width: 40em;">
+                     <h3 class="table-label" style="display:inline-block;">
+                        Chart Activity
+                        <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                        <span style="display: none;">
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientChartActivity.tableConfig.id._}"/>
+                           <label>ID</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientChartActivity.tableConfig.provider._}"/>
+                           <label>Provider</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientChartActivity.tableConfig.takenBy._}"/>
+                           <label>Taken By</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientChartActivity.tableConfig.reason._}"/>
+                           <label>Reason</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientChartActivity.tableConfig.status._}"/>                              
+                           <label>Status</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientChartActivity.tableConfig.user._}"/>                              
+                           <label>User</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientChartActivity.tableConfig.label._}"/>
+                           <label>Label</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientChartActivity.tableConfig.action._}"/>
+                           <label>Action</label>
+                           <h:selectBooleanCheckbox value="#{var.Patient.PatientChartActivity.tableConfig.history._}"/>
+                           <label>History</label>
+                           <div class="separator"/>
+                           <h:commandLink action="#{jsf.stay}" value="Apply">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandLink>
+                        </span>
+                     </h3>
+                     <h:commandButton action="#{jsf._do(var.PatientChartActivity.form.activity._(biz.newPatientChartActivity(patientList.get(0))))._do(var.PatientChartActivity.form.mode._('New'))._to('PatientChartActivity/edit').go}"
+                                      value="New Chart..." style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                     <br style="margin-bottom: 0.75em;"/>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.Patient.PatientChartActivity.list._}">
+                        <ui:include src="../PatientChartActivity/template/table.xhtml">
+                           <ui:param name="patientChartActivityList" value="#{var.Patient.PatientChartActivity.list._}"/>
+                           <ui:param name="tableConfig" value="#{var.Patient.PatientChartActivity.tableConfig}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['LaboratoryResultTransaction/abc-list']}">
+                  #{jsf._do(jsf.global('patient', 'abcResult:search').put('patientId', patientList.get(0).id)).
+                    _do(sessionScope.put('patientAbcResultList', biz.mongoEjb.abcResultList(patientList.get(0).id))).stay()}
+                  #{jsf.
+                    _do(jsf.global('abcResult', 'show').put('patient', false)).
+                    _do(jsf.global('abcResult', 'show').put('provider', true)).
+                    stay()}
+                  <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty patientAbcResultList}">
+                     <h3 class="table-label">ABC Laboratory Results</h3>
+                     <ui:include src="../LaboratoryResultTransaction/template/abc-table.xhtml">
+                        <ui:param name="listId" value="patientAbcResultList"/>
+                        <ui:param name="abcResultList" value="#{patientAbcResultList}"/>
+                     </ui:include>
+                  </div>
+               </div>
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('patient', 'view')['Patient/merge'] and access.isUriPermitted('Patient/merge')}">
+                  <div class="float-left column" jsfc="h:panelGroup" style="min-width: 40em;">
+                     <h3 class="table-label" style="display:inline-block;">
+                        Patients for Merge to #{patientList[0].lastName}, #{patientList[0].firstName} 
+                     </h3>
+                     <br style="margin-bottom: 0.75em;"/>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.Patient.Merge.list._}">
+                        <ui:include src="template/merge-table.xhtml">
+                           <ui:param name="mergePatientList" value="#{var.Patient.Merge.list._}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+               </div>
+
+            </div>
+
+            #{jsf._do(jsf.global('officeProvider', 'event').put('refresh', true)).stay()}
+
+         </ui:define>
+
+      </ui:composition>
+
+   </body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>Payment Bill</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 1em;
+               margin: 1em;
+            }
+
+            .action {
+               display: block !important;
+               text-align: left;
+               margin-left: 3em;
+               margin-top: 1em;
+            }
+         }
+         @media all {
+
+            body {
+               font-family:Arial, sans-serif;
+               margin: 0em;
+               text-align: left;
+               font-size: 1em;
+               line-height: 1.2;
+            }
+            .page {
+               position: relative;
+               margin-left: 3em;              
+               width: 56em;
+               height: 78em;
+               display: block;
+               overflow: hidden;
+               padding:0.1em;
+            }
+            section {
+               margin-top: 1.5em;
+            }
+            h1, h2 {
+               text-align: left;
+            }
+            h1 {
+               font-size: 1.3em;
+            }
+            h2 {
+               margin: 0.1em;
+               font-size: 1em;
+            }
+            h3 {
+               font-weight: normal;
+               text-decoration:underline;
+            }
+            .bold {
+               font-weight: bold;
+            }
+            .line {
+               margin-top: 0.5em; 
+               margin-bottom: 0.5em; 
+               font-size: 0.9em;
+               white-space: nowrap;
+               overflow: hidden;
+            }
+            td {
+               padding-top: 0.25em; 
+               padding-bottom: 0.25em;
+               width: 8em;
+            }
+            tr td:first-child {
+               padding-right: 1em;
+            }
+            td label {
+               font-size: 1em;
+            }
+            label {
+               margin-right: 0.3em;
+               font-size: 0.9em;
+            }
+            input {
+               border: none;
+               margin: 0;
+               font-family: Times;
+               font-style: italic;
+               font-weight: bold;
+            }
+            hr {
+               color: black;
+               background-color: black;
+               height: 2px;
+               border:0px none;
+            }
+         }
+         @media print {
+            .action {
+               display: none;
+            }
+            .page {
+               margin-top: 1em;
+            }
+            .break {
+               page-break-before:always;
+               height: 0.3em;
+            }
+         }
+      </style>
+      <script type="text/javascript" src="/#{access.application}/script/jquery/jquery-1.9.0.min.js"></script>
+      <script type="text/javascript" src="/#{access.application}/script/printer.js"></script>
+   </head>
+   <body>
+      <h:form prependId="false">
+         <div class="action"><a href="#" id="print-link" onclick="return print('Portrait')">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         <div class="page">
+            #{var.Visit.paymentBill.myOffice._(biz.myOffice(myOfficeCode))}
+            <header>
+               <div class="line">
+                  <div style="float: right;"><label>Date:</label><h:outputText value="#{jsf.newDate}"><f:convertDateTime pattern="MM/dd/yy"/></h:outputText></div>
+                  <h2 style="margin: 0; text-align: left;">SL Quality Care D &amp; T Center</h2>
+               </div>
+               <div>
+                  <span style="font-size:0.8em;">#{var.Visit.paymentBill.myOffice._.address}, #{var.Visit.paymentBill.myOffice._.city}, #{var.Visit.paymentBill.myOffice._.state} #{var.Visit.paymentBill.myOffice._.zipCode}</span>
+               </div>
+               <h1 style="text-align: center;">Payment Bill</h1>
+            </header>
+            <section>
+               <table width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size: 0.9em;">
+                  <tr>
+                     <td style="width: 52em;">
+                        <label>Patient Name:</label>
+                        <input value="#{var.Visit.paymentBill.visit._.patient.lastName}, #{var.Visit.paymentBill.visit._.patient.firstName}" type="text" style="width: 30em;"/>
+                     </td>
+                     <td>
+                        <label>MRN:</label>
+                        <input value="#{var.Visit.paymentBill.visit._.patient.id}" type="text" style="width: 7em;"/>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <label>Birth Date:</label>
+                        <h:inputText value="#{var.Visit.paymentBill.visit._.patient.birthDate}" style="width: 5em;"><f:convertDateTime pattern="MM/dd/yy"/></h:inputText>
+                     </td>
+                     <td style="width: 52em;">
+                        <label>Visit Date:</label>
+                        <h:inputText value="#{var.Visit.paymentBill.visit._.date}" style="width: 5em;"><f:convertDateTime pattern="MM/dd/yy"/></h:inputText>
+                     </td>
+                  </tr>
+               </table>
+            </section>
+            <section style="margin-top: 2em;">
+               <ui:repeat value="#{biz.registrationFormInsuranceList(var.Visit.paymentBill.visit._.patient)}" var="patientInsurance">
+                  <div>
+                     <label>Insurance:</label>
+                     <input value="#{patientInsurance.insurance.name}" type="text" style="width: 25em;"/>
+                     <label>Member ID:</label>
+                     <input value="#{patientInsurance.policyID}" type="text"/>
+                  </div>
+               </ui:repeat>
+            </section>
+            <section style="margin: 5em">
+               <p>
+                  I was unable to pay co-payment as required at the time of visit.<br/>
+                  I agree, that the co-payment is my responsibility and payment will be made<br/> as soon as possible  as you indicate below.
+               </p>
+            </section>
+            <section>
+               <table width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size: 0.9em;">
+                  <tr>
+                     <td style="text-align:right">
+                        <label>Co-Pay Amount Due:</label>
+                     </td>
+                     <td>
+                        <input value="$" type="text" style="width: 8em; border-bottom: 1px solid black;"/>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td style="text-align:right">
+                        <label>For services rendered on:</label>
+                     </td>
+                     <td>
+                        <h:inputText value="#{var.Visit.paymentBill.visit._.date}" style="width: 8em;"><f:convertDateTime pattern="MM/dd/yy"/></h:inputText>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td style="text-align:right">
+                        <label>Service provided by Dr.</label>
+                     </td>
+                     <td>
+                        <input value="#{var.Visit.paymentBill.visit._.provider.lastName}, #{var.Visit.paymentBill.visit._.provider.firstName}" type="text" style="width: 27em;"/>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td style="padding-top: 3em; text-align:right">
+                        <label>Mail payment to:</label>
+                     </td>
+                     <td style="padding-top: 3em;">
+                        <h2 style="margin: 0;">SL Quality Care D &amp; T Center</h2>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                     </td>
+                     <td>
+                        <h2>#{var.Visit.paymentBill.myOffice._.address}, #{var.Visit.paymentBill.myOffice._.city}, #{var.Visit.paymentBill.myOffice._.state} #{var.Visit.paymentBill.myOffice._.zipCode}</h2>
+                     </td>
+                  </tr>
+               </table>
+               <div style="margin-top:17em;">
+                  <label>Patient or Other Authorized Signature:</label>
+                  <input type="text" style="width: 18em; border-bottom: 1px solid black;"/>
+                  <label>Date:</label>
+                  <input type="text" style="width: 6em; border-bottom: 1px solid black;"/>
+               </div>                     
+            </section>
+         </div>
+      </h:form>
+   </body>
+</html>

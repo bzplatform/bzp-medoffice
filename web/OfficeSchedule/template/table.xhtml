@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{officeScheduleList}" var="officeSchedule" rendered="#{not empty officeScheduleList}">
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="ID"/>
+                  </f:facet>
+                  <h:outputText value="#{officeSchedule.id}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Definition"/>
+                  </f:facet>
+                  <h:outputText value="#{officeSchedule.periodDefinition}"/>                  
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Start Date"/>
+                  </f:facet>
+                  <h:outputText value="#{officeSchedule.startDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="End Date"/>
+                  </f:facet>
+                  <h:outputText value="#{officeSchedule.endDate}">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Note"/>
+                  </f:facet>
+                  <h:outputText value="#{officeSchedule.note}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Action" styleClass="nosort"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.OfficeSchedule.form.officeSchedule._(officeSchedule))._to('OfficeSchedule/edit').go}"
+                                   styleClass="intable-action"
+                                   value="Edit..." style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"/>
+                  <h:commandButton action="#{jsf._delete(officeSchedule).stay}"
+                                   styleClass="intable-action"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"
+                                   rendered="#{access.isUriPermitted('OfficeSchedule/remove')}"
+                                   onclick="if (confirm('Delete Office Holiday?')) return true; else return false;"
+                                   value="Remove">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

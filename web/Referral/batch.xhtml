@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>Referrals</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 1em;
+               margin: 1em;
+            }
+
+            .action {
+               display: block !important;
+               text-align: left;
+               margin-left: 2em;
+            }
+         }
+         @media print {
+            .page {
+               margin-top: 0em;
+               padding-top: 1.5em;
+               margin-left: 4em;
+            }
+         }
+         @media all {
+            .page {
+               height: 12em;
+            }
+            .break {
+               page-break-before:always;
+            }
+
+            .break:first-child {
+               padding-top: 1em;
+               page-break-before:avoid;
+            }
+            .first {
+               padding-top: 1em;
+            }
+            .action {
+               display: none;
+            }
+            body {
+               font-family:Verdana, Geneva, sans-serif;
+               font-size: 0.95em;
+            }
+            h1 {
+               font-family: "Palatino Linotype";
+               font-weight: 100;
+               font-size: 2em;
+               margin: -0.1em 0;
+            }
+            center > div {
+               width: 800px;
+            }
+            div > table {
+            }
+            td {
+               border:none;
+            }
+            #second td {
+               border:solid silver 1px;
+            }
+            #third td {
+               border:none;
+            }
+            #observation-table td, #observation-table td td, #observation-table th {
+               border:solid silver 1px;
+            }
+            #observation-table {
+               border-collapse: collapse;
+            }
+            table {
+               border-collapse: collapse;
+            }
+            .signs {
+               margin-top: 20px;
+            }
+            td th {
+               vertical-align:baseline;
+            }
+            th {
+               font-size: smaller;
+               white-space: nowrap;
+               text-align: left;
+            }
+            h3, h4 {
+               font-size: 0.9em;
+               margin-top: 0;
+               margin-bottom: 0;
+               padding: 0.1em;
+               text-transform: capitalize;
+            }
+            h4 {
+               font-size: 0.8em;
+               margin-top: 0;
+               margin-bottom: 0;
+               padding: 0.2em;
+               background: #EFEFEF;
+               font-style: italic;
+            }
+            p {
+               margin-top: 0px;
+            }
+            table.small td {
+               font-size: 1em;
+            }
+            #observation-table {
+               margin-top: 0.5em;
+               font-size: 0.8em;
+            }
+            #observation-table th {
+               font-size: 0.8em;
+            }
+            div.page {
+               width: 47em;
+            }
+            div > table {
+            }
+         }
+      </style>
+      <script type="text/javascript" src="/#{access.application}/script/jquery/jquery-1.9.0.min.js"></script>
+      <script type="text/javascript" src="/#{access.application}/script/printer.js"></script>
+   </head>
+   <body>
+      <h:form prependId="false">
+         <div class="action"><a href="#" onclick="print('Portrait')">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         <div class="action"><h:messages showDetail="#{true}" showSummary="#{false}" infoClass="info"/></div>
+         <div>
+            <ui:repeat value="#{var.Referral.batch.selected._.keySet().toArray()}" var="referral">
+               <ui:fragment rendered="#{var.Referral.batch.selected._[referral]}">
+                  <div class="page">
+                     #{var.Referral.batch.myOffice._(biz.myOffice(referral.myOfficeCode))}
+                     #{var.Referral.batch.patient._(edi.patient(referral.patientId))}
+                     <table cellpadding="2px" style="width:100%;">
+                        <tr>
+                           <th colspan="3" style="font-size: 1.2em; font-weight: normal;">#{referral.facility.name}&nbsp; <div style="float:right; font-size: 0.6em; display: inline-block; font-weight: bold; margin-top: -2em;">REFERRAL ##{referral.id}</div></th>
+                        </tr>
+                        <tr>
+                           <td width="33%" style="vertical-align: top;">
+                              <h3>PATIENT</h3>
+                              <p>
+                                 #{var.Referral.batch.patient._.lastName}, #{var.Referral.batch.patient._.firstName}<br/>
+                                 DOB: <h:outputText value="#{var.Referral.batch.patient._.birthDate}">
+                                    <f:convertDateTime pattern="MM/dd/yyyy"/>
+                                 </h:outputText></p>
+                           </td>
+                           <td width="33%" style="vertical-align: top;">
+                              <h3>PROVIDER</h3>
+                              <p>
+                                 #{referral.provider.lastName}, #{referral.provider.firstName}<br/>
+                                 NPI: #{referral.provider.npi}</p>
+                           </td>
+                           <td width="33%" style="vertical-align: top;">
+                              <h3>OFFICE</h3>
+                              <p>
+                                 <span style="font-size: 0.7em;">#{var.Referral.batch.myOffice._.name}<br/>
+                                    #{var.Referral.batch.myOffice._.address},
+                                    #{var.Referral.batch.myOffice._.city}, <br/>
+                                    #{var.Referral.batch.myOffice._.state} #{var.Referral.batch.myOffice._.zipCode} <br/>
+                                    #{var.Referral.batch.myOffice._.phone} #{var.Referral.batch.myOffice._.phoneExt}</span></p>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td style="vertical-align: top;">
+                              <h3>PROCEDURES</h3>
+                              <p><ui:repeat value="#{referral.procedureList}" var="procedure">
+                                    #{procedure.name}<br/>
+                                 </ui:repeat></p>
+                           </td>
+                           <td style="vertical-align: top;">
+                              <h3>DIAGNOSES</h3>
+                              <p style="font-size: 0.8em;"><ui:repeat value="#{referral.diagnosisList}" var="diagnosis">
+                                    <b>#{diagnosis.code}</b>&nbsp;#{diagnosis.description}<br/>
+                                 </ui:repeat></p>
+                           </td>
+                           <td style="vertical-align: top;">
+                              <h3>CREATED DATE</h3>
+                              <p style="font-size: 0.8em;"><h:outputText value="#{referral.created}">
+                                    <f:convertDateTime pattern="MM/dd/yyyy"/>
+                                 </h:outputText></p>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
+               </ui:fragment>
+            </ui:repeat>
+         </div>
+      </h:form>
+   </body>
+</html>

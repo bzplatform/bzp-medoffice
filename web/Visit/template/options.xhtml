@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="toolbar">
+             <h:panelGroup>
+               <h:selectBooleanCheckbox value="#{optionsRendered}" onchange="document.forms[0].submit()"/>
+               <label>Show Options</label>
+            </h:panelGroup>
+         </div>
+         <h:panelGroup rendered="#{optionsRendered != null and optionsRendered}">
+            <div class="menu form">
+               <div class="header">
+                  <h3 class="center">Options</h3>
+               </div>
+               <div class="body">
+                  <ul class="vertical form-area grid g32">
+                     <li class="em10 half-height">
+                        <label class="vlabel"><h:selectBooleanCheckbox value="#{options['show Date']}"/> Show Date</label>
+                     </li>
+                     <li class="em10 half-height">
+                        <label class="vlabel"><h:selectBooleanCheckbox value="#{options['show Time']}"/> Show Time</label>
+                     </li>
+                     <li class="em12 half-height">
+                        <label class="vlabel"><h:selectBooleanCheckbox value="#{options['show Duration']}"/> Show Duration</label>
+                     </li>
+                     <li class="em10 half-height">
+                        <label class="vlabel"><h:selectBooleanCheckbox value="#{options['show VisitId']}"/> Show Visit ID</label>
+                     </li>
+                  </ul>
+               </div>
+               <div class="footer">
+                  <h:commandButton action="#{jsf.stay}" value="Apply" styleClass="cancel-button"/>
+               </div>
+            </div>
+         </h:panelGroup>
+      </ui:composition>
+   </body>
+</html>

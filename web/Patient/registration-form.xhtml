@@ -1,0 +1,432 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>Registration Form</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 1em;
+               margin: 1em;
+            }
+
+            .action {
+               display: block !important;
+               text-align: left;
+               margin-left: 3em;
+               margin-top: 1em;
+            }
+         }
+         @media all {
+
+            body {
+               font-family:Arial, sans-serif;
+               margin: 0em;
+               text-align: left;
+               font-size: 0.8em;
+               line-height: 1.2;
+            }
+            .page {
+               position: relative;
+               margin-left: 3em;              
+               width: 56em;
+               height: 78em;
+               display: block;
+               overflow: hidden;
+               padding:0.1em;
+            }
+            section {
+               margin-top: 1.5em;
+            }
+            section header {
+               margin-bottom: 0;
+               border: 1px solid whitesmoke;
+               background: whitesmoke;
+            }
+            section header h2, section header h3 {
+               text-align: center;
+            }
+            h1, h2 {
+               text-align: left;
+            }
+            h1 {
+               font-size: 1.3em;
+            }
+            h2 {
+               margin: 0.1em;
+               font-size: 1em;
+            }
+            h3 {
+               font-weight: normal;
+               text-decoration:underline;
+            }
+            .bold {
+               font-weight: bold;
+            }
+            .line {
+               margin-top: 0.5em; 
+               margin-bottom: 0.5em; 
+               font-size: 0.9em;
+               white-space: nowrap;
+               overflow: hidden;
+            }
+            td {
+               padding-top: 0.25em; 
+               padding-bottom: 0.25em;
+               width: 28em;
+            }
+            tr td:first-child {
+               padding-right: 1em;
+            }
+            label {
+               margin-right: 0.3em;
+            }
+            input {
+               border: none;
+               border-bottom: 1px solid black;
+               margin: 0;
+               font-family: Times;
+               font-style: italic;
+               font-weight: bold;
+            }
+            .legal {
+               font-size:0.8em;
+               line-height: 1.3;
+            }
+            hr {
+               color: black;
+               background-color: black;
+               height: 2px;
+               border:0px none;
+            }
+         }
+         @media print {
+            .action {
+               display: none;
+            }
+            .page {
+               margin-top: 1em;
+            }
+            .break {
+               page-break-before:always;
+               height: 0.3em;
+            }
+         }
+      </style>
+      <script type="text/javascript" src="/#{access.application}/script/jquery/jquery-1.9.0.min.js"></script>
+      <script type="text/javascript" src="/#{access.application}/script/printer.js"></script>
+   </head>
+   <body>
+      <h:form prependId="false">
+         <div class="action"><a href="#" id="print-link" onclick="return print('Portrait')">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         <div class="page">
+            #{var.Patient.registrationFU.myOffice._(biz.myOffice(myOfficeCode))}
+            <header>
+               <div class="line">
+                  <div style="float: right;"><label>Date:</label><h:outputText value="#{jsf.newDate}"><f:convertDateTime pattern="MM/dd/yy"/></h:outputText></div>
+                  <h2 style="margin: 0; text-align: left;">SL Quality Care D &amp; T Center</h2>
+               </div>
+               <div>
+                  <span style="font-size:0.8em;">#{var.Patient.registrationFU.myOffice._.address}, #{var.Patient.registrationFU.myOffice._.city}, #{var.Patient.registrationFU.myOffice._.state} #{var.Patient.registrationFU.myOffice._.zipCode}</span>                  
+               </div>
+               <h1 style="text-align: center; margin-top: -1em;">Patient Registration Form</h1>
+            </header>
+            <section>
+               <header>
+                  <h2>Patient Information</h2>
+               </header>
+               <table width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size: 0.9em;">
+                  <tr>
+                     <td>
+                        <label>Last Name:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.lastName}" type="text" style="width: 21em;"/>
+                     </td>
+                     <td>
+                        <label>First Name:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.firstName}" type="text" style="width: 16.3em;"/>
+                        <label>MI:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.mi}" type="text" style="width: 2em;"/>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <label>Birth Date:</label>
+                        <h:inputText value="#{var.Patient.registrationFU.patient._.birthDate}" style="width: 7em;"><f:convertDateTime pattern="MM/dd/yy"/></h:inputText>
+                        <label>Sex:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.sex}" type="text" style="width: 2em;"/>
+                        <label>SSN:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.ssn}" type="text" style="width: 7.5em;"/>
+                     </td>
+                     <td>
+                        <label>Marital:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.maritalStatus.name}" type="text" style="width: 5em;"/>
+                        <label>Preferred Language:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.preferredLanguage.name}" type="text" style="margin-right: 0; width: 7.9em;"/>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <label>Address:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.address}" type="text" style="width: 22em;"/>
+                     </td>
+                     <td>
+                        <label>City:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.city}" type="text" style="width: 10em;"/>
+                        <label>State:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.state}" type="text" style="width: 2em;"/>
+                        <label>Zip:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.zipCode}" type="text" style="width: 6em;"/>                  
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <label>Home Phone:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.homePhone}" type="text" style="width: 8.7em;"/>
+                        <label>Cell:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.cellPhone}" type="text" style="width: 8.6em;"/>
+                     </td>
+                     <td>
+                        <label>Emergency Phone:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.emergPhone}" type="text" style="width: 7em;"/>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <label>Can we discuss with you by phone?</label>
+                        <nobr>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block; font-weight: bold;"><i>YES</i></label>
+                        </nobr>
+                        <nobr>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block; font-weight: bold;"><i>NO</i></label>
+                        </nobr>
+                     </td>
+                     <td>
+                        <label>E-mail:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.eMailAddress}" type="text" style="width: 13em;"/>
+                        <h:panelGroup rendered="#{var.Patient.registrationFU.patient._.eMailAddress == null}" style="display: inline-block; vertical-align: top;">
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Don't have</i></label>
+                           <br/>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Refused to provide</i></label>
+                        </h:panelGroup>                        
+                     </td>
+                  </tr>                  
+                  <tr>
+                     <td>
+                        <label>Ethnicity:</label>
+                        <ui:fragment rendered="#{var.Patient.registrationFU.patient._.ethnicity != null}">
+                           <input value="#{var.Patient.registrationFU.patient._.ethnicity.name}" type="text" style="width: 22em;"/>
+                        </ui:fragment>
+                        <h:panelGroup rendered="#{var.Patient.registrationFU.patient._.ethnicity == null}" style="display: inline-block; vertical-align: top;">
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>No, not of Hispanic, Latino/a, or Spanish origin</i></label>
+                           <br/>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Yes, Mexican, Mexican American, Chicano/a</i></label>
+                           <br/>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Yes, Puerto Rican</i></label>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Yes, Cuban</i></label>
+                           <br/>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Yes, another Hispanic, Latino, or Spanish origin</i></label>
+                           <br/>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Refused to provide</i></label>
+                        </h:panelGroup>
+                     </td>
+                     <td>
+                        <label>Race:</label>
+                        <ui:fragment rendered="#{var.Patient.registrationFU.patient._.race != null}">
+                        <input value="#{var.Patient.registrationFU.patient._.race.name}" type="text" style="width: 22.5em;"/>
+                        </ui:fragment>
+                        <h:panelGroup rendered="#{var.Patient.registrationFU.patient._.race == null}" style="display: inline-block; vertical-align: top;">
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block; width: 6em;"><i>White</i></label>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>African American</i></label>
+                           <br/>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>American Indian or Alaska Native</i></label>
+                           <br/>                           
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Asian Indian</i></label>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Chinese</i></label>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Filipino</i></label>
+                           <br/>                           
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block; width: 6em;"><i>Japanese</i></label>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block; width: 4em;"><i>Korean</i></label>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Vietnamese</i></label>
+                           <br/>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Other</i></label>
+                           <input type="text" style="width: 8.5em;"/>
+                           <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
+                           <label style="display: inline-block;"><i>Refused to provide</i></label>
+                        </h:panelGroup>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <label>Employer:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.company}" type="text" style="width: 21.5em;"/>
+                     </td>
+                     <td>
+                        <label>Work Phone:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.workPhone}" type="text" style="width: 11.5em;"/>
+                        <label>Ext:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.workPhoneExt}" type="text" style="width: 6em;"/>
+                     </td>
+                  </tr>
+                  <tr>
+                     <td>
+                        <label>Work Address:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.workAddress}" type="text" style="width: 19.6em;"/>
+                     </td>
+                     <td>
+                        <label>City:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.workCity}" type="text" style="width: 10em;"/>
+                        <label>State:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.workState}" type="text" style="width: 2em;"/>
+                        <label>Zip:</label>
+                        <input value="#{var.Patient.registrationFU.patient._.workZipCode}" type="text" style="width: 6em;"/>
+                     </td>
+                  </tr>                  
+               </table>
+            </section>
+            <ui:repeat value="#{biz.registrationFormInsuranceList(var.Patient.registrationFU.patient._)}" var="patientInsurance">
+               <section>
+                  <header>
+                     <ui:fragment rendered="#{patientInsurance.accountIndex == 1}">
+                        <h2>Primary Insurance</h2>
+                     </ui:fragment>
+                     <ui:fragment rendered="#{patientInsurance.accountIndex == 2}">
+                        <h2>Secondary Insurance</h2>
+                     </ui:fragment>
+                  </header>
+                  <table width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size: 0.9em;">
+                     <tr>
+                        <td>
+                           <label>Insurance:</label>
+                           <input value="#{patientInsurance.insurance.name}" type="text" style="width: 21.4em;"/>
+                        </td>
+                        <td>
+                           <label>Member ID:</label>
+                           <input value="#{patientInsurance.policyID}" type="text" style="width: 8em;"/>
+                           <label>Group ID:</label>
+                           <input value="#{patientInsurance.groupID}" type="text" style="width: 7.5em;"/>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <span style="font-weight: bold; margin-right: 20.7em;">Subscriber Information</span>
+                        </td>
+                        <td>
+                           <label>Relationship to Subscriber:</label>
+                           <input value="#{patientInsurance.relationToGuarantorName != 'UNKNOWN' ? patientInsurance.relationToGuarantorName: ''}" type="text" style="width: 8.5em;"/>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <label>Last Name:</label>
+                           <input value="#{patientInsurance.guarantor.lastName}" type="text" style="width: 21em;"/>
+                        </td>
+                        <td>
+                           <label>First Name:</label>
+                           <input value="#{patientInsurance.guarantor.firstName}" type="text" style="width: 20.1em;"/>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <label>Birth Date:</label>
+                           <h:inputText value="#{patientInsurance.guarantor.birthDate}" style="width: 7em;"><f:convertDateTime pattern="MM/dd/yyyy"/></h:inputText>
+                           <label>Home Phone:</label>
+                           <input value="#{patientInsurance.guarantor.homePhone}" type="text" style="width: 8.2em;"/>
+                        </td>
+                        <td>
+                           <label>SSN:</label>
+                           <input value="#{patientInsurance.guarantor.ssn}" type="text" style="width: 8.7em;"/>
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <label>Address:</label>
+                           <input value="#{patientInsurance.guarantor.address}" type="text" style="width: 22em;"/>
+                        </td>
+                        <td>
+                           <label>City:</label>
+                           <input value="#{patientInsurance.guarantor.city}" type="text" style="width: 10em;"/>
+                           <label>State:</label>
+                           <input value="#{patientInsurance.guarantor.state}" type="text" style="width: 2em;"/>
+                           <label>Zip:</label>
+                           <input value="#{patientInsurance.guarantor.zipCode}" type="text" style="width: 6em;"/>                  
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <label>Employer:</label>
+                           <input value="#{patientInsurance.guarantor.company}" type="text" style="width: 21.5em;"/>
+                        </td>
+                        <td>
+                           <label>Work Phone:</label>
+                           <input value="#{patientInsurance.guarantor.workPhone}" type="text" style="width: 11.5em;"/>
+                           <label>Ext:</label>
+                           <input value="#{patientInsurance.guarantor.workPhoneExt}" type="text" style="width: 6em;"/>                           
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>
+                           <label>Work Address:</label>
+                           <input value="#{patientInsurance.guarantor.workAddress}" type="text" style="width: 19.6em;"/>
+                        </td>
+                        <td>
+                           <label>City:</label>
+                           <input value="#{patientInsurance.guarantor.workCity}" type="text" style="width: 10em;"/>
+                           <label>State:</label>
+                           <input value="#{patientInsurance.guarantor.workState}" type="text" style="width: 2em;"/>
+                           <label>Zip:</label>
+                           <input value="#{patientInsurance.guarantor.workZipCode}" type="text" style="width: 6em;"/>
+                        </td>
+                     </tr>
+                  </table>
+               </section>
+            </ui:repeat>
+            <section class="legal" style="margin-top: 2em; margin-bottom: 3em;">
+               <p> I hereby authorize and direct my physician, having treated  me, to release to government agencies, insurance carriers, or others
+                  who are financially liable for my hospitalization and medical care, all information needed to substantiate payment for such hospitalization
+                  and medical care and to permit representatives to examine and make copies of all records related to such care and treatment.</p>
+               <p>            
+                  I request that  payment of authorized benefits be made  either to me or on my  behalf to Dr. ______________________________ for services
+                  furnished to me by that physician. I am aware that I am financially responsible for the payments for service(s) provided by 
+                  SL Quality Care D&amp;T Center if insurance will deny payment for the service(s).
+               </p>
+               <p>
+                  You Agree to pay SLQC all denied, unpaid or recovered amounts if the listed insurance information is determined to be inaccurate or
+                  incomplete, including, but not limited to, by stating an incorrect “primary” insurer.               
+               </p>
+            </section>
+            <section>
+               <div class="line">
+                  <label>Patient or Other Authorized Signature:</label>
+                  <input type="text" style="width: 26em;"/>
+                  <label>Date:</label>
+                  <input type="text" style="width: 8em;"/>
+               </div>               
+            </section>
+         </div>
+      </h:form>
+   </body>
+</html>

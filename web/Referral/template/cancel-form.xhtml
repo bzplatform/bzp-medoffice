@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <body>
+      <ui:composition>
+         <li class="em48">
+            #{empty var.Referral.form.typicalCancelReasonList._ ? jsf._do(var.Referral.form.typicalCancelReasonList._(jsf.search('ReferralTypicalCancelReason', null, jsf.newMap()))).stay() :  null}
+            <label>Cancel Reason:</label>                                      
+            <h:selectOneMenu value="#{var.Referral.form.temp._}" onchange="$(event.target).next('input').val($(event.target).val()); $(event.target).val('')" style="width:16em; font-size: 1.13em; margin-left: 25em; margin-right: -41em">
+               <f:selectItem itemValue="#{null}" itemLabel=""/>
+               <f:selectItems value="#{var.Referral.form.typicalCancelReasonList._}"
+                              var="item" itemLabel="#{item.reason}" itemValue="#{item.reason}"/>
+            </h:selectOneMenu>
+            <h:inputText value="#{var.Referral.form.referral.cancelReason}" style="width:44em;"/>
+         </li>
+      </ui:composition>
+   </body>
+</html>

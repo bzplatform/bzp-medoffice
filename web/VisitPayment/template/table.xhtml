@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div style="margin-left: 0.5em;">
+            <h:dataTable value="#{paymentList}" var="payment" rendered="#{not empty paymentList}">
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Type"/>
+                  </f:facet>
+                  <h:outputText value="#{payment.paymentType.name}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Method"/>
+                  </f:facet>
+                  <h:outputText value="#{payment.paymentMethod.name}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Amount" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{payment.amount}">
+                     <f:convertNumber maxFractionDigits="2"/>
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Check Number" styleClass="nosort"/>
+                  </f:facet>
+                  <h:outputText value="#{payment.checkNumber}"/>
+               </h:column> 
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Action"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(jsf.removeObj(payment.visit.paymentList, payment)).stay}"
+                                   style="margin: 0; margin-right: 0.5em; font-size: 1em; width: auto;"
+                                   value="Remove">
+                     <f:ajax render="@form" execute="@form"/>
+                  </h:commandButton>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

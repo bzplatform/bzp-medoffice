@@ -1,0 +1,232 @@
+<table>
+   <tr>
+      <th style="width: 20%;">Location</th>
+      <td>
+         <div class="pntl-section" data-section="hpiLocation">
+            <div style="display: inline-block; margin-right: 1em;" data-rendered="values.cc.chestPain">
+               <span data-text-if="retrosternal">
+                  <input type="checkbox" data-name="retrosternal"/>
+                  <label>Retrosternal</label>
+               </span>
+               <span data-text-if="leftSidedChest">
+                  <input type="checkbox" data-name="leftSidedChest"/>
+                  <label>Left sided chest</label>
+               </span>
+               <span data-text-if="diffuse">
+                  <input type="checkbox" data-name="diffuse"/>
+                  <label>Diffuse</label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 12em;"/>
+            </div>
+         </div>
+      </td>
+      <th style="width: 10%;">Duration</th>
+      <td>
+         <div class="pntl-section" data-section="hpiDuration">
+            <input type="text" data-name="duration" style="width: 3em; margin-right: 0.5em;"/>
+            <select data-text-if="duration" data-name="unit" style="width: 5em;">
+               <option value="hours">hours</option>
+               <option value="days">days</option>
+               <option value="weeks">weeks</option>
+               <option value="months">months</option>
+            </select> 
+         </div>
+      </td>
+      <th style="width: 15%;">Severity (1-10)</th>
+      <td>
+         <div class="pntl-section" data-section="hpiSeverity">
+            <input type="text" data-name="severity" style="width: 4em;"/>
+         </div>
+      </td>      
+   </tr>
+   <tr>
+      <th>Quality</th>
+      <td colspan="3">
+         <div class="pntl-section" data-section="hpiQuality">
+            <div style="display: inline-block; margin-right: 1em;" data-rendered="values.cc.chestPain">
+               <span data-text-if="pressureLike">
+                  <input type="checkbox" data-name="pressureLike"/>
+                  <label>Pressure like</label>
+               </span>
+               <span data-text-if="squeezing">
+                  <input type="checkbox" data-name="squeezing"/>
+                  <label>Squeezing</label>
+               </span>
+               <span data-text-if="dull">
+                  <input type="checkbox" data-name="dull"/>
+                  <label>Dull</label>
+               </span>
+               <span data-text-if="sharp">
+                  <input type="checkbox" data-name="sharp"/>
+                  <label>Sharp</label>
+               </span>
+               <span data-text-if="pleuriticType">
+                  <input type="checkbox" data-name="pleuriticType"/>
+                  <label>Pleuritic type</label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 42em;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Timing</th>
+      <td colspan="3">
+         <div class="pntl-section" data-section="hpiTiming">
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 42em;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Context</th>
+      <td colspan="3">
+         <div class="pntl-section" data-section="hpiContext">
+            <div style="display: inline-block; margin-right: 1em;" data-rendered="values.cc.chestPain">
+               <span data-text-if="excertion">
+                  <input type="checkbox" data-name="excertion"/>
+                  <label>Excertion</label>
+               </span>
+               <span data-text-if="inspiration">
+                  <input type="checkbox" data-name="inspiration"/>
+                  <label>Inspiration</label>
+               </span>
+               <span data-text-if="eating">
+                  <input type="checkbox" data-name="eating"/>
+                  <label>Eating</label>
+               </span>
+               <span data-text-if="coldWeather">
+                  <input type="checkbox" data-name="coldWeather"/>
+                  <label>Cold weather</label>
+               </span>
+               <span data-text-if="hotHumidWeather">
+                  <input type="checkbox" data-name="hotHumidWeather"/>
+                  <label>Hot humid weather</label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 42em;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Modifying&nbsp;Factors</th>
+      <td colspan="3">
+         <div class="pntl-section" data-section="hpiModifyingFactors">
+            <div style="display: inline-block; margin-right: 1em;" data-rendered="values.cc.chestPain">
+               <span data-text-if="resting">
+                  <input type="checkbox" data-name="resting"/>
+                  <label>Resting</label>
+               </span>
+               <span data-text-if="nitroglicerine">
+                  <input type="checkbox" data-name="nitroglicerine"/>
+                  <label>Nitroglicerine</label>
+               </span>
+               <span data-text-if="eating">
+                  <input type="checkbox" data-name="eating"/>
+                  <label>Eating</label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 42em;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>AS&amp;S</th>
+      <td colspan="3">
+         <div class="pntl-section" data-section="hpiAssociatedSignsAndSymptoms">
+            <div style="display: inline-block; margin-right: 1em;" data-rendered="values.cc.sob">
+               <span data-text-if="snoringAtNight">
+                  <input type="checkbox" data-name="snoringAtNight"/>
+                  <label>Snoring at night</label>
+               </span>
+               <span data-text-if="fatigue">
+                  <input type="checkbox" data-name="fatigue"/>
+                  <label>Fatigue</label>
+               </span>
+               <span data-text-if="sleepinessDuringTheDay">
+                  <input type="checkbox" data-name="sleepinessDuringTheDay"/>
+                  <label>Sleepiness during the day</label>
+               </span>
+               <span data-text-if="orthopnea">
+                  <input type="checkbox" data-name="orthopnea"/>
+                  <label>Orthopnea</label>
+               </span>
+               <span data-text-if="pnd">
+                  <input type="checkbox" data-name="pnd"/>
+                  <label>PND</label>
+               </span>
+               <span data-text-if="legSwelling">
+                  <input type="checkbox" data-name="legSwelling"/>
+                  <label>Leg swelling</label>
+               </span>
+            </div>
+            <div style="display: inline-block; margin-right: 1em;" data-rendered="values.cc.palpitations">
+               <span data-text-if="sweating">
+                  <input type="checkbox" data-name="sweating"/>
+                  <label>Sweating</label>
+               </span>
+               <span data-text-if="weakness">
+                  <input type="checkbox" data-name="weakness"/>
+                  <label>Weakness</label>
+               </span>
+               <span data-text-if="chestPain">
+                  <input type="checkbox" data-name="chestPain"/>
+                  <label>Chest pain</label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 42em;"/>
+            </div>
+         </div>
+      </td>
+   </tr>
+   <tr>
+      <th>Radiation</th>
+      <td colspan="3">
+         <div class="pntl-section" data-section="hpiRadiation">
+            <div style="display: inline-block; margin-right: 1em;" data-rendered="values.cc.chestPain">
+               <span data-text-if="leftArm">
+                  <input type="checkbox" data-name="leftArm"/>
+                  <label>Left arm</label>
+               </span>
+               <span data-text-if="neck">
+                  <input type="checkbox" data-name="neck"/>
+                  <label>Neck</label>
+               </span>
+               <span data-text-if="throat">
+                  <input type="checkbox" data-name="throat"/>
+                  <label>Throat</label>
+               </span>
+               <span data-text-if="lowerJaw">
+                  <input type="checkbox" data-name="lowerJaw"/>
+                  <label>Lower jaw</label>
+               </span>
+               <span data-text-if="back">
+                  <input type="checkbox" data-name="back"/>
+                  <label>Back</label>
+               </span>
+            </div>
+            <div data-text-if="other">
+               <input type="text" data-name="other" style="width: 42em;"/>
+            </div>
+      </td>
+   </tr>
+    <tr>
+      <td colspan="4">
+         <div class="pntl-section" data-section="hpiFreeFormText">
+            <div data-text-if="other">
+               <textarea data-name="other" style="width: 98%; height: 4em;"/>
+               </textarea>
+            </div>
+      </td>
+   </tr>
+</table>

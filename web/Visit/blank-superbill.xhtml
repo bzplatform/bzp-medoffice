@@ -1,0 +1,497 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>Superbill</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 1em;
+               margin: 1em;
+            }
+
+            .action {
+               display: block !important;
+               text-align: left;
+               margin-left: 3em;
+               margin-top: 1em;
+            }
+         }
+         @media all {
+
+            body {
+               font-family:Arial, sans-serif;
+               margin: 0em;
+               text-align: left;
+               font-size: 0.8em;
+               line-height: 1;
+            }
+            .page {
+               position: relative;
+               margin-left: 3em;              
+               width: 56em;
+               height: 78em;
+               display: block;
+               overflow: hidden;
+               padding:0.1em;
+            }
+
+            h1, h2 {
+               text-align: left;
+            }
+            h1 {
+               font-size: 1.2em;
+            }
+            h2 {
+               font-size: 1em;
+               font-weight: normal;
+            }
+            h3 {
+               margin: 0.1em;
+            }
+            .bold {
+               font-weight: bold;
+            }
+            th {
+               text-align: left;
+               font-weight: normal;
+            }
+            td, th {
+               vertical-align: top;
+            }
+            .border td, .border th {
+               border-bottom: solid black 1px;
+            }
+            hr {
+               color: black;
+               background-color: black;
+               height: 2px;
+               border:0px none;
+            }
+         }
+         @media print {
+            .action {
+               display: none;
+            }
+            .page {
+               margin-top: 1em;
+            }
+            .break {
+               page-break-before:always;
+               height: 0.3em;
+            }
+         }
+      </style>
+      <script type="text/javascript" src="/#{access.application}/script/jquery/jquery-1.9.0.min.js"></script>
+      <script type="text/javascript" src="/#{access.application}/script/printer.js"></script>
+   </head>
+   <body>
+      <h:form prependId="false">
+         <div class="action"><a href="#" id="print-link" onclick="return print('Portrait')">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         <div class="page">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size: 1em;">
+               <tr>
+                  <td valign="top" colspan="2">
+                     <h1 style="margin-bottom: 0; font-size: 1.4em; margin-top: 0;">SL Quality Care D &amp; T Center</h1>
+                     #{var.Visit.blankSuperbill.myOffice._(biz.myOffice(myOfficeCode))}
+                     <h2 style="margin-top: 0.3em; margin-bottom: 0.1em;">#{var.Visit.blankSuperbill.myOffice._.address}, #{var.Visit.blankSuperbill.myOffice._.city}, #{var.Visit.blankSuperbill.myOffice._.state} #{var.Visit.blankSuperbill.myOffice._.zipCode}</h2>
+                     <span style="font-weight: bold; font-size: 0.9em;">#{biz.specialty(var.Visit.blankSuperbill.visit.specialtyID).name}</span>
+                  </td>
+                  <td>
+                     <table style="font-size: 0.9em;">
+                        <tr>
+                           <td>
+                              <label>Provider:</label>
+                              <span class="bold">#{var.Visit.blankSuperbill.visit.provider.firstName} #{var.Visit.blankSuperbill.visit.provider.lastName}, #{var.Visit.blankSuperbill.visit.provider.suffix}</span>
+                              <label>Date of Service:&nbsp;</label>
+                              <h:outputText value="#{var.Visit.blankSuperbill.visit.date}" class="bold">
+                                 <f:convertDateTime pattern="MM/dd/yyyy"/>
+                              </h:outputText>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <label>Patient:</label>
+                              <span class="bold">#{var.Visit.blankSuperbill.visit.patient.lastName}, #{var.Visit.blankSuperbill.visit.patient.firstName}</span>
+                              <label>MRN:</label>
+                              <span class="bold">#{var.Visit.blankSuperbill.visit.patient.id}</span>
+                              <label>DOB:</label>
+                              <span class="bold"><h:outputText value="#{var.Visit.blankSuperbill.visit.patient.birthDate}" class="bold">
+                                    <f:convertDateTime pattern="MM/dd/yyyy"/>
+                                 </h:outputText></span>
+                              <label>Gender:</label>
+                              <span class="bold">#{var.Visit.blankSuperbill.visit.patient.sex}</span>
+                           </td>
+                        </tr>
+                        <tr>
+                           <td>
+                              <label>Insurance(s):</label>
+                              <span class="bold">
+                                 <ui:repeat value="#{var.Visit.blankSuperbill.visit.patient.insuranceList}" var="patientInsurance">
+                                    <nobr>#{patientInsurance.insurance.name} <span style="font-weight: normal;">ID:&nbsp;#{patientInsurance.policyID}&nbsp;&nbsp;&nbsp;</span></nobr>
+                                 </ui:repeat>
+                              </span>
+                           </td>
+                        </tr>
+                     </table>
+                  </td>
+               </tr>
+            </table>
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-top: 0.5em; font-size: 0.8em;">
+               <tr>               
+                  <td width="50%">
+                     <ui:fragment>
+                        <table width="100%" cellpadding="2px" cellspacing="0" class="border" style="font-size: 0.9em; border-collapse: collapse; border: solid black 1px;">
+                           <tr>
+                              <th class="bold">Payments Type</th><th class="bold">Method</th><th class="bold">Check Number</th><th class="bold">Amount</th>
+                           </tr>
+                           <ui:repeat value="#{var.Visit.blankSuperbill.visit.paymentList}" var="payment">
+                              <tr>
+                                 <td>#{payment.paymentType.name}</td>
+                                 <td>#{payment.paymentMethod.name}</td>
+                                 <td>#{payment.checkNumber}</td>
+                                 <td><h:outputText value="#{payment.amount}">
+                                       <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText></td>
+                              </tr>
+                           </ui:repeat>
+                           <tr>
+                              <th class="bold" style="text-align: right;" colspan="3">Amount Paid:</th>
+                              <td><h:outputText value="#{var.Visit.blankSuperbill.visit.amountPaid}">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                 </h:outputText></td>
+                           </tr>
+                        </table>
+                     </ui:fragment>
+                  </td>
+                  <td width="50%" style="font-size:0.9em; padding-left: 0.5em; font-weight: bold;">
+                     <table border="0" cellpadding="2px" cellspacing="2px">
+                        <tr>
+                           <th>Date of Prescription:</th>
+                           <td class="bold"><h:outputText value="#{var.Visit.blankSuperbill.visit.prescriptionDate}" class="bold">
+                                 <f:convertDateTime pattern="MM/dd/yyyy"/>
+                              </h:outputText></td>
+                           <th>Prior Authorization #:</th>
+                           <td class="bold">#{var.Visit.blankSuperbill.visit.authorizationNumber}</td>
+                        </tr>
+                        <tr>
+                           <th>Referring Provider:</th>
+                           <td colspan="3" class="bold">#{biz.referringProvider(var.Visit.blankSuperbill.visit.referringDoctorID).firstName} #{biz.referringProvider(var.Visit.blankSuperbill.visit.referringDoctorID).lastName}</td>
+                        </tr>
+                     </table>
+                  </td>
+               </tr>
+            </table>
+            #{jsf._do(var.Visit.blankSuperbill.put('profile', biz.mongoEjb.specialtyProfile(var.Visit.blankSuperbill.visit.specialtyID))).stay()}
+            <div style="-moz-column-count:#{var.Visit.blankSuperbill.profile.defaultColumns}; #{var.Visit.blankSuperbill.profile.adaptCss}">
+               <ui:repeat value="#{var.Visit.blankSuperbill.profile.procedureList}" var="procedure">
+                  <ui:fragment rendered="#{procedure.section}">
+                     <ui:repeat value="#{procedure}" var="procedureSection">
+                        <div style="border: solid 1px; display: inline-block; margin-top: -1px; width: 100%; padding: 0.2em; overflow: hidden;">
+                           <ui:fragment rendered="#{! empty procedureSection.name}">
+                              <h3 style="font-size: 0.7em;">#{procedureSection.name}</h3>
+                           </ui:fragment>
+                           <ui:fragment>
+                              <ui:repeat value="#{procedureSection.procedureList}" var="procedure">
+                                 <ui:fragment rendered="#{procedure.text}">
+                                    <div style="border: none; display: inline;">
+                                       <ui:fragment rendered="#{procedure.brBefore}">
+                                          <br/>
+                                       </ui:fragment>
+                                       <label style="font-size: 0.7em; display: inline-block;">#{procedure.line}</label>
+                                       <ui:fragment rendered="#{procedure.brAfter}">
+                                          <br/>
+                                       </ui:fragment>
+                                    </div>
+                                 </ui:fragment>
+                                 <ui:fragment rendered="#{! procedure.text}">
+                                    <nobr>
+                                       <h:outputText style="font-family: Wingdings;" value=""/>
+                                       <label style="font-size: 0.7em; display: inline-block; font-weight: bold;" title="#{procedure.cpt} #{procedure.description}"><b>#{procedure.cpt}</b> #{procedureSection.hideDescription ? '' : procedure.description}</label>
+                                    </nobr>
+                                    <ui:repeat value="#{procedure.diagnosisList}" var="diagnosis">
+                                       <ui:fragment rendered="#{diagnosis.section}">
+                                          <ui:repeat value="#{diagnosis}" var="diagnosisSection">
+                                             <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                                                <ui:fragment rendered="#{diagnosis.text}">
+                                                   <ui:fragment rendered="#{diagnosis.brBefore}">
+                                                      <br/>
+                                                   </ui:fragment>
+                                                   <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                                                   <ui:fragment rendered="#{diagnosis.brAfter}">
+                                                      <br/>
+                                                   </ui:fragment>
+                                                </ui:fragment>
+                                                <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                                                   <nobr>
+                                                      <h:outputText style="font-family: Wingdings;margin: 0 0 0 1.4em;" value=""/>
+                                                      <label style="font-size: 0.7em; display: inline-block; font-weight: bold;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                                                   </nobr>
+                                                </ui:fragment>
+                                             </ui:repeat>
+                                          </ui:repeat>
+                                       </ui:fragment>
+                                       <ui:fragment rendered="#{diagnosis.text}">
+                                          <ui:fragment rendered="#{diagnosis.brBefore}">
+                                             <br/>
+                                          </ui:fragment>
+                                          <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                                          <ui:fragment rendered="#{diagnosis.brAfter}">
+                                             <br/>
+                                          </ui:fragment>
+                                       </ui:fragment>
+                                       <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                                          <nobr>
+                                             <h:outputText style="font-family: Wingdings;margin: 0 0 0 1.4em;" value=""/>
+                                             <label style="font-size: 0.7em; display: inline-block; font-weight: bold;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                                          </nobr>
+                                       </ui:fragment>
+                                    </ui:repeat>
+                                 </ui:fragment>
+                              </ui:repeat>
+                           </ui:fragment>
+                           <ui:repeat value="#{procedureSection.diagnosisList}" var="diagnosis">
+                              <ui:fragment rendered="#{diagnosis.section}">
+                                 <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                                    <ui:fragment rendered="#{diagnosis.text}">
+                                       <ui:fragment rendered="#{diagnosis.brBefore}">
+                                          <br/>
+                                       </ui:fragment>
+                                       <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                                       <ui:fragment rendered="#{diagnosis.brAfter}">
+                                          <br/>
+                                       </ui:fragment>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                                       <nobr>
+                                          <h:outputText style="font-family: Wingdings;margin: 0 0 0 1.4em;" value=""/>
+                                          <label style="font-size: 0.7em; display: inline-block; font-weight: bold;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                                       </nobr>
+                                    </ui:fragment>
+                                 </ui:repeat>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{diagnosis.text}">
+                                 <ui:fragment rendered="#{diagnosis.brBefore}">
+                                    <br/>
+                                 </ui:fragment>
+                                 <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                                 <ui:fragment rendered="#{diagnosis.brAfter}">
+                                    <br/>
+                                 </ui:fragment>
+                              </ui:fragment>
+                              <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                                 <nobr>
+                                    <h:outputText style="font-family: Wingdings;margin: 0 0 0 1.4em;" value=""/>
+                                    <label style="font-size: 0.7em; display: inline-block; font-weight: bold;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                                 </nobr>                                 
+                              </ui:fragment>
+                           </ui:repeat>
+                        </div>
+                     </ui:repeat>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{procedure.text}">
+                     <div style="border: none; display: inline;">
+                        <ui:fragment rendered="#{procedure.brBefore}">
+                           <br/>
+                        </ui:fragment>
+                        <label style="font-size: 0.7em; display: inline-block;">#{procedure.line}</label>
+                        <ui:fragment rendered="#{procedure.brAfter}">
+                           <br/>
+                        </ui:fragment>
+                     </div>
+                  </ui:fragment>
+                  <ui:fragment rendered="#{! procedure.section and ! procedure.text}">
+                     <div style="border: solid 1px; display: inline-block; margin-top: -1px; width: 100%; padding: 0.2em; overflow: hidden;">
+                        <nobr>
+                           <h:outputText style="font-family: Wingdings;" value=""/>
+                           <label style="font-size: 0.7em; display: inline-block; font-weight: bold;" title="#{procedure.cpt} #{procedure.description}"><b>#{procedure.cpt}</b> #{procedure.description}</label>
+                        </nobr>
+                        <ui:repeat value="#{procedure.diagnosisList}" var="diagnosis">
+                           <ui:fragment rendered="#{diagnosis.section}">
+                              <ui:repeat value="#{diagnosis}" var="diagnosisSection">
+                                 <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                                    <ui:fragment rendered="#{diagnosis.text}">
+                                       <ui:fragment rendered="#{diagnosis.brBefore}">
+                                          <br/>
+                                       </ui:fragment>
+                                       <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                                       <ui:fragment rendered="#{diagnosis.brAfter}">
+                                          <br/>
+                                       </ui:fragment>
+                                    </ui:fragment>
+                                    <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                                       <nobr>
+                                          <h:outputText style="font-family: Wingdings;margin: 0 0 0 1.4em;" value=""/>
+                                          <label style="font-size: 0.7em; display: inline-block; font-weight: bold;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                                       </nobr>
+                                    </ui:fragment>
+                                 </ui:repeat>
+                              </ui:repeat>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{diagnosis.text}">
+                              <ui:fragment rendered="#{diagnosis.brBefore}">
+                                 <br/>
+                              </ui:fragment>
+                              <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                              <ui:fragment rendered="#{diagnosis.brAfter}">
+                                 <br/>
+                              </ui:fragment>
+                           </ui:fragment>
+                           <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                              <nobr>
+                                 <h:outputText style="font-family: Wingdings;margin: 0 0 0 1.4em;" value=""/>
+                                 <label style="font-size: 0.7em; display: inline-block; font-weight: bold;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                              </nobr>
+                           </ui:fragment>
+                        </ui:repeat>
+                     </div>
+                  </ui:fragment>
+               </ui:repeat>         
+            </div>            
+            <div style="position: absolute; top: 64em; left: 0em; font-size: 1.2em;">Provider Signature _____________________</div>
+            <ui:fragment rendered="#{! empty var.Visit.blankSuperbill.profile.diagnosisList}">
+               <div style="position: absolute; top: 64em; left: 41em; font-size: 1.2em; font-style: italic;">Page 1 of 2</div>
+            </ui:fragment>
+         </div>
+         <ui:fragment rendered="#{! empty var.Visit.blankSuperbill.profile.diagnosisList}">
+            <div class="break"/>
+            <div class="page">
+               <table width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size: 1em;">
+                  <tr>
+                     <td valign="top" colspan="2">
+                        <h1 style="margin-bottom: 0; font-size: 1.4em; margin-top: 0;">SL Quality Care D &amp; T Center</h1>
+                        <h2 style="margin-top: 0.3em; margin-bottom: 0.1em;">#{var.Visit.blankSuperbill.myOffice._.address}, #{var.Visit.blankSuperbill.myOffice._.city}, #{var.Visit.blankSuperbill.myOffice._.state} #{var.Visit.blankSuperbill.myOffice._.zipCode}</h2>
+                        <span style="font-weight: bold; font-size: 0.9em;">#{biz.specialty(var.Visit.blankSuperbill.visit.specialtyID).name}</span>
+                     </td>
+                     <td>
+                        <table style="font-size: 0.9em;">
+                           <tr>
+                              <td>
+                                 <label>Provider:</label>
+                                 <span class="bold">#{var.Visit.blankSuperbill.visit.provider.firstName} #{var.Visit.blankSuperbill.visit.provider.lastName}, #{var.Visit.blankSuperbill.visit.provider.suffix}</span>
+                                 <label>Date of Service:&nbsp;</label>
+                                 <h:outputText value="#{var.Visit.blankSuperbill.visit.date}" class="bold">
+                                    <f:convertDateTime pattern="MM/dd/yyyy"/>
+                                 </h:outputText>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>
+                                 <label>Patient:</label>
+                                 <span class="bold">#{var.Visit.blankSuperbill.visit.patient.lastName}, #{var.Visit.blankSuperbill.visit.patient.firstName}</span>
+                                 <label>MRN:</label>
+                                 <span class="bold">#{var.Visit.blankSuperbill.visit.patient.id}</span>
+                                 <label>DOB:</label>
+                                 <span class="bold"><h:outputText value="#{var.Visit.blankSuperbill.visit.patient.birthDate}" class="bold">
+                                       <f:convertDateTime pattern="MM/dd/yyyy"/>
+                                    </h:outputText></span>
+                                 <label>Gender:</label>
+                                 <span class="bold">#{var.Visit.blankSuperbill.visit.patient.sex}</span>
+                              </td>
+                           </tr>
+                           <tr>
+                              <td>
+                                 <label>Insurance(s):</label>
+                                 <span class="bold">
+                                    <ui:repeat value="#{var.Visit.blankSuperbill.visit.patient.insuranceList}" var="patientInsurance">
+                                       <nobr>#{patientInsurance.insurance.name} <span style="font-weight: normal;">ID:&nbsp;#{patientInsurance.policyID}&nbsp;&nbsp;&nbsp;</span></nobr>
+                                    </ui:repeat>
+                                 </span>
+                              </td>
+                           </tr>
+                        </table>
+                     </td>
+                  </tr>
+               </table>
+               <table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-top: 0.5em; font-size: 0.8em;">
+                  <tr>               
+                     <td width="50%">
+                        <ui:fragment>
+                           <table width="100%" cellpadding="2px" cellspacing="0" class="border" style="font-size: 0.9em; border-collapse: collapse; border: solid black 1px;">
+                              <tr>
+                                 <th class="bold">Payments Type</th><th class="bold">Method</th><th class="bold">Check Number</th><th class="bold">Amount</th>
+                              </tr>
+                              <ui:repeat value="#{var.Visit.blankSuperbill.visit.paymentList}" var="payment">
+                                 <tr>
+                                    <td>#{payment.paymentType.name}</td>
+                                    <td>#{payment.paymentMethod.name}</td>
+                                    <td>#{payment.checkNumber}</td>
+                                    <td><h:outputText value="#{payment.amount}">
+                                          <f:convertNumber currencySymbol="$" type="currency"/>
+                                       </h:outputText></td>
+                                 </tr>
+                              </ui:repeat>
+                              <tr>
+                                 <th class="bold" style="text-align: right;" colspan="3">Amount Paid:</th>
+                                 <td><h:outputText value="#{var.Visit.blankSuperbill.visit.amountPaid}">
+                                       <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText></td>
+                              </tr>
+                           </table>
+                        </ui:fragment>
+                     </td>
+                     <td width="50%" style="font-size:0.9em; padding-left: 0.5em;">
+                        <table border="0" cellpadding="2px" cellspacing="2px">
+                           <tr>
+                              <th>Date of Prescription:</th>
+                              <td class="bold"><h:outputText value="#{var.Visit.blankSuperbill.visit.prescriptionDate}" class="bold">
+                                    <f:convertDateTime pattern="MM/dd/yyyy"/>
+                                 </h:outputText></td>
+                              <th>Prior Authorization #:</th>
+                              <td class="bold">#{var.Visit.blankSuperbill.visit.authorizationNumber}</td>
+                           </tr>
+                           <tr>
+                              <th>Referring Provider:</th>
+                              <td colspan="3" class="bold">#{biz.referringProvider(var.Visit.blankSuperbill.visit.referringDoctorID).firstName} #{biz.referringProvider(var.Visit.blankSuperbill.visit.referringDoctorID).lastName}</td>
+                           </tr>
+                        </table>
+                     </td>
+                  </tr>
+               </table>
+               <div style="-moz-column-count:#{var.Visit.blankSuperbill.profile.defaultColumns}; padding: 0; margin-right: 0.8em; margin-top: 0.5em; font-size:1em; line-height:90%;">
+                  <ui:repeat value="#{var.Visit.blankSuperbill.profile.diagnosisList}" var="diagnosis">
+                     <ui:fragment rendered="#{diagnosis.section}">
+                        <ui:repeat value="#{diagnosis}" var="diagnosisSection">
+                           <div style="border: solid 1px; display: inline-block; margin-top: -1px; width: 100%; padding: 0.3em; overflow: hidden;">
+                              <ui:fragment rendered="#{! empty diagnosisSection.name}">
+                                 <h3 style="font-size: 0.7em;">#{diagnosisSection.name}</h3>
+                              </ui:fragment>
+                              <ui:repeat value="#{diagnosisSection.diagnosisList}" var="diagnosis">
+                                 <nobr>
+                                    <h:outputText style="font-family: Wingdings;margin: 0 0 0 1.4em;" value=""/>
+                                    <label style="font-size: 0.7em; display: inline-block; font-weight: bold;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                                 </nobr>
+                              </ui:repeat>
+                           </div>
+                        </ui:repeat>
+                     </ui:fragment>
+                     <ui:fragment rendered="#{diagnosis.text}">
+                        <ui:fragment rendered="#{diagnosis.brBefore}">
+                           <br/>
+                        </ui:fragment>
+                        <label style="font-size: 0.7em; display: inline-block;">#{diagnosis.line}</label>
+                        <ui:fragment rendered="#{diagnosis.brAfter}">
+                           <br/>
+                        </ui:fragment>
+                     </ui:fragment>
+                     <ui:fragment rendered="#{! diagnosis.section and ! diagnosis.text}">
+                        <div style="display: inline-block; margin-top: -1px; width: 100%; padding: 0 0.3em; overflow: hidden;">
+                           <nobr>
+                              <h:outputText style="font-family: Wingdings;" value=""/>
+                              <label style="font-size: 0.7em; display: inline-block; font-weight: bold;" title="#{diagnosis.icd} #{diagnosis.description}"><i>#{diagnosis.icd}</i>&nbsp;&nbsp;#{diagnosis.description}</label>
+                           </nobr>
+                        </div>
+                     </ui:fragment>
+                  </ui:repeat>
+               </div>
+               <div style="position: absolute; top: 64em; left: 0em; font-size: 1.2em;">Provider Signature _____________________</div>
+               <div style="position: absolute; top: 64em; left: 41em; font-size: 1.2em; font-style: italic;">Page 2 of 2</div>
+            </div>
+         </ui:fragment>
+      </h:form>
+   </body>
+</html>

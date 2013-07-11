@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{immunizationList}" var="immunization" rendered="#{not empty immunizationList}">
+               <h:column rendered="#{tableConfig.created._}">
+                  <f:facet name="header">
+                     <h:outputText value="Created"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.created}" style="white-space: nowrap;">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+                  <br/>
+                  <h:outputText value="by #{access.getUserName(immunization.userId)}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.updated._}">
+                  <f:facet name="header">
+                     <h:outputText value="Updated" style="white-space: nowrap;"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.lastUpdated}" style="white-space: nowrap;">
+                     <f:convertDateTime pattern="MM/dd/yy"/>
+                  </h:outputText>
+                  <br/>
+                  <h:outputText value="by #{access.getUserName(immunization.lastUpdatedUserId)}" rendered="#{immunization.lastUpdatedUserId != null}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Date"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.administrationDate}">
+                     <f:convertDateTime pattern="MM/dd/yyyy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{tableConfig.administrationTime._}">
+                  <f:facet name="header">
+                     <h:outputText value="Time"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.administrationTime}">
+                     <f:convertDateTime pattern="hh:mm a"/>
+                  </h:outputText>
+               </h:column>
+               <h:column rendered="#{tableConfig.cvxCode._}">
+                  <f:facet name="header">
+                     <h:outputText value="Cvx&nbsp;Code"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.cvxCode}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Immunization Type"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.immunizationType}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.dose._}">
+                  <f:facet name="header">
+                     <h:outputText value="Dose"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.dose}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.route._}">
+                  <f:facet name="header">
+                     <h:outputText value="Route"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.route}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.site._}">
+                  <f:facet name="header">
+                     <h:outputText value="Site"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.site}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.reaction._}">
+                  <f:facet name="header">
+                     <h:outputText value="Reaction"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.reaction}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.manufacturer._}">
+                  <f:facet name="header">
+                     <h:outputText value="Manufacturer"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.manufacturer}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.lotNumber._}">
+                  <f:facet name="header">
+                     <h:outputText value="Lot&nbsp;Number"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.lotNumber}"/>
+               </h:column>
+               <h:column rendered="#{tableConfig.expirationDate._}">
+                  <f:facet name="header">
+                     <h:outputText value="Expiration&nbsp;Date"/>
+                  </f:facet>
+                  <h:outputText value="#{immunization.expirationDate}">
+                     <f:convertDateTime pattern="MM/dd/yyyy"/>
+                  </h:outputText>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Action"/>
+                  </f:facet>
+                  <h:commandButton action="#{jsf._do(var.PatientImmunization.form.patientImmunization._(immunization))._do(var.PatientImmunization.form.cvxStr._(immunization.immunizationType))._to('PatientImmunization/edit').go}"
+                                   styleClass="intable-action"
+                                   value="Edit..." style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"/>                  
+                  <h:commandButton onclick="if(confirm('Remove #{immunization.immunizationType}?')) return true; else return false;" action="#{jsf._delete(immunization).stay}" style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;" value="Remove">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

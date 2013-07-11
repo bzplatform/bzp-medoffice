@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="one scrollbar">
+            <div class="table-holder">
+                  <h:dataTable value="#{diagnosisList}" var="diagnosis" rendered="#{not empty diagnosisList}">
+                     <h:column>
+                        <f:facet name="header">
+                           <h:outputText value="Code"/>
+                        </f:facet>
+                        <h:outputText value="#{diagnosis.code}"/>
+                     </h:column>
+                     <h:column>
+                        <f:facet name="header">
+                           <h:outputText value="Description"/>
+                        </f:facet>
+                        <h:outputText value="#{diagnosis.description}"/>
+                     </h:column>
+                     <h:column>
+                        <f:facet name="header">
+                           <h:outputText value="Action"/>
+                        </f:facet>
+                        <h:commandButton style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                           action="#{jsf._do(parentDiagnosisList.contains(biz.mysqlToMssqlBridge(diagnosis)) ? null : jsf._do(parentDiagnosisList.add(biz.mysqlToMssqlBridge(diagnosis))).
+                                                 _do(diagnosisList.clear()).
+                                                 _do(diagnosisSearch.clear()).
+                                                 _save(parent)).stay}" value="Add" rendered="#{addAction}"/>
+                        <h:commandButton style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
+                                         action="#{jsf._do(jsf.removeObj(diagnosisList, diagnosis))._save(parent).stay}" value="Remove" rendered="#{deleteAction}"/>
+                     </h:column>
+                  </h:dataTable>
+            </div>
+         </div>
+      </ui:composition>
+   </body>
+</html>

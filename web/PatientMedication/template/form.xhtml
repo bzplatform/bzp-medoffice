@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+   <body>
+      <ui:composition>
+         <li class="em48">            
+            <h:panelGroup styleClass="errors" rendered="#{var.PatientMedication.form.patientMedicationValidationMap._ != null and var.PatientMedication.form.patientMedicationValidationMap._.drug}">
+               <b>Drug</b> is required
+            </h:panelGroup>
+            <h:panelGroup styleClass="errors" rendered="#{var.PatientMedication.form.patientMedicationValidationMap._ != null and var.PatientMedication.form.patientMedicationValidationMap._.duplicate}">
+               This Medication already assigned to Patient
+            </h:panelGroup>
+            <label>Drug:</label>                        
+            <h:inputText value="#{var.PatientMedication.form.drugStr._}" styleClass="autocomplete-drug" title="Type three letters to find Drug"/>
+         </li>
+         <li class="em28"> 
+            <label>Prescriber:</label>            
+            <h:inputText value="#{var.PatientMedication.form.prescriberStr._}" styleClass="autocomplete-referring-provider" title="Type three letters to find Prescriber"/>
+         </li>
+         <li class="em8">
+            <h:message for="dispenseQty" errorClass="errors"/>
+            <label>Dispense Qty:</label>
+            <h:inputText id="dispenseQty" value="#{var.PatientMedication.form.patientMedication._.dispenseQty}">
+               <f:convertNumber maxFractionDigits="0"/>
+            </h:inputText>
+         </li>
+         <li class="em6">
+            <h:message for="days" errorClass="errors"/>
+            <label>Days:</label>
+            <h:inputText id="days" value="#{var.PatientMedication.form.patientMedication._.days}">
+               <f:convertNumber maxFractionDigits="0"/>
+            </h:inputText>
+         </li>
+         <li class="em6">
+            <h:message for="refills" errorClass="errors"/>
+            <label>Refills:</label>
+            <h:inputText id="refills" value="#{var.PatientMedication.form.patientMedication._.refills}" style="width: 5.5em;">
+               <f:convertNumber maxFractionDigits="0"/>
+            </h:inputText>
+         </li>
+         <li class="em15"> 
+            <label>Primary Dx:</label>            
+            <h:selectOneMenu value="#{var.PatientMedication.form.patientMedication._.primaryDiagnosisCode}" rendered="#{var.PatientMedication.form.patientMedication._.status == 'NEW'}">
+               <f:selectItem noSelectionOption="true" itemLabel="NONE"/>
+               <f:selectItems value="#{var.PatientMedication.form.patientMedication._.visit != null ? var.PatientMedication.form.patientMedication._.visit.diagnosisList :  var.PatientMedication.form.patientMedication._.patient.activeDiagnosisList}" var="diagnosis" itemLabel="#{diagnosis.code}&nbsp;&nbsp;#{diagnosis.description}" itemValue="#{diagnosis.code}"/>
+            </h:selectOneMenu>   
+            <h:inputText value="#{var.PatientMedication.form.patientMedication._.dose}" disabled="true" rendered="#{var.PatientMedication.form.patientMedication._.status != 'NEW'}"/>
+         </li>
+         <li class="em4">
+            <h:message for="dose" errorClass="errors"/>
+            <label>Dose:</label>
+            <h:inputText id="dose" value="#{var.PatientMedication.form.patientMedication._.dose}">
+               <f:convertNumber maxFractionDigits="2"/>
+            </h:inputText>
+         </li>
+         <li class="em7"> 
+            #{var.PatientMedication.form.doseUnitList._ == null ? jsf._do(var.PatientMedication.form.doseUnitList._(jsf.hintedSearch('DrugDoseUnit', null, var.PatientMedication.form.doseUnitList.search, '_MEDBASE'))).stay()  : null}          
+            <label>Unit:</label>            
+            <h:selectOneMenu value="#{var.PatientMedication.form.patientMedication._.doseUnit}">
+               <f:selectItem noSelectionOption="true" itemLabel="NONE"/>
+               <f:selectItems value="#{var.PatientMedication.form.doseUnitList._}" var="unit" itemLabel="#{unit.name}" itemValue="#{unit.name}"/>
+            </h:selectOneMenu>            
+         </li>
+         <li class="em12"> 
+            #{var.PatientMedication.form.routeList._ == null ? jsf._do(var.PatientMedication.form.routeList._(jsf.hintedSearch('DrugRoute', null, var.PatientMedication.form.routeList.search, '_MEDBASE'))).stay()  : null}          
+            <label>Route:</label>            
+            <h:selectOneMenu value="#{var.PatientMedication.form.patientMedication._.route}">
+               <f:selectItem noSelectionOption="true" itemLabel="NONE"/>
+               <f:selectItems value="#{var.PatientMedication.form.routeList._}" var="route" itemLabel="#{route.description}" itemValue="#{route.description}"/>
+            </h:selectOneMenu>            
+         </li>
+         <li class="em11"> 
+            #{var.PatientMedication.form.frequencyList._ == null ? jsf._do(var.PatientMedication.form.frequencyList._(jsf.hintedSearch('DrugFrequency', null, var.PatientMedication.form.frequencyList.search, '_MEDBASE'))).stay()  : null}          
+            <label>Frequency</label>            
+            <h:selectOneMenu value="#{var.PatientMedication.form.patientMedication._.frequency}" style="">
+               <f:selectItem noSelectionOption="true" itemLabel="NONE"/>
+               <f:selectItems value="#{var.PatientMedication.form.frequencyList._}" var="frequency" itemLabel="#{frequency.description}" itemValue="#{frequency.description}"/>
+            </h:selectOneMenu>            
+         </li>
+         <li class="em9">
+            <h:message for="prescribing" errorClass="errors"/>
+            <label>Rx Date:</label>
+            <h:inputText id="prescribing" value="#{var.PatientMedication.form.patientMedication._.prescribingDate}" styleClass="mask-date">
+               <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+            </h:inputText>
+         </li>
+         <li class="em10">
+            <h:message for="start" errorClass="errors"/>
+            <label>Start Date:</label>
+            <h:inputText id="start" value="#{var.PatientMedication.form.patientMedication._.startDate}" styleClass="mask-date">
+               <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+            </h:inputText>
+         </li>
+         <li class="em10">
+            <h:message for="continued" errorClass="errors"/>
+            <label>Continue Date:</label>
+            <ui:fragment rendered="#{var.PatientMedication.form.patientMedication._.status == 'CONTINUED'}">
+               <h:inputText id="continued" value="#{var.PatientMedication.form.patientMedication._.statusDate}" styleClass="mask-date">
+                  <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+               </h:inputText>
+            </ui:fragment>
+            <h:inputText value="#{null}" disabled="true" rendered="#{var.PatientMedication.form.patientMedication._.status != 'CONTINUED'}"/>
+         </li>
+         <li class="em10">
+            <h:message for="modified" errorClass="errors"/>
+            <label>Modify Date:</label>
+            <ui:fragment rendered="#{var.PatientMedication.form.patientMedication._.status == 'MODIFIED'}">
+               <h:inputText id="modified" value="#{var.PatientMedication.form.patientMedication._.statusDate}" styleClass="mask-date">
+                  <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+               </h:inputText>
+            </ui:fragment>
+            <h:inputText value="#{null}" disabled="true" rendered="#{var.PatientMedication.form.patientMedication._.status != 'MODIFIED'}"/>
+         </li>
+         <li class="em10">
+            <h:message for="discontinued" errorClass="errors"/>
+            <label>Discontinue Date:</label>
+            <ui:fragment rendered="#{var.PatientMedication.form.patientMedication._.status == 'DISCONTINUED'}">
+               <h:inputText id="discontinued" value="#{var.PatientMedication.form.patientMedication._.statusDate}" styleClass="mask-date">
+                  <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+               </h:inputText>
+            </ui:fragment>
+            <h:inputText value="#{null}" disabled="true" rendered="#{var.PatientMedication.form.patientMedication._.status != 'DISCONTINUED'}"/>
+         </li>
+         <li class="em9">
+            <h:message for="expiration" errorClass="errors"/>
+            <label>Expiration Date:</label>
+            <h:inputText id="expiration" value="#{var.PatientMedication.form.patientMedication._.expirationDate}" styleClass="mask-date">
+               <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
+            </h:inputText>
+         </li>
+         <li class="em10">
+            <label>Lot Number:</label>
+            <h:inputText value="#{var.PatientMedication.form.patientMedication._.lotNumber}"/>
+         </li>
+         <li class="em30">
+            <label>Note:</label>
+            <h:inputText value="#{var.PatientMedication.form.patientMedication._.lotNumber}" style="width: 28.5em;"/>
+         </li>
+      </ui:composition>
+   </body>
+</html>

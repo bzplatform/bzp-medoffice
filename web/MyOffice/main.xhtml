@@ -1,0 +1,1025 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition template="../template/base.xhtml">
+
+         <ui:define name="title">
+            Medical Care: Office
+         </ui:define>
+
+         <ui:define name="navigation">
+            <ui:include src="../template/tab-navigation.xhtml">
+               <ui:param name="page" value="MyOffice/main"/>
+            </ui:include>
+         </ui:define>
+
+         <ui:define name="form">
+            <script type="text/javascript">
+               dojo.require('dojox.fx.scroll');
+               dojo.require('dojox.fx');
+
+               function reclaimAttentionOn(id){
+                  dojox.fx.smoothScroll({node:dojo.byId(id),win:window,duration:400}).play();
+                  dojox.fx.highlight({node:dojo.byId(id),duration:1600}).play();
+               }
+            </script>
+            <ui:fragment rendered="#{jsf.global('myOffice', 'scroll')['patientHomecareClaim'] != null}">
+               <script type="text/javascript">
+                  dojo.addOnLoad(function(){
+                     reclaimAttentionOn('#{jsf.global('myOffice', 'scroll')['patientHomecareClaim']}');
+                  });
+                  #{jsf._do(jsf.global('myOffice', 'scroll').put('patientHomecareClaim', null)).stay()}
+               </script>
+            </ui:fragment>                    
+            <div class="float-left column" jsfc="h:panelGroup">
+               <ui:include src="template/search.xhtml"/>
+            </div>
+
+            <div class="float-left column" style="clear:both;">
+               <ui:include src="template/options.xhtml"/>
+            </div>
+
+            <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'Patient Transportation'}">
+
+               <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice', 'var')['date'] != null}">
+
+                  <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice', 'view')['PatientTransportationAppointment:UNASSIGNED/list']}">
+                     #{jsf.global('myOffice', 'event')['refresh'] ?
+                       jsf._do(sessionScope.put('unassignedTransportationAppointmentList', transportation.unassignedAppointmentList(jsf.global('myOffice', 'var')['date']))).stay() : ''}
+                     <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty unassignedTransportationAppointmentList}">
+                        <h3 class="table-label">Eligible
+                           <h:commandButton action="#{jsf._do(transportation.selectAll(jsf.global('myOffice', 'PatientTransportationAppointment:UNASSIGNED:selected'), unassignedTransportationAppointmentList)).stay}"
+                                            style="font-size: 0.9em; width: 7em; margin-right: 0.5em; margin-left: 0.5em" value="Select All">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandButton>
+                           <h:commandButton action="#{jsf._do(biz.selectFavorites(jsf.global('myOffice', 'PatientTransportationAppointment:UNASSIGNED:selected'), unassignedTransportationAppointmentList, jsf.global('myOffice', 'var')['transportationCompany'])).stay}"
+                                            style="font-size: 0.9em; width: 10em; margin-right: 0.5em;" value="Select Favorites">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandButton>
+                           <h:commandButton action="#{jsf._do(jsf.global('myOffice', 'PatientTransportationAppointment:UNASSIGNED:selected').clear()).stay}"
+                                            style="font-size: 0.9em; width: 8em; margin-right: 0.5em" value="Unselect All">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandButton>
+                           <h:commandButton action="#{jsf._do(transportation.assign(jsf.global('myOffice', 'PatientTransportationAppointment:UNASSIGNED:selected'),
+                                                      unassignedTransportationAppointmentList, jsf.global('myOffice', 'var')['transportationCompany'], user.id, myOfficeCode)).
+                                                      _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
+                                            style="font-size: 0.9em; width: 14em; margin-right: 0.5em" value="Assign for Transportation">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandButton>
+                           <label class="vlabel" style="margin-left: 1em; font-size: 1em;">Type:</label>
+                           #{var.MyOffice.eligibleTransportationType._ == null ? var.MyOffice.eligibleTransportationType._('ALL') : null}
+                           <h:selectOneMenu value="#{var.MyOffice.eligibleTransportationType._}" title="Status" styleClass="w8">
+                              <f:selectItem itemValue="ALL" itemLabel="ALL"/>
+                              <f:selectItem itemValue="LIVERY" itemLabel="LIVERY"/>
+                              <f:selectItem itemValue="AMBULETTE AMBULATORY" itemLabel="AMBULETTE AMBULATORY"/>
+                              <f:selectItem itemValue="AMBULETTE WHEELCHAIR" itemLabel="AMBULETTE WHEELCHAIR"/>
+                              <f:selectItem itemValue="STRETCHER VAN" itemLabel="STRETCHER VAN"/>
+                              <f:selectItem itemValue="BLS AMBULANCE" itemLabel="BLS AMBULANCE"/>
+                              <f:selectItem itemValue="ALS AMBULANCE" itemLabel="ALS AMBULANCE"/>                   
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectOneMenu>
+                        </h3>
+                        <ui:include src="../PatientTransportationAppointment/template/table.xhtml">
+                           <ui:param name="selectionMap" value="#{jsf.global('myOffice', 'PatientTransportationAppointment:UNASSIGNED:selected')}"/>
+                           <ui:param name="transportationCompany" value="#{jsf.global('myOffice', 'var')['transportationCompany']}"/>
+                           <ui:param name="transportationAppointmentList" value="#{transportation.sortByZip(jsf.global('transportationAppointment', 'show')['sortByZip'], biz.filterTransportationAppointmentByType(unassignedTransportationAppointmentList, var.MyOffice.eligibleTransportationType._))}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+
+                  <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice', 'var')['transportationCompany'] != null and jsf.global('myOffice', 'view')['PatientTransportationAppointment:ASSIGNED/list']}">
+                     <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice', 'event')['refresh'] or jsf.global('myOffice', 'event')['refresh:PatientTransportationAppointment:ASSIGNED']}">
+                        #{jsf._do(jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:search').put('transportationCompany', jsf.global('myOffice', 'var')['transportationCompany'])).
+                          _do(jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:search').put('start_datetime', jsf.global('myOffice', 'var')['date'])).
+                          _do(jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:search').put('end_datetime', jsf.global('myOffice', 'var')['date'])).
+                          _do(jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:search').put('myOfficeCode', myOfficeCode)).
+                          _do(jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:var')['unreported'] ?
+                          jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:search').put('_p.reported IS NULL', null) :
+                          jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:search').remove('_p.reported IS NULL')).
+                          _do(var.MyOffice.PatientTransportationAppointment.assignedList._(jsf.search('PatientTransportationAppointment', 'p.patientName', jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:search')))).
+                          stay()}
+                     </div>
+                     <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.PatientTransportationAppointment.assignedList._ or jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:var')['unreported']}">
+                        <h3 class="table-label">Assigned
+                           <h:commandButton action="#{jsf._do(transportation.selectAll(jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:selected'), var.MyOffice.PatientTransportationAppointment.assignedList._)).stay}"
+                                            style="font-size: 0.9em; width: 7em; margin-right: 0.5em; margin-left: 0.5em" value="Select All">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandButton>
+                           <h:commandButton action="#{jsf._do(jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:selected').clear()).stay}"
+                                            style="font-size: 0.9em; width: 8em; margin-right: 0.5em" value="Unselect All">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandButton>
+                           <h:commandButton action="#{jsf._do(transportation.markAsUnreported(jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:selected'), var.MyOffice.PatientTransportationAppointment.assignedList._)).
+                                                      _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}" style="font-size: 0.9em; width: 12em; margin-right: 0.5em"
+                                            rendered="#{jsf.global('transportationAppointment', 'show')['reportedFeatures']}"
+                                            value="Mark as Unreported">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandButton>
+                           <h:commandButton action="#{jsf._do(transportation.remove(jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:selected'), var.MyOffice.PatientTransportationAppointment.assignedList._)).
+                                                      _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}" style="font-size: 0.9em; width: 6em; margin-right: 0.5em" value="Remove"
+                                            onclick="if (confirm('Delete Transportation Appointments?')) return true; else return false;">
+                              <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                           </h:commandButton>
+                           <ui:fragment rendered="#{jsf.global('transportationAppointment', 'show')['reportedFeatures']}">
+                              <label>
+                                 <h:selectBooleanCheckbox value="#{jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:var')['unreported']}">
+                                    <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(jsf.global('myOffice', 'event').put('refresh:PatientTransportationAppointment:ASSIGNED', true)).listen}"/>
+                                 </h:selectBooleanCheckbox>
+                                 <span style="font-size:1.1em;">Unreported only</span>
+                              </label>
+                           </ui:fragment>
+                           <!--<h:commandLink value="Report" action="#{jsf._to('PatientTransportationAppointment/report').go}" target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>-->
+                           <label>
+                              <h:selectBooleanCheckbox value="#{var.MyOffice.PatientTransportationAppointment.providerSignature._}">
+                                 <f:ajax/>
+                              </h:selectBooleanCheckbox>
+                              <span style="font-size:1.2em;">Signature</span>
+                           </label>
+                           <h:commandLink value="Fax Form" action="#{jsf._to('PatientTransportationAppointment/fax-report').go}" target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>
+                           <br/>
+                           <h:commandLink value="Blank Fax Form for" action="#{jsf._to('PatientTransportationAppointment/fax-blank').go}" target="_blank" style="font-size: 0.9em;"/>
+                           #{patientTransportationProviderList == null ? jsf._runSearch('ReferringProvider', 'r.lastName', jsf.newMap(), 'patientTransportationProviderList').stay() : null}                           
+                           <label>Provider:</label>
+                           <h:selectOneMenu value="#{var.MyOffice.PatientTransportationAppointment.provider._}" style="font-size:0.9em;">
+                              <f:selectItem itemValue="#{null}" itemLabel="NONE"/>
+                              <f:selectItems value="#{patientTransportationProviderList}" var="provider" itemLabel="#{provider.lastName}, #{provider.firstName}"/>
+                              <f:converter converterId="EntityConverter"/>
+                           </h:selectOneMenu>
+                           #{var.MyOffice.PatientTransportationAppointment.destinationList._ == null ? var.MyOffice.PatientTransportationAppointment.destinationList._(jsf.hintedSearch('PatientTransportationDestination', null, var.MyOffice.PatientTransportationAppointment.destinationListSearch, '_HEALTHCARE')) : null}
+                           <label>Destination:</label>
+                           <h:selectOneMenu value="#{var.MyOffice.PatientTransportationAppointment.destination._}" style="font-size:0.9em; width: 26em;">
+                              <f:selectItem itemValue="#{null}" itemLabel="NONE"/>
+                              <f:selectItems value="#{var.MyOffice.PatientTransportationAppointment.destinationList._}" var="destination" itemLabel="#{destination.name} (#{destination.mergedAddress})"/>
+                              <f:converter converterId="EntityConverter"/>
+                           </h:selectOneMenu>
+                        </h3>                       
+                        <ui:include src="../PatientTransportationAppointment/template/table.xhtml">
+                           <ui:param name="selectionMap" value="#{jsf.global('myOffice', 'PatientTransportationAppointment:ASSIGNED:selected')}"/>
+                           <ui:param name="transportationAppointmentList" value="#{transportation.sortByZip(jsf.global('transportationAppointment', 'show')['sortByZip'], var.MyOffice.PatientTransportationAppointment.assignedList._)}"/>
+                           <ui:param name="reportedFeatures" value="#{jsf.global('transportationAppointment', 'show')['reportedFeatures']}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'Patient Homecare'}">
+               <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.PatientHomecare.list}">
+                  #{var.MyOffice.PatientHomecare.filteredList._(biz.filterPatientHomecare(var.MyOffice.PatientHomecare.list, var.MyOffice.PatientHomecare.billable._))}
+                  <h3 class="table-label">Patient Home Care Plan Oversights
+                     <h:commandButton action="#{jsf._do(transportation.selectAll(var.MyOffice.PatientHomecare.selected, var.MyOffice.PatientHomecare.filteredList._)).stay}"
+                                      style="font-size: 0.9em; width: 7em; margin-right: 0.5em; margin-left: 0.5em" value="Select All">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton action="#{jsf._do(var.MyOffice.PatientHomecare.selected.$).stay}"
+                                      style="font-size: 0.9em; width: 8em; margin-right: 0.5em" value="Unselect All">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton action="#{jsf.
+                                                _do(biz.createPatientHomecareClaim(var.MyOffice.PatientHomecare.filteredList._, var.MyOffice.PatientHomecare.selected.close(), var.MyOffice.PatientHomecare.error.close())).
+                                                _do(jsf.global('patient', 'event').put('refresh', true)).
+                                                _do(var.MyOffice.PatientHomecare.search._(null)).
+                                                _do(var.MyOffice.PatientHomecareClaim.search._(null)).
+                                                stay}" style="font-size: 0.9em; width: 8em; margin-right: 0.5em"
+                                      value="Create Claims">
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.PatientHomecare.billable._}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        <span style="font-size:1.1em;">Billable only</span>
+                     </label>
+                  </h3>
+                  <ui:include src="../PatientHomecare/template/view-table.xhtml">
+                     <ui:param name="selectionMap" value="#{var.MyOffice.PatientHomecare.selected.close()}"/>
+                     <ui:param name="errorMap" value="#{var.MyOffice.PatientHomecare.error.close()}"/>
+                     <ui:param name="patientHomecareList" value="#{var.MyOffice.PatientHomecare.filteredList._}"/>
+                     <ui:param name="tableConfig" value="#{var.MyOffice.PatientHomecare.tableConfig}"/>
+                  </ui:include>
+               </div>
+            </div>
+            <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'Patient Homecare Claim'}">
+               <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.PatientHomecareClaim.list._}">
+                  <h3 class="table-label">Patient Home Care Plan Oversight Claims
+                     <h:commandButton action="#{jsf._do(transportation.selectAll(var.MyOffice.PatientHomecareClaim.selected, var.MyOffice.PatientHomecareClaim.list._)).stay}"
+                                      style="font-size: 0.9em; width: 7em; margin-right: 0.5em; margin-left: 0.5em" value="Select All">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton action="#{jsf._do(var.MyOffice.PatientHomecareClaim.selected.$).stay}"
+                                      style="font-size: 0.9em; width: 8em; margin-right: 0.5em" value="Unselect All">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton action="#{jsf.
+                                                _do(biz.submitPatientHomecareClaimList(var.MyOffice.PatientHomecareClaim.selected.close(), var.MyOffice.PatientHomecareClaim.list._)).
+                                                _do(var.MyOffice.PatientHomecare.search._(null)).
+                                                _do(var.MyOffice.PatientHomecareClaim.search._(null)).
+                                                stay}" style="font-size: 0.9em; width: 8em; margin-right: 0.5em"
+                                      value="Submit Claims">
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>                     
+                  </h3>
+                  <ui:include src="../PatientHomecareClaim/template/table.xhtml">
+                     <ui:param name="selectionMap" value="#{var.MyOffice.PatientHomecareClaim.selected.close()}"/>
+                     <ui:param name="patientHomecareClaimList" value="#{var.MyOffice.PatientHomecareClaim.list._}"/>
+                  </ui:include>
+               </div>
+            </div>
+            <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'Referral'}">
+               <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.Referral.list._}">
+                  #{jsf._do(var.MyOffice.Referral.tableConfig.facility._ == null ? var.MyOffice.Referral.tableConfig.facility._(true) : null).
+                    _do(var.MyOffice.Referral.tableConfig.patient._ == null ? var.MyOffice.Referral.tableConfig.patient._(true) : null).
+                    _do(var.MyOffice.Referral.tableConfig.provider._ == null ? var.MyOffice.Referral.tableConfig.provider._(true) : null).
+                    _do(var.MyOffice.Referral.tableConfig.status._ == null ? var.MyOffice.Referral.tableConfig.status._(true) : null).
+                    stay()}
+                  <h3 class="table-label">Referrals</h3>
+                  <div class="toolbar" style="margin-bottom: 0.5em;">
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Referral.tableConfig.id._}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        ID
+                     </label>
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Referral.tableConfig.time._}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        Time
+                     </label>
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Referral.tableConfig.facility._}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        Facility
+                     </label>
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Referral.tableConfig.patient._}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        Patient
+                     </label>
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Referral.tableConfig.details._}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        Details
+                     </label>
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Referral.tableConfig.status._}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        Status
+                     </label>
+                     <label class="vlabel">
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Referral.tableConfig.action._}">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:selectBooleanCheckbox>
+                        Action
+                     </label>
+                     <h:commandLink value="Report" action="#{jsf._to('MyOffice/referral-report').go}" target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 1em"/>
+                  </div>
+                  <ui:include src="../Referral/template/table.xhtml">
+                     <ui:param name="referralList" value="#{var.MyOffice.Referral.list._}"/>
+                     <ui:param name="tableConfig" value="#{var.MyOffice.Referral.tableConfig}"/>
+                  </ui:include>
+               </div>
+            </div>
+            <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'AuthorizableAppointment'}">
+               <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.Appointment.list._}">
+                  #{jsf._do(var.MyOffice.Appointment.tableConfig.patient._ == null ? var.MyOffice.Appointment.tableConfig.patient._(true) : null).
+                    _do(var.MyOffice.Appointment.tableConfig.insurance._ == null ? var.MyOffice.Appointment.tableConfig.insurance._(true) : null).
+                    _do(var.MyOffice.Appointment.tableConfig.authorizationNumber._ == null ? var.MyOffice.Appointment.tableConfig.authorizationNumber._(true) : null).
+                    _do(var.MyOffice.Appointment.tableConfig.provider._ == null ? var.MyOffice.Appointment.tableConfig.provider._(true) : null).
+                    stay()}
+                  <h3 class="table-label" style="display:inline-block;">
+                     Authorizable Appointments
+                     <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                     <span style="display: none;">
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Appointment.tableConfig.id._}"/>
+                        <label>ID</label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Appointment.tableConfig.time._}"/>
+                        <label>Time</label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Appointment.tableConfig.patient._}"/>
+                        <label>Patient</label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Appointment.tableConfig.insurance._}"/>
+                        <label>Insurance</label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Appointment.tableConfig.authorizationNumber._}"/>
+                        <label>Authorization Number</label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Appointment.tableConfig.action._}"/>
+                        <label>Action</label>
+                        <div class="separator"/>
+                        <h:commandLink action="#{jsf.stay}" value="Apply">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandLink>
+                     </span>                           
+                  </h3>
+                  <h:commandButton value="Refresh" action="#{jsf._do(var.MyOffice.Appointment.search._(null)).stay}" title="Refresh Authorizable Appointment List" style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../Appointment/template/table.xhtml">
+                     <ui:param name="appointmentList" value="#{var.MyOffice.Appointment.list._}"/>
+                     <ui:param name="tableConfig" value="#{var.MyOffice.Appointment.tableConfig}"/>
+                  </ui:include>
+               </div>
+            </div>
+            <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'AuthorizableVisit'}">
+               <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.Visit.list._}">
+                  #{jsf._do(var.MyOffice.Visit.tableConfig.patient._ == null ? var.MyOffice.Visit.tableConfig.patient._(true) : null).
+                    _do(var.MyOffice.Visit.tableConfig.insurance._ == null ? var.MyOffice.Visit.tableConfig.insurance._(true) : null).
+                    _do(var.MyOffice.Visit.tableConfig.authorizationNumber._ == null ? var.MyOffice.Visit.tableConfig.authorizationNumber._(true) : null).
+                    _do(var.MyOffice.Visit.tableConfig.provider._ == null ? var.MyOffice.Visit.tableConfig.provider._(true) : null).
+                    stay()}
+                  <h3 class="table-label" style="display:inline-block;">
+                     Authorizable Visits
+                     <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                     <span style="display: none;">
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Visit.tableConfig.id._}"/>
+                        <label>ID</label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Visit.tableConfig.insurance._}"/>
+                        <label>Insurance</label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Visit.tableConfig.patient._}"/>
+                        <label>Patient</label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Visit.tableConfig.authorizationNumber._}"/>
+                        <label>Authorization Number</label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.Visit.tableConfig.action._}"/>
+                        <label>Action</label>
+                        <div class="separator"/>
+                        <h:commandLink action="#{jsf.stay}" value="Apply">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandLink>
+                     </span>
+                  </h3>
+                  <h:commandButton value="Refresh" action="#{jsf._do(var.MyOffice.Visit.search._(null)).stay}" title="Refresh Authorizable Visit List" style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../Visit/template/table.xhtml">
+                     <ui:param name="visitList" value="#{var.MyOffice.Visit.list._}"/>
+                     <ui:param name="tableConfig" value="#{var.MyOffice.Visit.tableConfig}"/>
+                  </ui:include>
+               </div>
+            </div>
+            <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'PatientChartActivity'}">
+               <div jsfc="h:panelGroup" rendered="#{var.MyOffice.PatientChartActivity.tab._ == 'Appointments'}">
+                  #{var.MyOffice.PatientChartActivity.appointmentDate._ == null ? var.MyOffice.PatientChartActivity.appointmentDate._(biz.trimDate(jsf.newDate)) : null}
+                  #{jsf._do(var.MyOffice.PatientChartActivity.appointmentSearch.put('start_date', var.MyOffice.PatientChartActivity.appointmentDate._)).
+                    _do(var.MyOffice.PatientChartActivity.appointmentSearch.put('end_date', var.MyOffice.PatientChartActivity.appointmentDate._)).
+                    _do(var.MyOffice.PatientChartActivity.providerList._(biz.providerList(var.MyOffice.PatientChartActivity.appointmentDate._))).
+                    _do(var.MyOffice.PatientChartActivity.providerId._(biz.selectedId(var.MyOffice.PatientChartActivity.providerList._, var.MyOffice.PatientChartActivity.providerId._))).
+                    _do(var.MyOffice.PatientChartActivity.appointmentSearch.put('provider_dot_id', var.MyOffice.PatientChartActivity.providerId._)).
+                    _do(var.MyOffice.PatientChartActivity.appointmentSearch.put('stateID', 1)).
+                    _do(var.MyOffice.PatientChartActivity.appointmentSearch.put('_a.specialtyID NOT IN(15, 211, 24, 21)', null)).
+                    stay()}               
+                  #{var.MyOffice.PatientChartActivity.appointmentSearch.toString() != var.MyOffice.PatientChartActivity.appointmentSearch._?
+                    jsf._do(var.MyOffice.PatientChartActivity.appointmentListSelected.$)._do(var.MyOffice.PatientChartActivity.appointmentList._(jsf.search('Appointment', 'a.date, a.time', var.MyOffice.PatientChartActivity.appointmentSearch)))._do(var.MyOffice.PatientChartActivity.patientChartActivityMap._(biz.patientChartActivityByPatientIdMap(var.MyOffice.PatientChartActivity.appointmentList._)))._do(var.MyOffice.PatientChartActivity.appointmentSearch._(var.MyOffice.PatientChartActivity.appointmentSearch.toString())).stay() : null}
+                  #{jsf._do(var.MyOffice.PatientChartActivity.tableConfig.time._ == null ? var.MyOffice.PatientChartActivity.tableConfig.time._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.patient._ == null ? var.MyOffice.PatientChartActivity.tableConfig.patient._(true) : null).                   
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.chartLocation._ == null ? var.MyOffice.PatientChartActivity.tableConfig.chartLocation._(true) : null).
+                    stay()}
+                  <div class="float-left column">
+                     <h3 class="table-label">Appointments
+                        <!--<h:commandButton action="#{jsf._do(transportation.selectAll(var.MyOffice.PatientChartActivity.appointmentListSelected, var.MyOffice.PatientChartActivity.appointmentList._)).stay}"
+                                         style="font-size: 0.9em; width: 7em; margin-right: 0.5em; margin-left: 0.5em" value="Select All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>-->
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.appointmentListSelected.$).stay}"
+                                         style="font-size: 0.9em; width: 8em; margin-right: 0.5em" value="Unselect All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.PatientChartActivity.form.selectionMap._(biz.patientChartActivityMap(var.MyOffice.PatientChartActivity.appointmentListSelected))).
+                                                   _do(var.PatientChartActivity.form.selectedCount._(biz.selectedCount(var.PatientChartActivity.form.selectionMap._))).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._(var.PatientChartActivity.form.selectionMap._.keySet().toArray()[0]) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? biz.cleanPatientChartActivity(var.PatientChartActivity.form.activity._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._.setLocationId(2) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._.setReasonId(1) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._.setProviderId(var.MyOffice.PatientChartActivity.providerId._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.mode._('Take') : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.MyOffice.PatientChartActivity.appointmentSearch._(null) : null).
+                                                   _to(var.PatientChartActivity.form.selectedCount._ > 0 ? 'PatientChartActivity/edit' : null).go}"
+                                         style="font-size: 0.9em; width: 4em; margin-right: 0.5em" value="Take">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:panelGroup id="check-appointmentId">
+                           <ui:fragment rendered="#{! biz.selectableAppointmentByPatientId(var.MyOffice.PatientChartActivity.appointmentList._, var.MyOffice.PatientChartActivity.patientId._)}">
+                              <script type="text/javascript">
+                                 $(function() {
+                                    function recursiveConfirm() {
+                                       return confirm("Not Found MRN=#{var.MyOffice.PatientChartActivity.patientId._}");
+                                    }
+                                    while (recursiveConfirm()){}
+                                 }
+                              );                           
+                              </script>
+                           </ui:fragment>
+                        </h:panelGroup>
+                        <label class="vlabel" style="font-size: 1em; margin-right: 0.5em;">By MRN:</label>
+                        <h:inputText styleClass="patientIdBox" value="#{var.MyOffice.PatientChartActivity.patientId._}" onkeypress="return suppressEnterKeyHandler(event)">
+                           <f:ajax execute="@this" render="check-appointmentId apply-appointmentList-patientIdList cancel-appointmentList-patientIdList" event="change" onevent="restoreFocus" 
+                                   listener="#{jsf._do(var.MyOffice.PatientChartActivity.appointments.patientIdList._ == null ? var.MyOffice.PatientChartActivity.appointments.patientIdList._(jsf.newObject('java.util.ArrayList')) : null)._do(! empty var.MyOffice.PatientChartActivity.patientId._ and ! var.MyOffice.PatientChartActivity.appointments.patientIdList._.contains(var.MyOffice.PatientChartActivity.patientId._) and biz.selectableAppointmentByPatientId(var.MyOffice.PatientChartActivity.appointmentList._, var.MyOffice.PatientChartActivity.patientId._) ? var.MyOffice.PatientChartActivity.appointments.patientIdList._.add(var.MyOffice.PatientChartActivity.patientId._) : null).listen}"/>
+                        </h:inputText>
+                        <h:commandButton class="return " action="#{jsf.stay}" style="font-size: 0.9em; width: auto; margin-right: 0.5em;" value="" title="Return focus">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(biz.selectByPatientIdList(var.MyOffice.PatientChartActivity.appointmentListSelected, var.MyOffice.PatientChartActivity.appointments.patientIdList._))._do(var.MyOffice.PatientChartActivity.appointments.patientIdList._.clear())._do(var.MyOffice.PatientChartActivity.patientId._(null)).stay}"
+                                         style="font-size: 0.9em; width: 7em; margin-right: 0.5em; #{empty var.MyOffice.PatientChartActivity.appointments.patientIdList._ ? 'display: none;' : ''}" id="apply-appointmentList-patientIdList" value="Select (#{var.MyOffice.PatientChartActivity.appointments.patientIdList._ == null ? 0 : var.MyOffice.PatientChartActivity.appointments.patientIdList._.size()})">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.appointments.patientIdList._.clear())._do(var.MyOffice.PatientChartActivity.patientId._(null)).stay}"
+                                         style="font-size: 0.9em; width: 5em; margin-right: 0.5em; #{empty var.MyOffice.PatientChartActivity.appointments.patientIdList._ ? 'display: none;' : ''}" id="cancel-appointmentList-patientIdList" value="Cancel">
+                           <f:ajax execute="@this" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                     </h3>
+                     <div class="toolbar" style="margin-bottom:0.3em;">
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.id._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           ID
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.chartVolume._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Chart Volume
+                        </label>
+                        <label for="appointment_date" class="vlabel">Date:</label>
+                        <h:inputText id="appointment_date" value="#{var.MyOffice.PatientChartActivity.appointmentDate._}" styleClass="djsf_DateTextBox w6">
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                        </h:inputText>
+                        <label class="vlabel">Provider:</label>
+                        <h:selectOneMenu value="#{var.MyOffice.PatientChartActivity.providerId._}" title="Provider">
+                           <f:selectItem itemValue="" itemLabel="ALL"/>
+                           <f:selectItems value="#{var.MyOffice.PatientChartActivity.providerList._}" var="provider" itemValue="#{provider.id}" itemLabel="#{provider.alias}"/>
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                        </h:selectOneMenu>
+                        <h:commandLink value="Report" 
+                                       action="#{jsf._do(var.Appointment.PatientChartActivity.report.provider._(var.MyOffice.PatientChartActivity.providerId._ == null ? 'ALL' : biz.officeProviderById(var.MyOffice.PatientChartActivity.providerId._).alias)).
+                                                 _do(var.Appointment.PatientChartActivity.report.appointmentDate._(var.MyOffice.PatientChartActivity.appointmentDate._)).
+                                                 _do(var.Appointment.PatientChartActivity.report.appointmentList._(var.MyOffice.PatientChartActivity.appointmentList._)).
+                                                 _do(var.Appointment.PatientChartActivity.report.patientChartActivityMap._(var.MyOffice.PatientChartActivity.patientChartActivityMap._)).
+                                                 _to('Appointment/chart-activity-report').go}" 
+                                       target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>
+                     </div>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.PatientChartActivity.appointmentList._}">
+                        <ui:include src="../Appointment/template/table.xhtml">
+                           <ui:param name="selectionMap" value="#{var.MyOffice.PatientChartActivity.appointmentListSelected.close()}"/>
+                           <ui:param name="appointmentList" value="#{var.MyOffice.PatientChartActivity.appointmentList._}"/>
+                           <ui:param name="listId" value="myOfficePatientChartActivityAppointmentList"/>
+                           <ui:param name="patientChartActivityMap" value="#{var.MyOffice.PatientChartActivity.patientChartActivityMap._}"/>                           
+                           <ui:param name="tableConfig" value="#{var.MyOffice.PatientChartActivity.tableConfig}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+                  <div style="clear: both;"/>
+               </div>
+               <div jsfc="h:panelGroup" rendered="#{var.MyOffice.PatientChartActivity.tab._ == 'Charts On Hand'}">
+                  #{jsf._do(var.MyOffice.PatientChartActivity.tableConfig.patient._ == null ? var.MyOffice.PatientChartActivity.tableConfig.patient._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.volumeNumber._ == null ? var.MyOffice.PatientChartActivity.tableConfig.volumeNumber._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.pullDate._ == null ? var.MyOffice.PatientChartActivity.tableConfig.pullDate._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.provider._ == null ? var.MyOffice.PatientChartActivity.tableConfig.provider._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.location._ == null ? var.MyOffice.PatientChartActivity.tableConfig.location._(true) : null).                    
+                    stay()}
+                  #{jsf._do(var.MyOffice.PatientChartActivity.onHand.searchMap.toString() != var.MyOffice.PatientChartActivity.onHand.searchMap._ ? 
+                    jsf._do(var.MyOffice.PatientChartActivity.onHand.searchMap.put('_p.stateId IN(0,1)', null)).
+                    _do(var.MyOffice.PatientChartActivity.onHand.searchMap.containsKey('locationId') ? null : var.MyOffice.PatientChartActivity.onHand.searchMap.put('locationId', 2)).
+                    _do(var.MyOffice.PatientChartActivity.onHand.searchMap.put('locationId', biz.toInt(var.MyOffice.PatientChartActivity.onHand.searchMap.locationId))).
+                    _do(var.MyOffice.PatientChartActivity.onHand.searchMap.put('providerId', biz.toInt(var.MyOffice.PatientChartActivity.onHand.searchMap.providerId))).
+                    _do(var.MyOffice.PatientChartActivity.onHand.list._(jsf.search('PatientChartActivity', 'p.patient.lastName, p.patient.firstName', var.MyOffice.PatientChartActivity.onHand.searchMap.close(), 1000))).
+                    _do(var.MyOffice.PatientChartActivity.providerList._(biz.providerListWithPatientChartActivityOnHand())).
+                    _do(var.MyOffice.PatientChartActivity.onHand.searchMap._(var.MyOffice.PatientChartActivity.onHand.searchMap.toString())).
+                    stay() : null).stay()} 
+                  <div class="float-left column">
+                     <h3 class="table-label">Charts On Hand
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.onHand.searchMap._(null)).stay}"
+                                         style="font-size: 0.9em; width: auto; margin-right: 0.5em; margin-left: 0.5em;" value="Refresh">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(transportation.selectAll(var.MyOffice.PatientChartActivity.onHand.selected, var.MyOffice.PatientChartActivity.onHand.list._)).stay}"
+                                         style="font-size: 0.9em; width: 7em; margin-right: 0.5em; margin-left: 0.5em;" value="Select All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.onHand.selected.$).stay}"
+                                         style="font-size: 0.9em; width: 8em; margin-right: 0.5em" value="Unselect All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.PatientChartActivity.form.selectionMap._(var.MyOffice.PatientChartActivity.onHand.selected)).
+                                                   _do(var.PatientChartActivity.form.selectedCount._(biz.selectedCount(var.PatientChartActivity.form.selectionMap._))).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._(var.PatientChartActivity.form.selectionMap._.keySet().toArray()[0]) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? biz.cleanPatientChartActivity(var.PatientChartActivity.form.activity._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.mode._('Take') : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.MyOffice.PatientChartActivity.onHand.searchMap._(null) : null).
+                                                   _to(var.PatientChartActivity.form.selectedCount._ > 0 ? 'PatientChartActivity/edit' : null).go}"
+                                         style="font-size: 0.9em; width: 4em; margin-right: 0.5em" value="Take">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.PatientChartActivity.form.selectionMap._(var.MyOffice.PatientChartActivity.onHand.selected)).
+                                                   _do(var.PatientChartActivity.form.selectedCount._(biz.selectedCount(var.PatientChartActivity.form.selectionMap._))).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._(var.PatientChartActivity.form.selectionMap._.keySet().toArray()[0]) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? biz.cleanPatientChartActivity(var.PatientChartActivity.form.activity._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._.setLocationId(11) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.mode._('Return') : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.MyOffice.PatientChartActivity.onHand.searchMap._(null) : null).
+                                                   _to(var.PatientChartActivity.form.selectedCount._ > 0 ? 'PatientChartActivity/edit' : null).go}"
+                                         style="font-size: 0.9em; width: 5em; margin-right: 0.5em" value="Return">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <label class="vlabel" style="font-size: 1em; margin-right: 0.5em;">By MRN:</label>
+                        <h:inputText value="#{var.MyOffice.PatientChartActivity.patientId._}" onkeypress="return suppressEnterKeyHandler(event)">
+                           <f:ajax execute="@this" render="apply-onHand-patientIdList cancel-onHand-patientIdList" event="change" onevent="restoreFocus" 
+                                   listener="#{jsf._do(var.MyOffice.PatientChartActivity.onHand.patientIdList._ == null ? var.MyOffice.PatientChartActivity.onHand.patientIdList._(jsf.newObject('java.util.ArrayList')) : null)._do(! empty var.MyOffice.PatientChartActivity.patientId._ and ! var.MyOffice.PatientChartActivity.onHand.patientIdList._.contains(var.MyOffice.PatientChartActivity.patientId._) ? var.MyOffice.PatientChartActivity.onHand.patientIdList._.add(var.MyOffice.PatientChartActivity.patientId._) : null).listen}"/>
+                        </h:inputText>
+                        <h:commandButton action="#{jsf.stay}" style="font-size: 0.9em; width: auto; margin-right: 0.5em;" value="" title="Return focus">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(biz.selectByPatientIdList(var.MyOffice.PatientChartActivity.onHand.selected, var.MyOffice.PatientChartActivity.onHand.patientIdList._))._do(var.MyOffice.PatientChartActivity.onHand.patientIdList._.clear())._do(var.MyOffice.PatientChartActivity.patientId._(null)).stay}"
+                                         style="font-size: 0.9em; width: 7em; margin-right: 0.5em; #{empty var.MyOffice.PatientChartActivity.onHand.patientIdList._ ? 'display: none;' : ''}" id="apply-onHand-patientIdList" value="Select (#{var.MyOffice.PatientChartActivity.onHand.patientIdList._ == null ? 0 : var.MyOffice.PatientChartActivity.onHand.patientIdList._.size()})">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.onHand.patientIdList._.clear())._do(var.MyOffice.PatientChartActivity.patientId._(null)).stay}"
+                                         style="font-size: 0.9em; width: 5em; margin-right: 0.5em; #{empty var.MyOffice.PatientChartActivity.onHand.patientIdList._ ? 'display: none;' : ''}" id="cancel-onHand-patientIdList" value="Cancel">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>                        
+                     </h3>
+                     <div class="toolbar" style="margin-bottom:0.3em;">
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.id._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           ID
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.takenBy._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Taken By
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.reason._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Reason
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.action._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Action
+                        </label>
+                        <label class="vlabel">Provider:</label>
+                        <h:selectOneMenu value="#{var.MyOffice.PatientChartActivity.onHand.searchMap.providerId}" title="Provider" style="width: 10em;">
+                           <f:selectItem itemValue="" itemLabel="ALL"/>
+                           <f:selectItems value="#{var.MyOffice.PatientChartActivity.providerList._}" var="provider" itemValue="#{provider.id}" itemLabel="#{provider.lastName} #{provider.firstName}"/>
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                        </h:selectOneMenu>
+                        #{empty var.MyOffice.PatientChartActivity.locationList ? jsf._do(var.MyOffice.PatientChartActivity.locationSearch.clear())._do(var.MyOffice.PatientChartActivity.put('locationList', jsf.search('PatientChartLocation', 'p.name', var.MyOffice.PatientChartActivity.locationSearch.close()))).stay() : null}
+                        <label>Location:</label>
+                        <h:selectOneMenu value="#{var.MyOffice.PatientChartActivity.onHand.searchMap.locationId}" title="Location" style="width: 8em;">
+                           <f:selectItem itemValue="" itemLabel="ALL"/>
+                           <f:selectItems value="#{var.MyOffice.PatientChartActivity.locationList}" var="location" itemValue="#{location.id}" itemLabel="#{location.name}"/>
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                        </h:selectOneMenu>
+                        <h:commandLink value="Report" 
+                                       action="#{jsf._do(var.PatientChartActivity.onHand.report.provider._(biz.provider(var.MyOffice.PatientChartActivity.onHand.searchMap.providerId))).
+                                                 _do(var.PatientChartActivity.onHand.report.location._(biz.patientChartLocation(var.MyOffice.PatientChartActivity.onHand.searchMap.locationId))).
+                                                 _do(var.PatientChartActivity.onHand.list._(var.MyOffice.PatientChartActivity.onHand.list._)).
+                                                 _to('PatientChartActivity/on-hand-report').go}" 
+                                       target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>
+                     </div>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.PatientChartActivity.onHand.list._}">
+                        <ui:include src="../PatientChartActivity/template/table.xhtml">
+                           <ui:param name="patientChartActivityList" value="#{var.MyOffice.PatientChartActivity.onHand.list._}"/>
+                           <ui:param name="tableConfig" value="#{var.MyOffice.PatientChartActivity.tableConfig}"/>
+                           <ui:param name="selectionMap" value="#{var.MyOffice.PatientChartActivity.onHand.selected.close()}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+                  <div style="clear: both;"/>
+               </div>
+               <div jsfc="h:panelGroup" rendered="#{var.MyOffice.PatientChartActivity.tab._ == 'Pending Charts'}">
+                  #{jsf._do(var.MyOffice.PatientChartActivity.tableConfig.patient._ == null ? var.MyOffice.PatientChartActivity.tableConfig.patient._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.volumeNumber._ == null ? var.MyOffice.PatientChartActivity.tableConfig.volumeNumber._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.pullDate._ == null ? var.MyOffice.PatientChartActivity.tableConfig.pullDate._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.provider._ == null ? var.MyOffice.PatientChartActivity.tableConfig.provider._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.location._ == null ? var.MyOffice.PatientChartActivity.tableConfig.location._(true) : null).                    
+                    stay()}
+                  #{jsf._do(var.MyOffice.PatientChartActivity.pending.searchMap.toString() != var.MyOffice.PatientChartActivity.pending.searchMap._ ? 
+                    jsf._do(var.MyOffice.PatientChartActivity.pending.searchMap.put('locationId', 14)).
+                    _do(var.MyOffice.PatientChartActivity.pending.searchMap.put('_p.stateId IN(0,1)', null)).
+                    _do(var.MyOffice.PatientChartActivity.pending.searchMap.put('providerId', biz.toInt(var.MyOffice.PatientChartActivity.pending.searchMap.providerId))).
+                    _do(var.MyOffice.PatientChartActivity.pending.list._(jsf.search('PatientChartActivity', 'p.patient.lastName, p.patient.firstName', var.MyOffice.PatientChartActivity.pending.searchMap.close(), 1000))).
+                    _do(var.MyOffice.PatientChartActivity.pending.providerList._(biz.providerListWithPatientChartActivityPending())).
+                    _do(var.MyOffice.PatientChartActivity.pending.searchMap._(var.MyOffice.PatientChartActivity.pending.searchMap.toString())).
+                    stay() : null).stay()} 
+                  <div class="float-left column">
+                     <h3 class="table-label">Pending Charts
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.pending.searchMap._(null)).stay}"
+                                         style="font-size: 0.9em; width: auto; margin-right: 0.5em; margin-left: 0.5em;" value="Refresh">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(transportation.selectAll(var.MyOffice.PatientChartActivity.pending.selected, var.MyOffice.PatientChartActivity.pending.list._)).stay}"
+                                         style="font-size: 0.9em; width: 7em; margin-right: 0.5em;" value="Select All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.pending.selected.$).stay}"
+                                         style="font-size: 0.9em; width: 8em; margin-right: 0.5em" value="Unselect All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.PatientChartActivity.form.selectionMap._(var.MyOffice.PatientChartActivity.pending.selected)).
+                                                   _do(var.PatientChartActivity.form.selectedCount._(biz.selectedCount(var.PatientChartActivity.form.selectionMap._))).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._(var.PatientChartActivity.form.selectionMap._.keySet().toArray()[0]) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? biz.cleanPatientChartActivity(var.PatientChartActivity.form.activity._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.mode._('Take') : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.MyOffice.PatientChartActivity.pending.searchMap._(null) : null).
+                                                   _to(var.PatientChartActivity.form.selectedCount._ > 0 ? 'PatientChartActivity/edit' : null).go}"
+                                         style="font-size: 0.9em; width: 4em; margin-right: 0.5em" value="Take">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.PatientChartActivity.form.selectionMap._(var.MyOffice.PatientChartActivity.pending.selected)).
+                                                   _do(var.PatientChartActivity.form.selectedCount._(biz.selectedCount(var.PatientChartActivity.form.selectionMap._))).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._(var.PatientChartActivity.form.selectionMap._.keySet().toArray()[0]) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? biz.cleanPatientChartActivity(var.PatientChartActivity.form.activity._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._.setLocationId(11) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.mode._('Return') : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.MyOffice.PatientChartActivity.pending.searchMap._(null) : null).
+                                                   _to(var.PatientChartActivity.form.selectedCount._ > 0 ? 'PatientChartActivity/edit' : null).go}"
+                                         style="font-size: 0.9em; width: 5em; margin-right: 0.5em" value="Return">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <label class="vlabel" style="font-size: 1em; margin-right: 0.5em;">By MRN:</label>
+                        <h:inputText value="#{var.MyOffice.PatientChartActivity.patientId._}" onkeypress="return suppressEnterKeyHandler(event)">
+                           <f:ajax execute="@this" render="apply-pending-patientIdList cancel-pending-patientIdList" event="change" onevent="restoreFocus" 
+                                   listener="#{jsf._do(var.MyOffice.PatientChartActivity.pending.patientIdList._ == null ? var.MyOffice.PatientChartActivity.pending.patientIdList._(jsf.newObject('java.util.ArrayList')) : null)._do(! empty var.MyOffice.PatientChartActivity.patientId._ and ! var.MyOffice.PatientChartActivity.pending.patientIdList._.contains(var.MyOffice.PatientChartActivity.patientId._) ? var.MyOffice.PatientChartActivity.pending.patientIdList._.add(var.MyOffice.PatientChartActivity.patientId._) : null).listen}"/>
+                        </h:inputText>
+                        <h:commandButton action="#{jsf.stay}" style="font-size: 0.9em; width: auto; margin-right: 0.5em;" value="" title="Return focus">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(biz.selectByPatientIdList(var.MyOffice.PatientChartActivity.pending.selected, var.MyOffice.PatientChartActivity.pending.patientIdList._))._do(var.MyOffice.PatientChartActivity.pending.patientIdList._.clear())._do(var.MyOffice.PatientChartActivity.patientId._(null)).stay}"
+                                         style="font-size: 0.9em; width: 7em; margin-right: 0.5em; #{empty var.MyOffice.PatientChartActivity.pending.patientIdList._ ? 'display: none;' : ''}" id="apply-pending-patientIdList" value="Select (#{var.MyOffice.PatientChartActivity.pending.patientIdList._ == null ? 0 : var.MyOffice.PatientChartActivity.pending.patientIdList._.size()})">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.pending.patientIdList._.clear())._do(var.MyOffice.PatientChartActivity.patientId._(null)).stay}"
+                                         style="font-size: 0.9em; width: 5em; margin-right: 0.5em; #{empty var.MyOffice.PatientChartActivity.pending.patientIdList._ ? 'display: none;' : ''}" id="cancel-pending-patientIdList" value="Cancel">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                     </h3>
+                     <div class="toolbar" style="margin-bottom:0.3em;">
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.id._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           ID
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.takenBy._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Taken By
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.reason._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Reason
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.action._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Action
+                        </label>
+                        <label class="vlabel">Provider:</label>
+                        <h:selectOneMenu value="#{var.MyOffice.PatientChartActivity.pending.searchMap.providerId}" title="Provider" style="width: 10em;">
+                           <f:selectItem itemValue="" itemLabel="ALL"/>
+                           <f:selectItems value="#{var.MyOffice.PatientChartActivity.pending.providerList._}" var="provider" itemValue="#{provider.id}" itemLabel="#{provider.lastName} #{provider.firstName}"/>
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                        </h:selectOneMenu>
+                     </div>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.PatientChartActivity.pending.list._}">
+                        <ui:include src="../PatientChartActivity/template/table.xhtml">
+                           <ui:param name="patientChartActivityList" value="#{var.MyOffice.PatientChartActivity.pending.list._}"/>
+                           <ui:param name="tableConfig" value="#{var.MyOffice.PatientChartActivity.tableConfig}"/>
+                           <ui:param name="selectionMap" value="#{var.MyOffice.PatientChartActivity.pending.selected.close()}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+                  <div style="clear: both;"/>
+               </div>
+               <div jsfc="h:panelGroup" rendered="#{var.MyOffice.PatientChartActivity.tab._ == 'Prepare List'}">
+                  #{jsf._do(var.MyOffice.PatientChartActivity.tableConfig.patient._ == null ? var.MyOffice.PatientChartActivity.tableConfig.patient._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.volumeNumber._ == null ? var.MyOffice.PatientChartActivity.tableConfig.volumeNumber._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.pullDate._ == null ? var.MyOffice.PatientChartActivity.tableConfig.pullDate._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.provider._ == null ? var.MyOffice.PatientChartActivity.tableConfig.provider._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.location._ == null ? var.MyOffice.PatientChartActivity.tableConfig.location._(true) : null).                    
+                    stay()}
+                  <div class="float-left column">
+                     <h3 class="table-label">Prepare List
+                        <h:commandButton action="#{jsf._do(transportation.selectAll(var.MyOffice.PatientChartActivity.prepared.selected, var.MyOffice.PatientChartActivity.prepared.list._)).stay}"
+                                         style="font-size: 0.9em; width: 7em; margin-right: 0.5em; margin-left: 0.5em;" value="Select All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.prepared.selected.$).stay}"
+                                         style="font-size: 0.9em; width: 8em; margin-right: 0.5em" value="Unselect All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.PatientChartActivity.form.selectionMap._(var.MyOffice.PatientChartActivity.prepared.selected)).
+                                                   _do(var.PatientChartActivity.form.selectedCount._(biz.selectedCount(var.PatientChartActivity.form.selectionMap._))).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._(var.PatientChartActivity.form.selectionMap._.keySet().toArray()[0]) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activityList._(var.MyOffice.PatientChartActivity.prepared.list._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? biz.cleanPatientChartActivity(var.PatientChartActivity.form.activity._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.mode._('Take') : null).                          
+                                                   _to(var.PatientChartActivity.form.selectedCount._ > 0 ? 'PatientChartActivity/edit' : null).go}"
+                                         style="font-size: 0.9em; width: 4em; margin-right: 0.5em" value="Take">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.PatientChartActivity.form.selectionMap._(var.MyOffice.PatientChartActivity.prepared.selected)).
+                                                   _do(var.PatientChartActivity.form.selectedCount._(biz.selectedCount(var.PatientChartActivity.form.selectionMap._))).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._(var.PatientChartActivity.form.selectionMap._.keySet().toArray()[0]) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activityList._(var.MyOffice.PatientChartActivity.prepared.list._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? biz.cleanPatientChartActivity(var.PatientChartActivity.form.activity._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._.setLocationId(11) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.mode._('Return') : null).
+                                                   _to(var.PatientChartActivity.form.selectedCount._ > 0 ? 'PatientChartActivity/edit' : null).go}"
+                                         style="font-size: 0.9em; width: 5em; margin-right: 0.5em" value="Return">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(biz.removeSelectedFromList(var.MyOffice.PatientChartActivity.prepared.selected.close(), var.MyOffice.PatientChartActivity.prepared.list._)).stay}"
+                                         style="font-size: 0.9em; width: 6em; margin-right: 0.5em;" value="Remove">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>                        
+                        <label class="vlabel" style="font-size: 1em; margin-right: 0.5em;">Search:</label>
+                        <h:inputText value="#{var.MyOffice.PatientChartActivity.patientId._}" onkeypress="return suppressEnterKeyHandler(event)">
+                           <f:ajax execute="@this" render="apply-patientIdList cancel-patientIdList" event="change" onevent="restoreFocus" 
+                                   listener="#{jsf._do(var.MyOffice.PatientChartActivity.prepared.patientIdList._ == null ? var.MyOffice.PatientChartActivity.prepared.patientIdList._(jsf.newObject('java.util.ArrayList')) : null)._do(! empty var.MyOffice.PatientChartActivity.patientId._ and ! var.MyOffice.PatientChartActivity.prepared.patientIdList._.contains(var.MyOffice.PatientChartActivity.patientId._) ? var.MyOffice.PatientChartActivity.prepared.patientIdList._.add(var.MyOffice.PatientChartActivity.patientId._) : null).listen}"/>
+                        </h:inputText>
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.prepared.list._(biz.addPatientChartActivityByPatientIdList(var.MyOffice.PatientChartActivity.prepared.list._, var.MyOffice.PatientChartActivity.prepared.patientIdList._)))._do(var.MyOffice.PatientChartActivity.prepared.patientIdList._.clear())._do(var.MyOffice.PatientChartActivity.patientId._(null)).stay}"
+                                         style="font-size: 0.9em; width: 5em; margin-right: 0.5em; #{empty var.MyOffice.PatientChartActivity.prepared.patientIdList._ ? 'display: none;' : ''}" id="apply-patientIdList" value="Add(#{var.MyOffice.PatientChartActivity.prepared.patientIdList._ == null ? 0 : var.MyOffice.PatientChartActivity.prepared.patientIdList._.size()})">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.prepared.patientIdList._.clear())._do(var.MyOffice.PatientChartActivity.patientId._(null)).stay}"
+                                         style="font-size: 0.9em; width: 5em; margin-right: 0.5em; #{empty var.MyOffice.PatientChartActivity.prepared.patientIdList._ ? 'display: none;' : ''}" id="cancel-patientIdList" value="Cancel">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                     </h3>
+                     <div class="toolbar" style="margin-bottom:0.3em;">
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.id._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           ID
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.takenBy._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Taken By
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.reason._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Reason
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.action._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Action
+                        </label>
+                     </div>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.PatientChartActivity.prepared.list._}">
+                        <ui:include src="../PatientChartActivity/template/table.xhtml">
+                           <ui:param name="patientChartActivityList" value="#{var.MyOffice.PatientChartActivity.prepared.list._}"/>
+                           <ui:param name="tableConfig" value="#{var.MyOffice.PatientChartActivity.tableConfig}"/>
+                           <ui:param name="selectionMap" value="#{var.MyOffice.PatientChartActivity.prepared.selected.close()}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+                  <div style="clear: both;"/>
+               </div>
+               <div jsfc="h:panelGroup" rendered="#{var.MyOffice.PatientChartActivity.tab._ == 'Labels'}">
+                  #{jsf._do(var.MyOffice.PatientChartActivity.tableConfig.patient._ == null ? var.MyOffice.PatientChartActivity.tableConfig.patient._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.volumeNumber._ == null ? var.MyOffice.PatientChartActivity.tableConfig.volumeNumber._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.pullDate._ == null ? var.MyOffice.PatientChartActivity.tableConfig.pullDate._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.provider._ == null ? var.MyOffice.PatientChartActivity.tableConfig.provider._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.tableConfig.location._ == null ? var.MyOffice.PatientChartActivity.tableConfig.location._(true) : null).                    
+                    stay()}
+                  #{jsf._do(var.MyOffice.PatientChartActivity.labels.searchMap.toString() != var.MyOffice.PatientChartActivity.labels.searchMap._ or true ? 
+                    jsf._do(var.MyOffice.PatientChartActivity.labels.searchMap.put('prepareLabel', true)).
+                    _do(var.MyOffice.PatientChartActivity.labels.searchMap.put('_p.stateId IN(0,1)', null)).
+                    _do(var.MyOffice.PatientChartActivity.labels.list._(jsf.search('PatientChartActivity', 'p.patient.lastName, p.patient.firstName', var.MyOffice.PatientChartActivity.labels.searchMap.close(), 1000))).
+                    _do(var.MyOffice.PatientChartActivity.labels.searchMap._(var.MyOffice.PatientChartActivity.labels.searchMap.toString())).
+                    stay() : null).stay()}
+                  <div class="float-left column">
+                     <h3 class="table-label">Labels
+                        <h:commandButton action="#{jsf._do(transportation.selectAll(var.MyOffice.PatientChartActivity.labels.selected, var.MyOffice.PatientChartActivity.labels.list._)).stay}"
+                                         style="font-size: 0.9em; width: 7em; margin-right: 0.5em; margin-left: 0.5em;" value="Select All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.labels.selected.$).stay}"
+                                         style="font-size: 0.9em; width: 8em; margin-right: 0.5em" value="Unselect All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.PatientChartActivity.form.selectionMap._(var.MyOffice.PatientChartActivity.labels.selected)).
+                                                   _do(var.PatientChartActivity.form.selectedCount._(biz.selectedCount(var.PatientChartActivity.form.selectionMap._))).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._(var.PatientChartActivity.form.selectionMap._.keySet().toArray()[0]) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._(var.PatientChartActivity.form.selectionMap._.keySet().toArray()[0]) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? biz.cleanPatientChartActivity(var.PatientChartActivity.form.activity._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.mode._('Take') : null).                          
+                                                   _to(var.PatientChartActivity.form.selectedCount._ > 0 ? 'PatientChartActivity/edit' : null).go}"
+                                         style="font-size: 0.9em; width: 4em; margin-right: 0.5em" value="Take">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.PatientChartActivity.form.selectionMap._(var.MyOffice.PatientChartActivity.labels.selected)).
+                                                   _do(var.PatientChartActivity.form.selectedCount._(biz.selectedCount(var.PatientChartActivity.form.selectionMap._))).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._(var.PatientChartActivity.form.selectionMap._.keySet().toArray()[0]) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? biz.cleanPatientChartActivity(var.PatientChartActivity.form.activity._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._.setLocationId(11) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.mode._('Return') : null).
+                                                   _to(var.PatientChartActivity.form.selectedCount._ > 0 ? 'PatientChartActivity/edit' : null).go}"
+                                         style="font-size: 0.9em; width: 5em; margin-right: 0.5em" value="Return">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(biz.unprepareLabels(var.MyOffice.PatientChartActivity.labels.selected.close(), var.MyOffice.PatientChartActivity.labels.list._)).
+                                                   _do(var.MyOffice.PatientChartActivity.labels.searchMap._(null)).stay}"
+                                         style="font-size: 0.9em; width: 7em; margin-right: 0.5em;" value="Unprepare">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <label class="vlabel" style="font-size: 1em; margin-right: 0.5em;">Year:</label>
+                        <h:inputText value="#{var.MyOffice.PatientChartActivity.labels.year._}"  style="width: 2em;" title="Enter 2 digits">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:inputText>
+                     </h3>
+                     <div class="toolbar" style="margin-bottom:0.3em;">
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.id._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           ID
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.takenBy._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Taken By
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.reason._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Reason
+                        </label>
+                        <label class="vlabel">
+                           <h:selectBooleanCheckbox value="#{var.MyOffice.PatientChartActivity.tableConfig.action._}">
+                              <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                           </h:selectBooleanCheckbox>
+                           Action
+                        </label>
+                        <h:commandLink value="Print Labels" 
+                                       action="#{jsf._do(var.PatientChartActivity.labels.report.year._(var.MyOffice.PatientChartActivity.labels.year._)).
+                                                 _do(var.PatientChartActivity.labels.report.list._(var.MyOffice.PatientChartActivity.labels.list._)).
+                                                 _do(var.PatientChartActivity.labels.report.selected._(var.MyOffice.PatientChartActivity.labels.selected)).
+                                                 _to('PatientChartActivity/print-labels-report').go}" 
+                                       target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>
+                        <h:commandLink value="Year Color" 
+                                       action="#{jsf._do(var.PatientChartActivity.labels.report.year._(null)).
+                                                 _do(var.PatientChartActivity.labels.report.list._(null)).
+                                                 _to('PatientChartActivity/print-labels-report').go}" 
+                                       target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>
+                     </div>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.PatientChartActivity.labels.list._}">
+                        <ui:include src="../PatientChartActivity/template/table.xhtml">
+                           <ui:param name="patientChartActivityList" value="#{var.MyOffice.PatientChartActivity.labels.list._}"/>
+                           <ui:param name="tableConfig" value="#{var.MyOffice.PatientChartActivity.tableConfig}"/>
+                           <ui:param name="selectionMap" value="#{var.MyOffice.PatientChartActivity.labels.selected.close()}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+                  <div style="clear: both;"/>
+               </div>
+               <div jsfc="h:panelGroup" rendered="#{var.MyOffice.PatientChartActivity.tab._ == 'For Recycle'}">
+                  #{var.MyOffice.PatientChartActivity.forRecycle.startDate._ == null ? var.MyOffice.PatientChartActivity.forRecycle.startDate._(biz.startOfMonth(jsf.newDate, -10)) : null}
+                  #{var.MyOffice.PatientChartActivity.forRecycle.endDate._ == null ? var.MyOffice.PatientChartActivity.forRecycle.endDate._(biz.endOfMonth(jsf.newDate, -10)) : null}
+                  #{jsf._do(var.MyOffice.PatientChartActivity.forRecycle.tableConfig.patient._ == null ? var.MyOffice.PatientChartActivity.forRecycle.tableConfig.patient._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.forRecycle.tableConfig.volumeNumber._ == null ? var.MyOffice.PatientChartActivity.forRecycle.tableConfig.volumeNumber._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.forRecycle.tableConfig.pullDate._ == null ? var.MyOffice.PatientChartActivity.forRecycle.tableConfig.pullDate._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.forRecycle.tableConfig.location._ == null ? var.MyOffice.PatientChartActivity.forRecycle.tableConfig.location._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.forRecycle.tableConfig.lastVisitDate._ == null ? var.MyOffice.PatientChartActivity.forRecycle.tableConfig.lastVisitDate._(true) : null).
+                    stay()}
+                  #{jsf._do(var.MyOffice.PatientChartActivity.forRecycle.startDate._.toString().concat(var.MyOffice.PatientChartActivity.forRecycle.endDate._.toString()) != var.MyOffice.PatientChartActivity.forRecycle.dates._ ? 
+                    jsf._do(var.MyOffice.PatientChartActivity.forRecycle.list._(biz.patientChartActivityForRecycleList(var.MyOffice.PatientChartActivity.forRecycle.startDate._, var.MyOffice.PatientChartActivity.forRecycle.endDate._, 1000))).
+                    _do(var.MyOffice.PatientChartActivity.forRecycle.dates._(var.MyOffice.PatientChartActivity.forRecycle.startDate._.toString().concat(var.MyOffice.PatientChartActivity.forRecycle.endDate._.toString()))).stay() : null).stay()} 
+                  <div class="float-left column">
+                     <h3 class="table-label">For Recycle
+                        <h:commandButton action="#{jsf._do(transportation.selectAll(var.MyOffice.PatientChartActivity.forRecycle.selected, var.MyOffice.PatientChartActivity.forRecycle.list._)).stay}"
+                                         style="font-size: 0.9em; width: 7em; margin-right: 0.5em; margin-left: 0.5em;" value="Select All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.forRecycle.selected.$).stay}"
+                                         style="font-size: 0.9em; width: 8em; margin-right: 0.5em" value="Unselect All">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.PatientChartActivity.form.selectionMap._(var.MyOffice.PatientChartActivity.forRecycle.selected)).
+                                                   _do(var.PatientChartActivity.form.selectedCount._(biz.selectedCount(var.PatientChartActivity.form.selectionMap._))).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.activity._(var.PatientChartActivity.form.selectionMap._.keySet().toArray()[0]) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? biz.cleanPatientChartActivity(var.PatientChartActivity.form.activity._) : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.PatientChartActivity.form.mode._('Recycle') : null).
+                                                   _do(var.PatientChartActivity.form.selectedCount._ > 0 ? var.MyOffice.PatientChartActivity.forRecycle.dates._(null) : null).
+                                                   _to(var.PatientChartActivity.form.selectedCount._ > 0 ? 'PatientChartActivity/edit' : null).go}"
+                                         style="font-size: 0.9em; width: 6em; margin-right: 0.5em" value="Recycle">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <label class="vlabel" style="font-size: 1em; margin-right: 0.5em;">By MRN:</label>
+                        <h:inputText value="#{var.MyOffice.PatientChartActivity.patientId._}" onkeypress="return suppressEnterKeyHandler(event)">
+                           <f:ajax execute="@this" render="apply-forRecycle-patientIdList cancel-forRecycle-patientIdList" event="change" onevent="restoreFocus" 
+                                   listener="#{jsf._do(var.MyOffice.PatientChartActivity.forRecycle.patientIdList._ == null ? var.MyOffice.PatientChartActivity.forRecycle.patientIdList._(jsf.newObject('java.util.ArrayList')) : null)._do(! empty var.MyOffice.PatientChartActivity.patientId._ and ! var.MyOffice.PatientChartActivity.forRecycle.patientIdList._.contains(var.MyOffice.PatientChartActivity.patientId._) ? var.MyOffice.PatientChartActivity.forRecycle.patientIdList._.add(var.MyOffice.PatientChartActivity.patientId._) : null).listen}"/>
+                        </h:inputText>
+                        <h:commandButton action="#{jsf.stay}" style="font-size: 0.9em; width: auto; margin-right: 0.5em;" value="" title="Return focus">
+                           <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(biz.selectByPatientIdList(var.MyOffice.PatientChartActivity.forRecycle.selected, var.MyOffice.PatientChartActivity.forRecycle.patientIdList._))._do(var.MyOffice.PatientChartActivity.forRecycle.patientIdList._.clear())._do(var.MyOffice.PatientChartActivity.patientId._(null)).stay}"
+                                         style="font-size: 0.9em; width: 7em; margin-right: 0.5em; #{empty var.MyOffice.PatientChartActivity.forRecycle.patientIdList._ ? 'display: none;' : ''}" id="apply-forRecycle-patientIdList" value="Select (#{var.MyOffice.PatientChartActivity.forRecycle.patientIdList._ == null ? 0 : var.MyOffice.PatientChartActivity.forRecycle.patientIdList._.size()})">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                        <h:commandButton action="#{jsf._do(var.MyOffice.PatientChartActivity.forRecycle.patientIdList._.clear())._do(var.MyOffice.PatientChartActivity.patientId._(null)).stay}"
+                                         style="font-size: 0.9em; width: 5em; margin-right: 0.5em; #{empty var.MyOffice.PatientChartActivity.forRecycle.patientIdList._ ? 'display: none;' : ''}" id="cancel-forRecycle-patientIdList" value="Cancel">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandButton>
+                     </h3>
+                     <div class="toolbar" style="margin-bottom:0.3em;">
+                        <label class="vlabel" style="margin-right: 0.5em;">Last Visit between</label>
+                        <h:inputText id="start_date" value="#{var.MyOffice.PatientChartActivity.forRecycle.startDate._}" styleClass="djsf_DateTextBox w6" style="font-size: 1.2em; margin-right: 0.5em;">
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.MyOffice.PatientChartActivity.forRecycle.selected.clear()).listen}"/>
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                        </h:inputText>
+                        <label class="vlabel" style="margin-right: 0.5em;">and</label>
+                        <h:inputText id="end_date" value="#{var.MyOffice.PatientChartActivity.forRecycle.endDate._}" styleClass="djsf_DateTextBox w6" style="font-size: 1.2em; margin-right: 0.5em;">
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.MyOffice.PatientChartActivity.forRecycle.selected.clear()).listen}"/>
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                        </h:inputText>
+                        <h:commandLink value="Report" 
+                                       action="#{jsf._do(var.PatientChartActivity.forRecycle.report.startDate._(var.MyOffice.PatientChartActivity.forRecycle.startDate._)).
+                                                 _do(var.PatientChartActivity.forRecycle.report.endDate._(var.MyOffice.PatientChartActivity.forRecycle.endDate._)).
+                                                 _do(var.PatientChartActivity.forRecycle.list._(var.MyOffice.PatientChartActivity.forRecycle.list._)).
+                                                 _to('PatientChartActivity/for-recycle-report').go}" 
+                                       target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>
+                     </div>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.PatientChartActivity.forRecycle.list._}">
+                        <ui:include src="../PatientChartActivity/template/table.xhtml">
+                           <ui:param name="patientChartActivityList" value="#{var.MyOffice.PatientChartActivity.forRecycle.list._}"/>
+                           <ui:param name="tableConfig" value="#{var.MyOffice.PatientChartActivity.forRecycle.tableConfig}"/>
+                           <ui:param name="selectionMap" value="#{var.MyOffice.PatientChartActivity.forRecycle.selected.close()}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+                  <div style="clear: both;"/>
+               </div>
+               <div jsfc="h:panelGroup" rendered="#{var.MyOffice.PatientChartActivity.tab._ == 'Recycled'}">
+                  #{var.MyOffice.PatientChartActivity.recycled.startDate._ == null ? var.MyOffice.PatientChartActivity.recycled.startDate._(biz.startOfMonth(jsf.newDate, -10)) : null}
+                  #{var.MyOffice.PatientChartActivity.recycled.endDate._ == null ? var.MyOffice.PatientChartActivity.recycled.endDate._(biz.endOfMonth(jsf.newDate, -10)) : null}
+                  #{jsf._do(var.MyOffice.PatientChartActivity.recycled.tableConfig.patient._ == null ? var.MyOffice.PatientChartActivity.recycled.tableConfig.patient._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.recycled.tableConfig.volumeNumber._ == null ? var.MyOffice.PatientChartActivity.recycled.tableConfig.volumeNumber._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.recycled.tableConfig.pullDate._ == null ? var.MyOffice.PatientChartActivity.recycled.tableConfig.pullDate._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.recycled.tableConfig.location._ == null ? var.MyOffice.PatientChartActivity.recycled.tableConfig.location._(true) : null).
+                    _do(var.MyOffice.PatientChartActivity.recycled.tableConfig.lastVisitDate._ == null ? var.MyOffice.PatientChartActivity.recycled.tableConfig.lastVisitDate._(true) : null).
+                    stay()}
+                  #{jsf._do(var.MyOffice.PatientChartActivity.recycled.startDate._.toString().concat(var.MyOffice.PatientChartActivity.recycled.endDate._.toString()) != var.MyOffice.PatientChartActivity.recycled.dates._ ? 
+                    jsf._do(var.MyOffice.PatientChartActivity.recycled.list._(biz.patientChartActivityRecycledList(var.MyOffice.PatientChartActivity.recycled.startDate._, var.MyOffice.PatientChartActivity.recycled.endDate._, 1000))).
+                    _do(var.MyOffice.PatientChartActivity.recycled.dates._(var.MyOffice.PatientChartActivity.recycled.startDate._.toString().concat(var.MyOffice.PatientChartActivity.recycled.endDate._.toString()))).stay() : null).stay()} 
+                  <div class="float-left column">
+                     <h3 class="table-label">Recycled</h3>
+                     <div class="toolbar" style="margin-bottom:0.3em;">
+                        <label class="vlabel" style="margin-right: 0.5em;">Last Visit between</label>
+                        <h:inputText id="recycled_start_date" value="#{var.MyOffice.PatientChartActivity.recycled.startDate._}" styleClass="djsf_DateTextBox w6" style="font-size: 1.2em; margin-right: 0.5em;">
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.MyOffice.PatientChartActivity.recycled.selected.clear()).listen}"/>
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                        </h:inputText>
+                        <label class="vlabel" style="margin-right: 0.5em;">and</label>
+                        <h:inputText id="recycled_end_date" value="#{var.MyOffice.PatientChartActivity.recycled.endDate._}" styleClass="djsf_DateTextBox w6" style="font-size: 1.2em; margin-right: 0.5em;">
+                           <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(var.MyOffice.PatientChartActivity.recycled.selected.clear()).listen}"/>
+                           <f:convertDateTime dateStyle="short" locale="en"/>
+                        </h:inputText>
+                        <h:commandLink value="Report" 
+                                       action="#{jsf._do(var.PatientChartActivity.recycled.report.startDate._(var.MyOffice.PatientChartActivity.recycled.startDate._)).
+                                                 _do(var.PatientChartActivity.recycled.report.endDate._(var.MyOffice.PatientChartActivity.recycled.endDate._)).
+                                                 _do(var.PatientChartActivity.recycled.list._(var.MyOffice.PatientChartActivity.recycled.list._)).
+                                                 _to('PatientChartActivity/recycled-report').go}" 
+                                       target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>
+                     </div>
+                     <div jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.PatientChartActivity.recycled.list._}">
+                        <ui:include src="../PatientChartActivity/template/table.xhtml">
+                           <ui:param name="patientChartActivityList" value="#{var.MyOffice.PatientChartActivity.recycled.list._}"/>
+                           <ui:param name="tableConfig" value="#{var.MyOffice.PatientChartActivity.recycled.tableConfig}"/>
+                        </ui:include>
+                     </div>
+                  </div>
+                  <div style="clear: both;"/>
+               </div>
+            </div>            
+            #{jsf._do(jsf.global('myOffice', 'event').clear()).stay()}
+         </ui:define>
+
+      </ui:composition>
+
+   </body>
+</html>
