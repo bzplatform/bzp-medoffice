@@ -4,49 +4,35 @@
     <Scope Scope="Project">
         <Node id="script/dojoroot/dojox/io/proxy/xip_server.html" x="650" y="1650" zoom="true"/>
         <Node id="script/dojoroot/dojox/av/widget/resources/PlayButton.html" x="900" y="1650" zoom="true"/>
-        <Node id="LaboratoryResultTransaction/template/table.xhtml" x="400" y="450" zoom="true"/>
-        <Node id="EM/main.xhtml" x="400" y="2550" zoom="true"/>
-        <Node id="PatientHomecareClaim/edit.xhtml" x="3150" y="1350" zoom="true"/>
         <Node id="MyOffice/template/statistics-search.xhtml" x="1400" y="900" zoom="true"/>
         <Node id="Visit/profile-edit.xhtml" x="4400" y="450" zoom="true"/>
         <Node id="Visit/template/profile-form.xhtml" x="2150" y="1350" zoom="true"/>
         <Node id="Diagnosis/template/table.xhtml" x="150" y="1200" zoom="true"/>
-        <Node id="PatientHomecareClaim/template/form.xhtml" x="1900" y="2100" zoom="true"/>
-        <Node id="PatientTransportation/template/table.xhtml" x="150" y="1050" zoom="true"/>
         <Node id="script/dojoroot/dojo/resources/iframe_history.html" x="650" y="1500" zoom="true"/>
         <Node id="Visit/template/table.xhtml" x="1150" y="150" zoom="true"/>
         <Node id="MyOffice/template/options.xhtml" x="2650" y="150" zoom="true"/>
         <Node id="script/dojoroot/dojox/grid/resources/View.html" x="1900" y="1200" zoom="true"/>
         <Node id="script/dojoroot/dojox/gfx/resources/gfxSvgProxyFrame.html" x="1900" y="1350" zoom="true"/>
-        <Node id="OfficeProvider/main.xhtml" x="1650" y="450" zoom="true"/>
         <Node id="template/page-footer.xhtml" x="1400" y="300" zoom="true"/>
+        <Node id="OfficeProvider/main.xhtml" x="1650" y="450" zoom="true"/>
         <Node id="script/dojoroot/dojox/layout/resources/ExpandoPane.html" x="1650" y="1350" zoom="true"/>
         <Node id="Visit/template/diagnosis.xhtml" x="900" y="2400" zoom="true"/>
-        <Node id="hl7/ORM_O01.xml.xhtml" x="1650" y="150" zoom="true"/>
-        <Node id="LaboratoryResultTransaction/new.xhtml" x="1150" y="900" zoom="true"/>
         <Node id="script/dojoroot/dojox/av/widget/resources/Status.html" x="2650" y="900" zoom="true"/>
         <Node id="script/dojoroot/dojox/grid/resources/_Grid.html" x="2150" y="300" zoom="true"/>
-        <Node id="PatientTransportationAppointment/report.xhtml" x="2150" y="600" zoom="true"/>
         <Node id="script/dojoroot/dojox/editor/plugins/resources/insertTable.html" x="2400" y="1050" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/requisition-59.xhtml" x="2650" y="300" zoom="true"/>
         <Node id="MyOffice/template/search.xhtml" x="150" y="1650" zoom="true"/>
         <Node id="script/dojoroot/dojox/io/proxy/xip_client.html" x="3400" y="300" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/requisition-102.xhtml" x="900" y="2250" zoom="true"/>
         <Node id="Visit/template/add-diagnosis-block.xhtml" x="2650" y="1200" zoom="true"/>
         <Node id="MyOffice/statistics.xhtml" x="1150" y="1050" zoom="true"/>
-        <Node id="LaboratoryAccount/main.xhtml" x="2400" y="150" zoom="true"/>
-        <Node id="PatientTransportationAppointment/template/table.xhtml" x="900" y="1200" zoom="true"/>
         <Node id="template/tab-navigation.xhtml" x="1650" y="600" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/requisition-25.xhtml" x="1400" y="1050" zoom="true"/>
-        <Node id="script/dojoroot/dojox/atom/widget/templates/FeedEntryEditor.html" x="1150" y="1800" zoom="true"/>
         <Node id="Visit/profile.xhtml" x="650" y="2250" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/template/search.xhtml" x="400" y="750" zoom="true"/>
+        <Node id="script/dojoroot/dojox/atom/widget/templates/FeedEntryEditor.html" x="1150" y="1800" zoom="true"/>
         <Node id="MyOffice/changed-transportation-report.xhtml" x="400" y="150" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/Dialog/Dialog.html" x="400" y="1800" zoom="true"/>
         <Node id="PatientNote/template/table.xhtml" x="2650" y="750" zoom="true"/>
         <Node id="Referral/batch.xhtml" x="1150" y="2550" zoom="true"/>
-        <Node id="script/dojoroot/dojox/widget/UpgradeBar/UpgradeBar.html" x="1400" y="1200" zoom="true"/>
         <Node id="template/page-header.xhtml" x="1150" y="300" zoom="true"/>
+        <Node id="script/dojoroot/dojox/widget/UpgradeBar/UpgradeBar.html" x="1400" y="1200" zoom="true"/>
         <Node id="OfficeProvider/template/search.xhtml" x="2150" y="150" zoom="true"/>
         <Node id="script/dojoroot/dojox/av/widget/resources/VolumeButton.html" x="3150" y="150" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/Calendar/CalendarDay.html" x="3900" y="150" zoom="true"/>
@@ -54,28 +40,17 @@
         <Node id="PatientInsurance/template/table.xhtml" x="900" y="2550" zoom="true"/>
         <Node id="Referral/edit.xhtml" x="2150" y="1950" zoom="true"/>
         <Node id="Visit/template/procedure-toolbar.xhtml" x="650" y="2550" zoom="true"/>
-        <Node id="EM/edit.xhtml" x="4900" y="150" zoom="true"/>
         <Node id="Patient/template/options.xhtml" x="650" y="750" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/requisition-101.xhtml" x="1150" y="2100" zoom="true"/>
         <Node id="Visit/template/procedure.xhtml" x="3150" y="1200" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/Wizard/Wizard.html" x="1150" y="1350" zoom="true"/>
         <Node id="VisitProcedure/template/table.xhtml" x="1150" y="2400" zoom="true"/>
-        <Node id="PatientHomecare/template/view-table.xhtml" x="4900" y="300" zoom="true"/>
-        <Node id="LaboratoryResultTransaction/edit.xhtml" x="650" y="1200" zoom="true"/>
         <Node id="login.xhtml" x="400" y="600" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/profile.xhtml" x="900" y="1050" zoom="true"/>
         <Node id="Visit/template/search.xhtml" x="400" y="300" zoom="true"/>
         <Node id="Visit/template/diagnosis-toolbar.xhtml" x="4400" y="300" zoom="true"/>
         <Node id="script/dojoroot/dojox/layout/resources/ScrollPane.html" x="900" y="1350" zoom="true"/>
         <Node id="MyOffice/all-appointments-report.xhtml" x="650" y="2700" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/requisition-60.xhtml" x="2400" y="300" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/ColorPicker/ColorPicker.html" x="400" y="1650" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/template/profile-form.xhtml" x="1400" y="750" zoom="true"/>
-        <Node id="LaboratoryBillingClaim/template/search.xhtml" x="150" y="1350" zoom="true"/>
-        <Node id="app-builder/app.xhtml" x="1400" y="2400" zoom="true"/>
         <Node id="template/messenger.xhtml" x="400" y="1500" zoom="true"/>
-        <Node id="LaboratoryResultTransaction/template/search.xhtml" x="150" y="750" zoom="true"/>
-        <Node id="PatientHomecare/template/table.xhtml" x="3650" y="1050" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/Calendar/CalendarMonthYear.html" x="1650" y="900" zoom="true"/>
         <Node id="script/dojoroot/dojox/form/resources/FilePickerTextBox.html" x="1900" y="1050" zoom="true"/>
         <Node id="script/dojoroot/dojox/xmpp/widget/templates/ChatSession.html" x="2900" y="600" zoom="true"/>
@@ -84,59 +59,41 @@
         <Node id="MyOffice/patient-homecare-activities-report.xhtml" x="5150" y="150" zoom="true"/>
         <Node id="Visit/edit.xhtml" x="1900" y="750" zoom="true"/>
         <Node id="Appointment/template/options.xhtml" x="400" y="1350" zoom="true"/>
-        <Node id="LaboratoryResultTransaction/message.xhtml" x="3650" y="600" zoom="true"/>
         <Node id="script/dojoroot/dojox/layout/resources/FloatingPane.html" x="150" y="2100" zoom="true"/>
         <Node id="script/dojoroot/dojox/atom/widget/templates/FeedViewer.html" x="2400" y="900" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/FilePicker/_FileInfoPane.html" x="2900" y="750" zoom="true"/>
         <Node id="Diagnosis/template/search.xhtml" x="900" y="600" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/SortList/SortList.html" x="1650" y="1200" zoom="true"/>
-        <Node id="LaboratoryAccount/template/options.xhtml" x="1400" y="600" zoom="true"/>
         <Node id="script/dojoroot/dojox/image/resources/Lightbox.html" x="650" y="900" zoom="true"/>
         <Node id="script/dojoroot/dojox/form/resources/FileInput.html" x="2900" y="300" zoom="true"/>
-        <Node id="PatientHomecare/report.xhtml" x="400" y="2850" zoom="true"/>
         <Node id="script/dojoroot/dojox/atom/widget/templates/FeedViewerEntry.html" x="400" y="1950" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/requisition-97.xhtml" x="3400" y="1050" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/gauge/_Indicator.html" x="1400" y="1350" zoom="true"/>
         <Node id="OfficeProvider/template/options.xhtml" x="650" y="1050" zoom="true"/>
         <Node id="script/dojoroot/dojox/layout/resources/GridContainer.html" x="1150" y="1500" zoom="true"/>
-        <Node id="LaboratoryBillingClaim/template/table.xhtml" x="150" y="600" zoom="true"/>
         <Node id="Visit/template/procedure-text.xhtml" x="1650" y="1950" zoom="true"/>
-        <Node id="LaboratoryAccount/template/search.xhtml" x="1900" y="450" zoom="true"/>
-        <Node id="LaboratoryResultTransaction/batch.xhtml" x="1150" y="2250" zoom="true"/>
         <Node id="script/dojoroot/dojo/resources/blank.html" x="3650" y="150" zoom="true"/>
-        <Node id="PatientHomecareRequest/template/table.xhtml" x="1650" y="2250" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/requisition-b56.xhtml" x="3900" y="900" zoom="true"/>
         <Node id="Patient/template/table.xhtml" x="400" y="900" zoom="true"/>
         <Node id="Visit/template/diagnosis-section.xhtml" x="4150" y="450" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/template/table.xhtml" x="1150" y="450" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/DocTester/DocTester.html" x="900" y="1800" zoom="true"/>
-        <Node id="Visit/template/add-procedure-block.xhtml" x="2900" y="1350" zoom="true"/>
         <Node id="script/dojoroot/dojox/grid/resources/Expando.html" x="2400" y="750" zoom="true"/>
+        <Node id="Visit/template/add-procedure-block.xhtml" x="2900" y="1350" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/gauge/_Gauge.html" x="900" y="1500" zoom="true"/>
         <Node id="MyOffice/transportation-request-report.xhtml" x="650" y="1350" zoom="true"/>
         <Node id="OfficeProvider/template/table.xhtml" x="1400" y="450" zoom="true"/>
         <Node id="Patient/main.xhtml" x="400" y="1050" zoom="true"/>
         <Node id="Visit/template/options.xhtml" x="900" y="300" zoom="true"/>
-        <Node id="script/dojoroot/dojox/form/resources/PasswordValidator.html" x="2150" y="1200" zoom="true"/>
         <Node id="script/dojoroot/dojox/form/resources/FileInputAuto.html" x="3650" y="300" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/edit.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="script/dojoroot/dojox/form/resources/PasswordValidator.html" x="2150" y="1200" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/Calendar/CalendarYear.html" x="2150" y="900" zoom="true"/>
-        <Node id="LaboratoryBillingClaim/template/form.xhtml" x="1150" y="750" zoom="true"/>
         <Node id="script/dojoroot/dojox/av/widget/resources/ProgressSlider.html" x="150" y="1800" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/template/biopsy-form.xhtml" x="150" y="3000" zoom="true"/>
         <Node id="script/dojoroot/dojox/image/resources/Gallery.html" x="2150" y="1050" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/RollingList/RollingList.html" x="2650" y="600" zoom="true"/>
         <Node id="Referral/template/table.xhtml" x="3400" y="1200" zoom="true"/>
-        <Node id="PatientTransportation/map-2015.xhtml" x="1650" y="300" zoom="true"/>
         <Node id="Appointment/template/table.xhtml" x="1650" y="750" zoom="true"/>
         <Node id="script/dojoroot/dojox/form/resources/VerticalRangeSlider.html" x="650" y="600" zoom="true"/>
         <Node id="script/dojoroot/dojox/atom/widget/templates/PeopleEditor.html" x="1150" y="600" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/new.xhtml" x="650" y="150" zoom="true"/>
-        <Node id="PatientHomecareClaim/template/table.xhtml" x="2900" y="1500" zoom="true"/>
-        <Node id="LaboratoryResultTransaction/template/abc-table.xhtml" x="2150" y="450" zoom="true"/>
-        <Node id="denied.xhtml" x="900" y="450" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/template/form.xhtml" x="150" y="150" zoom="true"/>
         <Node id="script/dojoroot/dojox/image/resources/SlideShow.html" x="3400" y="450" zoom="true"/>
+        <Node id="denied.xhtml" x="900" y="450" zoom="true"/>
         <Node id="script/dojoroot/dojox/av/widget/resources/Player.html" x="1150" y="1650" zoom="true"/>
         <Node id="Appointment/template/search.xhtml" x="150" y="1500" zoom="true"/>
         <Node id="script/dojoroot/dojox/form/resources/HorizontalRangeSlider.html" x="150" y="1950" zoom="true"/>
@@ -145,25 +102,20 @@
         <Node id="script/dojoroot/dojox/widget/Pager/Pager.html" x="150" y="900" zoom="true"/>
         <Node id="MyOffice/appointments-with-expired-transportation-report.xhtml" x="400" y="1200" zoom="true"/>
         <Node id="script/dojoroot/dojox/form/resources/_CheckedMultiSelectItem.html" x="1650" y="1500" zoom="true"/>
-        <Node id="MyOffice/posted-referral-report.xhtml" x="2400" y="450" zoom="true"/>
-        <Node id="script/dojoroot/dojox/widget/Calendar/CalendarMonth.html" x="1650" y="1050" zoom="true"/>
         <Node id="script/dojoroot/dojox/atom/widget/templates/EntryHeader.html" x="3150" y="600" zoom="true"/>
-        <Node id="EM/template/edit-form.xhtml" x="1900" y="1950" zoom="true"/>
+        <Node id="script/dojoroot/dojox/widget/Calendar/CalendarMonth.html" x="1650" y="1050" zoom="true"/>
+        <Node id="MyOffice/posted-referral-report.xhtml" x="2400" y="450" zoom="true"/>
         <Node id="script/dojoroot/dojox/atom/widget/templates/FeedViewerGrouping.html" x="400" y="2100" zoom="true"/>
         <Node id="Visit/template/profile-edit-form.xhtml" x="650" y="2400" zoom="true"/>
-        <Node id="LaboratoryResultTransaction/report.xhtml" x="650" y="300" zoom="true"/>
-        <Node id="LaboratoryResultTransaction/template/form.xhtml" x="650" y="450" zoom="true"/>
         <Node id="Visit/template/procedure-section.xhtml" x="2900" y="1200" zoom="true"/>
         <Node id="Referral/template/form.xhtml" x="4150" y="750" zoom="true"/>
         <Node id="MyOffice/main.xhtml" x="1900" y="600" zoom="true"/>
         <Node id="script/dojoroot/dojox/atom/widget/templates/FeedEntryViewer.html" x="1150" y="1200" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/Calendar/Calendar.html" x="2650" y="450" zoom="true"/>
-        <Node id="template/sorter.xhtml" x="900" y="900" zoom="true"/>
         <Node id="script/dojoroot/dojox/editor/plugins/resources/modifyTable.html" x="150" y="2250" zoom="true"/>
+        <Node id="template/sorter.xhtml" x="900" y="900" zoom="true"/>
         <Node id="Referral/new.xhtml" x="4400" y="600" zoom="true"/>
         <Node id="script/dojoroot/dojox/form/resources/CheckedMultiSelect.html" x="3400" y="150" zoom="true"/>
-        <Node id="LaboratoryOrderTransaction/requisition-56.xhtml" x="4650" y="450" zoom="true"/>
-        <Node id="LaboratoryBillingClaim/edit.xhtml" x="1900" y="300" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>

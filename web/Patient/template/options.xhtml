@@ -20,16 +20,8 @@
                         value="AUTHORIZ." styleClass="#{jsf.global('patient', 'view')['PatientAuthorization/list'] ? 'selected' : ''}">
             <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
          </h:commandLink>
-         <h:commandLink action="#{jsf._do(jsf.global('patient', 'view')['PatientTransportation/list'] ? jsf.global('patient', 'view').put('PatientTransportation/list', false) : jsf.global('patient', 'view').put('PatientTransportation/list', true)).stay}"
-                        value="TRANS." styleClass="#{jsf.global('patient', 'view')['PatientTransportation/list'] ? 'selected' : ''}" title="TRANSPORTATION">
-            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-         </h:commandLink>
          <h:commandLink action="#{jsf._do(jsf.global('patient', 'view')['PatientNote/list'] ? jsf.global('patient', 'view').put('PatientNote/list', false) : jsf.global('patient', 'view').put('PatientNote/list', true)).stay}"
                         value="NOTES" styleClass="#{jsf.global('patient', 'view')['PatientNote/list'] ? 'selected' : ''}">
-            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-         </h:commandLink>
-         <h:commandLink action="#{jsf._do(jsf.global('patient', 'view')['PatientChartActivity/list'] ? jsf.global('patient', 'view').put('PatientChartActivity/list', false) : jsf.global('patient', 'view').put('PatientChartActivity/list', true)).stay}"
-                        value="CHARTS" styleClass="#{jsf.global('patient', 'view')['PatientChartActivity/list'] ? 'selected' : ''}">
             <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
          </h:commandLink>
          <h:commandLink action="#{jsf._do(jsf.global('patient', 'view')['Patient/merge'] ? jsf.global('patient', 'view').put('Patient/merge', false) : jsf.global('patient', 'view').put('Patient/merge', true)).stay}"
@@ -49,24 +41,12 @@
                         value="VISITS" styleClass="#{jsf.global('patient', 'view')['Visit/list'] ? 'selected' : ''}">
             <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
          </h:commandLink>
-         <h:commandLink action="#{jsf._do(jsf.global('patient', 'view')['LaboratoryOrderTransaction/list'] ? jsf.global('patient', 'view').put('LaboratoryOrderTransaction/list', false) : jsf.global('patient', 'view').put('LaboratoryOrderTransaction/list', true)).stay}"
-                        value="LAB.ORDERS" styleClass="#{jsf.global('patient', 'view')['LaboratoryOrderTransaction/list'] ? 'selected' : ''}">
-            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-         </h:commandLink>
-         <h:commandLink action="#{jsf._do(jsf.global('patient', 'view')['LaboratoryResultTransaction/list'] ? jsf.global('patient', 'view').put('LaboratoryResultTransaction/list', false) : jsf.global('patient', 'view').put('LaboratoryResultTransaction/list', true)).stay}"
-                        value="LAB.RESULTS" styleClass="#{jsf.global('patient', 'view')['LaboratoryResultTransaction/list'] ? 'selected' : ''}">
-            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-         </h:commandLink>
          <h:commandLink action="#{jsf._do(jsf.global('patient', 'view')['Referral/list'] ? jsf.global('patient', 'view').put('Referral/list', false) : jsf.global('patient', 'view').put('Referral/list', true)).stay}"
                         value="REFS" styleClass="#{jsf.global('patient', 'view')['Referral/list'] ? 'selected' : ''}">
             <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
          </h:commandLink>
          <h:commandLink action="#{jsf._do(jsf.global('patient', 'view')['ReferralResult/list'] ? jsf.global('patient', 'view').put('ReferralResult/list', false) : jsf.global('patient', 'view').put('ReferralResult/list', true)).stay}"
                         value="RESULTS" styleClass="#{jsf.global('patient', 'view')['ReferralResult/list'] ? 'selected' : ''}">
-            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-         </h:commandLink>
-         <h:commandLink action="#{jsf._do(jsf.global('patient', 'view')['PatientHomecare/list'] ? jsf.global('patient', 'view').put('PatientHomecare/list', false) : jsf.global('patient', 'view').put('PatientHomecare/list', true)).stay}"
-                        value="HOME CARE" styleClass="#{jsf.global('patient', 'view')['PatientHomecare/list'] ? 'selected' : ''}">
             <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
          </h:commandLink>
          <br/>

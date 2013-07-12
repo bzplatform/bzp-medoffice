@@ -18,6 +18,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import jsftoolkit.controller.AccessController;
+import jsftoolkit.util.FacesUtils;
 import medoffice.entity.Allergy;
 import medoffice.entity.Appointment;
 import medoffice.entity.Cvx;
@@ -41,6 +43,7 @@ import medoffice.entity.PatientInsurance;
 import medoffice.entity.PatientMedication;
 import medoffice.entity.PatientNote;
 import medoffice.entity.PatientPastMedicalHistory;
+import medoffice.entity.PatientRecordLog;
 import medoffice.entity.PatientSocialHistory;
 import medoffice.entity.PatientStatus;
 import medoffice.entity.PaymentMethod;
@@ -100,7 +103,7 @@ public class BizController {
          }
       }
       return null;
-   }  
+   }
 
    public Object findByCode(String entityName, String code) {
       Map params = new HashMap();
@@ -117,7 +120,7 @@ public class BizController {
       return crudService.find(code, MyOffice.class);
    }
 
-    public void selectAll(Map selectMap, List list) {
+   public void selectAll(Map selectMap, List list) {
       for (Object obj : list) {
          selectMap.put(obj, true);
       }
@@ -471,7 +474,7 @@ public class BizController {
          visitProcedure.setProcedure(procedure);
          visitProcedure.setVisit(visit);
          visit.getProcedureList().add(visitProcedure);
-      } 
+      }
    }
 
    public Specialty specialty(int id) {
@@ -1287,7 +1290,7 @@ public class BizController {
       if (insurance.getName() == null || insurance.getName().trim().isEmpty()) {
          insuranceValidationMap.put("name", true);
       }
-      if (insurance.getTypeId() == null) {
+      if (insurance.getTypeCode() == null) {
          insuranceValidationMap.put("type", true);
       }
       return insuranceValidationMap;
@@ -1513,7 +1516,7 @@ public class BizController {
          }
       } else {
          for (ProviderAppointmentCategory providerAppointmentCategory : providerAppointmentCategoryList) {
-            if (! providerAppointmentCategory.getVisitCategory().getCode().equals("NP")) {
+            if (!providerAppointmentCategory.getVisitCategory().getCode().equals("NP")) {
                preferred = providerAppointmentCategory;
                break;
             }
@@ -1543,7 +1546,7 @@ public class BizController {
          }
       } else {
          for (ProviderAppointmentCategory providerAppointmentCategory : providerAppointmentCategoryList) {
-            if (! providerAppointmentCategory.getVisitCategory().getCode().equals("NP")) {
+            if (!providerAppointmentCategory.getVisitCategory().getCode().equals("NP")) {
                preferred = providerAppointmentCategory;
                break;
             }
@@ -1637,7 +1640,7 @@ public class BizController {
       Map params = new HashMap();
       params.put("patientId", patient.getId());
       params.put("date", date);
-      int count = crudService.searchCount("SELECT a FROM Appointment a WHERE a.patient.id = :patientId AND a.date = :date AND a.stateID = 1", params, 1, "_MEDBASE");
+      int count = crudService.searchCount("SELECT a FROM Appointment a WHERE a.patient.id = :patientId AND a.date = :date AND a.status = 'OPEN'", params, 1, "_MEDBASE");
       return count > 0;
    }
 
@@ -1646,21 +1649,21 @@ public class BizController {
       if (lastVisit != null && date.equals(lastVisit.getDate())) {
          String npi = lastVisit.getOfficeProvider().getAssociatedNpi();
          if (npi != null) {
-         ReferringProvider referringProvider = crudService.find(npi, ReferringProvider.class);
-         return referringProvider;
+            ReferringProvider referringProvider = crudService.find(npi, ReferringProvider.class);
+            return referringProvider;
          }
       }
       return null;
    }
 
-   public String providerParticipateInsuranceWarning(int providerId, Integer insuranceId) {
+   public String providerParticipateInsuranceWarning(String providerNpi, Integer insuranceId) {
       if (insuranceId == null || insuranceId == 0) {
          return "Patient doesn't have insurance";
       }
       Map params = new HashMap();
-      params.put("providerId", providerId);
+      params.put("providerNpi", providerNpi);
       params.put("insuranceId", insuranceId);
-      int count = crudService.searchCount("SELECT pi FROM ProviderInsurance pi WHERE pi.insuranceId = :insuranceId AND pi.providerId = :providerId", params, 0, "_MEDBASE");
+      int count = crudService.searchCount("SELECT pi FROM ProviderInsurance pi WHERE pi.insuranceId = :insuranceId AND pi.providerNpi = :providerNpi", params, 0, "_MEDBASE");
       if (count > 0) {
          return null;
       }
@@ -2699,8 +2702,8 @@ public class BizController {
          patientInsuranceValidationMap.put("drug", true);
       }
       for (PatientMedication patientMedication : medication.getPatient().getMedicationList()) {
-         if (!patientMedication.equals(medication) && patientMedication.getActive() && patientMedication.getDrugCode() != null && 
-                 patientMedication.getDrugCode().equals(medication.getDrugCode())) {
+         if (!patientMedication.equals(medication) && patientMedication.getActive() && patientMedication.getDrugCode() != null
+                 && patientMedication.getDrugCode().equals(medication.getDrugCode())) {
             patientInsuranceValidationMap.put("duplicate", true);
             break;
          }
@@ -2769,7 +2772,7 @@ public class BizController {
 
    public void assignDrug(Object obj, String drugStr) {
       if (obj != null && obj instanceof PatientMedication) {
-          assignDrug((PatientMedication) obj, drugStr);
+         assignDrug((PatientMedication) obj, drugStr);
       }
    }
 
@@ -3212,4 +3215,15 @@ public class BizController {
       }
    }
 
+   public void patientRecordLog(String source, int sourceRecordId, String event) {
+      PatientRecordLog log = new PatientRecordLog();
+      log.setApplication("medoffice");
+      log.setSource(source);
+      log.setSourceRecordId(sourceRecordId);
+      log.setEvent(event);
+      log.setDatetime(new Date());
+      AccessController accessController = (AccessController) FacesUtils.getManagedObject("access");
+      log.setUserId(accessController.getUser().getId());
+      crudService.create(log);
+   }
 }

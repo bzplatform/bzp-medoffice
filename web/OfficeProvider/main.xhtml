@@ -248,7 +248,7 @@
                            </h:selectOneMenu>
                            #{var.OfficeProvider.officeProviderList._ == null ? jsf._do(var.OfficeProvider.officeProviderSearch.put('specialtyId', var.OfficeProvider.specialtyId._))._do(var.OfficeProvider.officeProviderList._(jsf.search('OfficeProvider', 'o.alias', var.OfficeProvider.officeProviderSearch))).stay() : null}
                            #{var.OfficeProvider.officeProvider._ == null and ! empty var.OfficeProvider.officeProviderList._ ? var.OfficeProvider.officeProvider._(var.OfficeProvider.officeProviderList._[0]) : null}
-                           #{var.OfficeProvider.providerParticipateInsuranceWarning._(biz.providerParticipateInsuranceWarning(var.OfficeProvider.officeProvider._.id, patientList.get(0).primaryInsuranceID))}
+                           #{var.OfficeProvider.providerParticipateInsuranceWarning._(biz.providerParticipateInsuranceWarning(var.OfficeProvider.officeProvider._.associatedNpi, patientList.get(0).primaryInsuranceId))}
                            <label class="vlabel">Provider:</label>
                            <h:selectOneMenu value="#{var.OfficeProvider.officeProvider._}" style="width: 16em;#{empty var.OfficeProvider.providerParticipateInsuranceWarning._ ? '' :'border: solid red 2px;'}" title="#{var.OfficeProvider.providerParticipateInsuranceWarning._}">
                               <f:selectItems value="#{var.OfficeProvider.officeProviderList._}" var="officeProvider" itemLabel="#{officeProvider.alias}"/>
@@ -259,7 +259,7 @@
                            #{var.OfficeProvider.providerAppointmentCategory._ == null and ! empty var.OfficeProvider.providerAppointmentCategoryList._ ? var.OfficeProvider.providerAppointmentCategory._(biz.preferredProviderAppointmentCategory(var.OfficeProvider.providerAppointmentCategoryList._, patientList, var.OfficeProvider.specialtyId._)) : null}
                            <label class="vlabel">Category:</label>
                            <h:selectOneMenu value="#{var.OfficeProvider.providerAppointmentCategory._}" style="width: 4em;">
-                              <f:selectItems value="#{var.OfficeProvider.providerAppointmentCategoryList._}" var="providerAppointmentCategory" itemLabel="#{providerAppointmentCategory.appointmentCategory.shortName}"/>
+                              <f:selectItems value="#{var.OfficeProvider.providerAppointmentCategoryList._}" var="providerAppointmentCategory" itemLabel="#{providerAppointmentCategory.visitCategory.name}"/>
                               <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.OfficeProvider.providerAppointmentDuration._(null))._do(var.OfficeProvider.timePeriodManagerList._(null)).listen}"/>
                               <f:converter converterId="EntityConverter"/>
                            </h:selectOneMenu>
