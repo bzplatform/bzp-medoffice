@@ -7,19 +7,6 @@
    <body>
       <ui:composition>
          <div class="tabs border views">
-            #{jsf.global('myOffice')['view'] == null ? jsf._do(jsf.global('myOffice').put('subview', 'Patient Transportation')).stay() : null}
-            <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'Patient Transportation')).
-                                     _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
-                           value="TRANSPORT"
-                           styleClass="#{jsf.global('myOffice')['subview'] == 'Patient Transportation' ? 'selected' : ''}"/>
-            <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'Patient Homecare')).
-                                     _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
-                           value="HCPO"
-                           styleClass="#{jsf.global('myOffice')['subview'] == 'Patient Homecare' ? 'selected' : ''}"/>
-            <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'Patient Homecare Claim')).
-                                     _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
-                           value="HCPO CLAIMS"
-                           styleClass="#{jsf.global('myOffice')['subview'] == 'Patient Homecare Claim' ? 'selected' : ''}"/>
             <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'Referral')).
                                      _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
                            value="REFERRAL"
@@ -32,154 +19,9 @@
                                      _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
                            value="AUTH. VISITS"
                            styleClass="#{jsf.global('myOffice')['subview'] == 'AuthorizableVisit' ? 'selected' : ''}"/>
-            <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'PatientChartActivity')).
-                                     _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
-                           value="CHARTS"
-                           styleClass="#{jsf.global('myOffice')['subview'] == 'PatientChartActivity' ? 'selected' : ''}"/>
          </div>
          <div class="menu form" style="border-width: 2px;">
             <div class="body" style="padding-top: 0.3em; width:44.2em;">
-               <ui:fragment rendered="#{jsf.global('myOffice')['subview'] == 'Patient Transportation'}">
-                  <label for="transportationCompany">Transportation Company:</label>
-                  #{transportationCompanyList == null ?
-                    jsf._runSearch('PatientTransportationCompany', null, jsf.newMap(), 'transportationCompanyList').stay() : ''}
-                  #{jsf.global('myOffice', 'var')['transportationCompany'] == null and transportationCompanyList.size() == 1  ?
-                    jsf._do(jsf.global('myOffice', 'var').put('transportationCompany', transportationCompanyList.get(0))).stay() : ''}
-                  <h:selectOneMenu id="transportationCompany" value="#{jsf.global('myOffice', 'var')['transportationCompany']}"
-                                   valueChangeListener="#{jsf._do(jsf.global('myOffice', 'event').put('refresh', true)).listen}"
-                                   style="width: 24em;" title="Transportation Company" onchange="document.forms[0].submit()">
-                     <f:selectItem itemValue="#{null}" itemLabel="NONE"/>
-                     <f:selectItems value="#{transportationCompanyList}" var="transportationCompany" itemLabel="#{transportationCompany.name}"/>
-                     <f:converter converterId="EntityConverter"/>
-                  </h:selectOneMenu>
-                  &nbsp;
-                  #{jsf.global('myOffice', 'var')['date'] == null ? jsf._do(jsf.global('myOffice', 'var').put('date', transportation.tomorrow())).stay() : ''}
-                  <label for="date" class="vlabel">Date:</label>
-                  <h:inputText id="date" value="#{jsf.global('myOffice', 'var')['date']}" styleClass="djsf_immediate_DateTextBox w6"
-                               valueChangeListener="#{jsf._do(jsf.global('myOffice', 'event').put('refresh', true)).listen}">
-                     <f:convertDateTime dateStyle="short" locale="en"/>
-                  </h:inputText>
-                  <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'Patient Transportation'}"
-                       style="display:block; margin-left:-0.1em; margin-bottom:0.5em;">
-                     <label class="vlabel"><h:selectBooleanCheckbox
-                           value="#{jsf.global('myOffice', 'view')['PatientTransportationAppointment:UNASSIGNED/list']}"
-                           valueChangeListener="#{jsf._do(jsf.global('myOffice', 'event').put('refresh', true)).listen}"
-                           onchange="document.forms[0].submit()"/> Eligible Appointments</label>
-                     <label class="vlabel"><h:selectBooleanCheckbox
-                           value="#{jsf.global('myOffice', 'view')['PatientTransportationAppointment:ASSIGNED/list']}"
-                           valueChangeListener="#{jsf._do(jsf.global('myOffice', 'event').put('refresh:PatientTransportationAppointment:ASSIGNED', true)).listen}"
-                           onchange="document.forms[0].submit()"/> Assigned Transportation</label>
-                  </div>
-               </ui:fragment>
-               <ui:fragment rendered="#{jsf.global('myOffice')['subview'] == 'Patient Homecare'}">
-                  #{empty var.MyOffice.PatientHomecare.providerSearchMap ? jsf._do(var.MyOffice.PatientHomecare.providerSearchMap.put('specialtyId', 1)).stay() : null}
-                  #{empty var.MyOffice.PatientHomecare.providerList ? jsf._do(var.MyOffice.PatientHomecare.put('providerList', jsf.search('Provider', 'p.lastName', var.MyOffice.PatientHomecare.providerSearchMap))).stay() : null}
-                  <label>Provider:</label>
-                  <h:selectOneMenu value="#{var.MyOffice.PatientHomecare.provider._}" title="Provider" styleClass="w16">
-                     <f:selectItem itemValue="" itemLabel="ALL"/>
-                     <f:selectItems value="#{var.MyOffice.PatientHomecare.providerList}" var="provider" itemLabel="#{provider.lastName}, #{provider.firstName}"/>
-                     <f:converter converterId="EntityConverter"/>
-                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-                  </h:selectOneMenu>
-                  <label style="margin-left: 0.5em;">Agency:</label>
-                  #{empty var.MyOffice.PatientHomecare.agencyList ? jsf._do(var.MyOffice.PatientHomecare.put('agencyList', jsf.search('HomeCareAgency', 'h.name', jsf.newMap()))).stay() : null}
-                  <h:selectOneMenu value="#{var.MyOffice.PatientHomecare.homeCareAgency._}" title="Agency" style="width: 28em;">
-                     <f:selectItem itemValue="" itemLabel="ALL"/>
-                     <f:selectItems value="#{var.MyOffice.PatientHomecare.agencyList}" var="agency" itemLabel="#{agency.name}"/>
-                     <f:converter converterId="EntityConverter"/>
-                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-                  </h:selectOneMenu>
-                  <label for="status" style="width: 4em; display: inline-block;">Status:</label>
-                  <h:selectOneMenu value="#{var.MyOffice.PatientHomecare.status._}" title="Status" styleClass="w12">
-                     <f:selectItem itemValue="" itemLabel="ALL"/>
-                     <f:selectItem itemValue="CLOSED" itemLabel="Claim created"/>
-                     <f:selectItem itemValue="OPEN" itemLabel="Not Claim created"/>                    
-                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-                  </h:selectOneMenu>
-                  <label style="margin-left: 0.5em;">From:</label>
-                  #{jsf._do(var.MyOffice.PatientHomecare.startDate._ == null ? var.MyOffice.PatientHomecare.startDate._(jsf.newDate) : '').stay()}
-                  <h:inputText id="startDate"
-                               value="#{var.MyOffice.PatientHomecare.startDate._}"
-                               styleClass="djsf_DateTextBox w6"   
-                               onchange="$('.apply-button').css('visibility', 'visible');return false;">
-                     <f:convertDateTime dateStyle="short" locale="en"/>
-                  </h:inputText>
-                  <label>To:</label>
-                  #{jsf._do(var.MyOffice.PatientHomecare.endDate._ == null ? var.MyOffice.PatientHomecare.endDate._(jsf.newDate) : '').stay()}
-                  <h:inputText id="endDate"
-                               value="#{var.MyOffice.PatientHomecare.endDate._}"
-                               styleClass="djsf_DateTextBox w6"   
-                               onchange="$('.apply-button').css('visibility', 'visible');return false;">
-                     <f:convertDateTime dateStyle="short" locale="en"/>
-                  </h:inputText>
-                  <h:commandButton action="#{jsf.stay}" value="Apply" styleClass="apply-button" style="visibility:hidden; width:4em; margin-left: 0.25em;"/>
-                  #{jsf._do(var.MyOffice.PatientHomecare.search.put('start_issueDate', var.MyOffice.PatientHomecare.startDate._)).
-                    _do(var.MyOffice.PatientHomecare.search.put('end_issueDate', var.MyOffice.PatientHomecare.endDate._)).
-                    _do(var.MyOffice.PatientHomecare.search.put('homeCareAgency', var.MyOffice.PatientHomecare.homeCareAgency._)).
-                    _do(empty var.MyOffice.PatientHomecare.status._ ? var.MyOffice.PatientHomecare.search.put('claimCreated', null) : null).
-                    _do(var.MyOffice.PatientHomecare.status._ == 'CLOSED' ? var.MyOffice.PatientHomecare.search.put('claimCreated', true) : null).
-                    _do(var.MyOffice.PatientHomecare.status._ == 'OPEN' ? var.MyOffice.PatientHomecare.search.put('claimCreated', false) : null).
-                    _do(var.MyOffice.PatientHomecare.search.put('provider', var.MyOffice.PatientHomecare.provider._)).
-                    _do(var.MyOffice.PatientHomecare.search.put('myOfficeCode', myOfficeCode)).
-                    _do(var.MyOffice.PatientHomecare.search._ != var.MyOffice.PatientHomecare.search.toString().hashCode() ? var.MyOffice.PatientHomecare.put('list', jsf.search('PatientHomecare', 'p.issueDate DESC', var.MyOffice.PatientHomecare.search)): null).
-                    _do(var.MyOffice.PatientHomecare.search._ != var.MyOffice.PatientHomecare.search.toString().hashCode() ? var.MyOffice.PatientHomecare.search._(var.MyOffice.PatientHomecare.search.toString().hashCode()) : null).
-                    stay()}
-               </ui:fragment>
-               <ui:fragment rendered="#{jsf.global('myOffice')['subview'] == 'Patient Homecare Claim'}">
-                  #{empty var.MyOffice.PatientHomecare.providerSearchMap ? jsf._do(var.MyOffice.PatientHomecare.providerSearchMap.put('specialtyId', 1)).stay() : null}
-                  #{empty var.MyOffice.PatientHomecare.providerList ? jsf._do(var.MyOffice.PatientHomecare.put('providerList', jsf.search('Provider', 'p.lastName', var.MyOffice.PatientHomecareClaim.providerSearchMap))).stay() : null}
-                  <label>Group: </label>
-                  <h:selectOneMenu value="#{var.MyOffice.PatientHomecareClaim.group._}" styleClass="w12" title="Group">
-                     <f:selectItem itemValue="" itemLabel="ALL"/>
-                     <f:selectItem itemValue="_p.primaryInsuranceId = 62" itemLabel="Medicaid"/>
-                     <f:selectItem itemValue="_p.primaryInsuranceId = 63" itemLabel="Medicare"/>
-                     <f:selectItem itemValue="_p.primaryInsuranceId = 83" itemLabel="Fidelis"/>
-                     <f:selectItem itemValue="_p.primaryInsuranceId NOT IN (62,63)" itemLabel="Commercial"/>
-                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-                  </h:selectOneMenu>
-                  <label style="margin-left: 0.5em;">Provider:</label>
-                  <h:selectOneMenu value="#{var.MyOffice.PatientHomecareClaim.provider._}" title="Provider" styleClass="w16">
-                     <f:selectItem itemValue="" itemLabel="ALL"/>
-                     <f:selectItems value="#{var.MyOffice.PatientHomecare.providerList}" var="provider" itemLabel="#{provider.lastName}, #{provider.firstName}"/>
-                     <f:converter converterId="EntityConverter"/>
-                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-                  </h:selectOneMenu>
-                  <br/>
-                  <label>Status:</label>
-                  <h:selectOneMenu value="#{var.MyOffice.PatientHomecareClaim.status._}" title="Status" styleClass="w12">
-                     <f:selectItem itemValue="" itemLabel="ALL"/>
-                     <f:selectItem itemValue="PREPARED" itemLabel="Prepared"/>
-                     <f:selectItem itemValue="SUBMITTED" itemLabel="Submitted"/>                    
-                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-                  </h:selectOneMenu>
-                  <label style="margin-left: 0.5em;">From:</label>
-                  #{jsf._do(var.MyOffice.PatientHomecareClaim.startDate._ == null ? var.MyOffice.PatientHomecareClaim.startDate._(jsf.newDate) : '').stay()}
-                  <h:inputText id="claimStartDate"
-                               value="#{var.MyOffice.PatientHomecareClaim.startDate._}"
-                               styleClass="djsf_DateTextBox w6"   
-                               onchange="$('.apply-button').css('visibility', 'visible');return false;">
-                     <f:convertDateTime dateStyle="short" locale="en"/>
-                  </h:inputText>
-                  <label>To:</label>
-                  #{jsf._do(var.MyOffice.PatientHomecareClaim.endDate._ == null ? var.MyOffice.PatientHomecareClaim.endDate._(jsf.newDate) : '').stay()}
-                  <h:inputText id="claimEndDate"
-                               value="#{var.MyOffice.PatientHomecareClaim.endDate._}"
-                               styleClass="djsf_DateTextBox w6"   
-                               onchange="$('.apply-button').css('visibility', 'visible');return false;">
-                     <f:convertDateTime dateStyle="short" locale="en"/>
-                  </h:inputText>
-                  <h:commandButton action="#{jsf.stay}" value="Apply" styleClass="apply-button" style="visibility:hidden; width:4em; margin-left: 0.25em;"/>
-                  #{jsf._do(var.MyOffice.PatientHomecareClaim.search.clear()).
-                    _do(var.MyOffice.PatientHomecareClaim.search.put('start_issueDate', var.MyOffice.PatientHomecareClaim.startDate._)).
-                    _do(var.MyOffice.PatientHomecareClaim.search.put('end_issueDate', var.MyOffice.PatientHomecareClaim.endDate._)).
-                    _do(empty var.MyOffice.PatientHomecareClaim.status._ ? null : var.MyOffice.PatientHomecareClaim.search.put('status', var.MyOffice.PatientHomecareClaim.status._)).
-                    _do(empty var.MyOffice.PatientHomecareClaim.group._ ? null : var.MyOffice.PatientHomecareClaim.search.put(var.MyOffice.PatientHomecareClaim.group._, null)).
-                    _do(var.MyOffice.PatientHomecareClaim.search.put('provider', var.MyOffice.PatientHomecareClaim.provider._)).
-                    _do(var.MyOffice.PatientHomecareClaim.search.put('myOfficeCode', myOfficeCode)).
-                    _do(var.MyOffice.PatientHomecareClaim.search._ != var.MyOffice.PatientHomecareClaim.search.toString().hashCode() ? var.MyOffice.PatientHomecareClaim.list._(jsf.search('PatientHomecareClaim', 'p.issueDate DESC', var.MyOffice.PatientHomecareClaim.search)): null).
-                    _do(var.MyOffice.PatientHomecareClaim.search._ != var.MyOffice.PatientHomecareClaim.search.toString().hashCode() ? var.MyOffice.PatientHomecareClaim.search._(var.MyOffice.PatientHomecare.search.toString().hashCode()) : null).
-                    stay()}
-               </ui:fragment>
                <ui:fragment rendered="#{jsf.global('myOffice')['subview'] == 'Referral'}">
                   #{var.MyOffice.Referral.facilityList._ == null ? var.MyOffice.Referral.facilityList._(jsf.search('ReferralFacility', 'r.category, r.name', jsf.newMap())) : null}
                   #{var.MyOffice.Referral.facility._ == null and var.MyOffice.Referral.init._ == null ? var.MyOffice.Referral.facility._(biz.slqcFacility()) : null}
@@ -337,35 +179,7 @@
                     _do(var.MyOffice.Visit.search._ != var.MyOffice.Visit.search.toString().hashCode() ? var.MyOffice.Visit.search._(var.MyOffice.Visit.search.toString().hashCode()) : null).
                     stay()}
                   #{var.MyOffice.Visit.init._(true)}
-               </ui:fragment>
-               <ui:fragment rendered="#{jsf.global('myOffice')['subview'] == 'PatientChartActivity'}">
-                  <style>
-                     .radio, .radio tr, .radio td  {
-                        border: none;
-                        background: none;
-                     }
-                     .radio label {
-                        font-size: 1.1em;
-                     }
-                     .radio {
-                        width: 70%;
-                     }
-                     .radio td {
-                        white-space: nowrap;
-                        padding-right: 0.5em;
-                     }
-                  </style>
-                  <h:selectOneRadio value="#{var.MyOffice.PatientChartActivity.tab._}" styleClass="radio">
-                     <f:selectItem itemValue="Appointments" itemLabel="Appointments"/>
-                     <f:selectItem itemValue="Charts On Hand" itemLabel="Charts On Hand"/>
-                     <f:selectItem itemValue="Pending Charts" itemLabel="Pending Charts"/>
-                     <f:selectItem itemValue="Labels" itemLabel="Labels"/>
-                     <f:selectItem itemValue="Prepare List" itemLabel="Prepare List"/>
-                     <f:selectItem itemValue="For Recycle" itemLabel="For Recycle"/>
-                     <f:selectItem itemValue="Recycled" itemLabel="Recycled"/>
-                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-                  </h:selectOneRadio>
-               </ui:fragment>                     
+               </ui:fragment>                                   
             </div>
          </div>
       </ui:composition>
