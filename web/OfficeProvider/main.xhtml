@@ -410,9 +410,9 @@
                         <label class="vlabel" style="margin-left: 0.5em;">Ins. Group: </label>
                         <h:selectOneMenu value="#{var.OfficeProvider.Appointment.billingGroup._}" style="width: 8em; margin-right: 1em;" title="Insurance Group">
                            <f:selectItem itemValue="_ALL" itemLabel="ALL"/>
-                           <f:selectItem itemValue="_a.patient.servicePaymentTypeID = 1" itemLabel="Medicaid"/>
-                           <f:selectItem itemValue="_a.patient.servicePaymentTypeID IN (2,4,5,15)" itemLabel="Medicare"/>
-                           <f:selectItem itemValue="_a.patient.servicePaymentTypeID NOT IN (1,2,4,5,15)" itemLabel="Commercial"/>
+                           <f:selectItem itemValue="_a.patient.servicePaymentTypeId = 1" itemLabel="Medicaid"/>
+                           <f:selectItem itemValue="_a.patient.servicePaymentTypeId IN (2,4,5,15)" itemLabel="Medicare"/>
+                           <f:selectItem itemValue="_a.patient.servicePaymentTypeId NOT IN (1,2,4,5,15)" itemLabel="Commercial"/>
                            <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:appointmentList', true)).listen}"/>
                         </h:selectOneMenu>
                         <h:commandLink value="Report" action="#{jsf._to('Appointment/provider-report').go}" target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>

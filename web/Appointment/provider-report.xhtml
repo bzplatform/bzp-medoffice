@@ -109,9 +109,9 @@
                      <br/>
                      Insurance Group: 
                      #{var.OfficeProvider.Appointment.billingGroup._ == '_ALL' or  var.OfficeProvider.Appointment.billingGroup._ == null ? 'ALL' : null}
-                     #{var.OfficeProvider.Appointment.billingGroup._ == '_a.patient.servicePaymentTypeID = 1' ? 'Medicaid' : null}
-                     #{var.OfficeProvider.Appointment.billingGroup._ == '_a.patient.servicePaymentTypeID IN (2,4,5,15)' ? 'Medicare' : null}
-                     #{var.OfficeProvider.Appointment.billingGroup._ == '_a.patient.servicePaymentTypeID NOT IN (1,2,4,5,15)' ? 'Commercial' : null}
+                     #{var.OfficeProvider.Appointment.billingGroup._ == '_a.patient.servicePaymentTypeId = 1' ? 'Medicaid' : null}
+                     #{var.OfficeProvider.Appointment.billingGroup._ == '_a.patient.servicePaymentTypeId IN (2,4,5,15)' ? 'Medicare' : null}
+                     #{var.OfficeProvider.Appointment.billingGroup._ == '_a.patient.servicePaymentTypeId NOT IN (1,2,4,5,15)' ? 'Commercial' : null}
                   </td>
                </tr>
             </table>
@@ -135,7 +135,7 @@
                            </h:outputText>
                         </nobr>
                         <br/>
-                        #{appointment.category.shortName}
+                        #{appointment.category.code}
                      </td>
                      <td>#{appointment.patient.id}</td>
                      <td><div style="max-width: 10em;">#{appointment.patient.lastName},<br/>#{appointment.patient.firstName}</div></td>

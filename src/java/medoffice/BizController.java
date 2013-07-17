@@ -504,11 +504,11 @@ public class BizController {
       return bmi;
    }
 
-   public ReferringProvider referringProvider(Integer id) {
-      if (id == null) {
+   public ReferringProvider referringProvider(String npi) {
+      if (npi == null) {
          return null;
       }
-      return crudService.find(id, ReferringProvider.class);
+      return crudService.find(npi, ReferringProvider.class);
    }
 
    public ProcedureCptModifierSet procedureCptModifierSet(String cpt) {
@@ -1450,8 +1450,7 @@ public class BizController {
       return resultList;
    }
 
-   public List<TimePeriodManager> defineTimePeriodManagerList(Date startDate, int dayCount, int providerId,
-           int categoryId, int duration) {
+   public List<TimePeriodManager> defineTimePeriodManagerList(Date startDate, int dayCount, int providerId, int duration) {
       Calendar calendar = new GregorianCalendar();
       calendar.setTime(startDate);
       calendar = new GregorianCalendar(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
@@ -1465,18 +1464,18 @@ public class BizController {
          timePeriodManagerList.add(new TimePeriodManager());
       }
       ScheduleUtil.defineAvailableDatePeriods(appointmentTimeList, timePeriodManagerList, providerScheduleList,
-              officeScheduleList, startDate, endDate, categoryId);
+              officeScheduleList, startDate, endDate);
       return timePeriodManagerList;
    }
 
-   public Appointment newAppointment(Date date, Date time, Patient patient, int providerId, int categoryId, int duration, String myOfficeCode) {
+   public Appointment newAppointment(Date date, Date time, Patient patient, int providerId, String categoryCode, int duration, String myOfficeCode) {
       Appointment appointment = new Appointment();
       appointment.setDate(date);
       appointment.setTime(time);
       appointment.setPatient(patient);
       OfficeProvider provider = crudService.find(providerId, OfficeProvider.class);
       appointment.setOfficeProvider(provider);
-      appointment.setCategoryId(categoryId);
+      appointment.setCategoryCode(categoryCode);
       appointment.setDuration((short) duration);
       appointment.setSpecialtyId(provider.getSpecialtyId());
       appointment.setStatus("OPEN");
@@ -1671,7 +1670,7 @@ public class BizController {
    }
 
    public List<Appointment> defineCyclical(Map<Integer, Boolean> weekDays, Integer qty, Date startDate, Date startTime, Date endTime,
-           Patient patient, int providerId, int categoryId, int duration, ReferringProvider referringProvider, String myOfficeCode, boolean forceTime) {
+           Patient patient, int providerId, String categoryCode, int duration, ReferringProvider referringProvider, String myOfficeCode, boolean forceTime) {
       if (qty == null || startDate == null || startTime == null || endTime == null) {
          return null;
       }
@@ -1681,7 +1680,7 @@ public class BizController {
       List<Appointment> appointmentList = new ArrayList();
       while (counter < qty && day.minusDays(60).isBefore(startDay)) {
          if (weekDays.get(day.getDayOfWeek()) != null && weekDays.get(day.getDayOfWeek())) {
-            TimePeriodManager timePeriodManager = defineTimePeriodManagerList(day.toDate(), 1, providerId, categoryId, duration).get(0);
+            TimePeriodManager timePeriodManager = defineTimePeriodManagerList(day.toDate(), 1, providerId, duration).get(0);
             if (timePeriodManager.active()) {
                Appointment appointment = null;
                List<TimePeriod> timePeriodList = forceTime ? timePeriodManager.getScheduleTimePeriodList() : timePeriodManager.getAvailableTimePeriodList();
@@ -1689,7 +1688,7 @@ public class BizController {
                for (TimePeriod timePeriod : timePeriodList) {
                   for (Date time : timePeriod.timeList(duration)) {
                      if ((localTime(time).isEqual(localTime(startTime)) || localTime(time).isAfter(localTime(startTime))) && (localTime(time).isEqual(localTime(endTime)) || localTime(time).isBefore(localTime(endTime)))) {
-                        appointment = newAppointment(day.toDate(), time, patient, providerId, categoryId, duration, myOfficeCode);
+                        appointment = newAppointment(day.toDate(), time, patient, providerId, categoryCode, duration, myOfficeCode);
                         appointment.setReferringProviderNpi(referringProvider == null ? null : referringProvider.getNpi());
                         appointmentList.add(appointment);
                         break label1;
@@ -1700,7 +1699,7 @@ public class BizController {
                if (appointment == null) {
                   for (TimePeriod timePeriod : timePeriodList) {
                      for (Date time : timePeriod.timeList(duration)) {
-                        appointment = newAppointment(day.toDate(), time, patient, providerId, categoryId, duration, myOfficeCode);
+                        appointment = newAppointment(day.toDate(), time, patient, providerId, categoryCode, duration, myOfficeCode);
                         appointmentList.add(appointment);
                         appointment.setReferringProviderNpi(referringProvider == null ? null : referringProvider.getNpi());
                         break label2;
@@ -1766,9 +1765,9 @@ public class BizController {
       return new DateTime(date).toLocalDate().equals(new DateTime().toLocalDate());
    }
 
-   public Visit newVisit(Patient patient, OfficeProvider officeProvider, Date date, Integer categoryId, String myOfficeCode) {
+   public Visit newVisit(Patient patient, OfficeProvider officeProvider, Date date, String categoryCode) {
       Visit visit = new Visit();
-      visit.setCategoryId(categoryId);
+      visit.setCategoryCode(categoryCode);
       visit.setPatient(patient);
       visit.setOfficeProvider(officeProvider);
       visit.setSpecialtyId(officeProvider.getSpecialtyId());
@@ -1845,11 +1844,11 @@ public class BizController {
       return json;
    }
 
-   public String referringProviderStr(Integer providerId) {
-      if (providerId == null) {
+   public String referringProviderStr(String npi) {
+      if (npi == null) {
          return null;
       }
-      ReferringProvider referringProvider = referringProvider(providerId);
+      ReferringProvider referringProvider = referringProvider(npi);
       if (referringProvider != null) {
          return referringProvider.getLastName().replace("'", "\\'") + ", " + referringProvider.getFirstName().replace("'", "\\'") + " NPI:" + referringProvider.getNpi();
       }

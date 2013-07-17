@@ -30,18 +30,18 @@
                   <div class="footer">
                       <div style="display: inline-block; width: 33em; float: left; text-align: left; font-size: 0.85em; margin-left: 1.2em;">
                         <label class="vlabel">Created: </label>
-                        <h:outputText value="#{var.Appointment.form.appointment._.dateCreated}">
+                        <h:outputText value="#{var.Appointment.form.appointment._.created}">
                            <f:convertDateTime pattern="MM/dd/yy hh:mm a"/>
                         </h:outputText>
                         <br/>
                         <label class="vlabel">By user: </label>
-                        <span>#{access.getUserName(var.Appointment.form.appointment._.userID)}</span>                    
+                        <span>#{access.getUserName(var.Appointment.form.appointment._.userId)}</span>                    
                      </div>
                      <h:commandButton action="#{jsf.
-                                                _do(var.Appointment.form.appointment._.setUserID(access.user.id)).
-                                                _do(var.Appointment.form.currentDate._(jsf.newDate)).
-                                                _do(var.Appointment.form.appointment._.setDateChanged(var.Appointment.form.currentDate._)).
+                                                _do(var.Appointment.form.appointment._.setUserId(access.user.id)).
+                                                _do(var.Appointment.form.appointment._.setLastUpdated(jsf.newDate)).
                                                 _save(var.Appointment.form.appointment._).
+                                                _do(biz.patientRecordLog('Appointment', var.Appointment.form.appointment._.id, 'edited')).
                                                 _do(var.Appointment.form.$).back}" styleClass="ok-button" value="OK"/>
                      <h:commandButton action="#{jsf._do(var.Appointment.form.$).back}" value="Cancel" styleClass="cancel-button"/>
                   </div>

@@ -30,7 +30,7 @@
    </context-param>
    <context-param>
       <param-name>com.medenterprise.APPLICATION</param-name>
-      <param-value>bzp-medoffice</param-value>
+      <param-value>jns-medoffice</param-value>
    </context-param>
    <!--
    <context-param>
