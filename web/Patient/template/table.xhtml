@@ -64,9 +64,9 @@
                         <ui:fragment rendered="#{patientInsurance.insurance.planType == 'HM'}">
                            <br/>
                            <b>PCP:</b>
-                           <h:outputText value=" #{biz.referringProvider(patientInsurance.primaryCarePhysicianId).lastName}, #{biz.referringProvider(patientInsurance.primaryCarePhysicianId).firstName}" rendered="#{patientInsurance.primaryCarePhysicianId != null and patientInsurance.primaryCarePhysicianId != 0}"/>
+                           <h:outputText value=" #{biz.referringProvider(patientInsurance.pcpNpi).lastName}, #{biz.referringProvider(patientInsurance.pcpNpi).firstName}" rendered="#{patientInsurance.pcpNpi != null}"/>
                            <h:graphicImage value="/theme/#{cookie.theme.value}/image/error.png" style="position: relative; top:2px; left:2px;"
-                                           rendered="#{patientInsurance.primaryCarePhysicianId == null or patientInsurance.primaryCarePhysicianId == 0}" title="Not assigned PCP!"/>
+                                           rendered="#{patientInsurance.pcpNpi == null}" title="Not assigned PCP!"/>
                         </ui:fragment>
                      </li>
                   </ui:repeat>
@@ -84,7 +84,7 @@
                      <h:commandLink action="#{jsf._do(var.Patient.registrationFU.patient._(patient))._to('Patient/registration-form').go}"
                                     target="_blank"
                                     value="Registration Form - FU" style="margin-right: 1em;"/>
-                     <h:commandLink action="#{jsf._do(var.Patient.registrationFU.patient._(jsf.newObject('com.medenterprise.domain.entity.Patient')))._to('Patient/registration-form').go}"
+                     <h:commandLink action="#{jsf._do(var.Patient.registrationFU.patient._(jsf.newObject('medoffice.entity.Patient')))._to('Patient/registration-form').go}"
                                     target="_blank"
                                     value="Registration Form - New" style="margin-right: 1em;"/>
                      <h:commandLink action="#{jsf._do(var.Patient.label.patient._(patient))._to('Patient/address-label').go}"

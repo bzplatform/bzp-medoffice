@@ -79,7 +79,7 @@
             <ui:fragment rendered="#{! empty var.Appointment.cyclical.appointmentList._}">
                #{jsf._do(var.Appointment.cyclical.scheduledAppointmentList.search.clear()).                
                  _do(var.Appointment.cyclical.scheduledAppointmentList.search.put('patient', patientList.get(0))).
-                 _do(var.Appointment.cyclical.scheduledAppointmentList.search.put('stateID', 1)).
+                 _do(var.Appointment.cyclical.scheduledAppointmentList.search.put('status', 'OPEN')).
                  _do(var.Appointment.cyclical.scheduledAppointmentList._(jsf.search('Appointment', 'a.date, a.time', var.Appointment.cyclical.scheduledAppointmentList.search))).                    
                  stay()}
                <li style="height: auto; margin-top: 1.5em; margin-right: -1em; font-size: 1.1em;">

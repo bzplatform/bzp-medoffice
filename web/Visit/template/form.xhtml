@@ -17,48 +17,39 @@
             <ui:fragment rendered="#{empty var.Visit.form.visitValidationMap._.error}">
                <div style="display: inline-block; width: 16em; margin-top: 0.5em;">
                   <h3 style="display: inline">Provider:</h3>
-                  <h:inputText value="#{var.Visit.form.visit._.provider.lastName}, #{var.Visit.form.visit._.provider.firstName}" disabled="true" style="width: 100%;"/>
+                  <h:inputText value="#{var.Visit.form.visit._.officeProvider.alias}" disabled="true" style="width: 100%;"/>
                </div>
                <div style="display: inline-block; width: 13em; margin-left: 0.5em;">
                   #{var.Visit.form.specialtyList._ == null ? jsf._do(var.Visit.form.specialtyList._(jsf.search('Specialty', null, jsf.newMap()))).stay() : null}
                   <h3 style="display: inline">Specialty:</h3>
-                  <h:selectOneMenu value="#{var.Visit.form.visit._.specialtyID}" style="width: 100%;" disabled="true">
+                  <h:selectOneMenu value="#{var.Visit.form.visit._.specialtyId}" style="width: 100%;" disabled="true">
                      <f:selectItems value="#{var.Visit.form.specialtyList._}" itemValue="#{specialty.id}" var="specialty" itemLabel="#{specialty.name}"/>               
                      <f:converter converterId="IntegerConverter"/>
                   </h:selectOneMenu>
                </div>
                <div style="display: inline-block; width: 5em; margin-left: 0.5em;">
-                  #{var.Visit.form.providerAppointmentCategoryList._ == null ? var.Visit.form.providerAppointmentCategoryList._(biz.providerAppointmentCategoryList(var.Visit.form.visit._.provider.id)) : null}
-                  #{var.Visit.form.visit._.categoryID == null and ! empty var.Visit.form.providerAppointmentCategoryList._ ? var.Visit.form.visit._.setCategoryID(biz.preferredProviderAppointmentCategoryId(var.OfficeProvider.providerAppointmentCategoryList._, var.Visit.form.visit._.patient, var.Visit.form.visit._.specialtyID)) : null}
+                  #{var.Visit.form.providerAppointmentCategoryList._ == null ? var.Visit.form.providerAppointmentCategoryList._(biz.providerAppointmentCategoryList(var.Visit.form.visit._.officeProvider.id)) : null}
+                  #{var.Visit.form.visit._.categoryCode == null and ! empty var.Visit.form.providerAppointmentCategoryList._ ? var.Visit.form.visit._.setCategoryCode(biz.preferredProviderAppointmentCategoryCode(var.OfficeProvider.providerAppointmentCategoryList._, var.Visit.form.visit._.patient, var.Visit.form.visit._.specialtyId)) : null}
                   <h3 style="display: inline">Category:</h3>
-                  <h:selectOneMenu value="#{var.Visit.form.visit._.categoryID}" style="width: 100%;">
-                     <f:selectItems value="#{var.Visit.form.providerAppointmentCategoryList._}" var="providerAppointmentCategory" itemValue="#{providerAppointmentCategory.appointmentCategory.id}" itemLabel="#{providerAppointmentCategory.appointmentCategory.shortName}"/>                         
-                     <f:converter converterId="IntegerConverter"/>
+                  <h:selectOneMenu value="#{var.Visit.form.visit._.categoryCode}" style="width: 100%;">
+                     <f:selectItems value="#{var.Visit.form.providerAppointmentCategoryList._}" var="providerAppointmentCategory" itemValue="#{providerAppointmentCategory.visitCategory.code}" itemLabel="#{providerAppointmentCategory.visitCategory.code}"/>
                   </h:selectOneMenu>
                </div>
                <div style="display: inline-block; width: 8em; margin-left: 0.5em;">
                   <h3 style="display: inline">Authorization #:</h3>
                   <h:inputText value="#{var.Visit.form.visit._.authorizationNumber}" style="width: 8.9em;"/>
                </div>
-               <div style="display: inline-block; width: 7em;">
-                  <h3 style="display: inline">Prescription:</h3>
-                  <h:inputText id="prescription_date" value="#{var.Visit.form.visit._.prescriptionDate}" styleClass="#{var.Visit.form.visit._.specialtyID == 10 or var.Visit.form.visit._.specialtyID == 48 ? 'djsf_DateTextBox w6' : ''}" 
-                               style="#{var.Visit.form.visit._.specialtyID == 10 or var.Visit.form.visit._.specialtyID == 48 ? '' : 'width: 8em;'}"
-                               disabled="#{var.Visit.form.visit._.specialtyID != 10 and var.Visit.form.visit._.specialtyID != 48}">
-                     <f:convertDateTime dateStyle="short" locale="en"/>
-                  </h:inputText>
-               </div>
                <div style="display: inline-block; width: 37em;">
                   <h3 style="display: inline">Notes:</h3>
                   <h:inputText value="#{var.Visit.form.visit._.notes}" style="width: 43.7em;"/>
                </div>
                <h3>Referring Provider:
-                  #{var.Visit.form.referringProvider._(biz.referringProvider(var.Visit.form.visit._.referringDoctorID))}
+                  #{var.Visit.form.referringProvider._(biz.referringProvider(var.Visit.form.visit._.referringProviderNpi))}
                   <ui:fragment rendered="#{var.Visit.form.referringProvider._ != null}">
                      <h:commandLink onclick="if (confirm('Clear Referring Provider?'))
                               return true;
                            else
-                              return false;" action="#{jsf._do(var.Visit.form.visit._.setReferringDoctorID(null)).stay}" styleClass="colored" title="Click to Clear">
+                              return false;" action="#{jsf._do(var.Visit.form.visit._.setReferringProviderNpi(null)).stay}" styleClass="colored" title="Click to Clear">
                         <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
                         #{var.Visit.form.referringProvider._.npi}
                      </h:commandLink>
@@ -73,15 +64,15 @@
                   <h:commandButton action="#{jsf._do(var.Visit.form.referringProvider.search.put('lastName', var.Visit.form.referringProvider.filter._)).
                                              _do(var.Visit.form.referringProvider.search.put('firstName', var.Visit.form.referringProvider.filter._)).
                                              _do(var.Visit.form.referringProvider.search.put('_r.npi = :npi', var.Visit.form.referringProvider.filter._)).
-                                             _do(var.Visit.form.referringProvider.list._(jsf.hintedSearch('_ReferringProvider', 'r.lastName', var.Visit.form.referringProvider.search.map(), 'com.medenterprise.domain.entity'))).stay}"
+                                             _do(var.Visit.form.referringProvider.list._(jsf.search('_ReferringProvider', 'r.lastName', var.Visit.form.referringProvider.search.map()))).stay}"
                                    value="Filter" title="Click to Apply" style="width: 4em; margin-right: 1em;">
                      <f:ajax render="referringProvider" execute="@form"/>
                   </h:commandButton>
-                  <h:selectOneMenu id="referringProvider" value="#{var.Visit.form.referringProvider.id._}" title="referringProvider" style="width:20em;">
+                  <h:selectOneMenu id="referringProvider" value="#{var.Visit.form.referringProvider.npi._}" title="referringProvider" style="width:20em;">
                      <f:selectItems value="#{var.Visit.form.referringProvider.list._}"
-                                    var="referringProvider" itemLabel="#{referringProvider.npi} #{referringProvider.lastName}, #{referringProvider.firstName}" itemValue="#{referringProvider.id}"/>
+                                    var="referringProvider" itemLabel="#{referringProvider.npi} #{referringProvider.lastName}, #{referringProvider.firstName}" itemValue="#{referringProvider.npi}"/>
                   </h:selectOneMenu>
-                  <h:commandButton action="#{jsf._do(var.Visit.form.visit._.setReferringDoctorID(var.Visit.form.referringProvider.id._)).stay}"
+                  <h:commandButton action="#{jsf._do(var.Visit.form.visit._.setReferringProviderNpi(var.Visit.form.referringProvider.npi._)).stay}"
                                    value="Assign" style="width:4.5em;">
                      <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
                   </h:commandButton>
@@ -90,8 +81,6 @@
                               value="Superbill..." styleClass="colored" style="float:right;font-size: 0.9em; margin-top: 0.3em;"/>
                <h:commandLink action="#{jsf._do(var.Visit.specialty.info.put('visit', var.Visit.form.visit._))._to('Visit/profile-edit').go}" rendered="#{access.isUriPermitted('MyOffice/administration')}"
                               value="Edit Profiles..." styleClass="colored" style="float:right;font-size: 0.9em; margin-top: 0.3em; margin-right: 1em;"/>
-               <h:commandLink action="#{jsf._do(var.EM.info.put('visit', var.Visit.form.visit._))._to('EM/edit').go}" rendered="#{access.isUriPermitted('MyOffice/administration')}"
-                              value="Edit EM..." styleClass="colored" style="float:right;font-size: 0.9em; margin-top: 0.3em; margin-right: 1em;"/>
                <h3>Diagnoses</h3>
                <div class="border" style="padding:0.3em 0.6em;">
                   <h:inputText id="diagnosisFilter" value="#{var.Visit.form.diagnosis.filter._}" title="Type part of DX code or %keyword and press Filter"/>

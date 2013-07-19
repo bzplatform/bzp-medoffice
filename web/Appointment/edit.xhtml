@@ -41,7 +41,7 @@
                                                 _do(var.Appointment.form.appointment._.setUserId(access.user.id)).
                                                 _do(var.Appointment.form.appointment._.setLastUpdated(jsf.newDate)).
                                                 _save(var.Appointment.form.appointment._).
-                                                _do(biz.patientRecordLog('Appointment', var.Appointment.form.appointment._.id, 'edited')).
+                                                _do(biz.patientRecordLog('Appointment', var.Appointment.form.appointment._.id, 'updated')).
                                                 _do(var.Appointment.form.$).back}" styleClass="ok-button" value="OK"/>
                      <h:commandButton action="#{jsf._do(var.Appointment.form.$).back}" value="Cancel" styleClass="cancel-button"/>
                   </div>

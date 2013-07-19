@@ -46,14 +46,14 @@
                   <f:facet name="header">
                      <h:outputText value="Provider"/>
                   </f:facet>
-                  <h:outputText value="#{appointment.provider.lastName}#{appointment.provider.firstName.trim() != '' ? ', ' : ''}#{appointment.provider.firstName}"/>
+                  <h:outputText value="#{appointment.officeProvider.alias}"/>
                </h:column>
                <h:column>
                   <f:facet name="header">
                      <h:outputText value="Ref. Provider"/>
                   </f:facet>
-                  <ui:fragment rendered="#{biz.referringProvider(appointment.referringDoctorID) != null }">
-                     <h:outputText value="#{biz.referringProvider(appointment.referringDoctorID).lastName}, #{biz.referringProvider(appointment.referringDoctorID).firstName}"/>
+                  <ui:fragment rendered="#{biz.referringProvider(appointment.referringProviderNpi) != null }">
+                     <h:outputText value="#{biz.referringProvider(appointment.referringProviderNpi).lastName}, #{biz.referringProvider(appointment.referringProviderNpi).firstName}"/>
                   </ui:fragment>
                </h:column>
                <h:column>
@@ -66,7 +66,7 @@
                            <f:convertDateTime pattern="hh:mm a"/>
                         </h:outputText>
                         &nbsp;
-                        <h:outputText class="scheduled" value="#{scheduledAppointment.provider.lastName}#{scheduledAppointment.provider.firstName.trim() != '' ? ', ' : ''}#{scheduledAppointment.provider.firstName}"/>
+                        <h:outputText class="scheduled" value="#{scheduledAppointment.officeProvider.alias}"/>
                         <br/>
                      </ui:fragment>
                   </ui:repeat>

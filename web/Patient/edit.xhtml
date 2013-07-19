@@ -53,7 +53,7 @@
                         </h:outputText>
                         <br/>
                         <label class="vlabel">By user: </label>
-                        <span>#{access.getUserName(var.Patient.form.patient._.userID)}</span>                    
+                        <span>#{access.getUserName(var.Patient.form.patient._.userId)}</span>                    
                      </div>
                      <div style="display: inline-block; width: auto; text-align: left; margin-left: 1.2em; margin-top: 0.5em;">
                         <h:selectBooleanCheckbox value="#{var.Patient.form.historicData._}">
@@ -63,18 +63,16 @@
                      </div>
                      <h:commandButton action="#{jsf._do(var.Patient.form.similarPatientList._(biz.similarPatientList(var.Patient.form.patient._))).
                                                 go(empty var.Patient.form.similarPatientList._ ? 
-                                                jsf._do(var.Patient.form.patient._.setDemographicUpdateDate(jsf.newDate)).
-                                                _do(var.Patient.form.patient._.setDemographicUpdateUserId(access.user.id)).
-                                                _do(var.Patient.form.patient._.conditionID == null ? var.Patient.form.patient._.setConditionDate(null) : null).
+                                                jsf._do(biz.patientRecordLog('Patient', var.Patient.form.patient._.id, 'updated')).
+                                                _do(var.Patient.form.patient._.conditionId == null ? var.Patient.form.patient._.setConditionDate(null) : null).
                                                 _save(var.Patient.form.patient._).
                                                 _do(biz.savePatientHistoricData(var.Patient.form.patient._)).
                                                 _do(var.Patient.form.$).back() : jsf.stay())}"
                                       style="width: 8em;"
                                       styleClass="ok-button" value="Check &amp; Save"/>
                      <h:commandButton action="#{jsf._do(var.Patient.form.$)._do(patientList.set(0, biz.refreshedPatient(patientList.get(0)))).back}" value="Cancel" immediate="true" styleClass="cancel-button"/>
-                     <h:commandButton action="#{jsf._do(var.Patient.form.patient._.setDemographicUpdateDate(jsf.newDate)).
-                                                _do(var.Patient.form.patient._.setDemographicUpdateUserId(access.user.id)).
-                                                _do(var.Patient.form.patient._.conditionID == null ? var.Patient.form.patient._.setConditionDate(null) : null).
+                     <h:commandButton action="#{jsf._do(biz.patientRecordLog('Patient', var.Patient.form.patient._.id, 'updated')).
+                                                _do(var.Patient.form.patient._.conditionId == null ? var.Patient.form.patient._.setConditionDate(null) : null).
                                                 _save(var.Patient.form.patient._).
                                                 _do(biz.savePatientHistoricData(var.Patient.form.patient._)).
                                                 _do(var.Patient.form.$).back}" styleClass="ok-button" value="Save Anyway"

@@ -33,7 +33,7 @@
                                              stay}">
                      <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
                   </h:commandButton>
-                  <h:commandButton action="#{jsf._do(var.ReferringProvider.form.referringProvider._(jsf.newObject('com.medenterprise.domain.entity.ReferringProvider'))).
+                  <h:commandButton action="#{jsf._do(var.ReferringProvider.form.referringProvider._(jsf.newObject('medoffice.entity.ReferringProvider'))).
                                              _do(var.Administration.ReferringProvider.list._ == null ? var.Administration.ReferringProvider.list._(jsf.newObject('java.util.ArrayList')) : null).
                                              _do(var.ReferringProvider.form.referringProviderList._(var.Administration.ReferringProvider.list._)).
                                              _to('ReferringProvider/edit').go}" style="margin-left: 1em; width: auto;"
@@ -53,7 +53,7 @@
                                              stay}">
                      <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
                   </h:commandButton>
-                  <h:commandButton action="#{jsf._do(var.OfficeProvider.form.officeProvider._(jsf.newObject('com.medenterprise.medicalcare.domain.medenterprise.OfficeProvider'))).
+                  <h:commandButton action="#{jsf._do(var.OfficeProvider.form.officeProvider._(jsf.newObject('medoffice.entity.OfficeProvider'))).
                                              _do(var.OfficeProvider.form.officeProvider._.setActive(true)).
                                              _do(var.Administration.OfficeProvider.list._ == null ? var.Administration.OfficeProvider.list._(jsf.newObject('java.util.ArrayList')) : null).
                                              _do(var.OfficeProvider.form.officeProviderList._(var.Administration.OfficeProvider.list._)).
@@ -71,7 +71,7 @@
                                              stay}">
                      <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
                   </h:commandButton>
-                  <h:commandButton action="#{jsf._do(var.Insurance.form.insurance._(jsf.newObject('com.medenterprise.domain.entity.Insurance'))).
+                  <h:commandButton action="#{jsf._do(var.Insurance.form.insurance._(jsf.newObject('medoffice.entity.Insurance'))).
                                              _do(var.Insurance.form.insurance._.setActive(true)).
                                              _do(var.Administration.Insurance.list._ == null ? var.Administration.Insurance.list._(jsf.newObject('java.util.ArrayList')) : null).
                                              _do(var.Insurance.form.insuranceList._(var.Administration.Insurance.list._)).

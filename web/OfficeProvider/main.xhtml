@@ -115,7 +115,7 @@
                         <h:inputText value="#{var.OfficeProvider.Schedule.providerAppointmentDuration._}" style="width: 2em;" onkeypress="return suppressEnterKeyHandler(event)">
                            <f:converter converterId="IntegerConverter"/>
                         </h:inputText>
-                        <h:commandButton action="#{jsf._do(biz.addProviderAppointmentCategory(officeProviderList.get(0), var.OfficeProvider.Schedule.appointmentCategory._, var.OfficeProvider.Schedule.providerAppointmentDuration._)).stay}"
+                        <h:commandButton action="#{jsf._do(biz.addProviderAppointmentCategory(officeProviderList.get(0), var.OfficeProvider.Schedule.visitCategory._, var.OfficeProvider.Schedule.providerAppointmentDuration._)).stay}"
                                          value="Add..." style="margin: 0; margin-right: 1.5em; margin-left: 1em; font-size: 0.7em; width: auto;">
                            <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
                         </h:commandButton>
@@ -257,9 +257,9 @@
                            </h:selectOneMenu>
                            #{var.OfficeProvider.providerAppointmentCategoryList._ == null ? var.OfficeProvider.providerAppointmentCategoryList._(biz.providerAppointmentCategoryList(var.OfficeProvider.officeProvider._.id)) : null}
                            #{var.OfficeProvider.providerAppointmentCategory._ == null and ! empty var.OfficeProvider.providerAppointmentCategoryList._ ? var.OfficeProvider.providerAppointmentCategory._(biz.preferredProviderAppointmentCategory(var.OfficeProvider.providerAppointmentCategoryList._, patientList, var.OfficeProvider.specialtyId._)) : null}
-                           <label class="vlabel">Category:</label>
-                           <h:selectOneMenu value="#{var.OfficeProvider.providerAppointmentCategory._}" style="width: 4em;">
-                              <f:selectItems value="#{var.OfficeProvider.providerAppointmentCategoryList._}" var="providerAppointmentCategory" itemLabel="#{providerAppointmentCategory.visitCategory.name}"/>
+                           <label class="vlabel">Cat.:</label>
+                           <h:selectOneMenu value="#{var.OfficeProvider.providerAppointmentCategory._}" style="width: 6em;">
+                              <f:selectItems value="#{var.OfficeProvider.providerAppointmentCategoryList._}" var="providerAppointmentCategory" itemLabel="#{providerAppointmentCategory.visitCategory.code}"/>
                               <f:ajax render="@form" onevent="ajaxEventHandler" listener="#{jsf._do(var.OfficeProvider.providerAppointmentDuration._(null))._do(var.OfficeProvider.timePeriodManagerList._(null)).listen}"/>
                               <f:converter converterId="EntityConverter"/>
                            </h:selectOneMenu>
@@ -276,7 +276,7 @@
                                             value="#{var.OfficeProvider.providerAppointmentDurationEnabled._ == null ? 'On' : 'Off'}">
                               <f:ajax render="@form" onevent="ajaxEventHandler"/>
                            </h:commandButton>
-                           #{var.OfficeProvider.timePeriodManagerList._ == null ? jsf._do(var.OfficeProvider.timePeriodManagerList._(biz.defineTimePeriodManagerList(var.OfficeProvider.appointmentStartDate._, 14, var.OfficeProvider.officeProvider._.id, var.OfficeProvider.providerAppointmentCategory._.appointmentCategory.id, var.OfficeProvider.providerAppointmentDuration._)))._do(var.OfficeProvider.timePeriodManagerListValidationMap._(biz.timePeriodManagerListValidationMap(var.OfficeProvider.timePeriodManagerList._, patientList, var.OfficeProvider.specialtyId._))).stay() : null}
+                           #{var.OfficeProvider.timePeriodManagerList._ == null ? jsf._do(var.OfficeProvider.timePeriodManagerList._(biz.defineTimePeriodManagerList(var.OfficeProvider.appointmentStartDate._, 12, var.OfficeProvider.officeProvider._.id, var.OfficeProvider.providerAppointmentDuration._)))._do(var.OfficeProvider.timePeriodManagerListValidationMap._(biz.timePeriodManagerListValidationMap(var.OfficeProvider.timePeriodManagerList._, patientList, var.OfficeProvider.specialtyId._))).stay() : null}
                            <div class="one">
                               <table>
                                  <thead>
@@ -334,14 +334,14 @@
                                                                   onclick="#{biz.appointmentOnclick(var.OfficeProvider.timePeriodManagerListValidationMap._[timePeriodManager])}"
                                                                   disabled="#{patientList == null or patientList.size() != 1}"
                                                                   style="#{var.OfficeProvider.Appointment.emergencyMode._ and timePeriodManager.busyTime(time, var.OfficeProvider.providerAppointmentDuration._) ? 'color: gray;' : ''}"
-                                                                  action="#{jsf._do(var.Appointment.form.appointment._(biz.newAppointment(timePeriodManager.activeDate, time, patientList.get(0), var.OfficeProvider.officeProvider._.id, var.OfficeProvider.providerAppointmentCategory._.appointmentCategory.id, var.OfficeProvider.providerAppointmentDuration._, myOfficeCode)))._do(var.Appointment.form.referringProvider._(biz.referringProviderByLastVisit(timePeriodManager.activeDate, patientList.get(0))))._do(var.OfficeProvider.timePeriodManagerList._(null))._to('Appointment/new').go}">
+                                                                  action="#{jsf._do(var.Appointment.form.appointment._(biz.newAppointment(timePeriodManager.activeDate, time, patientList.get(0), var.OfficeProvider.officeProvider._.id, var.OfficeProvider.providerAppointmentCategory._.visitCategory.code, var.OfficeProvider.providerAppointmentDuration._)))._do(var.Appointment.form.referringProvider._(biz.referringProviderByLastVisit(timePeriodManager.activeDate, patientList.get(0))))._do(var.OfficeProvider.timePeriodManagerList._(null))._to('Appointment/new').go}">
                                                       <h:outputText value="#{time}" style="font-size: 0.85em; white-space: nowrap;">
                                                          <f:convertDateTime pattern="h:mm a" locale="en"/>
                                                       </h:outputText>
                                                    </h:commandLink>
                                                    <h:commandLink immediate="true"
                                                                   rendered="#{var.Appointment.reschedule._ != null}"
-                                                                  disabled="#{patientList == null or patientList.size() != 1 or var.OfficeProvider.officeProvider._.specialtyId != var.Appointment.reschedule._.specialtyID}"
+                                                                  disabled="#{patientList == null or patientList.size() != 1 or var.OfficeProvider.officeProvider._.specialtyId != var.Appointment.reschedule._.specialtyId}"
                                                                   style="#{var.OfficeProvider.Appointment.emergencyMode._ and timePeriodManager.busyTime(time, var.OfficeProvider.providerAppointmentDuration._) ? 'color: gray;' : ''}"
                                                                   action="#{jsf._do(biz.rescheduleAppointment(var.Appointment.reschedule._, timePeriodManager.activeDate, time, var.OfficeProvider.officeProvider._.id, access.user.id))._do(var.OfficeProvider.timePeriodManagerList._(null))._do(var.Appointment.reschedule._(null)).stay}">
                                                       <h:outputText value="#{time}" style="font-size: 0.85em; white-space: nowrap;">

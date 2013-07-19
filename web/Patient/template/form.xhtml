@@ -31,7 +31,7 @@
             </li>
             <li class="em3">
                <label>MI:</label>
-               <h:inputText value="#{var.Patient.form.patient._.mi}" title="Middle Initial"/>
+               <h:inputText value="#{var.Patient.form.patient._.middleInitial}" title="Middle Initial"/>
             </li>
             <li class="em7">
                <h:panelGroup styleClass="errors" rendered="#{var.Patient.form.patientValidationMap._ != null and var.Patient.form.patientValidationMap._.birthDate}">
@@ -88,7 +88,7 @@
             </li>
             <li class="em11">
                <label>Emerg. Phone:</label>
-               <h:inputText value="#{var.Patient.form.patient._.emergPhone}" styleClass="mask-phone"/>
+               <h:inputText value="#{var.Patient.form.patient._.emergencyPhone}" styleClass="mask-phone"/>
             </li>
             <li class="em11">
                <label>Work Phone:</label>
@@ -124,23 +124,19 @@
             </li>
             <li class="em43">
                <label>Email Address:</label>
-               <h:inputText value="#{var.Patient.form.patient._.eMailAddress}" style="width:41.7em;"/>
+               <h:inputText value="#{var.Patient.form.patient._.email}" style="width:41.7em;"/>
             </li>
             <li class="em5">
-               <label>Code:</label>
-               <h:inputText value="#{var.Patient.form.patient._.code}" style="display: none;" styleClass="code-box"/>
-               <input type="text" title="Code" value="#{var.Patient.form.patient._.code}" dojoType="dijit.form.ValidationTextBox" regExp="\w{1,3}" required="false"
-                      invalidMessage="Invalid Code" style="padding: 0.15em; font-size: 1em; width: 4.5em; position:relative; top:-0.1em; margin-left: 0.3em;"
-                      onChange="$('.code-box').val(this.value);"/>
+               <label>Tags:</label>
+               <h:inputText value="#{var.Patient.form.patient._.tags}" style="padding: 0.15em; font-size: 1em; width: 4.5em; position:relative; top:-0.1em; margin-left: 0.3em;"/>
             </li>
             <li class="em18">
-               #{jsf._do(var.Patient.form.providerSearch.put('role', 'self')).stay()}
                #{jsf._do(var.Patient.form.providerSearch.put('active', true)).stay()}
-               #{var.Patient.form.providerList._ == null ? var.Patient.form.providerList._(jsf.hintedSearch('Provider', 'p.alias', var.Patient.form.providerSearch, '_MEDBASE')) : null}
+               #{var.Patient.form.providerList._ == null ? var.Patient.form.providerList._(jsf.hintedSearch('Provider', 'p.lastName', var.Patient.form.providerSearch, '_MEDBASE')) : null}
                <label>Personal Doctor:</label>
                <h:selectOneMenu value="#{var.Patient.form.patient._.personalDoctor}">
                   <f:selectItem itemValue="" itemLabel="NONE"/>
-                  <f:selectItems value="#{var.Patient.form.providerList._}" var="provider" itemLabel="#{provider.alias}"/>
+                  <f:selectItems value="#{var.Patient.form.providerList._}" var="provider" itemLabel="#{provider.name}"/>
                   <f:converter converterId="EntityConverter"/>
                </h:selectOneMenu>
             </li>
@@ -148,7 +144,7 @@
             <li class="em18">
                #{var.Patient.form.conditionList._ == null ? var.Patient.form.conditionList._(jsf.search('PatientCondition', null, jsf.newMap())) : null}
                <label>General Condition:</label>
-               <h:selectOneMenu value="#{var.Patient.form.patient._.conditionID}">
+               <h:selectOneMenu value="#{var.Patient.form.patient._.conditionId}">
                   <f:selectItem itemValue="" itemLabel="NONE"/>
                   <f:selectItems value="#{var.Patient.form.conditionList._}" var="condition" itemValue="#{condition.id}" itemLabel="#{condition.name}"/>
                </h:selectOneMenu>
@@ -159,23 +155,6 @@
                   <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
                </h:inputText>
             </li>
-            <ui:fragment rendered="#{var.Patient.form.patient._.id == null}">
-               #{var.Patient.form.patientAds._ == null ? var.Patient.form.patientAds._(jsf.newObject('com.medenterprise.domain.entity.PatientAds')) : null}
-               #{var.Patient.form.patientAdsTypes._ == null ? var.Patient.form.patientAdsTypes._(jsf.hintedSearch('PatientAdsType', null, jsf.newMap(), '_MEDBASE')) : null}
-               <li class="em7">
-                  <label style="font-weight: bold;">When and</label>
-                  <h:inputText id="adsDate" value="#{var.Patient.form.patientAds._.date}" styleClass="djsf_DateTextBoxYYYY">
-                     <f:convertDateTime pattern="MM/dd/yyyy" locale="en"/>
-                  </h:inputText>
-               </li>
-               <li class="em17">
-                  <label style="font-weight: bold;">how did patient hear about us:</label>
-                  <h:selectOneMenu value="#{var.Patient.form.patientAds._.adsTypeId}" style="width:15.7em;">
-                     <f:selectItem itemValue="" itemLabel="NONE"/>
-                     <f:selectItems value="#{var.Patient.form.patientAdsTypes._}" var="adsType" itemValue="#{adsType.id}" itemLabel="#{adsType.type}"/>
-                  </h:selectOneMenu>
-               </li>
-            </ui:fragment>
          </ui:fragment>
       </ui:composition>
    </body>

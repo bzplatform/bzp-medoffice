@@ -39,7 +39,7 @@
                   <f:facet name="header">
                      <h:outputText value="Cat."/>
                   </f:facet>
-                  <h:outputText value="#{visit.category.shortName}" style="padding: 0.1em; border-radius: 2px;#{visit.category.css}"/>
+                  <h:outputText value="#{visit.category.code}" style="padding: 0.1em; border-radius: 2px;#{visit.category.css}"/>
                </h:column>
                <h:column rendered="#{tableConfig.patient._}">
                   <f:facet name="header">
@@ -141,8 +141,6 @@
                   </h:commandButton>
                   <input type="button" value="More ▼" class="context-menu-button" style="margin: 0; font-size: 0.8em;"/>
                   <div style="display: none;">                     
-                     <h:commandLink action="#{jsf._do(edi.initLaboratoryOrderTransaction(visit))._to('LaboratoryOrderTransaction/profile').go}"
-                                    value="Create Lab. Order" style="margin-right: 1em;"/>
                      <h:commandLink action="#{jsf._do(var.Referral.form.put('referral', biz.newReferralFromVisit(visit)))._to('Referral/new').go}"
                                     value="Create Referral" style="margin-right: 1em;"/>
                      <h:commandLink action="#{jsf._do(var.Visit.superbill.put('visit', visit))._to('Visit/superbill').go}"

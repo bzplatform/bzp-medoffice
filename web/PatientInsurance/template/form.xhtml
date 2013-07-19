@@ -14,7 +14,7 @@
                #{jsf._do(var.PatientInsurance.form.insuranceListSearch.put('active', true)).stay()}
                #{var.PatientInsurance.form.insuranceList._ == null ? var.PatientInsurance.form.insuranceList._(jsf.hintedSearch('Insurance', 'i.name', var.PatientInsurance.form.insuranceListSearch, '_MEDBASE'))  : null}          
                <label>Insurance:</label>
-               <h:selectOneMenu value="#{var.PatientInsurance.form.patientInsurance._.insurance}" disabled="#{var.PatientInsurance.form.patientInsurance._.patientInsuranceID != null and var.PatientInsurance.form.patientInsurance._.insurance.id != null}">
+               <h:selectOneMenu value="#{var.PatientInsurance.form.patientInsurance._.insurance}" disabled="#{var.PatientInsurance.form.patientInsurance._.id != null and var.PatientInsurance.form.patientInsurance._.insurance.id != null}">
                   <f:selectItem itemValue="" itemLabel="NONE"/>
                   <f:selectItems value="#{var.PatientInsurance.form.insuranceList._}" var="insurance" itemLabel="#{insurance.name}" itemValue="#{insurance}"/>
                   <f:converter converterId="EntityConverter"/>
@@ -23,11 +23,11 @@
             </li>
             <li class="em9">
                <label>Member ID:</label>
-               <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.policyID}"/>
+               <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.memberId}"/>
             </li>
             <li class="em8">
                <label>Group ID:</label>
-               <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.groupID}"/>
+               <h:inputText value="#{var.PatientInsurance.form.patientInsurance._.groupId}"/>
             </li>
             <li class="em7">
                <label>Effective:</label>
@@ -47,7 +47,7 @@
             </li>
             <li class="em7">
                <label>Co-Pay:</label>
-               <h:inputText id="coPay" value="#{var.PatientInsurance.form.patientInsurance._.coPay}">
+               <h:inputText id="coPay" value="#{var.PatientInsurance.form.patientInsurance._.copay}">
                   <f:convertNumber maxFractionDigits="2"/>
                   <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler"/>
                </h:inputText>
@@ -55,7 +55,7 @@
             </li>
             <li class="em8">
                <label>Spec. Co-Pay:</label>
-               <h:inputText id="specialistCoPayment" value="#{var.PatientInsurance.form.patientInsurance._.specialistCoPayment}" title="Specialist Co-Pay">
+               <h:inputText id="specialistCoPayment" value="#{var.PatientInsurance.form.patientInsurance._.specialistCopay}" title="Specialist Co-Pay">
                   <f:convertNumber maxFractionDigits="2"/>
                   <f:ajax render="@form" execute="@form" event="change" onevent="ajaxEventHandler"/>
                </h:inputText>
@@ -89,7 +89,7 @@
                <li class="em18"> 
                   #{var.PatientInsurance.form.guarantorList._ == null ? jsf._do(var.PatientInsurance.form.guarantorList._(jsf.hintedSearch('Guarantor', 'g.lastName', var.PatientInsurance.form.guarantorList.search, '_MEDBASE'))).stay()  : null}          
                   #{var.PatientInsurance.form.guarantor._ == null and var.PatientInsurance.form.guarantorInit._ == null ? jsf._do(var.PatientInsurance.form.guarantor._(var.PatientInsurance.form.patientInsurance._.guarantor))._do(var.PatientInsurance.form.guarantorInit._(true)).stay() : null}
-                  #{var.PatientInsurance.form.guarantor._ == null ? var.PatientInsurance.form.guarantor._(jsf.newObject('com.medenterprise.domain.entity.Guarantor')) : null}
+                  #{var.PatientInsurance.form.guarantor._ == null ? var.PatientInsurance.form.guarantor._(jsf.newObject('medoffice.entity.Guarantor')) : null}
                   #{var.PatientInsurance.form.patientInsurance._.setGuarantor(var.PatientInsurance.form.guarantor._)}
                   <label>Guarantor: </label>            
                   <h:selectOneMenu value="#{var.PatientInsurance.form.guarantor._}" title="Guarantor">

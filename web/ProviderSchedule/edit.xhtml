@@ -8,7 +8,7 @@
       <ui:composition template="../template/base.xhtml">
 
          <ui:define name="title">
-            Medical Care: #{var.ProviderSchedule.form.providerSchedule._.id != null ? 'Edit ' : 'Create'} Schedule Period of #{var.ProviderSchedule.form.providerSchedule._.provider.alias}
+            Medical Care: #{var.ProviderSchedule.form.providerSchedule._.id != null ? 'Edit ' : 'Create'} Schedule Period of #{var.ProviderSchedule.form.providerSchedule._.officeProvider.alias}
          </ui:define>
 
          <ui:define name="navigation">
@@ -19,7 +19,7 @@
             <div class="column">
                <div class="menu form">
                   <div class="header">
-                     <h3 class="center">#{var.ProviderSchedule.form.providerSchedule._.id != null ? 'Edit ' : 'Create'} Schedule Period of #{var.ProviderSchedule.form.providerSchedule._.provider.alias}</h3>
+                     <h3 class="center">#{var.ProviderSchedule.form.providerSchedule._.id != null ? 'Edit ' : 'Create'} Schedule Period of #{var.ProviderSchedule.form.providerSchedule._.officeProvider.alias}</h3>
                   </div>
                   <div class="body">
                      <ul class="vertical form-area grid g48">

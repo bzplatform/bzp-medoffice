@@ -568,6 +568,7 @@ public class BizController {
    public PatientAuthorization newPatientAuthorizationFromPatient(Patient patient) {
       PatientAuthorization patientAuthorization = new PatientAuthorization();
       patientAuthorization.setPatientId(patient.getId());
+      patientAuthorization.setPatient(patient);
       Insurance insurance = crudService.find(patient.getPrimaryInsuranceId(), Insurance.class);
       patientAuthorization.setInsurance(insurance);
       return patientAuthorization;
@@ -1070,7 +1071,7 @@ public class BizController {
       return patientInsuranceValidationMap;
    }
 
-   public void assignPrimaryCarePhysicianId(PatientInsurance patientInsurance, String pcpStr) {
+   public void assignPcpNpi(PatientInsurance patientInsurance, String pcpStr) {
       if (pcpStr != null) {
          Pattern p = Pattern.compile("NPI:(\\d{10})", Pattern.CASE_INSENSITIVE);
          Matcher m = p.matcher(pcpStr);
@@ -1468,7 +1469,7 @@ public class BizController {
       return timePeriodManagerList;
    }
 
-   public Appointment newAppointment(Date date, Date time, Patient patient, int providerId, String categoryCode, int duration, String myOfficeCode) {
+   public Appointment newAppointment(Date date, Date time, Patient patient, int providerId, String categoryCode, int duration) {
       Appointment appointment = new Appointment();
       appointment.setDate(date);
       appointment.setTime(time);
@@ -1504,7 +1505,7 @@ public class BizController {
       Map params = new HashMap();
       params.put("patientId", patient.getId());
       params.put("specialtyId", specialtyId);
-      int visitCount = crudService.searchCount("SELECT v FROM Visit v WHERE v.specialtyID = :specialtyId AND v.patient.id = :patientId", params, 0, "_MEDBASE");
+      int visitCount = crudService.searchCount("SELECT v FROM Visit v WHERE v.specialtyId = :specialtyId AND v.patient.id = :patientId", params, 0, "_MEDBASE");
       ProviderAppointmentCategory preferred = null;
       if (visitCount == 0) {
          for (ProviderAppointmentCategory providerAppointmentCategory : providerAppointmentCategoryList) {
@@ -1527,14 +1528,14 @@ public class BizController {
       return preferred;
    }
 
-   public Integer preferredProviderAppointmentCategoryId(List<ProviderAppointmentCategory> providerAppointmentCategoryList, Patient patient, int specialtyId) {
+   public String preferredProviderAppointmentCategoryCode(List<ProviderAppointmentCategory> providerAppointmentCategoryList, Patient patient, int specialtyId) {
       if (providerAppointmentCategoryList == null || providerAppointmentCategoryList.isEmpty()) {
          return null;
       }
       Map params = new HashMap();
       params.put("patientId", patient.getId());
       params.put("specialtyId", specialtyId);
-      int visitCount = crudService.searchCount("SELECT v FROM Visit v WHERE v.specialtyID = :specialtyId AND v.patient.id = :patientId", params, 0, "_MEDBASE");
+      int visitCount = crudService.searchCount("SELECT v FROM Visit v WHERE v.specialtyId = :specialtyId AND v.patient.id = :patientId", params, 0, "_MEDBASE");
       ProviderAppointmentCategory preferred = null;
       if (visitCount == 0) {
          for (ProviderAppointmentCategory providerAppointmentCategory : providerAppointmentCategoryList) {
@@ -1554,7 +1555,7 @@ public class BizController {
       if (preferred == null) {
          preferred = providerAppointmentCategoryList.get(0);
       }
-      return preferred.getId();
+      return preferred.getVisitCategory().getCode();
    }
 
    public int parseInt(String s) {
@@ -1606,7 +1607,7 @@ public class BizController {
       Map params = new HashMap();
       params.put("patientId", patient.getId());
       params.put("specialtyId", specialtyId);
-      List result = crudService.search("SELECT v FROM Visit v WHERE v.specialtyID = :specialtyId AND v.patient.id = :patientId ORDER BY v.date DESC", params, 1, "_MEDBASE");
+      List result = crudService.search("SELECT v FROM Visit v WHERE v.specialtyId = :specialtyId AND v.patient.id = :patientId ORDER BY v.date DESC", params, 1, "_MEDBASE");
       if (!result.isEmpty()) {
          visit = (Visit) result.get(0);
       }
@@ -1670,7 +1671,7 @@ public class BizController {
    }
 
    public List<Appointment> defineCyclical(Map<Integer, Boolean> weekDays, Integer qty, Date startDate, Date startTime, Date endTime,
-           Patient patient, int providerId, String categoryCode, int duration, ReferringProvider referringProvider, String myOfficeCode, boolean forceTime) {
+           Patient patient, int providerId, String categoryCode, int duration, ReferringProvider referringProvider, boolean forceTime) {
       if (qty == null || startDate == null || startTime == null || endTime == null) {
          return null;
       }
@@ -1688,7 +1689,7 @@ public class BizController {
                for (TimePeriod timePeriod : timePeriodList) {
                   for (Date time : timePeriod.timeList(duration)) {
                      if ((localTime(time).isEqual(localTime(startTime)) || localTime(time).isAfter(localTime(startTime))) && (localTime(time).isEqual(localTime(endTime)) || localTime(time).isBefore(localTime(endTime)))) {
-                        appointment = newAppointment(day.toDate(), time, patient, providerId, categoryCode, duration, myOfficeCode);
+                        appointment = newAppointment(day.toDate(), time, patient, providerId, categoryCode, duration);
                         appointment.setReferringProviderNpi(referringProvider == null ? null : referringProvider.getNpi());
                         appointmentList.add(appointment);
                         break label1;
@@ -1699,7 +1700,7 @@ public class BizController {
                if (appointment == null) {
                   for (TimePeriod timePeriod : timePeriodList) {
                      for (Date time : timePeriod.timeList(duration)) {
-                        appointment = newAppointment(day.toDate(), time, patient, providerId, categoryCode, duration, myOfficeCode);
+                        appointment = newAppointment(day.toDate(), time, patient, providerId, categoryCode, duration);
                         appointmentList.add(appointment);
                         appointment.setReferringProviderNpi(referringProvider == null ? null : referringProvider.getNpi());
                         break label2;
@@ -2647,7 +2648,7 @@ public class BizController {
    }
 
    public void savePatientHistoricData(Patient patient) {
-      String[] fields = {"lastName", "firstName", "address", "city", "state", "zipCode", "homePhone", "cellPhone", "eMailAddress"};
+      String[] fields = {"lastName", "firstName", "address", "city", "state", "zipCode", "homePhone", "cellPhone", "email"};
       for (String field : fields) {
          String newVal = patient.getField(field);
          String oldVal = patient.getLastHistoricData("patient", field) == null ? null : patient.getLastHistoricData("patient", field).getValue();

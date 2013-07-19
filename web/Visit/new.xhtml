@@ -42,8 +42,6 @@
                            <label>Procedures</label>
                            <h:selectBooleanCheckbox value="#{var.Visit.form.importOptions.referringProvider._}"/>
                            <label>Referring Provider</label>
-                           <h:selectBooleanCheckbox value="#{var.Visit.form.importOptions.prescriptionDate._}"/>
-                           <label>Prescription Date</label>
                            <div class="separator"/>
                            <h:commandLink action="#{jsf._do(biz.importPrevVisit(var.Visit.form.visit._, var.Visit.form.prevVisit._, var.Visit.form.importOptions)).stay}" value="Apply">
                               <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>

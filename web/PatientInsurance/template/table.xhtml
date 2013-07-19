@@ -57,9 +57,9 @@
                      <h:outputText value="PCP"/>
                   </f:facet>
                   <ui:fragment rendered="#{patientInsurance.insurance.planType == 'HM'}">
-                     <h:outputText value=" #{biz.referringProvider(patientInsurance.primaryCarePhysicianId).lastName}, #{biz.referringProvider(patientInsurance.primaryCarePhysicianId).firstName}" rendered="#{patientInsurance.primaryCarePhysicianId != null and patientInsurance.primaryCarePhysicianId != 0}"/>
+                     <h:outputText value=" #{biz.referringProvider(patientInsurance.pcpNpi).name}" rendered="#{patientInsurance.pcpNpi != null}"/>
                      <h:graphicImage value="/theme/#{cookie.theme.value}/image/error.png" style="position: relative; top:2px; left:2px;"
-                                     rendered="#{patientInsurance.primaryCarePhysicianId == null or patientInsurance.primaryCarePhysicianId == 0}" title="Not assigned PCP!"/>
+                                     rendered="#{patientInsurance.pcpNpi == null}" title="Not assigned PCP!"/>
                   </ui:fragment>
                   <ui:fragment rendered="#{patientInsurance.insurance.planType != 'HM'}">
                      <h:outputText value="N/A" title="Not Applicable For Plan"/>
@@ -69,7 +69,7 @@
                   <f:facet name="header">
                      <h:outputText value="Action" styleClass="nosort"/>
                   </f:facet>
-                  <h:commandButton action="#{jsf._do(var.PatientInsurance.form.patientInsurance._(patientInsurance))._do(var.PatientInsurance.form.referringProviderStr._(biz.referringProviderStr(patientInsurance.primaryCarePhysicianId)))._to('PatientInsurance/edit').go}"
+                  <h:commandButton action="#{jsf._do(var.PatientInsurance.form.patientInsurance._(patientInsurance))._do(var.PatientInsurance.form.referringProviderStr._(biz.referringProviderStr(patientInsurance.pcpNpi)))._to('PatientInsurance/edit').go}"
                                    styleClass="intable-action"
                                    value="Edit..." style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"/>
                   <input type="button" value="More ▼" class="context-menu-button" style="margin: 0; font-size: 0.8em;"/>

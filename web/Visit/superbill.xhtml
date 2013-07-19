@@ -224,7 +224,7 @@
                </tr>
                <ui:repeat value="#{biz.appendToMinSize(var.Visit.superbill.visit.procedureList, 6)}" var="visitProcedure">
                   <tr>
-                     <td>#{visitProcedure.code}&nbsp;</td><td>#{visitProcedure.procedure.description}</td><td>#{visitProcedure.diagCodePointers}</td>
+                     <td>#{visitProcedure.code}&nbsp;</td><td>#{visitProcedure.procedure.description}</td><td>#{visitProcedure.pointers}</td>
                      <td>#{visitProcedure.modifier1}</td><td>#{visitProcedure.modifier2}</td><td>#{visitProcedure.modifier3}</td><td>#{visitProcedure.units}</td>
                   </tr>
                </ui:repeat>

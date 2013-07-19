@@ -80,7 +80,7 @@
                </ui:fragment>
             </ui:fragment>
             <ui:fragment rendered="#{var.OfficeProvider.form.officeProvider._.role == 'self'}">
-               #{var.OfficeProvider.form.officeProvider._.associatedProvider == null ? var.OfficeProvider.form.officeProvider._.setAssociatedProvider(jsf.newObject('com.medenterprise.medicalcare.domain.medenterprise.Provider')) : null}
+               #{var.OfficeProvider.form.officeProvider._.associatedProvider == null ? var.OfficeProvider.form.officeProvider._.setAssociatedProvider(jsf.newObject('medoffice.entity.Provider')) : null}
                <li class="em8">
                   <h:panelGroup styleClass="errors" rendered="#{var.OfficeProvider.form.officeProviderValidationMap._ != null and var.OfficeProvider.form.officeProviderValidationMap._.npi}">
                      <b>NPI</b> is required

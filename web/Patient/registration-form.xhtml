@@ -149,7 +149,7 @@
                         <label>First Name:</label>
                         <input value="#{var.Patient.registrationFU.patient._.firstName}" type="text" style="width: 16.3em;"/>
                         <label>MI:</label>
-                        <input value="#{var.Patient.registrationFU.patient._.mi}" type="text" style="width: 2em;"/>
+                        <input value="#{var.Patient.registrationFU.patient._.middleInitial}" type="text" style="width: 2em;"/>
                      </td>
                   </tr>
                   <tr>
@@ -191,7 +191,7 @@
                      </td>
                      <td>
                         <label>Emergency Phone:</label>
-                        <input value="#{var.Patient.registrationFU.patient._.emergPhone}" type="text" style="width: 7em;"/>
+                        <input value="#{var.Patient.registrationFU.patient._.emergencyPhone}" type="text" style="width: 7em;"/>
                      </td>
                   </tr>
                   <tr>
@@ -208,8 +208,8 @@
                      </td>
                      <td>
                         <label>E-mail:</label>
-                        <input value="#{var.Patient.registrationFU.patient._.eMailAddress}" type="text" style="width: 13em;"/>
-                        <h:panelGroup rendered="#{var.Patient.registrationFU.patient._.eMailAddress == null}" style="display: inline-block; vertical-align: top;">
+                        <input value="#{var.Patient.registrationFU.patient._.email}" type="text" style="width: 13em;"/>
+                        <h:panelGroup rendered="#{var.Patient.registrationFU.patient._.email == null}" style="display: inline-block; vertical-align: top;">
                            <span style="font-family: Wingdings;margin: 0 0 0 1em;"></span>
                            <label style="display: inline-block;"><i>Don't have</i></label>
                            <br/>
@@ -282,7 +282,7 @@
                   <tr>
                      <td>
                         <label>Employer:</label>
-                        <input value="#{var.Patient.registrationFU.patient._.company}" type="text" style="width: 21.5em;"/>
+                        <input value="#{var.Patient.registrationFU.patient._.employer}" type="text" style="width: 21.5em;"/>
                      </td>
                      <td>
                         <label>Work Phone:</label>
@@ -325,9 +325,9 @@
                         </td>
                         <td>
                            <label>Member ID:</label>
-                           <input value="#{patientInsurance.policyID}" type="text" style="width: 8em;"/>
+                           <input value="#{patientInsurance.memberId}" type="text" style="width: 8em;"/>
                            <label>Group ID:</label>
-                           <input value="#{patientInsurance.groupID}" type="text" style="width: 7.5em;"/>
+                           <input value="#{patientInsurance.groupId}" type="text" style="width: 7.5em;"/>
                         </td>
                      </tr>
                      <tr>

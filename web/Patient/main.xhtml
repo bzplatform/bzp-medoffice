@@ -154,7 +154,7 @@
                                        var="patientNoteTemplate" itemLabel="#{patientNoteTemplate.value}"/>
                         <f:converter converterId="EntityConverter"/>
                      </h:selectOneMenu>
-                     <h:commandButton value="Add..." style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;" action="#{jsf._do(jsf.global('patient', 'var').put('patientNote', jsf.newObject('com.medenterprise.domain.entity.PatientNote'))).
+                     <h:commandButton value="Add..." style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;" action="#{jsf._do(jsf.global('patient', 'var').put('patientNote', jsf.newObject('medoffice.entity.PatientNote'))).
                                                                                                                                       _do(jsf.global('patient', 'var').put('patientNote:edit:oldValue', null)).
                                                                                                                                       _do(jsf.global('patient', 'var')['patientNote'].setPatientId(patientList.get(0).id)).
                                                                                                                                       _do(patientNoteTemplate != null ? jsf.global('patient', 'var')['patientNote'].setValue(patientNoteTemplate.value) : null).stay}">
@@ -709,7 +709,7 @@
                                          value="#{var.Patient.providerAppointmentDurationEnabled._ == null ? 'On' : 'Off'}">
                            <f:ajax render="@form" onevent="ajaxEventHandler"/>
                         </h:commandButton>
-                        #{var.Patient.timePeriodManagerList._ == null ? jsf._do(var.Patient.timePeriodManagerList._(biz.defineTimePeriodManagerList(var.Patient.appointmentStartDate._, 14, var.Patient.officeProvider._.id, var.Patient.providerAppointmentCategory._.appointmentCategory.id, var.Patient.providerAppointmentDuration._)))._do(var.Patient.timePeriodManagerListValidationMap._(biz.timePeriodManagerListValidationMap(var.Patient.timePeriodManagerList._, patientList, var.Patient.specialtyId._))).stay() : null}
+                        #{var.Patient.timePeriodManagerList._ == null ? jsf._do(var.Patient.timePeriodManagerList._(biz.defineTimePeriodManagerList(var.Patient.appointmentStartDate._, 12, var.Patient.officeProvider._.id, var.Patient.providerAppointmentCategory._.visitCategory.code, var.Patient.providerAppointmentDuration._)))._do(var.Patient.timePeriodManagerListValidationMap._(biz.timePeriodManagerListValidationMap(var.Patient.timePeriodManagerList._, patientList, var.Patient.specialtyId._))).stay() : null}
                         <div class="one">
                            <table>
                               <thead>
@@ -767,7 +767,7 @@
                                                                disabled="#{patientList == null or patientList.size() != 1}"
                                                                rendered="#{var.Appointment.reschedule._ == null}"
                                                                style="#{var.Patient.Appointment.emergencyMode._ and timePeriodManager.busyTime(time, var.Patient.providerAppointmentDuration._) ? 'color: gray;' : ''}"
-                                                               action="#{jsf._do(var.Appointment.form.appointment._(biz.newAppointment(timePeriodManager.activeDate, time, patientList.get(0), var.Patient.officeProvider._.id, var.Patient.providerAppointmentCategory._.appointmentCategory.id, var.Patient.providerAppointmentDuration._, myOfficeCode)))._do(var.Appointment.form.referringProvider._(biz.referringProviderByLastVisit(timePeriodManager.activeDate, patientList.get(0))))._do(var.Patient.timePeriodManagerList._(null))._to('Appointment/new').go}">
+                                                               action="#{jsf._do(var.Appointment.form.appointment._(biz.newAppointment(timePeriodManager.activeDate, time, patientList.get(0), var.Patient.officeProvider._.id, var.Patient.providerAppointmentCategory._.visitCategory.code, var.Patient.providerAppointmentDuration._)))._do(var.Appointment.form.referringProvider._(biz.referringProviderByLastVisit(timePeriodManager.activeDate, patientList.get(0))))._do(var.Patient.timePeriodManagerList._(null))._to('Appointment/new').go}">
                                                    <h:outputText value="#{time}" style="font-size: 0.85em; white-space: nowrap;">
                                                       <f:convertDateTime pattern="h:mm a" locale="en"/>
                                                    </h:outputText>
