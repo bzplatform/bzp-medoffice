@@ -19,7 +19,7 @@
             <div class="column">
                <div class="menu form">
                   <div class="header">
-                     <h3 class="center">Create Result for #{edi.patient(var.ReferralResult.form.referralResult.patientId).lastName}, #{edi.patient(var.ReferralResult.form.referralResult.patientId).firstName}</h3>
+                     <h3 class="center">Create Result for #{var.ReferralResult.form.referralResult.patient.name}</h3>
                   </div>
                   <div class="body">
                      <ul class="vertical form-area grid g48">
@@ -33,7 +33,6 @@
                                                 _do(var.ReferralResult.form.referralResult.setCreatedUserId(access.user.id)).
                                                 _do(var.ReferralResult.form.referralResult.setLastUpdated(jsf.newDate)).
                                                 _do(var.ReferralResult.form.referralResult.setLastUpdatedUserId(access.user.id)).
-                                                _do(var.ReferralResult.form.referralResult.setMyOfficeCode(myOfficeCode)).
                                                 _save(var.ReferralResult.form.referralResult).
                                                 _do(var.ReferralResult.form.referralResult.referral != null and var.ReferralResult.form.referralResult.referral.status == 'OPEN' ?
                                                 jsf._do(var.ReferralResult.form.referralResult.referral.setStatus('DONE')).

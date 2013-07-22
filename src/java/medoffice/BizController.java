@@ -599,16 +599,17 @@ public class BizController {
    public ReferralResult newReferralResultFromPatient(Patient patient) {
       ReferralResult referralResult = new ReferralResult();
       referralResult.setPatientId(patient.getId());
+      referralResult.setPatient(patient);
       return referralResult;
    }
 
    public ReferralResult newReferralResultFromReferral(Referral referral) {
       ReferralResult referralResult = new ReferralResult();
       referralResult.setPatientId(referral.getPatientId());
+      referralResult.setPatient(referral.getPatient());
       referralResult.setProvider(referral.getProvider());
       referralResult.setOfficeProvider(referral.getOfficeProvider());
       referralResult.setFacility(referral.getFacility());
-      referralResult.setMyOfficeCode(referral.getMyOfficeCode());
       if (referral.getProcedureList() != null && referral.getProcedureList().size() >= 1) {
          referralResult.setProcedure(referral.getProcedureList().get(0));
       }
@@ -1090,11 +1091,11 @@ public class BizController {
       patientInsurance.setPcpNpi(null);
    }
 
-   public void appointmentToVisit(int appointmentId) {
-      Map params = new HashMap();
-      params.put(1, appointmentId);
-      params.put(2, null);
-      crudService.executeNamedNativeQuery("Appointment.moveToVisit", params, "_MEDBASE");
+   public void appointmentToVisit(Appointment appointment) {
+      Visit visit = new Visit(appointment);
+      appointment.setStatus("CLOSED");
+      crudService.create(visit);
+      crudService.update(appointment);
    }
 
    public Visit visit(int id) {
@@ -1390,7 +1391,7 @@ public class BizController {
       crudService.update(providerSchedule, "_MEDBASE");
    }
 
-   public OfficeSchedule newOfficeSchedule(String myOfficeCode) {
+   public OfficeSchedule newOfficeSchedule() {
       OfficeSchedule officeSchedule = new OfficeSchedule();
       officeSchedule.setClassifierCode('H');
       officeSchedule.setPeriod1EveryValue(1);

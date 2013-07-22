@@ -53,8 +53,8 @@
                   <f:facet name="header">
                      <h:outputText value="Patient"/>
                   </f:facet>
-                  <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(edi.patient(patientAuthorization.patientId)))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" style="color: black;">
-                     <h:outputText value="#{edi.patient(patientAuthorization.patientId).lastName}, #{edi.patient(patientAuthorization.patientId).firstName}"/>
+                  <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(patientAuthorization.patient))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" style="color: black;">
+                     <h:outputText value="#{patientAuthorization.patient.name}"/>
                   </h:commandLink>
                </h:column>
                <h:column rendered="#{tableConfig.patient._}">

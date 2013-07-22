@@ -45,8 +45,8 @@
                   <f:facet name="header">
                      <h:outputText value="Patient"/>
                   </f:facet>
-                  <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(edi.patient(referral.patientId)))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" style="color: black;">
-                     <h:outputText value="#{edi.patient(referral.patientId).lastName}, #{edi.patient(referral.patientId).firstName}"/>
+                  <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(referral.patient))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" style="color: black;">
+                     <h:outputText value="#{referral.patient.name}"/>
                   </h:commandLink>
                </h:column>
                <h:column rendered="#{tableConfig.patient._}">
@@ -59,7 +59,7 @@
                   <f:facet name="header">
                      <h:outputText value="Provider"/>
                   </f:facet>
-                  <h:outputText value="#{referral.provider.lastName}, #{referral.provider.firstName}"/>
+                  <h:outputText value="#{referral.officeProvider.alias}"/>
                </h:column>
                <h:column rendered="#{tableConfig.procedures._}">
                   <f:facet name="header">

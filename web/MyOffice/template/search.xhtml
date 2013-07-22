@@ -84,7 +84,6 @@
                     _do(empty var.MyOffice.Referral.facility._ ? null : var.MyOffice.Referral.search.put('facility', var.MyOffice.Referral.facility._)).
                     _do(empty var.MyOffice.Referral.specialtyId._ ? null : var.MyOffice.Referral.search.put('specialtyId', var.MyOffice.Referral.specialtyId._)).
                     _do(var.MyOffice.Referral.search.put('provider', var.MyOffice.Referral.provider._)).
-                    _do(var.MyOffice.Referral.search.put('myOfficeCode', myOfficeCode)).
                     _do(var.MyOffice.Referral.search._ != var.MyOffice.Referral.search.toString().hashCode() ? var.MyOffice.Referral.list._(jsf.search('Referral', 'r.created DESC', var.MyOffice.Referral.search)): null).
                     _do(var.MyOffice.Referral.search._ != var.MyOffice.Referral.search.toString().hashCode() ? var.MyOffice.Referral.search._(var.MyOffice.Referral.search.toString().hashCode()) : null).
                     stay()}

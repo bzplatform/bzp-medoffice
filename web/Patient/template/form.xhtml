@@ -14,7 +14,6 @@
                   font-weight: bold;
                }
             </style>
-            #{var.Patient.form.patient._ == null ? var.Patient.form.patient._(edi.patient(var.Patient.form.patientId._)) : null}
             <li class="em14">
                <h:panelGroup styleClass="errors" rendered="#{var.Patient.form.patientValidationMap._ != null and var.Patient.form.patientValidationMap._.lastName}">
                   <b>Last Name</b> is required

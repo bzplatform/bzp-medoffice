@@ -19,7 +19,7 @@
             <div class="column">
                <div class="menu form">
                   <div class="header">
-                     <h3 class="center">Edit Result for #{edi.patient(var.ReferralResult.form.referralResult.patientId).lastName}, #{edi.patient(var.ReferralResult.form.referralResult.patientId).firstName}</h3>
+                     <h3 class="center">Edit Result for #{var.ReferralResult.form.referralResult.patient.name}</h3>
                   </div>
                   <div class="body">
                      <ul class="vertical form-area grid g48">
@@ -35,8 +35,6 @@
                         <label class="vlabel">By user: </label>
                         <span>#{access.getUserName(var.ReferralResult.form.referralResult.lastUpdatedUserId)}</span>
                         <br/>
-                        <label class="vlabel">Office: </label>
-                        <span>#{var.ReferralResult.form.referralResult.myOfficeCode.toUpperCase()}</span>
                         <label class="vlabel">OP: </label>
                         <span>#{var.ReferralResult.form.referralResult.officeProvider.alias}</span>                       
                      </div>

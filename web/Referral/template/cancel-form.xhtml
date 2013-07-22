@@ -8,7 +8,7 @@
    <body>
       <ui:composition>
          <li class="em48">
-            #{empty var.Referral.form.typicalCancelReasonList._ ? jsf._do(var.Referral.form.typicalCancelReasonList._(jsf.search('ReferralTypicalCancelReason', null, jsf.newMap()))).stay() :  null}
+            #{empty var.Referral.form.typicalCancelReasonList._ ? jsf._do(var.Referral.form.typicalCancelReasonList._(jsf.search('ReferralCancelReason', null, jsf.newMap()))).stay() :  null}
             <label>Cancel Reason:</label>                                      
             <h:selectOneMenu value="#{var.Referral.form.temp._}" onchange="$(event.target).next('input').val($(event.target).val()); $(event.target).val('')" style="width:16em; font-size: 1.13em; margin-left: 25em; margin-right: -41em">
                <f:selectItem itemValue="#{null}" itemLabel=""/>

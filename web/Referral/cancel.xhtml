@@ -19,7 +19,7 @@
             <div class="column">
                <div class="menu form">
                   <div class="header">
-                     <h3 class="center">Cancelling Referral for #{edi.patient(var.Referral.form.referral.patientId).lastName}, #{edi.patient(var.Referral.form.referral.patientId).firstName}</h3>
+                     <h3 class="center">Cancelling Referral for #{var.Referral.form.referral.patient.name}</h3>
                   </div>
                   <div class="body">
                      <ul class="vertical form-area grid g48">
@@ -32,7 +32,6 @@
                                                 _do(var.Referral.form.referral.setCreatedUserId(access.user.id)).
                                                 _do(var.Referral.form.referral.setLastUpdated(jsf.newDate)).
                                                 _do(var.Referral.form.referral.setLastUpdatedUserId(access.user.id)).
-                                                _do(var.Referral.form.referral.setMyOfficeCode(myOfficeCode)).
                                                 _do(var.Referral.form.referral.setStatus('CANCELLED')).
                                                 _save(var.Referral.form.referral).
                                                 _do(var.OfficeProvider.Referral.search._(null)).

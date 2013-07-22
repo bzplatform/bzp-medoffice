@@ -136,7 +136,7 @@
                <ui:fragment rendered="#{var.Referral.batch.selected._[referral]}">
                   <div class="page">
                      #{var.Referral.batch.myOffice._(biz.myOffice(referral.myOfficeCode))}
-                     #{var.Referral.batch.patient._(edi.patient(referral.patientId))}
+                     #{var.Referral.batch.patient._(referral.patient)}
                      <table cellpadding="2px" style="width:100%;">
                         <tr>
                            <th colspan="3" style="font-size: 1.2em; font-weight: normal;">#{referral.facility.name}&nbsp; <div style="float:right; font-size: 0.6em; display: inline-block; font-weight: bold; margin-top: -2em;">REFERRAL ##{referral.id}</div></th>

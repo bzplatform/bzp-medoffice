@@ -55,8 +55,8 @@
                   <f:facet name="header">
                      <h:outputText value="Patient"/>
                   </f:facet>
-                  <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(edi.patient(referralResult.patientId)))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" style="color: black;">
-                     <h:outputText value="#{edi.patient(referralResult.patientId).lastName}, #{edi.patient(referralResult.patientId).firstName}"/>
+                  <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(referralResult.patient))._do(jsf.global('patient', 'view').put('panel:Search', false))._to('Patient/main').go}" style="color: black;">
+                     <h:outputText value="#{referralResult.patient.name}"/>
                   </h:commandLink>
                </h:column>
                <h:column rendered="#{tableConfig.patient._}">
@@ -79,9 +79,9 @@
                </h:column>
                <h:column rendered="#{tableConfig.details._}">
                   <f:facet name="header">
-                     <h:outputText value="Note" styleClass="nosort"/>
+                     <h:outputText value="Notes" styleClass="nosort"/>
                   </f:facet>
-                  <h:outputText value="#{referralResult.note}"/>
+                  <h:outputText value="#{referralResult.notes}"/>
                </h:column>
                <h:column rendered="#{tableConfig.action._}">
                   <f:facet name="header">

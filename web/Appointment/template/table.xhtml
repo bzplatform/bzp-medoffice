@@ -145,7 +145,7 @@
                                    rendered="#{var.Appointment.reschedule._ == appointment}"
                                    value="Cancel Reschedule Appointment"/>
                   <ui:fragment rendered="#{var.Appointment.reschedule._ != appointment}">
-                     <h:commandButton action="#{jsf.go(biz.policyIdIssue(appointment.patient.id) ? jsf._do(var.alert._('Insurance Member ID is undefined. Enter Member ID and Make Visit'))._to('alert').go() : jsf._do(biz.appointmentToVisit(appointment.id))._do(jsf.global('officeProvider', 'event').put('refresh', true)).stay())}" 
+                     <h:commandButton action="#{jsf._do(biz.appointmentToVisit(appointment))._do(jsf.global('officeProvider', 'event').put('refresh', true)).stay()}" 
                                       value="Create Visit" style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"
                                       disabled="#{! biz.todayOrBefore(appointment.date)}"/>
                      <input type="button" value="More ▼" class="context-menu-button" style="margin: 0; font-size: 0.8em; width: auto;"/>

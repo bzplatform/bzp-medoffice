@@ -91,14 +91,7 @@
                      <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
                      <f:convertDateTime dateStyle="short" locale="en"/>
                   </h:inputText>
-                  <h:commandButton action="#{jsf._do(var.OfficeSchedule.form.officeSchedule._(biz.newOfficeSchedule(myOfficeCode)))._to('OfficeSchedule/edit').go}"
-                                   value="Add..." style="margin-left: 1em; width: auto;">
-                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
-                  </h:commandButton>
-               </ui:fragment>
-                <ui:fragment rendered="#{var.Administration.subview._ == 'PatientGuideline'}">
-                  #{jsf._do(var.Administration.PatientGuideline.list._(jsf.hintedSearch('PatientGuideline', null, var.Administration.PatientGuideline.search, '_MEDBASE'))).stay()}
-                  <h:commandButton action="#{jsf._do(var.PatientGuideline.form.patientGuideline._(biz.newPatientGuideline(myOfficeCode)))._to('PatientGuideline/edit').go}"
+                  <h:commandButton action="#{jsf._do(var.OfficeSchedule.form.officeSchedule._(biz.newOfficeSchedule()))._to('OfficeSchedule/edit').go}"
                                    value="Add..." style="margin-left: 1em; width: auto;">
                      <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
                   </h:commandButton>

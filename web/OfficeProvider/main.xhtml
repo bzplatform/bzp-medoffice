@@ -580,14 +580,12 @@
                         <label style="margin-left: 0; margin-right: 0;">
                            #{jsf._do(var.OfficeProvider.Referral.pending.days._ == null ? var.OfficeProvider.Referral.pending.days._(4) : null).stay()}
                            #{jsf._do(var.OfficeProvider.Referral.pending.search.put('officeProvider', officeProviderList.get(0))).
-                             _do(var.OfficeProvider.Referral.pending.search.put('myOfficeCode', myOfficeCode)).
                              _do(var.OfficeProvider.Referral.pending.search.put('end_created', jsf.addDays(jsf.newDate, -var.OfficeProvider.Referral.pending.days._))).
                              _do(var.OfficeProvider.Referral.pending.search.put('status', 'OPEN')).stay()}
                            #{jsf._do(var.OfficeProvider.Referral.search.clear()).                
                              _do(var.OfficeProvider.Referral.search.put('start_created', var.OfficeProvider.Referral.startDate._)).
                              _do(var.OfficeProvider.Referral.search.put('end_created', var.OfficeProvider.Referral.endDate._)).                    
                              _do(var.OfficeProvider.Referral.search.put('officeProvider', officeProviderList.get(0))).
-                             _do(var.OfficeProvider.Referral.search.put('myOfficeCode', myOfficeCode)).
                              _do(var.OfficeProvider.Referral.search.put('status', var.OfficeProvider.Referral.status._)).
                              _do(var.OfficeProvider.Referral.pending.view._ ? var.OfficeProvider.Referral.search.clear() : null).
                              _do(var.OfficeProvider.Referral.pending.view._ ? var.OfficeProvider.Referral.search.putAll(var.OfficeProvider.Referral.pending.search) : null).
@@ -685,7 +683,6 @@
                           _do(var.OfficeProvider.ReferralResult.search.put('end_created', var.OfficeProvider.ReferralResult.endDate._)).
                           _do(var.OfficeProvider.ReferralResult.search.put('category', var.OfficeProvider.ReferralResult.category._)).
                           _do(var.OfficeProvider.ReferralResult.search.put('officeProvider', officeProviderList.get(0))).
-                          _do(var.OfficeProvider.ReferralResult.search.put('myOfficeCode', myOfficeCode)).
                           _do(var.OfficeProvider.ReferralResult.search.put('status', var.OfficeProvider.ReferralResult.status._)).
                           _do(var.OfficeProvider.ReferralResult.pending.view._ ? var.OfficeProvider.ReferralResult.search.clear() : null).
                           _do(var.OfficeProvider.ReferralResult.pending.view._ ? var.OfficeProvider.ReferralResult.search.putAll(var.OfficeProvider.ReferralResult.pending.search) : null).

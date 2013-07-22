@@ -709,7 +709,7 @@
                                          value="#{var.Patient.providerAppointmentDurationEnabled._ == null ? 'On' : 'Off'}">
                            <f:ajax render="@form" onevent="ajaxEventHandler"/>
                         </h:commandButton>
-                        #{var.Patient.timePeriodManagerList._ == null ? jsf._do(var.Patient.timePeriodManagerList._(biz.defineTimePeriodManagerList(var.Patient.appointmentStartDate._, 12, var.Patient.officeProvider._.id, var.Patient.providerAppointmentCategory._.visitCategory.code, var.Patient.providerAppointmentDuration._)))._do(var.Patient.timePeriodManagerListValidationMap._(biz.timePeriodManagerListValidationMap(var.Patient.timePeriodManagerList._, patientList, var.Patient.specialtyId._))).stay() : null}
+                        #{var.Patient.timePeriodManagerList._ == null ? jsf._do(var.Patient.timePeriodManagerList._(biz.defineTimePeriodManagerList(var.Patient.appointmentStartDate._, 12, var.Patient.officeProvider._.id, var.Patient.providerAppointmentDuration._)))._do(var.Patient.timePeriodManagerListValidationMap._(biz.timePeriodManagerListValidationMap(var.Patient.timePeriodManagerList._, patientList, var.Patient.specialtyId._))).stay() : null}
                         <div class="one">
                            <table>
                               <thead>
@@ -870,7 +870,6 @@
                     stay()}
                   #{jsf._do(var.Patient.Referral.search.clear()).                
                     _do(var.Patient.Referral.search.put('patientId', patientList.get(0).id)).
-                    _do(var.Patient.Referral.search.put('myOfficeCode', myOfficeCode)).
                     _do(var.Patient.Referral.search._ != var.Patient.Referral.search.toString().hashCode() ? var.Patient.Referral.list._(jsf.search('Referral', 'r.created DESC', var.Patient.Referral.search)): null).
                     _do(var.Patient.Referral.search._ != var.Patient.Referral.search.toString().hashCode() ? var.Patient.Referral.search._(var.Patient.Referral.search.toString().hashCode()) : null).
                     stay()}
@@ -920,7 +919,6 @@
                     stay()}
                   #{jsf._do(var.Patient.ReferralResult.search.clear()).                
                     _do(var.Patient.ReferralResult.search.put('patientId', patientList.get(0).id)).
-                    _do(var.Patient.ReferralResult.search.put('myOfficeCode', myOfficeCode)).
                     _do(var.Patient.ReferralResult.list._(jsf.search('ReferralResult', 'r.created DESC', var.Patient.ReferralResult.search))). 
                     stay()}
                   <div class="float-left column" style="min-width: 40em;">
