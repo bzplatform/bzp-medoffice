@@ -31,9 +31,9 @@
                </h:panelGroup>
                #{var.Insurance.form.insuranceTypeList._ == null ? var.Insurance.form.insuranceTypeList._(jsf.hintedSearch('InsuranceType', 'i.name', jsf.newMap(), '_MEDBASE'))  : null}          
                <label>Type:</label>
-               <h:selectOneMenu value="#{var.Insurance.form.insurance._.typeId}" title="Type">
+               <h:selectOneMenu value="#{var.Insurance.form.insurance._.typeCode}" title="Type">
                   <f:selectItem itemValue="" itemLabel="NONE"/>
-                  <f:selectItems value="#{var.Insurance.form.insuranceTypeList._}" var="insuranceType" itemLabel="#{insuranceType.name}" itemValue="#{insuranceType.id}"/>
+                  <f:selectItems value="#{var.Insurance.form.insuranceTypeList._}" var="insuranceType" itemLabel="#{insuranceType.name}" itemValue="#{insuranceType.code}"/>
                </h:selectOneMenu>            
             </li>
             <li style="height: 1.5em; padding: 0.5em 0 0 0.5em; width: 6em;">

@@ -7,6 +7,7 @@
    <body>
       <ui:composition>
          <div class="tabs border views">
+            #{jsf.global('myOffice')['view'] == null ? jsf._do(jsf.global('myOffice').put('subview', 'Referral')).stay() : null}
             <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'Referral')).
                                      _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
                            value="REFERRAL"

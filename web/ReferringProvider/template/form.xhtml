@@ -43,10 +43,10 @@
                <label>Suffix:</label>
                <h:inputText value="#{var.ReferringProvider.form.referringProvider._.suffix}" title="Suffix"/>
             </li>
-            <li style="height: 1.5em; padding: 0.5em 0 0 0.5em; width: 9em;">
-               <h:selectBooleanCheckbox value="#{var.ReferringProvider.form.referringProvider._.officeProvider}"/>
-               <label style="display: inline; margin-left: -1em;">Office Provider</label>            
-            </li>
+            <li style="height: 1.5em; padding: 0.5em 0 0 0.5em; width: 6em;">
+               <h:selectBooleanCheckbox value="#{var.ReferringProvider.form.referringProvider._.active}"/>
+               <label style="display: inline; margin-left: -1em;">Active</label>            
+            </li>            
             <li class="em27">
                <label>Address:</label>
                <h:inputText value="#{var.ReferringProvider.form.referringProvider._.address}" title="Address"/>
@@ -66,7 +66,7 @@
                      <f:ajax render="city state" execute="zipCode"/>
                   </h:commandLink>
                </label>
-               <h:inputText id="zipCode" value="#{var.ReferringProvider.form.referringProvider._.postalCode}" title="Zip Code"/>
+               <h:inputText id="zipCode" value="#{var.ReferringProvider.form.referringProvider._.zipCode}" title="Zip Code"/>
             </li>
             <li class="em11">
                <label>Phone:</label>

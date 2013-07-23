@@ -21,9 +21,9 @@
                </h:column>
                <h:column rendered="#{tableConfig.id._}">
                   <f:facet name="header">
-                     <h:outputText value="ID"/>
+                     <h:outputText value="NPI"/>
                   </f:facet>
-                  <h:outputText value="#{referringProvider.id}"/>
+                  <h:outputText value="#{referringProvider.npi}"/>
                </h:column>
                <h:column>
                   <f:facet name="header">
@@ -43,12 +43,6 @@
                   </f:facet>
                   <h:outputText value="#{referringProvider.middleInitial}"/>
                </h:column>
-               <h:column>
-                  <f:facet name="header">
-                     <h:outputText value="NPI"/>
-                  </f:facet>
-                  <h:outputText value="#{referringProvider.npi}"/>
-               </h:column>              
                <h:column rendered="#{tableConfig.action._}">
                   <f:facet name="header">
                      <h:outputText value="Action" styleClass="nosort"/>

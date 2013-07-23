@@ -8,7 +8,7 @@
       <ui:composition template="../template/base.xhtml">
 
          <ui:define name="title">
-           Medical Care: #{var.ReferringProvider.form.referringProvider._.id != null ? 'Edit ' : 'Register'} Referring Provider
+           Medical Care: #{var.ReferringProvider.form.referringProvider._.npi != null ? 'Edit ' : 'Register'} Referring Provider
          </ui:define>
 
          <ui:define name="navigation">
@@ -19,7 +19,7 @@
             <div class="column">
                <div class="menu form">
                   <div class="header">
-                     <h3 class="center">#{var.ReferringProvider.form.referringProvider._.id != null ? 'Edit ' : 'Register'} Referring Provider</h3>
+                     <h3 class="center">#{var.ReferringProvider.form.referringProvider._.npi != null ? 'Edit ' : 'Register'} Referring Provider</h3>
                   </div>
                   <div class="body">
                      <ul class="vertical form-area grid g48">
@@ -29,7 +29,7 @@
                   <ui:fragment rendered="#{! empty var.ReferringProvider.form.similarReferringProviderList._}">
                      <p style="margin-left: 1em; margin-bottom: 1em;"><span style="color: red; margin-right: 1em;">Found Similar Referring Providers:</span>
                         <ui:repeat value="#{var.ReferringProvider.form.similarReferringProviderList._}" var="referringProvider">
-                              <h:outputText value="[#{referringProvider.id}] #{referringProvider.lastName}, #{referringProvider.firstName},"/>
+                              <h:outputText value="#{referringProvider.name}"/>
                               <h:outputText value=" #{referringProvider.npi}" style="margin-right: 1em; #{referringProvider.npi == var.ReferringProvider.form.referringProvider._.npi ? 'color: red;' : ''}"/>
                         </ui:repeat>
                      </p>
