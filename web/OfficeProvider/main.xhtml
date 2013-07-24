@@ -165,6 +165,7 @@
                      #{jsf._do(var.Patient.Appointment.search.clear()).                
                        _do(var.Patient.Appointment.search.put('patient', patientList.get(0))).
                        _do(var.Patient.Appointment.search.put('status', 'OPEN')).
+                       _do(var.Patient.Appointment.search.put('_a.date >= :now', biz.trimDate(jsf.newDate))).
                        _do(var.Patient.Appointment.list._(jsf.search('Appointment', 'a.date, a.time', var.Patient.Appointment.search))).                    
                        stay()}
                      #{jsf._do(var.Patient.Appointment.tableConfig.time._ == null ? var.Patient.Appointment.tableConfig.time._(true) : null).

@@ -518,15 +518,16 @@ public class BizController {
       return crudService.find(cpt, ProcedureCptModifierSet.class);
    }
 
-   public void removeVisit(int visitId, int userId) {
-      Visit visit = crudService.find(visitId, Visit.class);
+   public void removeVisit(Visit visit) {
       if (today(visit.getDate()) && visit.getAppointmentId() != null) {
          Appointment appointment = crudService.find(visit.getAppointmentId(), Appointment.class);
          appointment.setStatus("OPEN");
          crudService.update(appointment);
       }
-      visit.setStatus("REMOVED");
-      crudService.update(visit);
+      String notes = "patientId = " + visit.getPatient().getId() + "; officeProviderId = " + 
+              visit.getOfficeProvider().getId() + "; visitDate = " + formattedDate("MM/dd/yyyy", visit.getDate());
+      patientRecordLog("Visit", visit.getId(), "removed", notes);
+      crudService.delete(visit);
    }
 
    public void addPatientVisitActivity(Visit visit, int userId) {
@@ -3223,6 +3224,19 @@ public class BizController {
       log.setSourceRecordId(sourceRecordId);
       log.setEvent(event);
       log.setDatetime(new Date());
+      AccessController accessController = (AccessController) FacesUtils.getManagedObject("access");
+      log.setUserId(accessController.getUser().getId());
+      crudService.create(log);
+   }
+   
+   public void patientRecordLog(String source, int sourceRecordId, String event, String notes) {
+      PatientRecordLog log = new PatientRecordLog();
+      log.setApplication("medoffice");
+      log.setSource(source);
+      log.setSourceRecordId(sourceRecordId);
+      log.setEvent(event);
+      log.setDatetime(new Date());
+      log.setNotes(notes);
       AccessController accessController = (AccessController) FacesUtils.getManagedObject("access");
       log.setUserId(accessController.getUser().getId());
       crudService.create(log);

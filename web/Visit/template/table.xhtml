@@ -159,21 +159,14 @@
                      <h:commandLink action="#{jsf._do(var.VisitProgressNote.report.visit._(visit))._to('VisitProgressNote/progress-note').go}"
                                     rendered="#{visit.progressNote.persisted}"
                                  value="Progress Note Report" style="margin: 0; border: none;" target="_blank"/>
-                     <ui:repeat value="#{EM.emrList}" var="emr">
-                        <ui:fragment rendered="#{emr.specialtyId == visit.specialtyID and EM.findEmrRecord(visit, emr, myOfficeCode) != null}">
-                           <h:commandLink action="#{jsf._do(var.Emr.form.mode._('Edit'))._do(var.Emr.form.emr._(emr))._do(var.Patient.Emr.search._(null))._do(var.OfficeProvider.Emr.search._(null))._do(var.Emr.form.emrRecord._(EM.emrRecord(visit, emr, myOfficeCode)))._to('EM/edit').go}"
-                                          value="#{emr.shortName}" style="margin-right: 1em;"/>
-                        </ui:fragment>
-                     </ui:repeat>
                      <div class="separator"/>
-                     <h:commandLink action="#{jsf._do(biz.removeVisit(visit.id, access.user.id)).
-                                              _delete(visit).
+                     <h:commandLink action="#{jsf._do(biz.removeVisit(visit)).
                                               _do(jsf.global('patient', 'event').put('refresh', true)).
                                               _do(jsf.global('officeProvider', 'event').put('refresh', true)).
                                               _do(var.Patient.timePeriodManagerList._(null)).
                                               stay}"
                                     rendered="#{access.isUriPermitted('Visit/delete')}"
-                                    onclick="if (confirm('Remove Visit of #{visit.patient.lastName.replace('\'', '`')}, #{visit.patient.firstName.replace('\'', '`')}?')) return true; else return false;"
+                                    onclick="if (confirm('Remove Visit of #{visit.patient.name.replace('\'', '`')}?')) return true; else return false;"
                                     style="margin-right: 1em;"
                                     value="Remove Visit/Restore Appt."/>
                   </div>

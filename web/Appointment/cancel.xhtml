@@ -19,7 +19,7 @@
             <div class="column">
                <div class="menu form">
                   <div class="header">
-                     <h3 class="center">Cancel Appointment of #{var.Appointment.form.appointment._.patient.lastName}, #{var.Appointment.form.appointment._.patient.firstName} from 
+                     <h3 class="center">Cancel Appointment of #{var.Appointment.form.appointment._.patient.name} from 
                         <h:outputText value="#{var.Appointment.form.appointment._.date}">
                            <f:convertDateTime pattern="MM/dd/yyyy"/>
                         </h:outputText></h3>
@@ -28,14 +28,11 @@
                         <ui:include src="template/cancel-form.xhtml"/>
                   </div>
                   <div class="footer">
-                     <h:commandButton action="#{jsf._do(var.Appointment.form.passwordExists._(biz.passwordExists(var.Appointment.form.appointment._.password))).
-                                                go(var.Appointment.form.passwordExists._ ? 
-                                                jsf._do(var.Appointment.form.appointment._.setUserID(access.user.id)).
-                                                _do(var.Appointment.form.currentDate._(jsf.newDate)).
-                                                _do(var.Appointment.form.appointment._.setDateChanged(var.Appointment.form.currentDate._)).
-                                                _do(var.Appointment.form.appointment._.setStateID(4)).
+                     <h:commandButton action="#{jsf._do(var.Appointment.form.appointment._.setLastUpdated(jsf.newDate)).
+                                                _do(var.Appointment.form.appointment._.setStatus('CANCELLED')).
                                                 _save(var.Appointment.form.appointment._).
-                                                _do(var.Appointment.form.$).back() : jsf.stay())}" styleClass="ok-button" value="OK"/>
+                                                _do(biz.patientRecordLog('Appointment', var.Appointment.form.appointment._.id, 'cancelled' )).
+                                                _do(var.Appointment.form.$).back()}" styleClass="ok-button" value="OK"/>
                      <h:commandButton action="#{jsf._do(var.Appointment.form.$).back}" value="Cancel" styleClass="cancel-button"/>
                   </div>
                </div>
