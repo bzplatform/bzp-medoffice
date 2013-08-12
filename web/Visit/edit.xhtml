@@ -49,12 +49,14 @@
                                                 _do(jsf.global('officeProvider', 'event').put('refresh', true)).
                                                 _do(jsf.global('patient', 'event').put('refresh', true)).
                                                 _do(biz.fixupPointers(var.Visit.form.visit._)).
+                                                _do(var.Visit.cursor._(var.Visit.form.visit._.id)).
                                                 _save(var.Visit.form.visit._).
                                                 _do(biz.addPatientVisitActivity(var.Visit.form.visit._, access.user.id)).
                                                 _do(jsf.referrerMap['Visit/edit'].contains('VisitPayment/edit') ? jsf.referrerMap.put('Visit/edit', jsf.referrerMap['VisitPayment/edit']) : null).
                                                 _do(var.Visit.form.$).back}" styleClass="ok-button" value="OK"/>
                      <h:commandButton action="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh', true)).
                                                 _do(jsf.global('patient', 'event').put('refresh', true)).
+                                                _do(var.Visit.cursor._(var.Visit.form.visit._.id)).
                                                 _do(jsf.referrerMap['Visit/edit'].contains('VisitPayment/edit') ? jsf.referrerMap.put('Visit/edit', jsf.referrerMap['VisitPayment/edit']) : null).
                                                 _do(var.Visit.form.$).back}" value="Cancel" styleClass="cancel-button"/>
                   </div>

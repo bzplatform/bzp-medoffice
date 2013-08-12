@@ -77,10 +77,10 @@
                      <f:ajax render="@form" execute="@form" onevent="ajaxEventHandler"/>
                   </h:commandButton>
                </div>
-               <h:commandLink action="#{jsf._do(var.Visit.form.visit._.diagnosisList == null ? var.Visit.form.visit._.setDiagnosisList(jsf.newObject('java.util.ArrayList')) : null)._do(var.Visit.form.visit._.procedureList == null ? var.Visit.form.visit._.setProcedureList(jsf.newObject('java.util.ArrayList')) : null)._do(var.Visit.specialty.put('visit', var.Visit.form.visit._))._to('Visit/profile').go}"
+               <!--<h:commandLink action="#{jsf._do(var.Visit.form.visit._.diagnosisList == null ? var.Visit.form.visit._.setDiagnosisList(jsf.newObject('java.util.ArrayList')) : null)._do(var.Visit.form.visit._.procedureList == null ? var.Visit.form.visit._.setProcedureList(jsf.newObject('java.util.ArrayList')) : null)._do(var.Visit.specialty.put('visit', var.Visit.form.visit._))._to('Visit/profile').go}"
                               value="Superbill..." styleClass="colored" style="float:right;font-size: 0.9em; margin-top: 0.3em;"/>
                <h:commandLink action="#{jsf._do(var.Visit.specialty.info.put('visit', var.Visit.form.visit._))._to('Visit/profile-edit').go}" rendered="#{access.isUriPermitted('MyOffice/administration')}"
-                              value="Edit Profiles..." styleClass="colored" style="float:right;font-size: 0.9em; margin-top: 0.3em; margin-right: 1em;"/>
+                              value="Edit Profiles..." styleClass="colored" style="float:right;font-size: 0.9em; margin-top: 0.3em; margin-right: 1em;"/>-->
                <h3>Diagnoses</h3>
                <div class="border" style="padding:0.3em 0.6em;">
                   <h:inputText id="diagnosisFilter" value="#{var.Visit.form.diagnosis.filter._}" title="Type part of DX code or %keyword and press Filter"/>

@@ -122,6 +122,17 @@
                   <f:facet name="header">
                      <h:outputText value="Action" styleClass="nosort"/>                     
                   </f:facet>
+                  <ui:fragment rendered="#{var.Visit.cursor._ == visit.id}">
+                     <script>
+                        $(document).ready(function() {
+                           $('html,body').scrollTo('#cursor-visit', '#cursor-visit');
+                           $('#cursor-visit').next().animate({opacity: '0.1'}, "slow");
+                           $('#cursor-visit').next().animate({opacity: '1'}, "slow");
+                        });
+                     </script>
+                     #{var.Visit.cursor._(null)}
+                     <span id="cursor-visit"/>
+                  </ui:fragment>
                   <h:commandButton action="#{jsf._do(var.Visit.form.visit._(visit))._to('Visit/edit').go}"
                                    style="margin: 0; margin-right: 0.5em; font-size: 0.8em; width: auto;"
                                    value="Edit..."/>
@@ -140,15 +151,22 @@
                      <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
                   </h:commandButton>
                   <input type="button" value="More ▼" class="context-menu-button" style="margin: 0; font-size: 0.8em;"/>
-                  <div style="display: none;">                     
+                  <div style="display: none;">
+                     <ui:repeat value="#{biz.visitDocList(visit.specialtyId)}" var="doc">
+                        <h:commandLink action="#{jsf._do(var.VisitDoc.visit._(visit)).
+                                                 _do(var.VisitDoc.doc._(doc)).
+                                                 _to('VisitDoc/doc').go}"
+                                       target="_blank"
+                                       value="#{doc.title}" style="margin-right: 1em;"/>
+                     </ui:repeat>
                      <h:commandLink action="#{jsf._do(var.Referral.form.put('referral', biz.newReferralFromVisit(visit)))._to('Referral/new').go}"
                                     value="Create Referral" style="margin-right: 1em;"/>
-                     <h:commandLink action="#{jsf._do(var.Visit.superbill.put('visit', visit))._to('Visit/superbill').go}"
+                     <!--<h:commandLink action="#{jsf._do(var.Visit.superbill.put('visit', visit))._to('Visit/superbill').go}"
                                     target="_blank"
                                     value="Print Superbill" style="margin-right: 1em;"/>
                      <h:commandLink action="#{jsf._do(var.Visit.blankSuperbill.put('visit', visit))._to('Visit/blank-superbill').go}"
                                     target="_blank"
-                                    value="Blank Superbill" style="margin-right: 1em;"/>
+                                    value="Blank Superbill" style="margin-right: 1em;"/>-->
                      <h:commandLink action="#{jsf._do(var.VisitPayment.form.visit._(visit))._to('VisitPayment/edit').go}"
                                     value="Edit Payments" style="margin-right: 1em;"/>
                      <h:commandLink action="#{jsf._do(var.Visit.paymentBill.visit._(visit))._to('Visit/payment-bill').go}"
@@ -156,9 +174,9 @@
                                     value="Payment Bill" style="margin-right: 1em;"/>
                      <h:commandLink action="#{jsf._do(var.VisitVitals.form.visitVitals._(visit.vitals))._to('VisitVitals/edit').go}"
                                     value="Vitals" style="margin-right: 1em;"/>
-                     <h:commandLink action="#{jsf._do(var.VisitProgressNote.report.visit._(visit))._to('VisitProgressNote/progress-note').go}"
+                     <!--<h:commandLink action="#{jsf._do(var.VisitProgressNote.report.visit._(visit))._to('VisitProgressNote/progress-note').go}"
                                     rendered="#{visit.progressNote.persisted}"
-                                 value="Progress Note Report" style="margin: 0; border: none;" target="_blank"/>
+                                    value="Progress Note Report" style="margin: 0; border: none;" target="_blank"/> -->
                      <div class="separator"/>
                      <h:commandLink action="#{jsf._do(biz.removeVisit(visit)).
                                               _do(jsf.global('patient', 'event').put('refresh', true)).
@@ -166,11 +184,14 @@
                                               _do(var.Patient.timePeriodManagerList._(null)).
                                               stay}"
                                     rendered="#{access.isUriPermitted('Visit/delete')}"
-                                    onclick="if (confirm('Remove Visit of #{visit.patient.name.replace('\'', '`')}?')) return true; else return false;"
+                                    onclick="if (confirm('Remove Visit of #{visit.patient.name.replace('\'', '`')}?'))
+                              return true;
+                           else
+                              return false;"
                                     style="margin-right: 1em;"
                                     value="Remove Visit/Restore Appt."/>
                   </div>
-                     <h:outputText value="no vitals" style="font-weight: bold; font-size: 0.8em; color: gray;" title="No Vital Signs" rendered="#{visit.vitalsEmpty}"/>
+                  <h:outputText value="no vitals" style="font-weight: bold; font-size: 0.8em; color: gray;" title="No Vital Signs" rendered="#{visit.vitalsEmpty}"/>
                </h:column>
             </h:dataTable>
          </div>

@@ -65,6 +65,7 @@ import medoffice.entity.Visit;
 import medoffice.entity.VisitCategory;
 import medoffice.entity.VisitCc;
 import medoffice.entity.VisitDiagnosis;
+import medoffice.entity.VisitDoc;
 import medoffice.entity.VisitExam;
 import medoffice.entity.VisitHpi;
 import medoffice.entity.VisitPayment;
@@ -91,6 +92,7 @@ public class BizController {
 
    @EJB
    private CrudService crudService;
+   private Map<Integer, List<VisitDoc>> visitDocListMap = null;
    private Long generatedId = 0L;
 
    public ReferringProvider referringProviderByOfficeProvider(OfficeProvider officeProvider) {
@@ -524,8 +526,8 @@ public class BizController {
          appointment.setStatus("OPEN");
          crudService.update(appointment);
       }
-      String notes = "patientId = " + visit.getPatient().getId() + "; officeProviderId = " + 
-              visit.getOfficeProvider().getId() + "; visitDate = " + formattedDate("MM/dd/yyyy", visit.getDate());
+      String notes = "patientId = " + visit.getPatient().getId() + "; officeProviderId = "
+              + visit.getOfficeProvider().getId() + "; visitDate = " + formattedDate("MM/dd/yyyy", visit.getDate());
       patientRecordLog("Visit", visit.getId(), "removed", notes);
       crudService.delete(visit);
    }
@@ -3228,7 +3230,7 @@ public class BizController {
       log.setUserId(accessController.getUser().getId());
       crudService.create(log);
    }
-   
+
    public void patientRecordLog(String source, int sourceRecordId, String event, String notes) {
       PatientRecordLog log = new PatientRecordLog();
       log.setApplication("medoffice");
@@ -3240,5 +3242,18 @@ public class BizController {
       AccessController accessController = (AccessController) FacesUtils.getManagedObject("access");
       log.setUserId(accessController.getUser().getId());
       crudService.create(log);
+   }
+
+   public List<VisitDoc> visitDocList(int specialtyId) {
+      if (visitDocListMap == null) {
+         visitDocListMap = new LinkedHashMap();
+      }
+      if (!visitDocListMap.containsKey(specialtyId)) {
+         Map params = new HashMap();
+         params.put("specialtyId", specialtyId);
+         List visitDocList = crudService.search("SELECT vd FROM VisitDoc vd WHERE vd.specialty.id = :specialtyId ORDER BY vd.pos", params, 0);
+         visitDocListMap.put(specialtyId, castList(visitDocList, VisitDoc.class));
+      }
+      return visitDocListMap.get(specialtyId);
    }
 }

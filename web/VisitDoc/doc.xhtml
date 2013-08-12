@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>#{var.VisitDoc.doc._.title}</title>
+      <style type="text/css">
+         @media screen {
+            .page {
+               border: dotted black 1px;
+               padding: 1em;
+               margin: 1em;
+            }
+
+            .action {
+               display: block !important;
+               text-align: left;
+               margin-left: 10mm; 
+               margin-top: 1em;
+            }
+
+            .printable {
+               display: none;
+            }
+         }
+         @media all {
+            img {
+               position: absolute;
+               top: 0;
+               left: 0;
+               width: 200mm;
+               height: 275mm;             
+            }
+            .page span {
+               position: absolute;
+               font-weight: bold;
+               font-size: 3.8mm;               
+            }
+            body {
+               font-family:Arial, sans-serif;
+               margin: 0em;
+               text-align: left;
+               font-size: 0.8em;
+               line-height: 1.1;
+            }            
+            .page {
+               position: relative;
+               margin-left: 10mm;
+               margin-bottom: 10mm;
+               width: 200mm;
+               height: 275mm;
+               display: block;
+               overflow: visible;
+               padding: 0;
+            }
+
+         }
+         @media print {
+            .action {
+               display: none;
+            }
+         }
+      </style>
+      <script type="text/javascript" src="/#{access.application}/script/jquery/jquery-1.9.0.min.js"></script>
+      <script type="text/javascript" src="/#{access.application}/script/printer.js"></script>
+   </head>
+   <body>
+      <h:form prependId="false">
+         <div class="action"><a href="#" id="print-link" onclick="return print('Portrait')">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         <ui:repeat value="#{var.VisitDoc.doc._.pageList}" var="page">
+            <div class="page">
+               <object type="image/svg+xml" data="../visit-doc?id=#{var.VisitDoc.doc._.id}&amp;visit=#{var.VisitDoc.visit._.id}&amp;office=#{myOfficeCode}&amp;page=#{page}" style="width:210mm; height:270mm;"/>
+            </div>
+         </ui:repeat>
+      </h:form>
+   </body>
+</html>
