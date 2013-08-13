@@ -17,26 +17,40 @@
             </ui:include>
          </ui:define>
 
-         <ui:define name="form">
-            <script type="text/javascript">
-               dojo.require('dojox.fx.scroll');
-               dojo.require('dojox.fx');
-
-               function reclaimAttentionOn(id){
-                  dojox.fx.smoothScroll({node:dojo.byId(id),win:window,duration:400}).play();
-                  dojox.fx.highlight({node:dojo.byId(id),duration:1600}).play();
-               }
-            </script>
-            <ui:fragment rendered="#{jsf.global('myOffice', 'scroll')['patientHomecareClaim'] != null}">
-               <script type="text/javascript">
-                  dojo.addOnLoad(function(){
-                     reclaimAttentionOn('#{jsf.global('myOffice', 'scroll')['patientHomecareClaim']}');
-                  });
-                  #{jsf._do(jsf.global('myOffice', 'scroll').put('patientHomecareClaim', null)).stay()}
-               </script>
-            </ui:fragment>                    
+         <ui:define name="form">                  
             <div class="float-left column" jsfc="h:panelGroup">
                <ui:include src="template/search.xhtml"/>
+            </div>
+            <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'PatientEvent'}">
+               <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.PatientEvent.list._}">
+                    #{jsf._do(var.MyOffice.PatientEvent.tableConfig.event._ == null ? var.MyOffice.PatientEvent.tableConfig.event._(true) : null).
+                    _do(var.MyOffice.PatientEvent.tableConfig.insurance._ == null ? var.MyOffice.PatientEvent.tableConfig.insurance._(true) : null).
+                    stay()}
+                  <h3 class="table-label" style="display:inline-block;">
+                     Patient Events
+                     <h:graphicImage styleClass="context-menu-button" value="/theme/#{cookie.theme.value}/image/layout.png" style="position: relative; top:2px;" title="Show/Hide columns"/>
+                     <span style="display: none;">
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.PatientEvent.tableConfig.id._}"/>
+                        <label>ID</label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.PatientEvent.tableConfig.event._}"/>
+                        <label>Event</label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.PatientEvent.tableConfig.datetime._}"/>
+                        <label>Date/Time</label>
+                        <h:selectBooleanCheckbox value="#{var.MyOffice.PatientEvent.tableConfig.insurance._}"/>
+                        <label>Insurance</label>
+                        <div class="separator"/>
+                        <h:commandLink action="#{jsf.stay}" value="Apply">
+                           <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                        </h:commandLink>
+                     </span>                           
+                  </h3>
+                  <h:commandButton value="Refresh" action="#{jsf._do(var.MyOffice.PatientEvent.search._(null)).stay}" title="Refresh Patient vent List" style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                  <br style="margin-bottom: 0.75em;"/>
+                  <ui:include src="../PatientEvent/template/table.xhtml">
+                     <ui:param name="patientEventList" value="#{var.MyOffice.PatientEvent.list._}"/>
+                     <ui:param name="tableConfig" value="#{var.MyOffice.PatientEvent.tableConfig}"/>
+                  </ui:include>
+               </div>
             </div>
             <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'AuthorizableAppointment'}">
                <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.Appointment.list._}">

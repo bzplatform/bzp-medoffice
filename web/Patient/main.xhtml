@@ -91,7 +91,7 @@
                      <h:commandButton style="margin-left: 0.5em; font-size: 0.7em; width: auto;"
                                       action="#{jsf._do(patientList.get(0).setBillingAccountId(var.Patient.PatientInsurance[patientList.get(0)].billingAccountId._)).
                                                 _save(patientList.get(0)).
-                                                _do(biz.patientRecordLog(patientList.get(0).id, 'Patient', patientList.get(0).id, 'billingAccountId_updated')).
+                                                _do(biz.patientRecordLog(patientList.get(0).id, 'Patient', patientList.get(0).id, 'updated')).
                                                 _do(var.Patient.PatientInsurance.remove(patientList.get(0))).stay}"
                                       disabled="#{var.Patient.PatientInsurance[patientList.get(0)].billingAccountId._ == patientList.get(0).billingAccountId}"
                                       value="Save">

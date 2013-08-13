@@ -1023,16 +1023,18 @@ public class BizController {
          }
          pi.setAccountIndex(accountIndex++);
       }
-
+      patientRecordLog(patient.getId(), "Patient", patient.getId(), "updated");
       crudService.update(patient, "_MEDBASE");
    }
 
    public void savePatientInsurance(PatientInsurance patientInsurance, int userId) {
+      Patient patient = patientInsurance.getPatient();
       if (patientInsurance.getId() == null) {
-         reorderPatientInsuranceList(patientInsurance.getPatient().getInsuranceList(), patientInsurance, patientInsurance.getPatient().getInsuranceList().indexOf(patientInsurance), userId);
+         reorderPatientInsuranceList(patient.getInsuranceList(), patientInsurance, patient.getInsuranceList().indexOf(patientInsurance), userId);
+         patientRecordLog(patient.getId(), "PatientInsurance", patientInsurance.getId(), "updated");
          return;
       }
-      Patient patient = patientInsurance.getPatient();
+      patientRecordLog(patient.getId(), "Patient", patient.getId(), "updated");
       crudService.update(patient, "_MEDBASE");
    }
 

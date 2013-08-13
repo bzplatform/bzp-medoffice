@@ -7,10 +7,14 @@
    <body>
       <ui:composition>
          <div class="tabs border views">
-            #{jsf.global('myOffice')['view'] == null ? jsf._do(jsf.global('myOffice').put('subview', 'Referral')).stay() : null}
+            #{jsf.global('myOffice')['view'] == null ? jsf._do(jsf.global('myOffice').put('subview', 'PatientEvent')).stay() : null}
+            <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'PatientEvent')).
+                                     _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
+                           value="PATIENT EVENTS"
+                           styleClass="#{jsf.global('myOffice')['subview'] == 'PatientEvent' ? 'selected' : ''}"/>
             <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'Referral')).
                                      _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
-                           value="REFERRAL"
+                           value="REFERRALS"
                            styleClass="#{jsf.global('myOffice')['subview'] == 'Referral' ? 'selected' : ''}"/>
             <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'AuthorizableAppointment')).
                                      _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
@@ -23,6 +27,52 @@
          </div>
          <div class="menu form" style="border-width: 2px;">
             <div class="body" style="padding-top: 0.3em; width:44.2em;">
+               <ui:fragment rendered="#{jsf.global('myOffice')['subview'] == 'PatientEvent'}">
+                  <label style="margin-left: 0.5em;">Ins. Group: </label>
+                  #{var.MyOffice.PatientEvent.insuranceGroup._ == null ? var.MyOffice.PatientEvent.insuranceGroup._('_ALL') : ''}
+                  <h:selectOneMenu value="#{var.MyOffice.PatientEvent.insuranceGroup._}" title="Insurance Group" styleClass="w8">
+                     <f:selectItem itemValue="_ALL" itemLabel="ALL"/>
+                     <f:selectItem itemValue="_p.patient.servicePaymentTypeId = 1" itemLabel="Medicaid"/>
+                     <f:selectItem itemValue="_p.patient.servicePaymentTypeId IN (2,4,5,15)" itemLabel="Medicare"/>
+                     <f:selectItem itemValue="_p.patient.servicePaymentTypeId NOT IN (1,2,4,5,15)" itemLabel="Commercial"/>
+                     <f:ajax render="@form" event="change" onevent="ajaxEventHandler"/>
+                  </h:selectOneMenu>
+                  <label style="margin-left: 0.5em;">Event:</label>
+                  #{var.MyOffice.PatientEvent.event._ == null ? var.MyOffice.PatientEvent.event._('Registered') : ''}
+                  <h:selectOneMenu value="#{var.MyOffice.PatientEvent.event._}" title="Event" styleClass="w8">
+                     <f:selectItem itemValue="Registered" itemLabel="Registered"/>
+                     <f:selectItem itemValue="Updated" itemLabel="Updated"/> 
+                     <f:selectItem itemValue="Submitted" itemLabel="Submitted"/>
+                     <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                  </h:selectOneMenu>
+                  <label style="margin-left: 0.5em;">From:</label>
+                  #{var.MyOffice.PatientEvent.startDate._ == null ? var.MyOffice.PatientEvent.startDate._(jsf.newDate) : ''}
+                  <h:inputText id="patientStartDate"
+                               value="#{var.MyOffice.PatientEvent.startDate._}"
+                               styleClass="djsf_DateTextBox w6"   
+                               onchange="$('.apply-button').css('visibility', 'visible');
+                                     return false;">
+                     <f:convertDateTime dateStyle="short" locale="en"/>
+                  </h:inputText>
+                  <label>To:</label>
+                  #{var.MyOffice.PatientEvent.endDate._ == null ? var.MyOffice.PatientEvent.endDate._(jsf.newDate) : ''}
+                  <h:inputText id="patientEndDate"
+                               value="#{var.MyOffice.PatientEvent.endDate._}"
+                               styleClass="djsf_DateTextBox w6"   
+                               onchange="$('.apply-button').css('visibility', 'visible');
+                                     return false;">
+                     <f:convertDateTime dateStyle="short" locale="en"/>
+                  </h:inputText>
+                  <h:commandButton action="#{jsf.stay}" value="Apply" styleClass="apply-button" style="visibility:hidden; width:4em; margin-left: 0.25em;"/>
+                  #{jsf._do(var.MyOffice.PatientEvent.search.clear()).
+                    _do(var.MyOffice.PatientEvent.search.put('start_datetime', var.MyOffice.PatientEvent.startDate._)).
+                    _do(var.MyOffice.PatientEvent.search.put('end_datetime', var.MyOffice.PatientEvent.endDate._)).
+                    _do(var.MyOffice.PatientEvent.search.put('event', var.MyOffice.PatientEvent.event._)).
+                    _do(var.MyOffice.PatientEvent.insuranceGroup._ != '_ALL' ? var.MyOffice.PatientEvent.search.put(var.MyOffice.PatientEvent.insuranceGroup._, null) : null).
+                    _do(var.MyOffice.PatientEvent.search._ != var.MyOffice.PatientEvent.search.toString().hashCode() ? var.MyOffice.PatientEvent.list._(jsf.search('PatientEvent', 'p.datetime DESC', var.MyOffice.PatientEvent.search)): null).
+                    _do(var.MyOffice.PatientEvent.search._ != var.MyOffice.PatientEvent.search.toString().hashCode() ? var.MyOffice.PatientEvent.search._(var.MyOffice.PatientEvent.search.toString().hashCode()) : null).
+                    stay()}
+               </ui:fragment>
                <ui:fragment rendered="#{jsf.global('myOffice')['subview'] == 'Referral'}">
                   #{var.MyOffice.Referral.facilityList._ == null ? var.MyOffice.Referral.facilityList._(jsf.search('ReferralFacility', 'r.category, r.name', jsf.newMap())) : null}
                   #{var.MyOffice.Referral.facility._ == null and var.MyOffice.Referral.init._ == null ? var.MyOffice.Referral.facility._(biz.slqcFacility()) : null}
@@ -66,7 +116,8 @@
                   <h:inputText id="referralStartDate"
                                value="#{var.MyOffice.Referral.startDate._}"
                                styleClass="djsf_DateTextBox w6"   
-                               onchange="$('.apply-button').css('visibility', 'visible');return false;">
+                               onchange="$('.apply-button').css('visibility', 'visible');
+                                     return false;">
                      <f:convertDateTime dateStyle="short" locale="en"/>
                   </h:inputText>
                   <label>To:</label>
@@ -74,7 +125,8 @@
                   <h:inputText id="referralEndDate"
                                value="#{var.MyOffice.Referral.endDate._}"
                                styleClass="djsf_DateTextBox w6"   
-                               onchange="$('.apply-button').css('visibility', 'visible');return false;">
+                               onchange="$('.apply-button').css('visibility', 'visible');
+                                     return false;">
                      <f:convertDateTime dateStyle="short" locale="en"/>
                   </h:inputText>
                   <h:commandButton action="#{jsf.stay}" value="Apply" styleClass="apply-button" style="visibility:hidden; width:4em; margin-left: 0.25em;"/>
@@ -113,7 +165,8 @@
                   <h:inputText id="patientAppointmentStartDate"
                                value="#{var.MyOffice.Appointment.startDate._}"
                                styleClass="djsf_DateTextBox w6"   
-                               onchange="$('.apply-button').css('visibility', 'visible');return false;">
+                               onchange="$('.apply-button').css('visibility', 'visible');
+                                     return false;">
                      <f:convertDateTime dateStyle="short" locale="en"/>
                   </h:inputText>
                   <label>To:</label>
@@ -121,7 +174,8 @@
                   <h:inputText id="patientAppointmentEndDate"
                                value="#{var.MyOffice.Appointment.endDate._}"
                                styleClass="djsf_DateTextBox w6"   
-                               onchange="$('.apply-button').css('visibility', 'visible');return false;">
+                               onchange="$('.apply-button').css('visibility', 'visible');
+                                     return false;">
                      <f:convertDateTime dateStyle="short" locale="en"/>
                   </h:inputText>
                   <h:commandButton action="#{jsf.stay}" value="Apply" styleClass="apply-button" style="visibility:hidden; width:4em; margin-left: 0.25em;"/>
@@ -158,7 +212,8 @@
                   <h:inputText id="patientVisitStartDate"
                                value="#{var.MyOffice.Visit.startDate._}"
                                styleClass="djsf_DateTextBox w6"   
-                               onchange="$('.apply-button').css('visibility', 'visible');return false;">
+                               onchange="$('.apply-button').css('visibility', 'visible');
+                                     return false;">
                      <f:convertDateTime dateStyle="short" locale="en"/>
                   </h:inputText>
                   <label>To:</label>
@@ -166,7 +221,8 @@
                   <h:inputText id="patientVisitEndDate"
                                value="#{var.MyOffice.Visit.endDate._}"
                                styleClass="djsf_DateTextBox w6"   
-                               onchange="$('.apply-button').css('visibility', 'visible');return false;">
+                               onchange="$('.apply-button').css('visibility', 'visible');
+                                     return false;">
                      <f:convertDateTime dateStyle="short" locale="en"/>
                   </h:inputText>
                   <h:commandButton action="#{jsf.stay}" value="Apply" styleClass="apply-button" style="visibility:hidden; width:4em; margin-left: 0.25em;"/>
