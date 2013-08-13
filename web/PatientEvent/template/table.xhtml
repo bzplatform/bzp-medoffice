@@ -24,7 +24,7 @@
                   <f:facet name="header">
                      <h:outputText value="Name"/>
                   </f:facet>
-                  <h:commandLink action="#{jsf._do(patientList.clear())._do(patientList.add(patientEvent.patient))._do(jsf.global('patient', 'view').put('panel:Search', false)).go(tableConfig.suppressNavigation._ ? jsf.stay() : jsf._to('Patient/main').go())}"
+                  <h:commandLink action="#{jsf._do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList')))._do(patientList.add(patientEvent.patient))._do(jsf.global('patient', 'view').put('panel:Search', false)).go(tableConfig.suppressNavigation._ ? jsf.stay() : jsf._to('Patient/main').go())}"
                                  style="color: black;">
                      <h:outputText value="#{patientEvent.patient.name}"/>
                   </h:commandLink>
