@@ -528,7 +528,7 @@ public class BizController {
       }
       String notes = "patientId = " + visit.getPatient().getId() + "; officeProviderId = "
               + visit.getOfficeProvider().getId() + "; visitDate = " + formattedDate("MM/dd/yyyy", visit.getDate());
-      patientRecordLog("Visit", visit.getId(), "removed", notes);
+      patientRecordLog(visit.getPatient().getId(), "Visit", visit.getId(), "removed", notes);
       crudService.delete(visit);
    }
 
@@ -3219,9 +3219,10 @@ public class BizController {
       }
    }
 
-   public void patientRecordLog(String source, int sourceRecordId, String event) {
+   public void patientRecordLog(int patientId, String source, int sourceRecordId, String event) {
       PatientRecordLog log = new PatientRecordLog();
       log.setApplication("medoffice");
+      log.setPatientId(patientId);
       log.setSource(source);
       log.setSourceRecordId(sourceRecordId);
       log.setEvent(event);
@@ -3231,9 +3232,10 @@ public class BizController {
       crudService.create(log);
    }
 
-   public void patientRecordLog(String source, int sourceRecordId, String event, String notes) {
+   public void patientRecordLog(int patientId, String source, int sourceRecordId, String event, String notes) {
       PatientRecordLog log = new PatientRecordLog();
       log.setApplication("medoffice");
+      log.setPatientId(patientId);
       log.setSource(source);
       log.setSourceRecordId(sourceRecordId);
       log.setEvent(event);

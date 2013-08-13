@@ -37,17 +37,14 @@
                      </ui:fragment>
                   </div>
                   <div class="footer">
-                     <h:commandButton action="#{jsf._do(var.Patient.form.patientValidationMap._(biz.patientValidationMap(var.Patient.form.patient._))).
-                                                _do(empty var.Patient.form.patientValidationMap._ ? var.Patient.form.similarPatientList._(biz.similarPatientList(var.Patient.form.patient._)) : var.Patient.form.similarPatientList._(null)).
-                                                go(empty var.Patient.form.patientValidationMap._ and empty var.Patient.form.similarPatientList._ ? 
+                     <h:commandButton action="#{jsf._do(var.Patient.form.similarPatientList._(biz.similarPatientList(var.Patient.form.patient._))).
+                                                go(empty var.Patient.form.similarPatientList._ ? 
                                                 jsf._do(var.Patient.form.currentDate._(jsf.newDate)).
                                                 _do(var.Patient.form.patient._.setRegisterDate(var.Patient.form.currentDate._)).
-                                                _do(var.Patient.form.patient._.setDemographicUpdateDate(var.Patient.form.currentDate._)).
-                                                _do(var.Patient.form.patient._.setUserID(access.user.id)).
-                                                _do(var.Patient.form.patient._.conditionID == null ? var.Patient.form.patient._.setConditionDate(null) : null).
+                                                _do(var.Patient.form.patient._.setUserId(access.user.id)).
+                                                _do(var.Patient.form.patient._.conditionId == null ? var.Patient.form.patient._.setConditionDate(null) : null).
                                                 _do(var.Patient.form.patient._(biz.create(var.Patient.form.patient._))).
-                                                _do(var.Patient.form.patientAds._.setId(var.Patient.form.patient._.id)).
-                                                _save(var.Patient.form.patientAds._).
+                                                _do(biz.patientRecordLog(var.Patient.form.patient._.id, 'Patient', var.Patient.form.patient._.id, 'registered')).
                                                 _do(biz.savePatientHistoricData(var.Patient.form.patient._)).
                                                 _do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList'))).
                                                 _do(patientList.add(var.Patient.form.patient._)).
@@ -56,24 +53,22 @@
                                                 _do(var.Patient.form.$).back() : jsf.stay())}"
                                       style="width: 8em;"
                                       styleClass="ok-button" value="Check &amp; Save"/>
-                     <h:commandButton action="#{jsf._do(var.Patient.form.$).back}" value="Cancel" immediate="true" styleClass="cancel-button"/>
+                     <h:commandButton action="#{jsf._do(var.Patient.form.$)._do(patientList.set(0, biz.refreshedPatient(patientList.get(0)))).back}" value="Cancel" immediate="true" styleClass="cancel-button"/>
                      <h:commandButton action="#{jsf._do(var.Patient.form.currentDate._(jsf.newDate)).
                                                 _do(var.Patient.form.patient._.setRegisterDate(var.Patient.form.currentDate._)).
-                                                _do(var.Patient.form.patient._.setDemographicUpdateDate(var.Patient.form.currentDate._)).
-                                                _do(var.Patient.form.patient._.setUserID(access.user.id)).
-                                                _do(var.Patient.form.patient._.conditionID == null ? var.Patient.form.patient._.setConditionDate(null) : null).
+                                                _do(var.Patient.form.patient._.setUserId(access.user.id)).
+                                                _do(var.Patient.form.patient._.conditionId == null ? var.Patient.form.patient._.setConditionDate(null) : null).
                                                 _do(var.Patient.form.patient._(biz.create(var.Patient.form.patient._))).
-                                                _do(var.Patient.form.patientAds._.setId(var.Patient.form.patient._.id)).
-                                                _save(var.Patient.form.patientAds._).
+                                                _do(biz.patientRecordLog(var.Patient.form.patient._.id, 'Patient', var.Patient.form.patient._.id, 'registered')).
                                                 _do(biz.savePatientHistoricData(var.Patient.form.patient._)).
                                                 _do(sessionScope.put('patientList', jsf.newObject('java.util.ArrayList'))).
                                                 _do(patientList.add(var.Patient.form.patient._)).
                                                 _do(jsf.global('patient', 'view').put('PatientInsurance/list', true)).
                                                 _do(jsf.global('patient', 'view').put('panel:Search', false)).
                                                 _do(var.Patient.form.$).back}" styleClass="ok-button" value="Save Anyway"
-                                      onclick="if (confirm('Register Patient with possible duplicates?')) return true; else return false;"
-                                      rendered="#{! empty var.Patient.form.similarPatientList._ and empty var.Patient.form.patientValidationMap._}"
-                                      style="margin: 0.5em 8.3em 0.5em 0.5em; width: 8em;"/>
+                                      onclick="if (confirm('Save Patient with possible duplicates?')) return true; else return false;"
+                                      rendered="#{! empty var.Patient.form.similarPatientList._}"
+                                      style="margin: 0.5em 8.3em 0.5em 0.5em; width: 8em;"/>                     
                   </div>
                </div>
             </div>

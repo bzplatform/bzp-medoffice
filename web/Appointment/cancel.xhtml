@@ -31,7 +31,7 @@
                      <h:commandButton action="#{jsf._do(var.Appointment.form.appointment._.setLastUpdated(jsf.newDate)).
                                                 _do(var.Appointment.form.appointment._.setStatus('CANCELLED')).
                                                 _save(var.Appointment.form.appointment._).
-                                                _do(biz.patientRecordLog('Appointment', var.Appointment.form.appointment._.id, 'cancelled' )).
+                                                _do(biz.patientRecordLog(var.Appointment.form.appointment._.patient.id, 'Appointment', var.Appointment.form.appointment._.id, 'cancelled' )).
                                                 _do(var.Appointment.form.$).back()}" styleClass="ok-button" value="OK"/>
                      <h:commandButton action="#{jsf._do(var.Appointment.form.$).back}" value="Cancel" styleClass="cancel-button"/>
                   </div>
