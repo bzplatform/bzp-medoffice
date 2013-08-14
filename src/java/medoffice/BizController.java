@@ -60,6 +60,7 @@ import medoffice.entity.ReferralFacility;
 import medoffice.entity.ReferralProcedure;
 import medoffice.entity.ReferralResult;
 import medoffice.entity.ReferringProvider;
+import medoffice.entity.ServicePaymentType;
 import medoffice.entity.Specialty;
 import medoffice.entity.Visit;
 import medoffice.entity.VisitCategory;
@@ -1003,6 +1004,38 @@ public class BizController {
       list.removeAll(toRemove);
       selectMap.clear();
    }
+   
+   public ServicePaymentType servicePaymentType(Patient patient) {
+      if (patient.getInsuranceList() == null || patient.getInsuranceList().isEmpty()) {
+         return null;
+      }
+      String primaryCode = null;
+      String otherCode = null;
+      for (PatientInsurance patientInsurance : patient.getInsuranceList()) {
+         String insuranceTypeCode = patientInsurance.getInsurance().getInsuranceType().getCode();
+         if (patientInsurance.getPatient().getPrimaryInsuranceId() != null && patientInsurance.getPatient().getPrimaryInsuranceId().equals(patientInsurance.getInsurance().getId())) {
+            primaryCode = insuranceTypeCode;
+         } else if (otherCode == null) {
+            otherCode = insuranceTypeCode;
+         } else {
+            continue;
+         }
+      }
+      if (primaryCode != null && otherCode != null && primaryCode.equals(otherCode)) {
+         otherCode = null;
+      }
+      if ("MC".equals(primaryCode) && "MAM".equals(otherCode)) {
+         otherCode = "C";
+      }
+      Map params = new HashMap();
+      params.put("primaryInsuranceTypeCode", primaryCode);
+      params.put("secondaryInsuranceTypeCode", otherCode);      
+      List resultList = crudService.findByNamedQuery("ServicePaymentType.findByCodes", params, 1);
+      if (!resultList.isEmpty()) {
+         return (ServicePaymentType) resultList.get(0);
+      }
+      return null;
+   }
 
    public void reorderPatientInsuranceList(List<PatientInsurance> patientInsuranceList, PatientInsurance patientInsurance, int index, int userId) {
       if (patientInsuranceList == null || patientInsurance == null || index >= patientInsuranceList.size()) {
@@ -1034,6 +1067,8 @@ public class BizController {
          patientRecordLog(patient.getId(), "PatientInsurance", patientInsurance.getId(), "updated");
          return;
       }
+      ServicePaymentType spt = servicePaymentType(patient);
+      patient.setServicePaymentTypeId(spt == null ? null : spt.getId());
       patientRecordLog(patient.getId(), "Patient", patient.getId(), "updated");
       crudService.update(patient, "_MEDBASE");
    }
