@@ -3221,7 +3221,7 @@ public class BizController {
       }
    }
 
-   public void patientRecordLog(int patientId, String source, int sourceRecordId, String event) {
+   public void patientRecordLog(int patientId, String source, Integer sourceRecordId, String event) {
       PatientRecordLog log = new PatientRecordLog();
       log.setApplication("medoffice");
       log.setPatientId(patientId);
