@@ -1056,10 +1056,8 @@ public class BizController {
          }
          pi.setAccountIndex(accountIndex++);
       }
-      ServicePaymentType spt = servicePaymentType(patient);
-      patient.setServicePaymentTypeId(spt == null ? null : spt.getId());
       patientRecordLog(patient.getId(), "Patient", patient.getId(), "updated");
-      crudService.update(patient);
+      crudService.update(patient, "_MEDBASE");
    }
 
    public void savePatientInsurance(PatientInsurance patientInsurance, int userId) {
@@ -1072,7 +1070,7 @@ public class BizController {
       ServicePaymentType spt = servicePaymentType(patient);
       patient.setServicePaymentTypeId(spt == null ? null : spt.getId());
       patientRecordLog(patient.getId(), "Patient", patient.getId(), "updated");
-      crudService.update(patient);
+      crudService.update(patient, "_MEDBASE");
    }
 
    public Integer toInt(Object obj) {
