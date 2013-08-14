@@ -34,6 +34,7 @@ import medoffice.entity.Patient;
 import medoffice.entity.PatientAllergy;
 import medoffice.entity.PatientAuthorization;
 import medoffice.entity.PatientDiagnosis;
+import medoffice.entity.PatientEvent;
 import medoffice.entity.PatientFamilyHistory;
 import medoffice.entity.PatientHistoricData;
 import medoffice.entity.PatientHistoryExamTest;
@@ -126,6 +127,18 @@ public class BizController {
    public void selectAll(Map selectMap, List list) {
       for (Object obj : list) {
          selectMap.put(obj, true);
+      }
+   }
+
+   public void shrinkMap(Map selectMap, List list) {
+      if (selectMap == null || selectMap.isEmpty()) {
+         return;
+      }
+      for (Object key : selectMap.keySet()) {
+         if (list.contains(key)) {
+         } else {
+            selectMap.remove(key);
+         }
       }
    }
 
@@ -1004,7 +1017,7 @@ public class BizController {
       list.removeAll(toRemove);
       selectMap.clear();
    }
-   
+
    public ServicePaymentType servicePaymentType(Patient patient) {
       if (patient.getInsuranceList() == null || patient.getInsuranceList().isEmpty()) {
          return null;
@@ -1029,7 +1042,7 @@ public class BizController {
       }
       Map params = new HashMap();
       params.put("primaryInsuranceTypeCode", primaryCode);
-      params.put("secondaryInsuranceTypeCode", otherCode);      
+      params.put("secondaryInsuranceTypeCode", otherCode);
       List resultList = crudService.findByNamedQuery("ServicePaymentType.findByCodes", params, 1);
       if (!resultList.isEmpty()) {
          return (ServicePaymentType) resultList.get(0);
@@ -3294,5 +3307,23 @@ public class BizController {
          visitDocListMap.put(specialtyId, castList(visitDocList, VisitDoc.class));
       }
       return visitDocListMap.get(specialtyId);
+   }
+
+   public void submitPatients(Map<PatientEvent, Boolean> patientEventMap) {
+      for (PatientEvent patientEvent : patientEventMap.keySet()) {
+         if (patientEventMap.get(patientEvent) != null && patientEventMap.get(patientEvent)) {
+            try {
+               submitPatient(patientEvent.getPatient());
+               patientEventMap.remove(patientEvent);
+            } catch (Exception ex) {
+               patientRecordLog(patientEvent.getPatient().getId(), "Patient", patientEvent.getPatient().getId(), "submit_error");
+            }
+         }
+      }
+   }
+
+   public void submitPatient(Patient patient) {
+      patientRecordLog(patient.getId(), "Patient", patient.getId(), "submitted");
+      System.out.println("Submitted " + patient.toString());
    }
 }

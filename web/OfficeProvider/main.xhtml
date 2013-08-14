@@ -540,7 +540,7 @@
                               </h:commandLink>
                            </span>
                         </h3>
-                        <h:commandButton action="#{jsf._do(transportation.selectAll(var.OfficeProvider.Referral.selected, var.OfficeProvider.Referral.list._)).stay}"
+                        <h:commandButton action="#{jsf._do(biz.selectAll(var.OfficeProvider.Referral.selected, var.OfficeProvider.Referral.list._)).stay}"
                                          style="font-size: 0.7em; width: auto; margin-right: 0.5em; margin-left: 0.5em" value="Select All">
                            <f:ajax render="@form" onevent="ajaxEventHandler"/>
                         </h:commandButton>

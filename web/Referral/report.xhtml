@@ -116,7 +116,6 @@
                   <th align="center" valign="top">Patient</th>
                   <th align="center" valign="top">Phone/DOB</th>
                   <th align="center" valign="top">Insurance</th>
-                  <th align="center" valign="top">Transport</th>
                   <th align="center" valign="top">Notes</th>
                </tr>
                <ui:repeat value="#{officeProviderAppointmentList}" var="appointment">
@@ -141,12 +140,6 @@
                         <ui:repeat value="#{appointment.patient.insuranceList}" var="patientInsurance">
                            <div style="max-width: 10em;">#{patientInsurance.insurance.name}</div>
                         </ui:repeat>
-                     </td>
-                     <td>
-                        #{jsf._do(jsf.delayClosed(appointment.patient, 'effectivePatientTransportation', 3) ? jsf.global('patient', 'effectivePatientTransportation').put(appointment.patient, transportation.effectivePatientTransportation(appointment.patient)) : null).stay()}
-                        <h:outputText style="#{jsf.global('patient', 'effectivePatientTransportation')[appointment.patient].expirationDate &lt; jsf.global('officeProvider', 'var')['appointmentDate'] ? 'color: red;' : ''}" value="#{jsf.global('patient', 'effectivePatientTransportation')[appointment.patient].transportationType}" rendered="#{jsf.global('patient', 'effectivePatientTransportation')[appointment.patient] != null}"/>
-                        <h:graphicImage value="/theme/#{cookie.theme.value}/image/error.png" style="position: relative; top:2px; left:2px;"
-                                        rendered="#{jsf.global('patient', 'effectivePatientTransportation')[appointment.patient].expirationDate &lt; jsf.global('officeProvider', 'var')['appointmentDate']}" title="Expired Transportation"/>
                      </td>
                      <td>                           
                         <h:outputText value="#{appointment.notes}" style="max-width: 20em;" rendered="#{! empty appointment.notes}"/>                           

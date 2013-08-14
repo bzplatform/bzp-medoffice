@@ -23,7 +23,7 @@
             </div>
             <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'PatientEvent'}">
                <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.PatientEvent.list._}">
-                    #{jsf._do(var.MyOffice.PatientEvent.tableConfig.event._ == null ? var.MyOffice.PatientEvent.tableConfig.event._(true) : null).
+                  #{jsf._do(var.MyOffice.PatientEvent.tableConfig.event._ == null ? var.MyOffice.PatientEvent.tableConfig.event._(true) : null).
                     _do(var.MyOffice.PatientEvent.tableConfig.insurance._ == null ? var.MyOffice.PatientEvent.tableConfig.insurance._(true) : null).
                     stay()}
                   <h3 class="table-label" style="display:inline-block;">
@@ -44,11 +44,22 @@
                         </h:commandLink>
                      </span>                           
                   </h3>
-                  <h:commandButton value="Refresh" action="#{jsf._do(var.MyOffice.PatientEvent.search._(null)).stay}" title="Refresh Patient vent List" style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                  <h:commandButton value="Refresh" action="#{jsf._do(var.MyOffice.PatientEvent.search._(null)).stay}" title="Refresh Patient Event List" style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"/>
+                  <h:commandButton action="#{jsf._do(biz.selectAll(var.MyOffice.PatientEvent.selected, var.MyOffice.PatientEvent.list._)).stay}"
+                                   style="font-size: 0.7em; width: auto; margin-right: 0.5em; margin-left: 0.5em" value="Select All">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton action="#{jsf._do(var.MyOffice.PatientEvent.selected.$).stay}"
+                                   style="font-size: 0.7em; width: auto; margin-right: 0.5em" value="Unselect All">
+                     <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                  </h:commandButton>
+                  <h:commandButton value="Submit Patients" action="#{jsf._do(biz.submitPatients(var.MyOffice.PatientEvent.selected))._do(var.MyOffice.PatientEvent.search._(null)).stay}" title="Submit Patients" style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;"/>
+                  #{biz.shrinkMap(var.MyOffice.PatientEvent.selected.close(), var.MyOffice.PatientEvent.list._)}
                   <br style="margin-bottom: 0.75em;"/>
                   <ui:include src="../PatientEvent/template/table.xhtml">
                      <ui:param name="patientEventList" value="#{var.MyOffice.PatientEvent.list._}"/>
                      <ui:param name="tableConfig" value="#{var.MyOffice.PatientEvent.tableConfig}"/>
+                     <ui:param name="selectionMap" value="#{var.MyOffice.PatientEvent.selected.close()}"/>
                   </ui:include>
                </div>
             </div>

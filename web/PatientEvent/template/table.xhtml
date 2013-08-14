@@ -8,6 +8,12 @@
       <ui:composition>
          <div class="one" style="margin-left: 0.5em;">
             <h:dataTable value="#{patientEventList}" var="patientEvent">
+               <h:column rendered="#{selectionMap != null}">
+                  <f:facet name="header">
+                     <h:outputText value="" styleClass="nosort"/>
+                  </f:facet>
+                  <h:selectBooleanCheckbox value="#{selectionMap[patientEvent]}" style="margin:0;"/>
+               </h:column>
                <h:column rendered="#{tableConfig.id._}">
                   <f:facet name="header">
                      <h:outputText value="ID"/>

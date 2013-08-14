@@ -7,7 +7,7 @@
    <body>
       <ui:composition>
          <div class="tabs border views">
-            #{jsf.global('myOffice')['view'] == null ? jsf._do(jsf.global('myOffice').put('subview', 'PatientEvent')).stay() : null}
+            #{jsf.global('myOffice')['subview'] == null ? jsf._do(jsf.global('myOffice').put('subview', 'PatientEvent')).stay() : null}
             <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'PatientEvent')).
                                      _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
                            value="PATIENT EVENTS"
@@ -68,6 +68,7 @@
                     _do(var.MyOffice.PatientEvent.search.put('start_datetime', var.MyOffice.PatientEvent.startDate._)).
                     _do(var.MyOffice.PatientEvent.search.put('end_datetime', var.MyOffice.PatientEvent.endDate._)).
                     _do(var.MyOffice.PatientEvent.search.put('event', var.MyOffice.PatientEvent.event._)).
+                    _do(var.MyOffice.PatientEvent.event._ != 'submitted' ? var.MyOffice.PatientEvent.search.put('submitted', false) : null).
                     _do(var.MyOffice.PatientEvent.insuranceGroup._ != '_ALL' ? var.MyOffice.PatientEvent.search.put(var.MyOffice.PatientEvent.insuranceGroup._, null) : null).
                     _do(var.MyOffice.PatientEvent.search._ != var.MyOffice.PatientEvent.search.toString().hashCode() ? var.MyOffice.PatientEvent.list._(jsf.search('PatientEvent', 'p.datetime DESC', var.MyOffice.PatientEvent.search)): null).
                     _do(var.MyOffice.PatientEvent.search._ != var.MyOffice.PatientEvent.search.toString().hashCode() ? var.MyOffice.PatientEvent.search._(var.MyOffice.PatientEvent.search.toString().hashCode()) : null).
