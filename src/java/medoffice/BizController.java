@@ -25,6 +25,7 @@ import medoffice.entity.Appointment;
 import medoffice.entity.Cvx;
 import medoffice.entity.Diagnosis;
 import medoffice.entity.Drug;
+import medoffice.entity.EdiAccount;
 import medoffice.entity.Guarantor;
 import medoffice.entity.Insurance;
 import medoffice.entity.MyOffice;
@@ -80,10 +81,12 @@ import medoffice.entity.VisitServiceLevel;
 import medoffice.entity.VisitTemplateState;
 import medoffice.entity.VisitVitals;
 import medoffice.entity.ZipCode;
+import medoffice.hl7.ADT_A0x;
 import medoffice.schedule.AppointmentTime;
 import medoffice.schedule.ScheduleUtil;
 import medoffice.schedule.TimePeriod;
 import medoffice.schedule.TimePeriodManager;
+import org.apache.commons.io.FileUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalTime;
@@ -95,6 +98,7 @@ public class BizController {
    @EJB
    private CrudService crudService;
    private Map<Integer, List<VisitDoc>> visitDocListMap = null;
+   private EdiAccount ediAccount = null;
    private Long generatedId = 0L;
 
    public ReferringProvider referringProviderByOfficeProvider(OfficeProvider officeProvider) {
@@ -3318,14 +3322,43 @@ public class BizController {
                submitPatient(patientEvent.getPatient());
                patientEventMap.remove(patientEvent);
             } catch (Exception ex) {
+               Logger.getLogger(BizController.class.getName()).log(Level.SEVERE, null, ex);
                patientRecordLog(patientEvent.getPatient().getId(), "Patient", patientEvent.getPatient().getId(), "submit_error");
             }
          }
       }
+      try {
+         moveMessages(getEdiAccount().getTemp(), getEdiAccount().getOutbox(), getEdiAccount().getOutbox() + "/archive");
+      } catch (Exception ex) {
+         Logger.getLogger(BizController.class.getName()).log(Level.SEVERE, null, ex);
+      }
    }
 
-   public void submitPatient(Patient patient) {
+   public void submitPatient(Patient patient) throws IOException {
+      ADT_A0x handler = new ADT_A0x();
+      handler.process(patient);
+      FileUtils.writeStringToFile(new File(getEdiAccount().getTemp() + "/lmap-ads-adt_a0x-" + patient.getId() + ".edi"), handler.getMessage());
       patientRecordLog(patient.getId(), "Patient", patient.getId(), "submitted");
-      System.out.println("Submitted " + patient.toString());
+   }
+
+   public EdiAccount getEdiAccount() {
+      if (ediAccount == null) {
+         ediAccount = crudService.find("ads", EdiAccount.class);
+      }
+      return ediAccount;
+   }
+
+   public void moveMessages(String source, String target, String archive) throws IOException {
+      File sourceFolder = new File(source);
+      File targetFolder = new File(target);
+      File archiveFolder = new File(archive);
+      if (!archiveFolder.exists()) {
+         FileUtils.forceMkdir(archiveFolder);
+      }
+      File[] contents = sourceFolder.listFiles();
+      for (File file : contents) {
+         FileUtils.copyFileToDirectory(file, archiveFolder, true);
+         FileUtils.moveFileToDirectory(file, targetFolder, true);
+      }
    }
 }
