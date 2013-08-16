@@ -3,6 +3,7 @@ package medoffice;
 import jsftoolkit.ejb.CrudService;
 import com.semanticprogrammer.lib.commons.Util;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -3337,7 +3338,7 @@ public class BizController {
    public void submitPatient(Patient patient) throws IOException {
       ADT_A0x handler = new ADT_A0x();
       handler.process(patient);
-      FileUtils.writeStringToFile(new File(getEdiAccount().getTemp() + "/lmap-ads-adt_a0x-" + patient.getId() + ".edi"), handler.getMessage());
+      FileUtils.writeStringToFile(new File(getEdiAccount().getTemp() + "/lmap-ads-adt_a0x-" + patient.getId() + ".hl7"), handler.getMessage());
       patientRecordLog(patient.getId(), "Patient", patient.getId(), "submitted");
    }
 
@@ -3355,7 +3356,12 @@ public class BizController {
       if (!archiveFolder.exists()) {
          FileUtils.forceMkdir(archiveFolder);
       }
-      File[] contents = sourceFolder.listFiles();
+      File[] contents = sourceFolder.listFiles(new FilenameFilter() {   
+         @Override
+         public boolean accept(File directory, String filename) {
+            return filename.endsWith(".hl7");
+         }
+      });
       for (File file : contents) {
          FileUtils.copyFileToDirectory(file, archiveFolder, true);
          FileUtils.moveFileToDirectory(file, targetFolder, true);
