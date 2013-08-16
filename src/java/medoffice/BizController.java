@@ -139,11 +139,15 @@ public class BizController {
       if (selectMap == null || selectMap.isEmpty()) {
          return;
       }
+      List keyListToRemove = new ArrayList();
       for (Object key : selectMap.keySet()) {
          if (list.contains(key)) {
          } else {
-            selectMap.remove(key);
+            keyListToRemove.add(key);
          }
+      }
+      for (Object key : keyListToRemove) {
+         selectMap.remove(key);
       }
    }
 
@@ -3321,7 +3325,7 @@ public class BizController {
          if (patientEventMap.get(patientEvent) != null && patientEventMap.get(patientEvent)) {
             try {
                submitPatient(patientEvent.getPatient());
-               patientEventMap.remove(patientEvent);
+               patientEventMap.put(patientEvent, false);
             } catch (Exception ex) {
                Logger.getLogger(BizController.class.getName()).log(Level.SEVERE, null, ex);
                patientRecordLog(patientEvent.getPatient().getId(), "Patient", patientEvent.getPatient().getId(), "submit_error");
@@ -3338,7 +3342,8 @@ public class BizController {
    public void submitPatient(Patient patient) throws IOException {
       ADT_A0x handler = new ADT_A0x();
       handler.process(patient);
-      FileUtils.writeStringToFile(new File(getEdiAccount().getTemp() + "/lmap-ads-adt_a0x-" + patient.getId() + ".hl7"), handler.getMessage());
+      String timestamp = new SimpleDateFormat("-hhmmss").format(new Date());
+      FileUtils.writeStringToFile(new File(getEdiAccount().getTemp() + "/lmap-ads-adt_a0x-" + patient.getId() + timestamp + ".hl7"), handler.getMessage());
       patientRecordLog(patient.getId(), "Patient", patient.getId(), "submitted");
    }
 
