@@ -4,16 +4,13 @@
     <Scope Scope="Project">
         <Node id="script/dojoroot/dojox/io/proxy/xip_server.html" x="650" y="1650" zoom="true"/>
         <Node id="script/dojoroot/dojox/av/widget/resources/PlayButton.html" x="900" y="1650" zoom="true"/>
-        <Node id="MyOffice/template/statistics-search.xhtml" x="1400" y="900" zoom="true"/>
-        <Node id="Visit/profile-edit.xhtml" x="4400" y="450" zoom="true"/>
         <Node id="Visit/template/profile-form.xhtml" x="2150" y="1350" zoom="true"/>
+        <Node id="Visit/profile-edit.xhtml" x="4400" y="450" zoom="true"/>
         <Node id="Diagnosis/template/table.xhtml" x="150" y="1200" zoom="true"/>
         <Node id="script/dojoroot/dojo/resources/iframe_history.html" x="650" y="1500" zoom="true"/>
         <Node id="Visit/template/table.xhtml" x="1150" y="150" zoom="true"/>
-        <Node id="MyOffice/template/options.xhtml" x="2650" y="150" zoom="true"/>
-        <Node id="script/dojoroot/dojox/grid/resources/View.html" x="1900" y="1200" zoom="true"/>
         <Node id="script/dojoroot/dojox/gfx/resources/gfxSvgProxyFrame.html" x="1900" y="1350" zoom="true"/>
-        <Node id="template/page-footer.xhtml" x="1400" y="300" zoom="true"/>
+        <Node id="script/dojoroot/dojox/grid/resources/View.html" x="1900" y="1200" zoom="true"/>
         <Node id="OfficeProvider/main.xhtml" x="1650" y="450" zoom="true"/>
         <Node id="script/dojoroot/dojox/layout/resources/ExpandoPane.html" x="1650" y="1350" zoom="true"/>
         <Node id="Visit/template/diagnosis.xhtml" x="900" y="2400" zoom="true"/>
@@ -23,16 +20,14 @@
         <Node id="MyOffice/template/search.xhtml" x="150" y="1650" zoom="true"/>
         <Node id="script/dojoroot/dojox/io/proxy/xip_client.html" x="3400" y="300" zoom="true"/>
         <Node id="Visit/template/add-diagnosis-block.xhtml" x="2650" y="1200" zoom="true"/>
-        <Node id="MyOffice/statistics.xhtml" x="1150" y="1050" zoom="true"/>
         <Node id="template/tab-navigation.xhtml" x="1650" y="600" zoom="true"/>
-        <Node id="Visit/profile.xhtml" x="650" y="2250" zoom="true"/>
         <Node id="script/dojoroot/dojox/atom/widget/templates/FeedEntryEditor.html" x="1150" y="1800" zoom="true"/>
-        <Node id="MyOffice/changed-transportation-report.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="Visit/profile.xhtml" x="650" y="2250" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/Dialog/Dialog.html" x="400" y="1800" zoom="true"/>
         <Node id="PatientNote/template/table.xhtml" x="2650" y="750" zoom="true"/>
         <Node id="Referral/batch.xhtml" x="1150" y="2550" zoom="true"/>
-        <Node id="template/page-header.xhtml" x="1150" y="300" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/UpgradeBar/UpgradeBar.html" x="1400" y="1200" zoom="true"/>
+        <Node id="template/page-header.xhtml" x="1150" y="300" zoom="true"/>
         <Node id="OfficeProvider/template/search.xhtml" x="2150" y="150" zoom="true"/>
         <Node id="script/dojoroot/dojox/av/widget/resources/VolumeButton.html" x="3150" y="150" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/Calendar/CalendarDay.html" x="3900" y="150" zoom="true"/>
@@ -48,18 +43,15 @@
         <Node id="Visit/template/search.xhtml" x="400" y="300" zoom="true"/>
         <Node id="Visit/template/diagnosis-toolbar.xhtml" x="4400" y="300" zoom="true"/>
         <Node id="script/dojoroot/dojox/layout/resources/ScrollPane.html" x="900" y="1350" zoom="true"/>
-        <Node id="MyOffice/all-appointments-report.xhtml" x="650" y="2700" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/ColorPicker/ColorPicker.html" x="400" y="1650" zoom="true"/>
-        <Node id="template/messenger.xhtml" x="400" y="1500" zoom="true"/>
-        <Node id="script/dojoroot/dojox/widget/Calendar/CalendarMonthYear.html" x="1650" y="900" zoom="true"/>
         <Node id="script/dojoroot/dojox/form/resources/FilePickerTextBox.html" x="1900" y="1050" zoom="true"/>
-        <Node id="script/dojoroot/dojox/xmpp/widget/templates/ChatSession.html" x="2900" y="600" zoom="true"/>
+        <Node id="script/dojoroot/dojox/widget/Calendar/CalendarMonthYear.html" x="1650" y="900" zoom="true"/>
         <Node id="Visit/template/diagnosis-text.xhtml" x="150" y="2700" zoom="true"/>
+        <Node id="script/dojoroot/dojox/xmpp/widget/templates/ChatSession.html" x="2900" y="600" zoom="true"/>
         <Node id="Patient/template/search.xhtml" x="1900" y="150" zoom="true"/>
-        <Node id="MyOffice/patient-homecare-activities-report.xhtml" x="5150" y="150" zoom="true"/>
         <Node id="Visit/edit.xhtml" x="1900" y="750" zoom="true"/>
-        <Node id="Appointment/template/options.xhtml" x="400" y="1350" zoom="true"/>
         <Node id="script/dojoroot/dojox/layout/resources/FloatingPane.html" x="150" y="2100" zoom="true"/>
+        <Node id="Appointment/template/options.xhtml" x="400" y="1350" zoom="true"/>
         <Node id="script/dojoroot/dojox/atom/widget/templates/FeedViewer.html" x="2400" y="900" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/FilePicker/_FileInfoPane.html" x="2900" y="750" zoom="true"/>
         <Node id="Diagnosis/template/search.xhtml" x="900" y="600" zoom="true"/>
@@ -75,10 +67,9 @@
         <Node id="Patient/template/table.xhtml" x="400" y="900" zoom="true"/>
         <Node id="Visit/template/diagnosis-section.xhtml" x="4150" y="450" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/DocTester/DocTester.html" x="900" y="1800" zoom="true"/>
-        <Node id="script/dojoroot/dojox/grid/resources/Expando.html" x="2400" y="750" zoom="true"/>
         <Node id="Visit/template/add-procedure-block.xhtml" x="2900" y="1350" zoom="true"/>
+        <Node id="script/dojoroot/dojox/grid/resources/Expando.html" x="2400" y="750" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/gauge/_Gauge.html" x="900" y="1500" zoom="true"/>
-        <Node id="MyOffice/transportation-request-report.xhtml" x="650" y="1350" zoom="true"/>
         <Node id="OfficeProvider/template/table.xhtml" x="1400" y="450" zoom="true"/>
         <Node id="Patient/main.xhtml" x="400" y="1050" zoom="true"/>
         <Node id="Visit/template/options.xhtml" x="900" y="300" zoom="true"/>
@@ -92,19 +83,17 @@
         <Node id="Appointment/template/table.xhtml" x="1650" y="750" zoom="true"/>
         <Node id="script/dojoroot/dojox/form/resources/VerticalRangeSlider.html" x="650" y="600" zoom="true"/>
         <Node id="script/dojoroot/dojox/atom/widget/templates/PeopleEditor.html" x="1150" y="600" zoom="true"/>
-        <Node id="script/dojoroot/dojox/image/resources/SlideShow.html" x="3400" y="450" zoom="true"/>
         <Node id="denied.xhtml" x="900" y="450" zoom="true"/>
+        <Node id="script/dojoroot/dojox/image/resources/SlideShow.html" x="3400" y="450" zoom="true"/>
         <Node id="script/dojoroot/dojox/av/widget/resources/Player.html" x="1150" y="1650" zoom="true"/>
         <Node id="Appointment/template/search.xhtml" x="150" y="1500" zoom="true"/>
         <Node id="script/dojoroot/dojox/form/resources/HorizontalRangeSlider.html" x="150" y="1950" zoom="true"/>
         <Node id="script/dojoroot/dojox/image/resources/ThumbnailPicker.html" x="2900" y="450" zoom="true"/>
         <Node id="template/base.xhtml" x="1400" y="150" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/Pager/Pager.html" x="150" y="900" zoom="true"/>
-        <Node id="MyOffice/appointments-with-expired-transportation-report.xhtml" x="400" y="1200" zoom="true"/>
         <Node id="script/dojoroot/dojox/form/resources/_CheckedMultiSelectItem.html" x="1650" y="1500" zoom="true"/>
         <Node id="script/dojoroot/dojox/atom/widget/templates/EntryHeader.html" x="3150" y="600" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/Calendar/CalendarMonth.html" x="1650" y="1050" zoom="true"/>
-        <Node id="MyOffice/posted-referral-report.xhtml" x="2400" y="450" zoom="true"/>
         <Node id="script/dojoroot/dojox/atom/widget/templates/FeedViewerGrouping.html" x="400" y="2100" zoom="true"/>
         <Node id="Visit/template/profile-edit-form.xhtml" x="650" y="2400" zoom="true"/>
         <Node id="Visit/template/procedure-section.xhtml" x="2900" y="1200" zoom="true"/>
@@ -112,8 +101,8 @@
         <Node id="MyOffice/main.xhtml" x="1900" y="600" zoom="true"/>
         <Node id="script/dojoroot/dojox/atom/widget/templates/FeedEntryViewer.html" x="1150" y="1200" zoom="true"/>
         <Node id="script/dojoroot/dojox/widget/Calendar/Calendar.html" x="2650" y="450" zoom="true"/>
-        <Node id="script/dojoroot/dojox/editor/plugins/resources/modifyTable.html" x="150" y="2250" zoom="true"/>
         <Node id="template/sorter.xhtml" x="900" y="900" zoom="true"/>
+        <Node id="script/dojoroot/dojox/editor/plugins/resources/modifyTable.html" x="150" y="2250" zoom="true"/>
         <Node id="Referral/new.xhtml" x="4400" y="600" zoom="true"/>
         <Node id="script/dojoroot/dojox/form/resources/CheckedMultiSelect.html" x="3400" y="150" zoom="true"/>
     </Scope>
