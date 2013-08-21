@@ -488,7 +488,7 @@
                            <f:selectItem itemValue="_v.patient.servicePaymentTypeId NOT IN (1,2,4,5,15)" itemLabel="Commercial"/>
                            <f:ajax render="@form" event="change" onevent="ajaxEventHandler" listener="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:visitList', true)).listen}"/>
                         </h:selectOneMenu>
-                        <h:commandButton action="#{jsf.go(biz.policyIdIssue(patientList.get(0).id) ? jsf._do(var.alert._('Insurance Member ID is undefined. Enter Member ID and Make Visit'))._to('alert').go() : jsf._do(jsf.global('officeProvider', 'event').put('refresh', true))._do(var.Visit.form.visit._(biz.newVisit(patientList[0], var.OfficeProvider.officeProvider._, jsf.global('officeProvider', 'var')['visitDate'], null, myOfficeCode)))._do(var.Visit.form.visitValidationMap._(biz.visitValidationMap(var.Visit.form.visit._)))._to('Visit/new').go())}"
+                        <h:commandButton action="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh', true))._do(var.Visit.form.visit._(biz.newVisit(patientList[0], officeProviderList[0], jsf.global('officeProvider', 'var')['visitDate'], null)))._do(var.Visit.form.visitValidationMap._(biz.visitValidationMap(var.Visit.form.visit._)))._to('Visit/new').go}"
                                          style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;"
                                          disabled="#{patientList == null or patientList.size() != 1}"
                                          title="Create Walk-in Visit"
