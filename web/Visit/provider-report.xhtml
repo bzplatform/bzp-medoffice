@@ -130,7 +130,7 @@
                <ui:repeat value="#{biz.sortedByPatientVisitList(var.OfficeProvider.visitList)}" var="visit">
                   <tr class="data-row">
                      <td rowspan="#{var.OfficeProvider.Visit.tableConfig.procedures._ and ! empty visit.procedureList ? 2 : 1}">
-                        #{visit.category.shortName}
+                        #{visit.category.code}
                      </td>
                      <td>#{visit.patient.id}</td>
                      <td><div style="max-width: 10em;">#{visit.patient.lastName},<br/>#{visit.patient.firstName}</div></td>
