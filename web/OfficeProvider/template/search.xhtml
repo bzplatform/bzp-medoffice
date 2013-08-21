@@ -36,7 +36,9 @@
                   <label style="margin: 1.3em; position: relative; top: 0.8em;">
                      <h:selectBooleanCheckbox value="#{jsf.global('officeProvider', 'panel:Search')['autoselect']}"/>
                      Autoselect</label>
-                  <h:commandButton action="#{jsf._runSearch('OfficeProvider', 'o.alias').
+                  <h:commandButton action="#{jsf._do(empty officeProviderSearch['alias'] ? null : officeProviderSearch.put('alias', '%'.concat(officeProviderSearch['alias']).concat('%'))).
+                                             _runSearch('OfficeProvider', 'o.alias').
+                                             _do(empty officeProviderSearch['alias'] ? null : officeProviderSearch.put('alias', officeProviderSearch['alias'].replace('%', ''))).
                                              _do(var.OfficeProvider.searchResult._(biz.newList(officeProviderList))).
                                              _do(officeProviderList != null and officeProviderList.size() == 1 and jsf.global('officeProvider', 'panel:Search')['autoselect'] ?
                                              jsf.global('officeProvider', 'view').put('panel:Search', false) : null).stay}" value="Search" styleClass="ok-button"/>
