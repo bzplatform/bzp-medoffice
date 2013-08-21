@@ -37,8 +37,9 @@
                      </ui:fragment>
                   </div>
                   <div class="footer">
-                     <h:commandButton action="#{jsf._do(var.Patient.form.similarPatientList._(biz.similarPatientList(var.Patient.form.patient._))).
-                                                go(empty var.Patient.form.similarPatientList._ ? 
+                     <h:commandButton action="#{jsf._do(var.Patient.form.patientValidationMap._(biz.patientValidationMap(var.Patient.form.patient._))).
+                                                _do(empty var.Patient.form.patientValidationMap._ ? var.Patient.form.similarPatientList._(biz.similarPatientList(var.Patient.form.patient._)) : var.Patient.form.similarPatientList._(null)).
+                                                go(empty var.Patient.form.patientValidationMap._ and empty var.Patient.form.similarPatientList._ ? 
                                                 jsf._do(var.Patient.form.currentDate._(jsf.newDate)).
                                                 _do(var.Patient.form.patient._.setRegisterDate(var.Patient.form.currentDate._)).
                                                 _do(var.Patient.form.patient._.setUserId(access.user.id)).
@@ -67,7 +68,7 @@
                                                 _do(jsf.global('patient', 'view').put('panel:Search', false)).
                                                 _do(var.Patient.form.$).back}" styleClass="ok-button" value="Save Anyway"
                                       onclick="if (confirm('Save Patient with possible duplicates?')) return true; else return false;"
-                                      rendered="#{! empty var.Patient.form.similarPatientList._}"
+                                      rendered="#{! empty var.Patient.form.similarPatientList._ and empty var.Patient.form.patientValidationMap._}"
                                       style="margin: 0.5em 8.3em 0.5em 0.5em; width: 8em;"/>                     
                   </div>
                </div>
