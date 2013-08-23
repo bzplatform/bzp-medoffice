@@ -24,6 +24,10 @@
                                      _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
                            value="AUTH. VISITS"
                            styleClass="#{jsf.global('myOffice')['subview'] == 'AuthorizableVisit' ? 'selected' : ''}"/>
+            <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'Report')).
+                                     _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
+                           value="REPORTS"
+                           styleClass="#{jsf.global('myOffice')['subview'] == 'Report' ? 'selected' : ''}"/>
          </div>
          <div class="menu form" style="border-width: 2px;">
             <div class="body" style="padding-top: 0.3em; width:44.2em;">
@@ -236,7 +240,13 @@
                     _do(var.MyOffice.Visit.search._ != var.MyOffice.Visit.search.toString().hashCode() ? var.MyOffice.Visit.search._(var.MyOffice.Visit.search.toString().hashCode()) : null).
                     stay()}
                   #{var.MyOffice.Visit.init._(true)}
-               </ui:fragment>                                   
+               </ui:fragment>
+               <ui:fragment rendered="#{jsf.global('myOffice')['subview'] == 'Report'}">
+                  <div style="margin-top: 0.5em; margin-bottom: 1em;">
+                  <a class="colored" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em; text-decoration: underline;" href="http://bsdserver:9090/statistics-service/frameset?__report=report/jns-daily-visits-by-counselor.rptdesign" target="_blank">Daily Visits by Counselor</a><br/>
+                  <a class="colored" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em; text-decoration: underline;" href="http://bsdserver:9090/statistics-service/frameset?__report=report/group-visits-stats.rptdesign" target="_blank">Group Admissions</a>
+                  </div>
+               </ui:fragment>
             </div>
          </div>
       </ui:composition>

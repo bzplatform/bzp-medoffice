@@ -5,7 +5,7 @@
       xmlns:f="http://java.sun.com/jsf/core">
    <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-      <title>Address Label</title>
+      <title>Chart Label</title>
       <style type="text/css">
          @media screen {
             .page {
@@ -25,14 +25,14 @@
                font-family:Arial, sans-serif;
                margin: 0em;
                text-align: left;
-               font-size: 1em;
-               line-height: 1.2;
+               font-size: 0.7em;
+               line-height: 0.9;
             }
             .page {
-               width: 3.1in;
-               height: 0.9in;
+               width: 1.9in;
+               height: 0.65in;
                display: block;
-               padding: 0 0 0 0.3em;
+               padding: 0;
             }
             .line {
                margin-top: 0.5em; 
@@ -45,7 +45,7 @@
          }
          @media print {            
             .page {
-               margin: 0 0 0 0;
+               margin: 0;
             }
             .action {
                display: none;
@@ -57,11 +57,22 @@
    </head>
    <body>
       <h:form prependId="false">
-         <div class="action"><a href="#" id="print-link" onclick="return print('Landscape')">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
+         <div class="action"><a href="#" id="print-link" onclick="return printLabel('Landscape')">PRINT</a>&nbsp;<a id="jsprint-install" href="https://addons.mozilla.org/en-US/firefox/addon/8966/" target="_blank" style="display: none; color: red;">Install plugin for printing...</a></div>
          <div class="page">
-            <div class="line">#{var.Patient.label.patient._.lastName}, #{var.Patient.label.patient._.firstName}</div>
-            <div class="line">#{var.Patient.label.patient._.address}</div>
-            <div class="line">#{var.Patient.label.patient._.city}, #{var.Patient.label.patient._.state} #{var.Patient.label.patient._.zipCode}</div>
+            <div style="padding: 1em 0.5em 0.5em 0.75em">
+               <div class="line">
+                  <div style="font-weight: bold; width: 8.5em; display:inline-block;">#{var.Patient.label.patient._.lastName}</div>
+                  <div style="display:inline-block; padding-left: 3em;">#{var.Patient.label.patient._.id}</div>               
+               </div>
+               <div class="line">
+                  <div style="font-weight: bold; width: 8.5em; display:inline-block;">#{var.Patient.label.patient._.firstName}</div>
+                  <div style="display:inline-block;">
+                     <h:outputText value="#{var.Patient.label.patient._.birthDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                     </h:outputText>
+                  </div>
+               </div>
+            </div>
          </div>
       </h:form>
    </body>
