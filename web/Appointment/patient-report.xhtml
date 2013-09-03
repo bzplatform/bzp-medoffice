@@ -99,8 +99,8 @@
             <table width="100%" border="0" cellpadding="0" cellspacing="0" style="font-size: 1em;">
                <tr>
                   <td valign="top" width="50%">
-                     <h1 style="margin-bottom: 0; font-size: 1.4em; margin-top: 0;">SL Quality Care D &amp; T Center</h1>
                      #{var.Patient.Appointment.report.myOffice._(biz.myOffice(myOfficeCode))}
+                     <h1 style="margin-bottom: 0; font-size: 1.4em; margin-top: 0;">#{var.Patient.Appointment.report.myOffice._.name}</h1>
                      <h2 style="margin-top: 0.3em; margin-bottom: 0.1em;">#{var.Patient.Appointment.report.myOffice._.address}, #{var.Patient.Appointment.report.myOffice._.city}, #{var.Patient.Appointment.report.myOffice._.state} #{var.Patient.Appointment.report.myOffice._.zipCode}</h2>
                      <h2 style="margin-top: 0.3em; margin-bottom: 0.1em;">#{var.Patient.Appointment.report.myOffice._.phone}</h2>
                   </td>
@@ -146,10 +146,10 @@
                         </h:outputText>
                      </td>
                      <td>
-                        <h:outputText value="#{appointment.provider.alias}"/>
+                        <h:outputText value="#{appointment.officeProvider.alias}"/>
                      </td>
                      <td>
-                        #{biz.specialty(appointment.specialtyID).name}
+                        #{biz.specialty(appointment.specialtyId).name}
                      </td>
                   </tr>
                </ui:repeat>
