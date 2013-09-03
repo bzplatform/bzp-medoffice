@@ -3372,4 +3372,16 @@ public class BizController {
          FileUtils.moveFileToDirectory(file, targetFolder, true);
       }
    }
+   
+   public void unprepareLabels(Map selectMap, List list) {
+      for (Object obj : list) {
+         if (selectMap.get(obj) != null && (Boolean) selectMap.get(obj) == true) {
+            Patient patient = (Patient) obj;
+            patient.getStatus().setPrepareLabel(false);
+            crudService.update(patient.getStatus());
+         }
+      }
+      selectMap.clear();
+   }
+   
 }

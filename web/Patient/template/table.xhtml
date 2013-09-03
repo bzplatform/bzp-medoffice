@@ -96,6 +96,11 @@
                      <h:commandLink action="#{jsf._do(var.Patient.report.patient._(patient))._to('Patient/health-record-summary').go}"
                                     target="_blank"
                                     value="Health Record Summary" style="margin-right: 1em;"/>
+                     <div class="separator"/>
+                     <h:commandLink rendered="#{! patient.status.prepareLabel}" action="#{jsf._do(patient.status.setPrepareLabel(true))._do(biz.savePatientStatus(patient.status, access.user.id)).stay}"
+                                    value="Prepare Label" style="margin-right: 1em;"/>
+                     <h:commandLink rendered="#{patient.status.prepareLabel}" action="#{jsf._do(patient.status.setPrepareLabel(false))._do(biz.savePatientStatus(patient.status, access.user.id)).stay}"
+                                    value="Unprepare Label" style="margin-right: 1em;"/>
                   </div>
                </h:column>
             </h:dataTable>

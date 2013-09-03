@@ -12,6 +12,10 @@
                                      _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
                            value="PATIENT EVENTS"
                            styleClass="#{jsf.global('myOffice')['subview'] == 'PatientEvent' ? 'selected' : ''}"/>
+            <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'ChartLabel')).
+                                     _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
+                           value="CHART LABELS"
+                           styleClass="#{jsf.global('myOffice')['subview'] == 'ChartLabel' ? 'selected' : ''}"/>
             <h:commandLink action="#{jsf._do(jsf.global('myOffice').put('subview', 'Referral')).
                                      _do(jsf.global('myOffice', 'event').put('refresh', true)).stay}"
                            value="REFERRALS"
@@ -76,6 +80,13 @@
                     _do(var.MyOffice.PatientEvent.insuranceGroup._ != '_ALL' ? var.MyOffice.PatientEvent.search.put(var.MyOffice.PatientEvent.insuranceGroup._, null) : null).
                     _do(var.MyOffice.PatientEvent.search._ != var.MyOffice.PatientEvent.search.toString().hashCode() ? var.MyOffice.PatientEvent.list._(jsf.search('PatientEvent', 'p.datetime DESC', var.MyOffice.PatientEvent.search)): null).
                     _do(var.MyOffice.PatientEvent.search._ != var.MyOffice.PatientEvent.search.toString().hashCode() ? var.MyOffice.PatientEvent.search._(var.MyOffice.PatientEvent.search.toString().hashCode()) : null).
+                    stay()}
+               </ui:fragment>
+               <ui:fragment rendered="#{jsf.global('myOffice')['subview'] == 'ChartLabel'}">                  
+                  #{jsf._do(var.MyOffice.ChartLabel.search.clear()).
+                    _do(var.MyOffice.ChartLabel.search.put('status_dot_prepareLabel', true)).
+                    _do(var.MyOffice.ChartLabel.search._ != var.MyOffice.ChartLabel.search.toString().hashCode() ? var.MyOffice.ChartLabel.list._(jsf.search('Patient', 'p.lastName', var.MyOffice.ChartLabel.search)): null).
+                    _do(var.MyOffice.ChartLabel.search._ != var.MyOffice.ChartLabel.search.toString().hashCode() ? var.MyOffice.ChartLabel.search._(var.MyOffice.ChartLabel.search.toString().hashCode()) : null).
                     stay()}
                </ui:fragment>
                <ui:fragment rendered="#{jsf.global('myOffice')['subview'] == 'Referral'}">

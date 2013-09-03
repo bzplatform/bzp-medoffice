@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+   <body>
+      <ui:composition>
+         <div class="one" style="margin-left: 0.5em;">
+            <h:dataTable value="#{patientList}" var="patient">
+               <h:column rendered="#{selectionMap != null}">
+                  <f:facet name="header">
+                     <h:outputText value="" styleClass="nosort"/>
+                  </f:facet>
+                  <h:selectBooleanCheckbox value="#{selectionMap[patient]}" style="margin:0;"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="MRN"/>
+                  </f:facet>
+                  <h:outputText value="#{patient.id}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Name"/>
+                  </f:facet>
+                  <div style="min-width: 20em;">
+                     <h:commandLink action="#{jsf._do(patientList.clear())._do(patientList.add(patient))._do(jsf.global('patient', 'view').put('panel:Search', false)).go(tableConfig.suppressNavigation._ ? jsf.stay() : jsf._to('Patient/main').go())}"
+                                    style="color: black;">
+                        <h:outputText value="#{patient.lastName}, #{patient.firstName}"/>
+                     </h:commandLink>
+                  </div>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="Sex"/>
+                  </f:facet>
+                  <h:outputText value="#{patient.sex}"/>
+               </h:column>
+               <h:column>
+                  <f:facet name="header">
+                     <h:outputText value="DOB"/>
+                  </f:facet>
+                  <h:outputText value="#{patient.birthDate}">
+                     <f:convertDateTime pattern="MM/dd/yyyy" />
+                  </h:outputText>
+               </h:column>
+            </h:dataTable>
+         </div>
+      </ui:composition>
+   </body>
+</html>

@@ -100,6 +100,50 @@
                   </ui:include>
                </div>
             </div>
+            <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'ChartLabel'}">  
+               <div class="float-left column">
+                  <h3 class="table-label" style="display:inline-block;">Labels</h3> 
+                     <h:commandButton action="#{jsf._do(biz.selectAll(var.MyOffice.ChartLabel.selected, var.MyOffice.ChartLabel.list._)).stay}"
+                                      style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;" value="Select All">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton action="#{jsf._do(var.MyOffice.ChartLabel.selected.$).stay}"
+                                      style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;" value="Unselect All">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>                    
+                     <h:commandButton action="#{jsf._do(biz.unprepareLabels(var.MyOffice.ChartLabel.selected.close(), var.MyOffice.ChartLabel.list._)).
+                                                _do(var.MyOffice.ChartLabel.search._(null)).stay}"
+                                      style="margin: 0; margin-right: 0.5em; font-size: 0.7em; width: auto;" value="Unprepare">
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <h:commandButton action="#{jsf._do(var.MyOffice.ChartLabel.search._(null)).stay}"
+                                      style="margin: 0; margin-right: 0.5em;font-size: 0.7em; width: auto;" value="Refresh">
+                        <f:ajax execute="@form" render="@form" onevent="ajaxEventHandler"/>
+                     </h:commandButton>
+                     <label class="vlabel" style="font-size: 0.9em; margin-right: 0.5em;">Year:</label>
+                     <h:inputText value="#{var.MyOffice.ChartLabel.year._}"  style="width: 2em;" title="Enter 2 digits">
+                        <f:ajax render="@form" onevent="ajaxEventHandler"/>
+                     </h:inputText>                
+                     <h:commandLink value="Print Labels" 
+                                    action="#{jsf._do(var.ChartLabel.report.year._(var.MyOffice.ChartLabel.year._)).
+                                              _do(var.ChartLabel.report.list._(var.MyOffice.ChartLabel.list._)).
+                                              _do(var.ChartLabel.report.selected._(var.MyOffice.ChartLabel.selected)).
+                                              _to('Patient/print-labels-report').go}" 
+                                    target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 1.5em"/>
+                     <h:commandLink value="Year Color" 
+                                    action="#{jsf._do(var.ChartLabel.report.year._(null)).
+                                              _do(var.ChartLabel.report.list._(null)).
+                                              _to('Patient/print-labels-report').go}" 
+                                    target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>
+                  <br style="margin-bottom: 0.75em;"/>
+                  <div jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.ChartLabel.list._}">
+                     <ui:include src="../Patient/template/chart-label-table.xhtml">
+                        <ui:param name="patientList" value="#{var.MyOffice.ChartLabel.list._}"/>
+                        <ui:param name="selectionMap" value="#{var.MyOffice.ChartLabel.selected.close()}"/>
+                     </ui:include>
+                  </div>
+               </div>
+            </div>
             <div jsfc="h:panelGroup" rendered="#{jsf.global('myOffice')['subview'] == 'AuthorizableVisit'}">
                <div class="float-left column" jsfc="h:panelGroup" rendered="#{not empty var.MyOffice.Visit.list._}">
                   #{jsf._do(var.MyOffice.Visit.tableConfig.patient._ == null ? var.MyOffice.Visit.tableConfig.patient._(true) : null).
