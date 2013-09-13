@@ -494,6 +494,10 @@
                                          title="Create Walk-in Visit"
                                          value="Walk-in..."/>
                         <h:commandLink value="Report" action="#{jsf._to('Visit/provider-report').go}" target="_blank" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 1em"/>
+                        <h:commandLink action="#{jsf._do(var.VisitDoc.visitList._(var.OfficeProvider.visitList))._to('VisitDoc/visit-batch').go}"
+                                       target="_blank"
+                                       title="Superbill Batch"
+                                       value="SB Batch" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>
                         <h:commandButton value="Refresh" style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;" action="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:visitList', true)).stay}" title="Refresh Visit List">
                            <f:ajax render="@form" onevent="ajaxEventHandler"/>
                         </h:commandButton>
