@@ -74,7 +74,7 @@
                <ui:fragment rendered="#{doc.batch}">
                   <ui:repeat value="#{doc.pageList}" var="page">
                      <div class="page">
-                        <object type="image/svg+xml" data="../visit-doc?id=#{doc.id}&amp;visit=#{visit.id}&amp;page=#{page}" style="width:210mm; height:270mm;"/>
+                        <object type="image/svg+xml" data="../visit-doc?id=#{doc.id}&amp;visit=#{visit.id}&amp;office=#{myOfficeCode}&amp;page=#{page}" style="width:210mm; height:270mm;"/>
                      </div>
                   </ui:repeat>
                </ui:fragment>
