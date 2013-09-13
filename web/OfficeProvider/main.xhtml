@@ -498,9 +498,9 @@
                                        target="_blank"
                                        title="Superbill Batch"
                                        value="SB Batch" style="font-size: 0.9em; margin-right: 0.5em; margin-left: 0.5em"/>
-                        <h:commandButton value="Refresh" style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;" action="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:visitList', true)).stay}" title="Refresh Visit List">
+                        <!--<h:commandButton value="Refresh" style="margin: 0; margin-right: 0.5em; margin-left: 1em; font-size: 0.7em; width: auto;" action="#{jsf._do(jsf.global('officeProvider', 'event').put('refresh:visitList', true)).stay}" title="Refresh Visit List">
                            <f:ajax render="@form" onevent="ajaxEventHandler"/>
-                        </h:commandButton>
+                        </h:commandButton>-->
                         <br style="margin-bottom: 0.75em;"/>
                         <div jsfc="h:panelGroup" rendered="#{not empty var.OfficeProvider.visitList}">
                            <ui:include src="../Visit/template/table.xhtml">
